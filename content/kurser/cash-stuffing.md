@@ -1,5 +1,6 @@
 ---
 title: "Cash Stuffing – Praktisk økonomistyring i hverdagen"
+description: "Cash Stuffing – Praktisk økonomistyring i hverdagen — Få styr på dine penge – i praksis. Forløb hos Kristian GG, registreret psykoterapeut i Odense."
 tagline: "Få styr på dine penge – i praksis"
 jeg_hoerer_ofte: '"Mine penge forsvinder bare", "jeg ved ikke, hvor de bliver af" eller "jeg har styr på det i hovedet – men ikke i virkeligheden."'
 open_question: "Men hvad gør du, når økonomien ikke hænger sammen – selvom du prøver?"

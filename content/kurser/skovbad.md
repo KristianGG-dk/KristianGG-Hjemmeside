@@ -1,31 +1,55 @@
 ---
-title: "Skovbad – Regulering Gennem Naturkontakt"
-tagline: "Ro, nærvær og nervesystem i naturen"
-jeg_hoerer_ofte: '"Jeg kan ikke rigtig finde ro", "jeg er hele tiden lidt på" eller "jeg slapper først af, når jeg er helt alene."'
-open_question: "Men hvad gør du, når kroppen ikke falder til ro – selv når du prøver?"
-focus:
-  - "At reducere stress og indre uro gennem naturkontakt"
-  - "At skabe ro og stabilitet i kroppen"
-  - "At styrke nærvær og sansning"
-  - "At udvikle evnen til at regulere sig selv i hverdagen"
-elements:
-  - title: "Forståelse af natur og nervesystem"
-    desc: "Hvordan naturen påvirker kroppen – og hvorfor det ikke kræver viljestyrke"
-  - title: "Regulering gennem åndedræt og sansning"
-    desc: "Teknikker, der forstærker kroppens naturlige rorespons"
-  - title: "Guidet tilstedeværelse i naturen"
-    desc: "Metoder til at sænke tempo og øge kropslig kontakt"
-  - title: "Afkobling fra hverdagens tempo"
-    desc: "Strategier til at slippe mentale og fysiske spændinger"
-  - title: "Integration i hverdagen"
-    desc: "Redskaber, der kan bruges uden for forløbet – også i korte pauser"
-closing: "Når kroppen falder til ro i naturen, opstår der en mere stabil og bæredygtig tilstand. Det giver ro, øger overskuddet og skaber en dybere forbindelse til både sig selv og omgivelserne."
+layout: "skovbad"
+title: "Skovbad på Fyn – hvad det er, og hvad det ikke er"
+description: "Skovbad på Fyn og i Odense med registreret psykoterapeut. Langsom, opmærksom tid mellem træerne — individuelt eller i lille gruppe. Ingen præstation, ingen udstyr."
+hero_title: "Skovbad"
+hero_subtitle: "Langsom, opmærksom tid mellem træerne. Ikke en gåtur, ikke en behandling — noget tredje."
+service_name: "Skovbad på Fyn"
+service_desc: "Guidet skovbad i skovene omkring Odense og på Fyn, individuelt eller i lille gruppe."
+
+er_ikke:
+  - "Det er ikke en vandretur. Vi tilbagelægger sjældent mere end en kilometer på to timer."
+  - "Det er ikke træning. Der er ingen puls at holde og ingen rute at nå."
+  - "Det er ikke en naturvejledning. Jeg fortæller ikke, hvad træerne hedder, medmindre du spørger."
+  - "Det er ikke terapi. Der bliver ikke arbejdet med din historie, og du skal ikke fortælle mig noget."
+  - "Det er ikke spirituelt. Der bliver ikke krammet træer, og du skal ikke tro på noget."
+
+faq:
+  - q: "Hvor lang tid tager det?"
+    a: "To til tre timer. Det lyder af meget, og det er netop pointen — det tager omkring fyrre minutter, før de fleste holder op med at have travlt."
+  - q: "Skal jeg kunne noget?"
+    a: "Nej. Du skal kunne gå langsomt. Det er sværere, end det lyder, og det er hele øvelsen."
+  - q: "Kan man komme alene?"
+    a: "Ja. Individuelt skovbad er det mest almindelige, og det er der, der er mest plads til, at det bliver dit eget."
+  - q: "Findes det i grupper?"
+    a: "Ja, i små grupper. Vi går sammen, men taler kun lidt — man er alene sammen med andre, hvilket for nogle er lettere end at være alene alene."
+  - q: "Hvad hvis jeg keder mig?"
+    a: "Det sker ofte i den første halve time. Kedsomheden er ikke et tegn på, at det ikke virker. Den er som regel det første, der dukker op, når der ikke er noget at lave."
+
+cta_heading: "Tag kontakt"
+cta_text: "Skriv, hvis du vil prøve. Vi finder en skov og et tidspunkt."
 ---
 
-Forløbet er målrettet voksne, der oplever uro, stress eller behov for at finde tilbage til en mere rolig og balanceret tilstand. Her handler det ikke om at gøre mere – men om at skabe de rette betingelser for, at kroppen kan give slip.
+Skovbad kommer fra det japanske *shinrin-yoku* og betyder ganske enkelt at opholde sig i skoven med sanserne åbne. Ikke for at komme nogen steder. Ikke for at lære noget. Bare være der, langsomt, i længere tid end man plejer.
 
-Når kroppen er belastet, kan det være svært at regulere sig selv i en travl hverdag. Naturen tilbyder et miljø, hvor nervesystemet automatisk begynder at falde til ro. Det kræver konkrete rammer – ikke bare at "gå en tur."
+Det lyder af ingenting. Det er også det, der gør det svært.
 
-Forløbet tager afsæt i spændingsfeltet mellem det tempo, man lever i – og det tempo, kroppen har brug for. Der arbejdes med naturen som ramme. Gennem guidede, enkle øvelser får deltagerne erfaring med, hvordan sanser, åndedræt og nærvær kan bringe kroppen i ro.
+## Sådan foregår det
 
-Deltagerne lærer ikke bare at opholde sig i naturen – men hvordan naturkontakt aktivt kan bruges til regulering.
+Vi mødes ved skovkanten og går ind. De første tyve minutter går som regel med, at du stadig har travlt — det er normalt, og det går over af sig selv.
+
+Undervejs stopper vi flere gange. Jeg giver nogle enkle invitationer: læg mærke til lyden bag dig, mærk temperaturforskellen mellem skygge og lys, se hvor mange grønne nuancer du kan skelne. Du kan følge dem eller lade være. Der er ingen, der tjekker.
+
+Til sidst sætter vi os. Nogle gange bliver der talt om, hvordan det var. Andre gange ikke.
+
+## Hvad det ikke er
+
+Der er en del forvirring om skovbad, så det er nemmest at sige, hvad det ikke er:
+
+## Hvem det giver mening for
+
+Det er ofte det første, folk prøver hos mig. Tærsklen er lav: du skal ikke fortælle om dig selv, du skal ikke være i krise, og du skal ikke forpligte dig til noget.
+
+Det passer særligt godt til mennesker, der er kørt trætte af at skulle præstere — også i det, der skulle være afslapning. Og til dem, der godt ved, at de har brug for at falde ned, men ikke kan gøre det derhjemme, fordi vasketøjet ligger der.
+
+Er du i en akut svær periode, er skovbad ikke det rigtige sted at begynde. Så skal vi tale sammen først.

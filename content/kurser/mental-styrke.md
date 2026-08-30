@@ -1,5 +1,6 @@
 ---
 title: "Mental Styrke i Arbejdslivet"
+description: "Mental Styrke i Arbejdslivet — Robusthed og regulering under præstationspres. Forløb hos Kristian GG, registreret psykoterapeut i Odense."
 tagline: "Robusthed og regulering under præstationspres"
 jeg_hoerer_ofte: '"Der er altid mere, jeg burde nå", "jeg kan ikke koble fra" eller "jeg er presset hele tiden."'
 open_question: "Men hvad gør du, når kravene stiger – og kroppen ikke følger med?"

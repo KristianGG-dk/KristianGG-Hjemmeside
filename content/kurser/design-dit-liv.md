@@ -1,5 +1,6 @@
 ---
 title: "Design Dit Liv – Ikke Bare Din Kalender"
+description: "Design Dit Liv – Ikke Bare Din Kalender — Flagskibsforløb i livsretning og struktur. Forløb hos Kristian GG, registreret psykoterapeut i Odense."
 tagline: "Flagskibsforløb i livsretning og struktur"
 jeg_hoerer_ofte: '"Jeg har styr på min kalender, men ikke mit liv", "jeg når en masse – men det føles ikke rigtigt" eller "jeg ved ikke, hvad jeg egentlig arbejder hen imod."'
 open_question: "Men hvad gør du, når hverdagen er fyldt – men retningen mangler?"

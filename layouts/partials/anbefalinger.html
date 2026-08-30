@@ -1,0 +1,37 @@
+{{- /*
+  Viser udtalelser for den aktuelle side. Renderer INTET, når der ikke er
+  nogen — ingen tom overskrift, ingen "kommer snart".
+
+  Filtrerer på både 'sider' (må denne side vise den) og 'samtykke' (er der
+  dokumenteret samtykke). Poster uden samtykke vises aldrig.
+*/ -}}
+{{- $sti := .Page.RelPermalink -}}
+{{- $type := .type -}}
+{{- $alle := (or site.Data.anbefalinger.poster slice) -}}
+{{- $valgte := slice -}}
+{{- range $alle -}}
+  {{- if and .samtykke .citat (in (or .sider slice) $sti) -}}
+    {{- if or (not $type) (eq .type $type) -}}
+      {{- $valgte = $valgte | append . -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+{{- if $valgte }}
+<section class="section-padding bg-birk" aria-labelledby="anbefalinger-titel">
+  <div class="container-width">
+    <h2 id="anbefalinger-titel" class="text-2xl sm:text-3xl font-semibold mb-8">{{ with .titel }}{{ . }}{{ else }}Hvad andre siger{{ end }}</h2>
+    <div class="grid gap-6 sm:grid-cols-2">
+      {{- range $valgte }}
+      <figure class="card">
+        <blockquote class="text-skovbund leading-relaxed">{{ .citat }}</blockquote>
+        <figcaption class="mt-4 text-sm text-tekst-daempet">
+          <span class="font-semibold text-skovbund">{{ .navn }}</span>
+          {{- with .rolle }} · {{ . }}{{ end }}
+          {{- with .sted }} · {{ . }}{{ end }}
+        </figcaption>
+      </figure>
+      {{- end }}
+    </div>
+  </div>
+</section>
+{{- end }}

@@ -1,5 +1,6 @@
 ---
 title: "Genfind Dit Fokus i en Digital Hverdag"
+description: "Genfind Dit Fokus i en Digital Hverdag — Koncentration og mental afgrænsning. Forløb hos Kristian GG, registreret psykoterapeut i Odense."
 tagline: "Koncentration og mental afgrænsning"
 jeg_hoerer_ofte: '"Jeg bliver hele tiden afbrudt", "jeg kan ikke holde fokus" eller "mit hoved er fyldt med for mange ting."'
 open_question: "Men hvad gør du, når opmærksomheden hele tiden bliver trukket væk – og du ikke kan samle dig?"

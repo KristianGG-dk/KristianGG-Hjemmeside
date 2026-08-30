@@ -1,8 +1,8 @@
 ---
-title: Priser – Psykoterapi & Hypnoterapi i Odense
-description: Priser for psykoterapi, hypnoterapi og NLP hos Kristian GG i Odense. Gratis forsamtale. Naturterapi, Walk & Talk og terapisessioner. Ingen skjulte omkostninger.
+title: Priser – psykoterapi, naturterapi og skovbad
+description: Priser på psykoterapi, naturterapi, skovbad og Walk & Talk hos Kristian GG i Odense. Første telefonsamtale er gratis. Ingen skjulte omkostninger.
 hero_title: Priser
-hero_subtitle: Gennemsigtige priser uden skjulte omkostninger. Start altid med en gratis og uforpligtende forsamtale.
+hero_subtitle: Ingen skjulte omkostninger. Vi begynder altid med en kort telefonsamtale, som ikke koster noget.
 prices:
   - title: Gratis forsamtale
     price: Gratis
@@ -12,19 +12,17 @@ prices:
       - Vi afklarer dine behov og mål
       - Du spørger, jeg svarer
       - Ingen binding
-    highlighted: true
+    badge: Start her
     note: Altid det første skridt.
-    booking_url: "https://system.easypractice.net/book/kristian-gg?service=286802"
   - title: Terapi session
     price: "1200"
     duration: 90 minutter · Klinik eller online
     features:
       - Fuld terapeutisk session
-      - Hypnoterapi, NLP og/eller KAT
+      - Samtale, og de redskaber der passer til dig
       - Individuel tilpasning
       - Hjemmeøvelser inkluderet
-    highlighted: true
-    booking_url: "https://system.easypractice.net/book/kristian-gg?service=286761"
+    badge: Mest valgte
   - title: Walk & Talk
     price: "1200"
     duration: 1,5 time · Fysisk fremmøde
@@ -34,7 +32,6 @@ prices:
       - Kombinerer terapi og motion
       - Individuel tilpasning
     highlighted: false
-    booking_url: "https://system.easypractice.net/book/kristian-gg?service=286801"
   - title: Naturterapi – 3 timer
     price: "1800"
     duration: 3 timer · Naturen på Fyn
@@ -44,7 +41,6 @@ prices:
       - Individuel tilpasning
       - Inkl. transport på Fyn
     highlighted: false
-    booking_url: "https://system.easypractice.net/book/kristian-gg?service=286762"
   - title: Naturterapi – 6 timer
     price: "3600"
     duration: 6 timer · Naturen på Fyn
@@ -54,7 +50,6 @@ prices:
       - Individuel tilpasning
       - Inkl. transport på Fyn
     highlighted: false
-    booking_url: "https://system.easypractice.net/book/kristian-gg?service=286763"
   - title: Naturterapi – 12 timer
     price: "6000"
     duration: 12 timer · Naturen på Fyn
@@ -64,7 +59,6 @@ prices:
       - Alle naturlige metoder i spil
       - Inkl. transport på Fyn
     highlighted: false
-    booking_url: "https://system.easypractice.net/book/kristian-gg?service=286764"
   - title: Naturterapi – 24 timer
     price: "9000"
     duration: 24 timer · Naturen på Fyn
@@ -74,5 +68,4 @@ prices:
       - Overnatning i naturen
       - Inkl. transport på Fyn
     highlighted: false
-    booking_url: "https://system.easypractice.net/book/kristian-gg?service=286765"
 ---

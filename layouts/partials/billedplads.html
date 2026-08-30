@@ -1,0 +1,22 @@
+{{- /*
+  Billedplads. Bruges dér, hvor der skal ind et rigtigt natur- eller
+  portrætfotografi, men hvor det endnu ikke findes.
+
+  Bevidst valg: der bruges IKKE stockfotos som midlertidig løsning. En tydelig
+  plads viser præcis hvad der mangler, og kan ikke ved et uheld ende i
+  produktion som "godt nok".
+
+  Parametre:
+    motiv    beskrivelse af det fotografi der skal ind (påkrævet)
+    hoejde   Tailwind-højdeklasser, fx "h-64 sm:h-80"
+    klasse   ekstra klasser
+*/ -}}
+<div class="billedplads {{ with .hoejde }}{{ . }}{{ else }}h-64 sm:h-80{{ end }} {{ with .klasse }}{{ . }}{{ end }}"
+     role="img"
+     aria-label="Plads til fotografi: {{ .motiv }}">
+  <svg aria-hidden="true" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="text-lav mb-3">
+    <path d="M12 22c0-6 3-10 8-12-6-1-8 2-8 5"/><path d="M12 22c0-5-2-8-6-9 4-1 6 1 6 4"/><path d="M12 22V9"/>
+  </svg>
+  <span class="billedplads-maerke">Foto mangler</span>
+  <span class="billedplads-note">{{ .motiv }}</span>
+</div>

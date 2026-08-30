@@ -1,67 +1,73 @@
-{{- $b := .Site.Data.business -}}
-<footer class="bg-text-dark text-gray-300 pt-12 pb-6 mt-auto">
-  <div class="max-w-6xl mx-auto px-4 sm:px-6">
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-8 mb-10">
+{{- $b := site.Data.business -}}
+{{- /*
+  Erhvervssiderne er flyttet HERTIL fra hovedmenuen. Deres adresser er uændrede,
+  og de linkes fortsat fra hver eneste side, så den interne linkstyrke bevares.
+  En privat klient skal ikke først vælge sig selv ud af tre målgrupper.
+*/ -}}
+<footer class="bg-skovbund text-birk mt-auto">
+  <div class="container-width px-4 sm:px-6 py-14">
+    <div class="grid gap-10 sm:grid-cols-2 lg:grid-cols-4">
 
-      {{/* Brand */}}
-      <div class="lg:col-span-2">
-        <p class="text-white font-bold text-xl mb-2">Kristian GG</p>
-        <p class="text-gray-400 text-sm leading-relaxed mb-4">{{ $b.full_name }}</p>
-        <p class="text-gray-400 text-sm">{{ $b.address.street }}<br />{{ $b.address.postal_code }} {{ $b.address.city }}</p>
-        <p class="text-gray-400 text-sm mt-2">
-          <a href="tel:{{ $b.phone | replaceRE " " "" }}" class="hover:text-white transition-colors">{{ $b.phone }}</a>
+      <div class="lg:col-span-1">
+        <p class="font-display text-xl font-semibold text-white">Kristian GG</p>
+        <p class="text-sm mt-2 leading-relaxed">{{ $b.full_name }}</p>
+        <address class="not-italic text-sm mt-4 leading-relaxed">
+          {{ $b.address.street }}<br />
+          {{ $b.address.postal_code }} {{ $b.address.city }}
+        </address>
+        <p class="text-sm mt-4">
+          <a href="{{ $b.phone_tel | safeURL }}" class="footer-link font-semibold">{{ $b.phone_display }}</a><br />
+          <a href="{{ $b.email_link | safeURL }}" class="footer-link">{{ $b.email }}</a>
         </p>
-        <div class="flex gap-3 mt-4">
-          <a href="{{ $b.facebook }}" target="_blank" rel="noopener" class="text-gray-400 hover:text-white transition-colors text-sm">Facebook</a>
-          <a href="{{ $b.trustpilot }}" target="_blank" rel="noopener" class="text-gray-400 hover:text-white transition-colors text-sm">Trustpilot</a>
-        </div>
+        <p class="text-sm mt-3">{{ $b.opening_hours }}</p>
       </div>
 
-      {{/* Til dig */}}
       <div>
-        <p class="text-white font-semibold text-sm mb-3">Til dig</p>
-        <ul class="space-y-2">
-          <li><a href="/til-dig/nervesystemet" class="text-gray-400 hover:text-white text-sm transition-colors">Nervesystemet & ro</a></li>
-          <li><a href="/til-dig/naturterapi"   class="text-gray-400 hover:text-white text-sm transition-colors">Naturterapi</a></li>
-          <li><a href="/til-dig/psykoterapi"   class="text-gray-400 hover:text-white text-sm transition-colors">Psykoterapi</a></li>
+        <h2 class="etikette text-lav mb-3">Terapi</h2>
+        <ul class="space-y-1 text-sm list-none p-0">
+          <li><a href="/til-dig/psykoterapi/" class="footer-link">Psykoterapi</a></li>
+          <li><a href="/til-dig/naturterapi/" class="footer-link">Naturterapi</a></li>
+          <li><a href="/kurser/skovbad/" class="footer-link">Skovbad</a></li>
+          <li><a href="/til-dig/nervesystemet/" class="footer-link">Stress og nervesystem</a></li>
+          <li><a href="/kurser/" class="footer-link">Forløb og kurser</a></li>
+          <li><a href="/priser/" class="footer-link">Priser</a></li>
         </ul>
       </div>
 
-      {{/* Til virksomheder */}}
       <div>
-        <p class="text-white font-semibold text-sm mb-3">Til virksomheder</p>
-        <ul class="space-y-2">
-          <li><a href="/til-virksomheder/workshops" class="text-gray-400 hover:text-white text-sm transition-colors">Workshops</a></li>
-          <li><a href="/til-virksomheder/foredrag"  class="text-gray-400 hover:text-white text-sm transition-colors">Foredrag</a></li>
-          <li><a href="/til-virksomheder/trivsel"   class="text-gray-400 hover:text-white text-sm transition-colors">Medarbejdertrivsel</a></li>
+        <h2 class="etikette text-lav mb-3">Virksomheder og kommuner</h2>
+        <ul class="space-y-1 text-sm list-none p-0">
+          <li><a href="/til-virksomheder/" class="footer-link">Til virksomheder</a></li>
+          <li><a href="/til-virksomheder/foredrag/" class="footer-link">Foredrag</a></li>
+          <li><a href="/til-virksomheder/workshops/" class="footer-link">Workshops</a></li>
+          <li><a href="/til-virksomheder/trivsel/" class="footer-link">Medarbejdertrivsel</a></li>
+          <li><a href="/til-kommuner/" class="footer-link">Til kommuner</a></li>
+          <li><a href="/til-kommuner/saerforanstaltninger/" class="footer-link">Særforanstaltninger</a></li>
+          <li><a href="/til-kommuner/vikardaekning/" class="footer-link">Vikardækning</a></li>
+          <li><a href="/til-kommuner/borgerforloeb/" class="footer-link">Borgerforløb</a></li>
+          <li><a href="/til-organisationer/" class="footer-link">Til organisationer</a></li>
         </ul>
       </div>
 
-      {{/* Til kommuner */}}
       <div>
-        <p class="text-white font-semibold text-sm mb-3">Til kommuner</p>
-        <ul class="space-y-2">
-          <li><a href="/til-kommuner/saerforanstaltninger" class="text-gray-400 hover:text-white text-sm transition-colors">Særforanstaltninger</a></li>
-          <li><a href="/til-kommuner/vikardaekning"        class="text-gray-400 hover:text-white text-sm transition-colors">Vikardækning</a></li>
-          <li><a href="/til-kommuner/borgerforloeb"        class="text-gray-400 hover:text-white text-sm transition-colors">Borgerforløb</a></li>
+        <h2 class="etikette text-lav mb-3">Mere</h2>
+        <ul class="space-y-1 text-sm list-none p-0">
+          <li><a href="/om/" class="footer-link">Om Kristian</a></li>
+          <li><a href="/blog/" class="footer-link">Blog</a></li>
+          <li><a href="/kontakt/" class="footer-link">Kontakt</a></li>
+          <li><a href="/betingelser/" class="footer-link">Handelsbetingelser</a></li>
+          <li><a href="{{ $b.facebook }}" rel="noopener" class="footer-link">Facebook</a></li>
+          <li><a href="{{ $b.trustpilot }}" rel="noopener" class="footer-link">Trustpilot</a></li>
         </ul>
+        <p class="text-xs text-lav mt-4 leading-relaxed">
+          {{ $b.trustpilot_score }} af 5 på Trustpilot, {{ $b.trustpilot_antal }} anmeldelser.
+        </p>
       </div>
     </div>
 
-    <div class="border-t border-gray-700 pt-4 mb-4 flex items-center justify-center gap-3">
-      <img src="/images/fadp-logo.png" alt="FaDP" class="w-8 h-8 object-contain opacity-60" />
-      <p class="text-gray-500 text-xs">Reg. Psykoterapeut (FaDP) · Politisk rådgiver · <a href="https://www.fadp.dk/" target="_blank" rel="noopener" class="hover:text-white transition-colors">fadp.dk</a></p>
-    </div>
-
-    <div class="border-t border-gray-700 pt-6 flex flex-col sm:flex-row justify-between items-center gap-4">
-      <p class="text-gray-500 text-xs">© {{ now.Year }} Kristian G. G. Dansted · CVR: 40996761</p>
-      <div class="flex gap-4">
-        <a href="/om"          class="text-gray-500 hover:text-white text-xs transition-colors">Om Kristian</a>
-        <a href="/priser"      class="text-gray-500 hover:text-white text-xs transition-colors">Priser</a>
-        <a href="/kontakt"     class="text-gray-500 hover:text-white text-xs transition-colors">Kontakt</a>
-        <a href="/blog"        class="text-gray-500 hover:text-white text-xs transition-colors">Blog</a>
-        <a href="/betingelser" class="text-gray-500 hover:text-white text-xs transition-colors">Betingelser</a>
-      </div>
+    <div class="border-t border-white/15 mt-10 pt-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 text-xs text-lav">
+      <p>© {{ now.Year }} {{ $b.full_name }} · CVR 40996761</p>
+      <p>Registreret psykoterapeut hos <a href="https://www.fadp.dk/" rel="noopener" class="underline underline-offset-2 hover:text-white">Foreningen af Danske Psykoterapeuter</a></p>
     </div>
   </div>
 </footer>

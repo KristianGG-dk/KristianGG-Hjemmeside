@@ -6,10 +6,10 @@
 <section class="bg-gradient-to-br from-primary-light via-white to-white py-16 px-4 sm:px-6">
   <div class="container-width">
     <div class="max-w-3xl">
-      <p class="text-primary text-sm font-semibold uppercase tracking-wide mb-2"><a href="/kurser" class="hover:underline">Kurser</a></p>
+      <p class="text-primary text-sm font-semibold uppercase tracking-wide mb-2"><a href="/kurser/" class="hover:underline">Kurser</a></p>
       <h1 class="text-4xl md:text-5xl font-bold text-text-dark leading-tight mb-2">{{ .Title }}</h1>
       <p class="text-xl text-primary font-semibold mb-8">{{ $p.tagline }}</p>
-      <a href="{{ $b.booking }}" target="_blank" rel="noopener" class="btn-primary">Book gratis samtale</a>
+      <a href="{{ $b.phone_sms | safeURL }}" class="btn-primary">Tag kontakt</a>
     </div>
   </div>
 </section>
@@ -104,7 +104,7 @@
   <div class="container-width px-4 sm:px-6 text-center">
     <h2 class="text-2xl md:text-3xl font-bold text-white mb-4">Klar til at komme i gang?</h2>
     <p class="text-primary-light text-lg mb-8 max-w-2xl mx-auto">Book en gratis og uforpligtende telefonsamtale.</p>
-    <a href="{{ $b.booking }}" target="_blank" rel="noopener" class="inline-block bg-white text-primary hover:bg-primary-light font-semibold px-8 py-4 rounded-lg transition-colors text-lg">Book gratis samtale</a>
+    <a href="{{ $b.phone_sms | safeURL }}" class="inline-block bg-white text-primary hover:bg-primary-light font-semibold px-8 py-4 rounded-lg transition-colors text-lg">Tag kontakt</a>
   </div>
 </section>
 {{ end }}

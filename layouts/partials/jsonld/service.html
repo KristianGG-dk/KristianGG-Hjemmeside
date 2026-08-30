@@ -18,7 +18,7 @@
   ],
   "availableChannel": {
     "@type": "ServiceChannel",
-    "serviceUrl": "{{ $b.booking }}",
+    "serviceUrl": "{{ $b.phone_sms | safeURL }}",
     "servicePhone": "{{ $b.phone }}"
   }
 }

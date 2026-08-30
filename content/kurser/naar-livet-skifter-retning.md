@@ -1,5 +1,6 @@
 ---
 title: "Når Livet Skifter Retning"
+description: "Når Livet Skifter Retning — Overgangsfaser og livsforandring. Forløb hos Kristian GG, registreret psykoterapeut i Odense."
 tagline: "Overgangsfaser og livsforandring"
 jeg_hoerer_ofte: '"Jeg ved ikke helt, hvor jeg er på vej hen", "alting er forandret" eller "jeg har mistet fodfæstet."'
 open_question: "Men hvad gør du, når det gamle ikke længere passer – og det nye endnu ikke er på plads?"

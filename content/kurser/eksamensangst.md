@@ -1,5 +1,6 @@
 ---
 title: "Forstå og Håndter Eksamensangst"
+description: "Forstå og Håndter Eksamensangst — Konkrete redskaber til unge. Forløb hos Kristian GG, registreret psykoterapeut i Odense."
 tagline: "Konkrete redskaber til unge"
 jeg_hoerer_ofte: '"Jeg kan det godt, men det forsvinder til eksamen", "jeg går helt i sort" eller "jeg bliver så nervøs, at jeg ikke kan tænke."'
 open_question: "Men hvad gør du, når kroppen tager over – og det, du kan, ikke kommer frem?"

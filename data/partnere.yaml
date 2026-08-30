@@ -1,0 +1,20 @@
+# Samarbejdspartnere.
+#
+# TOM MED VILJE. Der må ikke opfindes partnere, og der må ikke vises logoer,
+# vi ikke har tilladelse til at bruge.
+#
+# Bevidst arkitekturvalg: ingen logovæg på forsiden. En partner vises på den
+# side, hvor samarbejdet betyder noget — en faglig forening på /om/, en
+# kommunal samarbejdspartner på erhvervssiderne. To til fire relevante
+# partnere det rigtige sted virker stærkere end tolv logoer på forsiden, og
+# koster ikke hastighed.
+#
+# Felter:
+#   navn        påkrævet
+#   logo        sti under /images/partnere/ — udelades hvis vi ikke har rettigheder
+#   beskrivelse én sætning om samarbejdet
+#   link        valgfri
+#   type        forening | leverandoer | kommune | virksomhed | fagligt-netvaerk
+#   sider       hvilke sider partneren vises på
+
+poster: []

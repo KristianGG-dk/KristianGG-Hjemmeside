@@ -1,5 +1,6 @@
 ---
 title: "Sov Bedre – Forstå og Reguler Tankemylder"
+description: "Sov Bedre – Forstå og Reguler Tankemylder — Søvn, nervesystem og mental afkobling. Forløb hos Kristian GG, registreret psykoterapeut i Odense."
 tagline: "Søvn, nervesystem og mental afkobling"
 jeg_hoerer_ofte: '"Jeg er træt, men kan ikke falde i søvn", "mit hoved stopper ikke" eller "jeg vågner midt om natten og kan ikke finde ro igen."'
 open_question: "Men hvad gør du, når kroppen er træt – men nervesystemet ikke vil give slip?"

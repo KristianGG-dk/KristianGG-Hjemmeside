@@ -28,6 +28,20 @@
 {{/* Sitemap hint */}}
 <meta name="robots" content="{{ if .Params.noindex }}noindex, nofollow{{ else }}index, follow{{ end }}" />
 
+{{/* Skrifttyper.
+     Slås til/fra med params.webfonts i hugo.toml.
+
+     TODO før production: hent Fraunces og Karla ned som WOFF2, beskåret til
+     dansk tegnsæt, og server dem fra /fonts/ på eget domæne. Det fjerner den
+     tredjepart, som tyske domstole har haft indvendinger mod under GDPR, og
+     sparer to DNS-opslag. Reservestakken (Georgia / system-ui) er valgt, så
+     siden er fuldt læsbar uden webfonts og ikke skifter layout mærkbart. */}}
+{{- if site.Params.webfonts }}
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Karla:wght@400;500;700&display=swap" />
+{{- end }}
+
 {{/* CSS via Hugo Pipes + PostCSS */}}
 {{- $css := resources.Get "css/main.css" | css.PostCSS | minify | fingerprint }}
 <link rel="stylesheet" href="{{ $css.RelPermalink }}" integrity="{{ $css.Data.Integrity }}" />

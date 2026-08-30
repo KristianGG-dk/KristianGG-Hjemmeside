@@ -1,5 +1,6 @@
 ---
 title: "Kurser"
+description: "Forløb og kurser hos Kristian GG i Odense — ro og regulering, søvn, stress og livsretning. Både individuelt og på hold."
 hero_title: "Kurser og forløb"
 hero_subtitle: "Praksisnære forløb i regulering, trivsel og livsretning – for privatpersoner og organisationer."
 

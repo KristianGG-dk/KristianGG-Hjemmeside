@@ -57,7 +57,7 @@ Hvorfor din viljestyrke svigter: 5 overraskende indsigter fra nervesystemets ver
 
 *"Hvorfor kan jeg ikke bare tage mig sammen?"* Det spørgsmål kender de fleste, der har stået i en travl hverdag, hvor overskuddet er væk, og frustrationen tager over. Vi er flasket op med tanken om, at trivsel og succes kræver hård disciplin. Men sandheden er mere biologisk end moralsk: Hvis dit nervesystem er på overarbejde, hjælper det ikke at stramme grebet om dig selv.
 
-Vejen til ro og overskud går ikke gennem hårdere disciplin, men gennem regulering af din biologi. Ved at forstå Kristian GG’s holistiske tilgang og det centrale TRÅD-princip, kan vi flytte os fra konstant brandslukning til varig balance. Her er fem indsigter, der gør op med myten om manglende viljestyrke.
+Vejen til ro og overskud går ikke gennem hårdere disciplin, men gennem regulering af din biologi. Når vi forstår kroppens egen logik, kan vi flytte os fra konstant brandslukning til varig balance. Her er fem indsigter, der gør op med myten om manglende viljestyrke.
 
 **1. Det handler aldrig om manglende viljestyrke**
 
@@ -96,9 +96,9 @@ I Kristian GG's madterapi bruges "sankning" (foraging) som en direkte metafor fo
 
 Denne aktive proces med at sanke – at vælge det væsentlige og lade resten ligge – er et værktøj til at skære "bullshit" fra og skabe en hverdag, hvor du ikke bare fylder på automatisk, men tager bevidst stilling til, hvad der skal have plads i dit liv.
 
-**5. TRÅD-princippet: *Din konkrete adgang til ro***
+**5. Adgangen til ro går gennem kroppen**
 
-For at skabe forandring, der holder, kræver det mere end bare indsigt; det kræver konkrete færdigheder. Kristian GG’s TRÅD-princip fungerer som det faglige fundament for at opbygge et stabilt nervesystem:
+For at skabe forandring, der holder, kræver det mere end indsigt; det kræver konkrete færdigheder. Fundamentet for et stabilt nervesystem er tryghed, relation, åndedræt og aktiv deltagelse:
 
 Her er åndedrættet det mest effektive redskab. Ved at få vejrtrækningen ud af brystet og ned i kroppen, genopretter du forbindelsen mellem hjerne og krop. Det er ikke bare afslapning; det er aktiv selvregulering.
 

@@ -38,7 +38,7 @@
     {{- else }}
     <div class="text-center py-16">
       <p class="text-text-muted text-lg mb-4">Blogindlæg kommer snart.</p>
-      <a href="/kontakt" class="btn-primary">Kontakt Kristian</a>
+      <a href="/kontakt/" class="btn-primary">Kontakt Kristian</a>
     </div>
     {{- end }}
   </div>
@@ -49,7 +49,7 @@
   <div class="container-width px-4 sm:px-6 text-center">
     <h2 class="text-2xl md:text-3xl font-bold text-white mb-4">Klar til at tage det første skridt?</h2>
     <p class="text-primary-light text-lg mb-8 max-w-2xl mx-auto">Book en gratis og uforpligtende telefonsamtale med Kristian.</p>
-    <a href="{{ $b.booking }}" target="_blank" rel="noopener" class="inline-block bg-white text-primary hover:bg-primary-light font-semibold px-8 py-4 rounded-lg transition-colors text-lg">Book gratis samtale</a>
+    <a href="{{ $b.phone_sms | safeURL }}" class="inline-block bg-white text-primary hover:bg-primary-light font-semibold px-8 py-4 rounded-lg transition-colors text-lg">Tag kontakt</a>
   </div>
 </section>
 {{ end }}

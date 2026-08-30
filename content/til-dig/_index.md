@@ -1,6 +1,6 @@
 ---
 title: "Terapi til dig – Privat psykoterapi i Odense & online"
-description: "Privat psykoterapi, naturterapi og nervesystemsregulering i Odense og på Fyn. Skræddersyet forløb til dig – i klinikken, hjemme eller online. Book gratis samtale."
+description: "Privat psykoterapi, naturterapi og nervesystemsregulering i Odense og på Fyn. Skræddersyet forløb til dig – i klinikken, hjemme eller online. Skriv eller ring."
 hero_title: "Terapi til dig"
 hero_subtitle: "Du fortjener at have det godt. Uanset om du kæmper med stress, angst, lavt selvværd eller bare ønsker at vokse som menneske – jeg er her."
 

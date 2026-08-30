@@ -1,5 +1,6 @@
 ---
 title: "Stop Stress Før Det Stopper Dig"
+description: "Stop Stress Før Det Stopper Dig — Praktisk stresshåndtering og reguleringsteknikker. Forløb hos Kristian GG, registreret psykoterapeut i Odense."
 tagline: "Praktisk stresshåndtering og reguleringsteknikker"
 jeg_hoerer_ofte: '"Jeg skal bare lige holde ud lidt endnu", "det går nok over" eller "jeg tager mig bare sammen."'
 open_question: "Men hvad gør du, når kroppen siger fra – og du ikke længere kan presse dig selv videre?"

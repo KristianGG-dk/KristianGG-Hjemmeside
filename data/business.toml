@@ -1,14 +1,32 @@
+# Autoritative kontaktoplysninger. Må ikke ændres, erstattes eller gættes.
+# Alt markup henter herfra — der skrives aldrig et telefonnummer eller en
+# mailadresse direkte ind i en skabelon eller en indholdsfil.
+
 name = "Kristian GG"
 image = "https://kristiangg.dk/images/kristian-hero.png"
-full_name = "Kristian G. G. Dansted – Reg. Psykoterapeut & Hypnoterapeut"
-phone = "+45 31 50 97 89"
-phone_display = "31 50 97 89"
+full_name = "Kristian G. G. Dansted – Reg. Psykoterapeut & Naturterapeut"
+
+# Telefon
+phone = "+45 31 50 97 89"          # til structured data (læsbar form)
+phone_display = "+45 31 50 97 89"  # som det vises på siden
+phone_tel = "tel:+4531509789"      # opkald
+phone_sms = "sms:+4531509789"      # SMS — ingen ?body=, da parameteren er
+                                   # inkompatibel mellem iOS og Android
+
+# E-mail
 email = "kontakt@kristiangg.dk"
+email_link = "mailto:kontakt@kristiangg.dk"
+
 price_range = "450–900 kr"
 opening_hours = "Man–Fre 09:00–17:00"
-booking = "https://system.easypractice.net/book/kristian-gg?service=286802"
+svartid = "Jeg svarer inden for 24 timer på hverdage."
+
 facebook = "https://www.facebook.com/Kristiangg.dk/"
 trustpilot = "https://dk.trustpilot.com/review/kristiangg.dk"
+# Faktisk score på profilen pr. 30. august 2026. Vises som almindelig tekst —
+# aldrig som aggregateRating-markup, jf. Googles retningslinjer.
+trustpilot_score = "4,5"
+trustpilot_antal = "14"
 
 [address]
 street = "Lumbyvej 11, indgang B"

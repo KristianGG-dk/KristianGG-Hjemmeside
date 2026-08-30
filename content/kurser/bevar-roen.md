@@ -1,5 +1,6 @@
 ---
 title: "Bevar Roen Når Verden Larmer"
+description: "Bevar Roen Når Verden Larmer — Mental robusthed i en urolig tid. Forløb hos Kristian GG, registreret psykoterapeut i Odense."
 tagline: "Mental robusthed i en urolig tid"
 jeg_hoerer_ofte: '"Jeg bliver påvirket af alt, der sker omkring mig", "jeg kan ikke lukke det ude" eller "det hele føles for meget."'
 open_question: "Men hvad gør du, når verden larmer – og kroppen ikke kan finde ro?"

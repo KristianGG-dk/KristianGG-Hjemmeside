@@ -1,0 +1,27 @@
+{{- /*
+  Viser samarbejdspartnere for den aktuelle side. Renderer INTET, når der ikke
+  er nogen. Ingen logovæg — se data/partnere.yaml for begrundelsen.
+*/ -}}
+{{- $sti := .Page.RelPermalink -}}
+{{- $valgte := slice -}}
+{{- range (or site.Data.partnere.poster slice) -}}
+  {{- if and .navn (in (or .sider slice) $sti) -}}{{- $valgte = $valgte | append . -}}{{- end -}}
+{{- end -}}
+{{- if $valgte }}
+<section class="section-padding" aria-labelledby="partnere-titel">
+  <div class="container-width">
+    <h2 id="partnere-titel" class="text-2xl font-semibold mb-6">{{ with .titel }}{{ . }}{{ else }}Samarbejdspartnere{{ end }}</h2>
+    <ul class="grid gap-5 sm:grid-cols-2 lg:grid-cols-3 list-none p-0">
+      {{- range $valgte }}
+      <li class="card flex gap-4 items-start">
+        {{- with .logo }}<img src="{{ . }}" alt="" width="48" height="48" loading="lazy" class="w-12 h-12 object-contain flex-none">{{ end }}
+        <div>
+          <p class="font-semibold text-skovbund">{{ if .link }}<a href="{{ .link }}" rel="noopener" class="hover:text-mos">{{ .navn }}</a>{{ else }}{{ .navn }}{{ end }}</p>
+          {{- with .beskrivelse }}<p class="text-sm text-tekst-daempet mt-1">{{ . }}</p>{{ end }}
+        </div>
+      </li>
+      {{- end }}
+    </ul>
+  </div>
+</section>
+{{- end }}
