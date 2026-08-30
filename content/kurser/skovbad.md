@@ -1,6 +1,6 @@
 ---
 layout: "skovbad"
-title: "Skovbad på Fyn – hvad det er, og hvad det ikke er"
+title: "Skovbad på Fyn – hvad det er og ikke er"
 description: "Skovbad på Fyn og i Odense med registreret psykoterapeut. Langsom, opmærksom tid mellem træerne — individuelt eller i lille gruppe. Ingen præstation, ingen udstyr."
 hero_title: "Skovbad"
 hero_subtitle: "Langsom, opmærksom tid mellem træerne. Ikke en gåtur, ikke en behandling — noget tredje."

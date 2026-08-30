@@ -1,5 +1,5 @@
 ---
-title: "Borgerforløb – Psykoterapi henvist af kommune på Fyn"
+title: "Individuelle borgerforløb på Fyn"
 description: "Individuelle borgerforløb og mestringsforløb for borgere på Fyn, henvist af kommunen. Registreret psykoterapeut i Odense med socialpædagogisk erfaring."
 hero_title: "Individuelle borgerforløb"
 hero_subtitle: "Individuelle og gruppebaserede mestringsforløb for borgere med behov for målrettet støtte — som selvbetaler eller efter kommunal aftale, på Fyn."

@@ -1,5 +1,5 @@
 ---
-title: "Til virksomheder – Workshops, foredrag & trivsel i Odense"
+title: "Til virksomheder – workshops, foredrag og trivsel"
 description: "Workshops, foredrag og trivselsprogrammer til virksomheder på Fyn og i hele Danmark. Praksisnær viden om stress, nervesystemet og mental sundhed. Kontakt for tilbud."
 hero_title: "Til virksomheder"
 hero_subtitle: "Stressede medarbejdere koster dyrt – i trivsel, sygefravær og performance. Jeg hjælper jer med praksisnær viden og konkrete redskaber der virker."

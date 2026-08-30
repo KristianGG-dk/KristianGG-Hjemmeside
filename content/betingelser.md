@@ -1,5 +1,5 @@
 ---
-title: "Handels- og samarbejdsbetingelser – Kristian GG"
+title: "Handels- og samarbejdsbetingelser"
 description: "Handels- og samarbejdsbetingelser for ydelser leveret af Kristian GG til private, virksomheder og kommuner."
 hero_title: "Handels- og samarbejdsbetingelser"
 hero_subtitle: "Gælder for alle ydelser leveret af Kristian GG til private kunder og erhvervskunder, herunder kommuner, institutioner og virksomheder."

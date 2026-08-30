@@ -1,5 +1,5 @@
 ---
-title: "Til kommuner – Pæd. særforanstaltninger, vikardækning & borgerforløb på Fyn"
+title: "Til kommuner – særforanstaltninger og borgerforløb"
 description: "Pædagogiske særforanstaltninger, faglig vikardækning og individuelle borgerforløb til kommuner på Fyn og i Syddanmark. Reg. psykoterapeut med erfaring fra botilbud og asylcenter."
 hero_title: "Til kommuner"
 hero_subtitle: "Specialiseret pædagogisk og terapeutisk bistand til kommunale institutioner og borgere på Fyn og i Syddanmark."

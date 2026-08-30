@@ -1,5 +1,5 @@
 ---
-title: "Faglig vikardækning – Psykoterapeut til sociale institutioner på Fyn"
+title: "Faglig vikardækning til sociale institutioner på Fyn"
 description: "Kvalificeret faglig vikardækning til botilbud og sociale institutioner på Fyn. Reg. psykoterapeut med pædagogisk erfaring. Fleksibel og professionel løsning."
 hero_title: "Faglig vikardækning"
 hero_subtitle: "Kvalificeret og fleksibel vikardækning til sociale institutioner og botilbud – med den ekstra dimension at vikaren er reg. psykoterapeut med pædagogisk erfaring."

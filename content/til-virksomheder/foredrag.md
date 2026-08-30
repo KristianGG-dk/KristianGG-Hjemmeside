@@ -1,5 +1,5 @@
 ---
-title: "Foredrag om stress & overtænkning – Virksomheder i Odense & Fyn"
+title: "Foredrag om stress og nervesystemet – Odense og Fyn"
 description: "Engagerende foredrag om nervesystemet, overtænkning og mental robusthed til virksomheder. Certificeret psykoterapeut og foredragsholder. Kontakt for tilbud."
 hero_title: "Foredrag til virksomheder"
 hero_subtitle: "Faglig viden der inspirerer, underholder og giver dine medarbejdere konkrete redskaber – leveret af en certificeret psykoterapeut med personlig erfaring."

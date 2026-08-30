@@ -1,5 +1,5 @@
 ---
-title: "Nervesystemet & ro – Åndedrætsterapi og stressregulering i Odense"
+title: "Stressbehandling og nervesystem i Odense"
 description: "Lær at regulere dit nervesystem med åndedrætsterapi, mindfulness og somatiske teknikker. Effektivt mod stress, angst og søvnproblemer i Odense og Fyn."
 hero_title: "Nervesystemet & ro"
 hero_subtitle: "Stress, angst og tankemylder er ofte tegn på et overaktiveret nervesystem. Jeg hjælper dig med at finde tilbage til ro – gennem kroppen, ikke mod den."

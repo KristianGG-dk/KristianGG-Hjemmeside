@@ -1,5 +1,5 @@
 ---
-title: "Medarbejdertrivsel – Stresshåndtering & mental sundhed til virksomheder"
+title: "Mental sundhed på arbejdspladsen – Odense og Fyn"
 description: "Mental sundhed på arbejdspladsen. Trivselsforløb til virksomheder i Odense og på Fyn med registreret psykoterapeut — individuelt og for grupper."
 hero_title: "Medarbejdertrivsel"
 hero_subtitle: "Stress koster den gennemsnitlige danske virksomhed op mod 37.000 kr. pr. sygemeldt medarbejder. En investering i trivsel betaler sig hurtigt."

@@ -1,5 +1,5 @@
 ---
-title: "Pæd. særforanstaltninger – Ungestøtte & botilbud på Fyn"
+title: "Pædagogiske særforanstaltninger og ungestøtte på Fyn"
 description: "Specialiseret pædagogisk støtte og særforanstaltninger til udsatte unge og borgere med komplekse behov. Erfaring fra botilbud og asylcenter. Fyn og Syddanmark."
 hero_title: "Vikardækning til pædagogiske særforanstaltninger"
 hero_subtitle: "Specialiseret og stabil vikarbistand til udsatte unge og borgere med komplekse behov – med afsæt i solid erfaring fra botilbud og asylcenter kombineret med terapeutisk baggrund."
