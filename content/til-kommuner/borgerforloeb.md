@@ -1,8 +1,8 @@
 ---
 title: "Borgerforløb – Psykoterapi henvist af kommune på Fyn"
-description: "Individuelle terapeutiske forløb for borgere henvist af kommunen. Reg. psykoterapeut i Odense tilbyder støtte til borgere med stress, angst og sociale udfordringer på Fyn."
-hero_title: "Terapeutiske enkelt- og gruppeforløb"
-hero_subtitle: "Professionelle forløb for borgere med behov for målrettet støtte – individuelt eller i gruppe, som selvbetaler eller via kommunal aftale."
+description: "Individuelle borgerforløb og mestringsforløb for borgere på Fyn, henvist af kommunen. Registreret psykoterapeut i Odense med socialpædagogisk erfaring."
+hero_title: "Individuelle borgerforløb"
+hero_subtitle: "Individuelle og gruppebaserede mestringsforløb for borgere med behov for målrettet støtte — som selvbetaler eller efter kommunal aftale, på Fyn."
 service_name: "Borgerforløb – kommunal henvisning"
 service_desc: "Individuelle terapeutiske forløb for borgere henvist af kommunen. Reg. psykoterapeut i Odense."
 

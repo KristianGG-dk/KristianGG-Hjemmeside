@@ -251,6 +251,77 @@
   to = "/til-virksomheder/workshops/"
   status = 301
 
+
+# ── Gamle www-adresser fundet i Search Console (404 uden regel) ───────────────
+# Alle har dokumenterede eksponeringer. Destinationerne er entydige ud fra
+# slug og sidens faktiske emne — ingen af dem er gættet.
+
+# Search Console: 404, crawlet 12. aug. 2026
+[[redirects]]
+  from = "/home/"
+  to = "/"
+  status = 301
+
+[[redirects]]
+  from = "/home"
+  to = "/"
+  status = 301
+
+# Search Console: 9 eksponeringer, position 4,9
+[[redirects]]
+  from = "/prisliste/"
+  to = "/priser/"
+  status = 301
+
+[[redirects]]
+  from = "/prisliste"
+  to = "/priser/"
+  status = 301
+
+# Search Console: 12 eksponeringer, position 6,8
+[[redirects]]
+  from = "/om-os/"
+  to = "/om/"
+  status = 301
+
+[[redirects]]
+  from = "/om-os"
+  to = "/om/"
+  status = 301
+
+# Search Console: 9 eksponeringer, position 4,8
+[[redirects]]
+  from = "/natur-terapi/"
+  to = "/til-dig/naturterapi/"
+  status = 301
+
+[[redirects]]
+  from = "/natur-terapi"
+  to = "/til-dig/naturterapi/"
+  status = 301
+
+# Search Console: 1 eksponering
+[[redirects]]
+  from = "/kurser-og-uddannelse/"
+  to = "/kurser/"
+  status = 301
+
+[[redirects]]
+  from = "/kurser-og-uddannelse"
+  to = "/kurser/"
+  status = 301
+
+# Search Console: 7 eksponeringer, position 6,0 — siden hedder "Nervesystemet & ro – Åndedrætsterapi og stressregulering"
+[[redirects]]
+  from = "/stress/"
+  to = "/til-dig/nervesystemet/"
+  status = 301
+
+[[redirects]]
+  from = "/stress"
+  to = "/til-dig/nervesystemet/"
+  status = 301
+
 # ─────────────────────────────────────────────────────────────────────────────
 # AFVENTER BESLUTNING
 # Disse tre gamle adresser peger på destinationer, der ikke findes (404).
@@ -260,6 +331,14 @@
 #   /hypnose-stammen                             emnet stammen findes ikke i indholdet
 #   /stoette-til-foraeldre-naar-boern-anbringes  emnet anbringelse findes ikke i indholdet
 #   /udfordringen-opstaar                        emnet kan ikke fastslås
+#
+# Fire yderligere gamle adresser fra Search Console giver 404 og har ingen
+# entydig efterfølger. De er bevidst IKKE omdirigeret:
+#   /tjenester/             ydelsesoversigt — kunne være /til-dig/ eller /kurser/
+#   /udtalelser/            udtalelser — der findes ingen udtalelsesside
+#   /misbrug/               misbrug — emnet findes ikke i indholdet
+#   /unge-stotte/           ungestøtte — emnet findes ikke i indholdet
+#                           (samme emne som /stoette-til-foraeldre-naar-boern-anbringes)
 # ─────────────────────────────────────────────────────────────────────────────
 
 [[redirects]]
