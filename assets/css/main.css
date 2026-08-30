@@ -85,10 +85,10 @@
            text-tekst-daempet p-6 overflow-hidden;
   }
   .billedplads-note {
-    @apply text-xs sm:text-sm max-w-xs leading-snug;
+    @apply text-[0.8125rem] sm:text-sm max-w-xs leading-snug;
   }
   .billedplads-maerke {
-    @apply text-[10px] uppercase tracking-[0.14em] font-semibold text-mos mb-2;
+    @apply text-[0.75rem] uppercase tracking-[0.14em] font-semibold text-mos mb-2;
   }
 
   /* Læsbar brødtekstbredde */
@@ -100,6 +100,6 @@
   .prosa a { @apply text-mos underline underline-offset-2 hover:text-mos-dyb; }
 
   .etikette {
-    @apply text-xs uppercase tracking-[0.14em] font-semibold text-mos;
+    @apply text-[0.8125rem] uppercase tracking-[0.14em] font-semibold text-mos;
   }
 }
