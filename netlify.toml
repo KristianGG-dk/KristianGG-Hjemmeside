@@ -7,237 +7,260 @@
   NODE_VERSION = "24"
   NETLIFY_NEXT_PLUGIN_SKIP = "true"
 
-# ── Old kristiangg.dk pages → new structure (301 preserves SEO equity) ────────
+# ── Gamle kristiangg.dk-adresser → nuværende struktur (301 bevarer søgeværdi) ──
+# Alle destinationer peger direkte på den kanoniske URL med afsluttende
+# skråstreg, så der ikke opstår en kæde på to hop.
+
 [[redirects]]
   from = "/hypnose-soevnproblemer"
-  to = "/kurser/sov-bedre"
+  to = "/kurser/sov-bedre/"
   status = 301
 
 [[redirects]]
   from = "/hypnose-soevnproblemer/"
-  to = "/kurser/sov-bedre"
+  to = "/kurser/sov-bedre/"
   status = 301
 
 [[redirects]]
   from = "/terapihund"
-  to = "/til-dig/nervesystemet"
+  to = "/til-dig/nervesystemet/"
   status = 301
 
 [[redirects]]
   from = "/terapihund/"
-  to = "/til-dig/nervesystemet"
+  to = "/til-dig/nervesystemet/"
   status = 301
 
 [[redirects]]
   from = "/aandedraetsterapi"
-  to = "/aandedraet"
+  to = "/til-dig/nervesystemet/"
   status = 301
 
 [[redirects]]
   from = "/aandedraetsterapi/"
-  to = "/aandedraet"
+  to = "/til-dig/nervesystemet/"
   status = 301
 
 [[redirects]]
   from = "/psykoterapi"
-  to = "/til-dig/psykoterapi"
+  to = "/til-dig/psykoterapi/"
   status = 301
 
 [[redirects]]
   from = "/psykoterapi/"
-  to = "/til-dig/psykoterapi"
+  to = "/til-dig/psykoterapi/"
   status = 301
 
 [[redirects]]
   from = "/hypnosen"
-  to = "/til-dig/psykoterapi"
+  to = "/til-dig/psykoterapi/"
   status = 301
 
 [[redirects]]
   from = "/hypnosen/"
-  to = "/til-dig/psykoterapi"
+  to = "/til-dig/psykoterapi/"
   status = 301
 
 [[redirects]]
   from = "/nlp"
-  to = "/til-dig/psykoterapi"
+  to = "/til-dig/psykoterapi/"
   status = 301
 
 [[redirects]]
   from = "/nlp/"
-  to = "/til-dig/psykoterapi"
+  to = "/til-dig/psykoterapi/"
   status = 301
 
 [[redirects]]
   from = "/terapi"
-  to = "/til-dig/psykoterapi"
+  to = "/til-dig/psykoterapi/"
   status = 301
 
 [[redirects]]
   from = "/terapi/"
-  to = "/til-dig/psykoterapi"
+  to = "/til-dig/psykoterapi/"
   status = 301
 
 [[redirects]]
   from = "/hypnoseshow"
-  to = "/til-virksomheder/foredrag"
+  to = "/til-virksomheder/foredrag/"
   status = 301
 
 [[redirects]]
   from = "/hypnoseshow/"
-  to = "/til-virksomheder/foredrag"
+  to = "/til-virksomheder/foredrag/"
   status = 301
 
 [[redirects]]
   from = "/terapi-i-eget-hjem"
-  to = "/til-dig/psykoterapi"
+  to = "/til-dig/psykoterapi/"
   status = 301
 
 [[redirects]]
   from = "/terapi-i-eget-hjem/"
-  to = "/til-dig/psykoterapi"
+  to = "/til-dig/psykoterapi/"
   status = 301
 
 [[redirects]]
   from = "/hypnose-stress-odense"
-  to = "/til-dig/nervesystemet"
+  to = "/til-dig/nervesystemet/"
   status = 301
 
 [[redirects]]
   from = "/hypnose-stress-odense/"
-  to = "/til-dig/nervesystemet"
+  to = "/til-dig/nervesystemet/"
   status = 301
 
 [[redirects]]
   from = "/hypnose-angst-boern"
-  to = "/til-dig/psykoterapi"
+  to = "/til-dig/psykoterapi/"
   status = 301
 
 [[redirects]]
   from = "/hypnose-angst-boern/"
-  to = "/til-dig/psykoterapi"
+  to = "/til-dig/psykoterapi/"
   status = 301
 
 [[redirects]]
   from = "/boern-og-hypnose"
-  to = "/til-dig/psykoterapi"
+  to = "/til-dig/psykoterapi/"
   status = 301
 
 [[redirects]]
   from = "/boern-og-hypnose/"
-  to = "/til-dig/psykoterapi"
+  to = "/til-dig/psykoterapi/"
   status = 301
 
 [[redirects]]
   from = "/spirituel-hypnoterapi"
-  to = "/til-dig/psykoterapi"
+  to = "/til-dig/psykoterapi/"
   status = 301
 
 [[redirects]]
   from = "/spirituel-hypnoterapi/"
-  to = "/til-dig/psykoterapi"
+  to = "/til-dig/psykoterapi/"
   status = 301
 
 [[redirects]]
   from = "/hypnose-depression"
-  to = "/til-dig/psykoterapi"
+  to = "/til-dig/psykoterapi/"
   status = 301
 
 [[redirects]]
   from = "/hypnose-depression/"
-  to = "/til-dig/psykoterapi"
+  to = "/til-dig/psykoterapi/"
   status = 301
 
 [[redirects]]
   from = "/klinikken"
-  to = "/kontakt"
+  to = "/kontakt/"
   status = 301
 
 [[redirects]]
   from = "/klinikken/"
-  to = "/kontakt"
+  to = "/kontakt/"
   status = 301
 
-# ── fynspsykoterapi.dk pages (if/when domain is redirected here) ──────────────
 [[redirects]]
   from = "/neuro-lingvistisk-programmering"
-  to = "/til-dig/psykoterapi"
+  to = "/til-dig/psykoterapi/"
   status = 301
 
 [[redirects]]
   from = "/online-terapi"
-  to = "/til-dig/psykoterapi"
+  to = "/til-dig/psykoterapi/"
   status = 301
 
 [[redirects]]
   from = "/vaerdigrundlag"
-  to = "/om"
+  to = "/om/"
   status = 301
 
 [[redirects]]
   from = "/om-mig"
-  to = "/om"
+  to = "/om/"
   status = 301
 
 [[redirects]]
   from = "/stress-coaching"
-  to = "/til-dig/nervesystemet"
+  to = "/til-dig/nervesystemet/"
   status = 301
 
 [[redirects]]
   from = "/naturterapi"
-  to = "/til-dig/naturterapi"
+  to = "/til-dig/naturterapi/"
   status = 301
 
 [[redirects]]
   from = "/betingelser-og-vilkar"
-  to = "/betingelser"
+  to = "/betingelser/"
   status = 301
 
 [[redirects]]
   from = "/betingelser-og-vilkar/"
-  to = "/betingelser"
+  to = "/betingelser/"
   status = 301
 
 [[redirects]]
   from = "/databeskyttelse"
-  to = "/betingelser"
+  to = "/betingelser/"
   status = 301
 
 [[redirects]]
   from = "/databeskyttelse/"
-  to = "/betingelser"
+  to = "/betingelser/"
   status = 301
 
 [[redirects]]
   from = "/faq"
-  to = "/til-dig/psykoterapi"
+  to = "/til-dig/psykoterapi/"
   status = 301
 
 [[redirects]]
   from = "/faq/"
-  to = "/til-dig/psykoterapi"
+  to = "/til-dig/psykoterapi/"
   status = 301
 
 [[redirects]]
   from = "/angst"
-  to = "/nervesystem"
+  to = "/til-dig/psykoterapi/"
   status = 301
 
 [[redirects]]
   from = "/angst/"
-  to = "/nervesystem"
+  to = "/til-dig/psykoterapi/"
   status = 301
 
 [[redirects]]
   from = "/hypnose-fobi"
-  to = "/hypnose"
+  to = "/til-dig/psykoterapi/"
   status = 301
 
 [[redirects]]
   from = "/hypnose-fobi/"
-  to = "/hypnose"
+  to = "/til-dig/psykoterapi/"
   status = 301
+
+[[redirects]]
+  from = "/trad-workshop"
+  to = "/til-virksomheder/workshops/"
+  status = 301
+
+[[redirects]]
+  from = "/trad-workshop/"
+  to = "/til-virksomheder/workshops/"
+  status = 301
+
+# ─────────────────────────────────────────────────────────────────────────────
+# AFVENTER BESLUTNING
+# Disse tre gamle adresser peger på destinationer, der ikke findes (404).
+# Der er ingen indholdsmæssig efterfølger på hjemmesiden, og de er derfor
+# bevidst IKKE omdirigeret til den nærmeste side. Reglerne står uændret,
+# indtil der er truffet beslutning om hver enkelt.
+#   /hypnose-stammen                             emnet stammen findes ikke i indholdet
+#   /stoette-til-foraeldre-naar-boern-anbringes  emnet anbringelse findes ikke i indholdet
+#   /udfordringen-opstaar                        emnet kan ikke fastslås
+# ─────────────────────────────────────────────────────────────────────────────
 
 [[redirects]]
   from = "/hypnose-stammen"
@@ -247,16 +270,6 @@
 [[redirects]]
   from = "/hypnose-stammen/"
   to = "/hypnose"
-  status = 301
-
-[[redirects]]
-  from = "/trad-workshop"
-  to = "/workshops"
-  status = 301
-
-[[redirects]]
-  from = "/trad-workshop/"
-  to = "/workshops"
   status = 301
 
 [[redirects]]
@@ -277,37 +290,6 @@
 [[redirects]]
   from = "/udfordringen-opstaar/"
   to = "/nervesystem"
-  status = 301
-
-# ── Trailing-slash normalisation (new pages) ─────────────────────────────────
-[[redirects]]
-  from = "/priser/"
-  to = "/priser"
-  status = 301
-
-[[redirects]]
-  from = "/kontakt/"
-  to = "/kontakt"
-  status = 301
-
-[[redirects]]
-  from = "/om/"
-  to = "/om"
-  status = 301
-
-[[redirects]]
-  from = "/til-dig/"
-  to = "/til-dig"
-  status = 301
-
-[[redirects]]
-  from = "/til-virksomheder/"
-  to = "/til-virksomheder"
-  status = 301
-
-[[redirects]]
-  from = "/til-kommuner/"
-  to = "/til-kommuner"
   status = 301
 
 # ── Security headers ──────────────────────────────────────────────────────────
