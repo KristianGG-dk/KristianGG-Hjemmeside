@@ -3,8 +3,8 @@
 {
   "@context": "https://schema.org",
   "@type": "{{ .Params.schema_type | default "BlogPosting" }}",
-  "headline": {{ .Title | jsonify }},
-  "description": {{ .Description | jsonify }},
+  "headline": {{ .Title | jsonify | safeJS }},
+  "description": {{ .Description | jsonify | safeJS }},
   "datePublished": "{{ .Date.Format "2006-01-02" }}",
   "dateModified": "{{ (.Params.updated | default .Date).Format "2006-01-02" }}",
   "author": {

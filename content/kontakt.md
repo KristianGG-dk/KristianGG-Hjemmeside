@@ -3,6 +3,8 @@ title: "Kontakt – Kristian GG, psykoterapeut i Odense"
 description: "Skriv en SMS eller en mail til Kristian G. G. Dansted, registreret psykoterapeut i Odense. Klinik på Lumbyvej 11. Svar inden for 24 timer på hverdage."
 hero_title: "Tag kontakt"
 hero_subtitle: "Skriv en SMS eller en mail. Du behøver ikke forklare dig ordentligt — bare skriv, at du gerne vil tale sammen."
+afslut_billede: "solnedgang-kyst"
+afslut_alt: "Solnedgang over kysten med en gren i silhuet i forgrunden"
 faq:
   - q: "Hvor hurtigt får jeg svar?"
     a: "Inden for 24 timer på hverdage. Skriver du i weekenden, hører du fra mig mandag."

@@ -1,5 +1,7 @@
 ---
 title: "Psykoterapi i Odense – registreret psykoterapeut"
+hero_billede: "skovsti"
+hero_alt: "Sti mellem høje traeer med udsigt til vand i det fjerne"
 description: "Registreret psykoterapeut i Odense. Samtaleterapi i klinikken på Lumbyvej eller online, når du står et sted, du ikke kommer videre fra ved egen kraft."
 hero_title: "Psykoterapi"
 hero_subtitle: "Samtaler i klinikken på Lumbyvej — eller online. Der hvor det, du står i, kan få plads, ord og en anden retning."
@@ -22,8 +24,8 @@ faq:
     a: "Du fortæller, hvad der bringer dig. Jeg spørger ind, og vi finder sammen ud af, hvad du gerne vil have ud af at gå her. Du behøver ikke have det formuleret på forhånd — det er ofte selve arbejdet at finde ordene."
   - q: "Hvor mange gange skal jeg komme?"
     a: "Det varierer meget. Nogle har brug for tre-fire samtaler om noget afgrænset. Andre går i et længere forløb. Vi aftaler os frem undervejs, og du er aldrig bundet."
-  - q: "Er du psykolog?"
-    a: "Nej. Jeg er registreret psykoterapeut under Foreningen af Danske Psykoterapeuter, hvilket betyder, at jeg er underlagt deres uddannelseskrav og etiske regler. Er det psykologfaglig udredning eller behandling, du har brug for, siger jeg det ærligt og henviser videre."
+  - q: "Hvad er forskellen på en psykolog og en psykoterapeut?"
+    a: "En psykolog har en universitetsuddannelse i psykologi og er en beskyttet titel. Psykoterapeut er ikke en beskyttet titel i Danmark, men registrerede psykoterapeuter er underlagt uddannelseskrav og etiske regler gennem deres forening. Jeg er registreret hos Foreningen af Danske Psykoterapeuter. Er det psykologfaglig udredning eller behandling, du har brug for, siger jeg det ærligt og henviser videre."
   - q: "Har du tavshedspligt?"
     a: "Ja. Det, du fortæller, bliver i rummet."
   - q: "Kan vi mødes udenfor i stedet?"
@@ -35,24 +37,40 @@ cta_text: "Skriv en SMS eller en mail, så finder vi ud af, om jeg er den rigtig
 
 Psykoterapi er samtaler med et formål. Ikke råd, ikke en teknik der bliver lagt ned over dig, men et rum hvor du kan tænke højt sammen med en, der ikke skal noget med dig.
 
-Det, der virker, er sjældent den enkelte metode. Det er, om du kan slappe nok af til at sige det, du egentlig kom for at sige. Derfor bruger jeg tid på tryghed først — og på relationen mellem os, som er en del af behandlingen og ikke bare vejen til den.
+Jeg bruger tid på tryghed først. Erfaringsmæssigt kommer det væsentlige sjældent frem, før man er nogenlunde tilpas i rummet, og relationen mellem os er derfor en del af arbejdet — ikke bare vejen hen til det.
 
 ## Hvordan jeg arbejder
 
-Jeg møder dig som et helt menneske, ikke som et problem der skal løses. Vi begynder ofte i kroppen, fordi stress, angst og uro sidder der, længe før de bliver til tanker vi kan tale om.
+Jeg møder dig som et helt menneske, ikke som et problem der skal løses. Vi begynder ofte med, hvordan det opleves i kroppen. For nogle er det en lettere indgang end at skulle forklare sig.
 
 Metoden skal passe til mennesket — ikke mennesket til metoden. Jeg har uddannelser i flere retninger, blandt andet hypnoterapi, NLP og kognitiv adfærdsterapi, og trækker på det, der giver mening for netop dig. Men det er ikke metoderne, der bærer arbejdet. Det er, at der er nogen, der lytter ordentligt efter.
 
-## Hypnose som redskab
+## Hypnose og andre redskaber
 
-Hypnose fylder mindre på denne hjemmeside, end den har gjort. Det er et bevidst valg: den er ét redskab blandt flere, ikke det, jeg er.
+Jeg er uddannet Master Neuro Hypnoterapeut, og hypnose er ét af de redskaber, jeg kan tage i brug, når det giver mening for mennesket og for det, vi arbejder med. Det samme gælder NLP og kognitiv adfærdsterapi.
 
-Men den er der stadig, og den kan noget. Jeg er uddannet Master Neuro Hypnoterapeut, og for nogle mennesker — særligt ved fobier, søvn og fastlåste vaner — er det den korteste vej til en forandring, der ellers har siddet fast i årevis. Det er ikke show, og du mister ikke kontrollen. Du er vågen hele vejen og kan altid stoppe.
+Hypnose er ikke show, og du mister ikke kontrollen. Du er vågen hele vejen, du kan tale, og du kan stoppe når som helst. Vi bruger det kun, hvis du selv har lyst til at prøve det.
 
-Er det hypnose, du kommer efter, skal du være velkommen. Er det ikke, skal du ikke have det.
+Nogle kommer specifikt for at arbejde med hypnose. Andre har ingen interesse i det, og så gør vi noget andet. Redskabet vælges efter mennesket og problemstillingen — ikke omvendt.
+
+## Metoder jeg trækker på
+
+Det er ikke metoderne, der bærer arbejdet, men de skal nævnes, så du ved hvad jeg kan tage i brug:
+
+**Samtaleterapi** er grundformen. Det meste af tiden er det dét, vi laver.
+
+**Hypnoterapi** kan bruges, hvor noget sidder fast i vaner eller reaktioner, og hvor det har vist sig svært at tale sig ud af. Jeg er uddannet Master Neuro Hypnoterapeut.
+
+**NLP** handler om at få øje på de mønstre i sprog og tanke, man kører i uden at opdage det.
+
+**KAT** — kognitiv adfærdsterapi — er nyttig, når det giver mening at arbejde struktureret med konkrete tanker og handlinger.
+
+**Åndedrætsterapi** bruger vejrtrækningen som indgang, når kroppen er et lettere sted at begynde end sproget.
+
+**Naturterapi** er en selvstændig arbejdsform med sin egen fremgangsmåde. Den beskrives på [sin egen side](/til-dig/naturterapi/).
 
 ## Hvor og hvordan
 
 Samtalerne foregår i klinikken på Lumbyvej 11 i Odense. Vi kan også mødes online, hvis afstanden eller hverdagen gør det lettere — det fungerer bedre, end mange tror.
 
-Og vi kan gå udenfor. For en del mennesker er det nemmere at tale om det svære, når man går ved siden af hinanden i stedet for at sidde over for hinanden.
+Og vi kan arbejde udenfor. Naturterapi er en selvstændig arbejdsform med sin egen fremgangsmåde — læs mere om [naturterapi](/til-dig/naturterapi/), hvis det lyder som noget for dig.

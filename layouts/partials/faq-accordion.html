@@ -1,17 +1,17 @@
 {{- with .Params.faq -}}
 <div class="space-y-3" data-faq>
   {{- range . -}}
-  <div class="border border-gray-200 rounded-xl overflow-hidden">
+  <div class="border border-lav/50 rounded-xl overflow-hidden">
     <button
-      class="w-full flex items-center justify-between px-5 py-4 text-left font-semibold text-text-dark hover:bg-gray-50 transition-colors"
+      class="w-full flex items-center justify-between px-5 py-4 text-left font-semibold text-skovbund hover:bg-birk transition-colors"
       aria-expanded="false"
       data-faq-trigger>
       <span>{{ .q }}</span>
-      <svg class="w-5 h-5 text-primary flex-shrink-0 transition-transform" data-faq-arrow fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+      <svg class="w-5 h-5 text-mos flex-shrink-0 transition-transform" data-faq-arrow fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
       </svg>
     </button>
-    <div class="hidden px-5 pb-4 text-text-muted text-sm leading-relaxed" data-faq-panel>
+    <div class="hidden px-5 pb-4 text-tekst-daempet text-sm leading-relaxed" data-faq-panel>
       {{ .a }}
     </div>
   </div>

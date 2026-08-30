@@ -8,13 +8,15 @@
   <div class="container-width px-4 sm:px-6 py-14 sm:py-20 lg:py-24">
     <div class="grid lg:grid-cols-2 gap-10 lg:gap-14 items-center">
       <div>
-        <p class="etikette mb-4">Reg. psykoterapeut (FaDP) · Odense og Fyn</p>
+        <p class="etikette mb-4">{{ $p.hero_etikette }}</p>
         <h1 class="text-4xl sm:text-5xl lg:text-6xl font-semibold leading-[1.05] tracking-tight">{{ $p.hero_titel }}</h1>
         <p class="prosa mt-6 text-lg">{{ $p.hero_tekst }}</p>
         {{ partial "kontakt-knapper.html" (dict "business" $b "klasse" "mt-8") }}
       </div>
       <div>
-        {{ partial "billedplads.html" (dict "motiv" $p.hero_foto "hoejde" "h-72 sm:h-96 lg:h-[28rem]") }}
+        {{ partial "medie.html" (dict "navn" $p.hero_billede "alt" $p.hero_alt "motiv" $p.hero_foto
+             "forhold" 0.75 "bredder" (slice 480 720 960) "prioritet" true
+             "sizes" "(min-width: 1024px) 46vw, 92vw" "hoejde" "h-72 sm:h-96") }}
       </div>
     </div>
   </div>
@@ -29,7 +31,9 @@
     <ul class="grid gap-6 md:grid-cols-3 mt-10 list-none p-0">
       {{- range $p.omraader }}
       <li class="card flex flex-col p-0 overflow-hidden">
-        {{ partial "billedplads.html" (dict "motiv" .foto "hoejde" "h-44" "klasse" "rounded-none border-0 border-b border-dashed") }}
+        {{ partial "medie.html" (dict "navn" .billede "alt" .alt "motiv" .foto
+             "forhold" 1.5 "bredder" (slice 420 640 860) "sizes" "(min-width: 768px) 32vw, 92vw"
+             "klasse" "rounded-none" "hoejde" "h-44") }}
         <div class="p-6 flex flex-col flex-1">
           <h3 class="text-xl font-semibold">{{ .titel }}</h3>
           <p class="text-[0.975rem] leading-relaxed text-tekst-daempet mt-2 flex-1">{{ .kort }}</p>
@@ -47,7 +51,8 @@
 {{/* ── Billedbånd ───────────────────────────────────────────────────────── */}}
 <section aria-hidden="true" class="px-4 sm:px-6">
   <div class="container-width">
-    {{ partial "billedplads.html" (dict "motiv" $p.baand_foto "hoejde" "h-52 sm:h-64 lg:h-80") }}
+    {{ partial "medie.html" (dict "navn" $p.baand_billede "alt" $p.baand_alt "motiv" $p.baand_foto
+         "forhold" 2.333 "bredder" (slice 900 1350 1800) "sizes" "94vw" "hoejde" "h-52 sm:h-64 lg:h-80") }}
   </div>
 </section>
 
@@ -71,7 +76,8 @@
 <section class="section-padding bg-birk" aria-labelledby="om">
   <div class="container-width grid lg:grid-cols-2 gap-10 lg:gap-14 items-center">
     <div class="order-2 lg:order-1">
-      {{ partial "billedplads.html" (dict "motiv" $p.om_foto "hoejde" "h-72 sm:h-96") }}
+      {{ partial "medie.html" (dict "navn" $p.om_billede "alt" $p.om_alt "motiv" $p.om_foto
+           "forhold" 0.8 "bredder" (slice 420 640 860) "sizes" "(min-width: 1024px) 46vw, 92vw" "hoejde" "h-72 sm:h-96") }}
     </div>
     <div class="order-1 lg:order-2">
       <h2 id="om" class="text-3xl sm:text-4xl font-semibold">{{ $p.om_titel }}</h2>
@@ -115,6 +121,14 @@
       <p class="mt-4 text-birk leading-relaxed text-lg">{{ $p.kontakt_tekst }}</p>
       {{ partial "kontakt-knapper.html" (dict "business" $b "variant" "lys" "klasse" "mt-8") }}
       <p class="mt-6 text-sm text-lav">{{ $b.svartid }} {{ $b.opening_hours }}.</p>
+    </div>
+    {{- with $p.kontakt_billede }}
+    <div class="mt-12">
+      {{ partial "billede.html" (dict "navn" . "alt" $p.kontakt_alt "forhold" 1.777
+         "bredder" (slice 640 960 1280) "sizes" "94vw") }}
+    </div>
+    {{- end }}
+    <div class="hidden">
     </div>
   </div>
 </section>

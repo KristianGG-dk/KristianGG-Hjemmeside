@@ -18,7 +18,9 @@
         <p class="prosa mt-5 text-lg">{{ $p.hero_subtitle }}</p>
         {{ partial "kontakt-knapper.html" (dict "business" $b "klasse" "mt-8") }}
       </div>
-      <div>{{ partial "billedplads.html" (dict "motiv" "Lys der falder ned gennem kronerne, ingen mennesker" "hoejde" "h-72 sm:h-96") }}</div>
+      <div>{{ partial "medie.html" (dict "navn" $p.hero_billede "alt" $p.hero_alt
+        "motiv" "Lys der falder ned gennem kronerne, ingen mennesker" "forhold" 1.5
+        "bredder" (slice 560 840 1200) "sizes" "(min-width: 1024px) 46vw, 92vw" "prioritet" true "hoejde" "h-72 sm:h-96") }}</div>
     </div>
   </div>
 </section>
@@ -40,7 +42,9 @@
 </section>
 
 <section class="px-4 sm:px-6">
-  <div class="container-width">{{ partial "billedplads.html" (dict "motiv" "En hånd der rører ved bark eller blad, nærbillede" "hoejde" "h-52 sm:h-72") }}</div>
+  <div class="container-width">{{ partial "medie.html" (dict "navn" $p.detalje_billede "alt" $p.detalje_alt
+     "motiv" "En hånd der rører ved bark eller blad, nærbillede" "forhold" 1.333
+     "bredder" (slice 420 640 860) "sizes" "94vw" "hoejde" "h-52 sm:h-72") }}</div>
 </section>
 
 {{- with $p.faq }}

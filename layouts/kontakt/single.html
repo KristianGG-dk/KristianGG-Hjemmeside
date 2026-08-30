@@ -57,6 +57,13 @@
   </div>
 </section>
 
+{{- with $p.afslut_billede }}
+<section class="px-4 sm:px-6 pb-4">
+  <div class="container-width">{{ partial "billede.html" (dict "navn" . "alt" $p.afslut_alt
+     "forhold" 1.777 "bredder" (slice 640 960 1280) "sizes" "94vw") }}</div>
+</section>
+{{- end }}
+
 {{- with $p.faq }}
 <section class="section-padding bg-birk" aria-labelledby="faq">
   <div class="container-width max-w-3xl">

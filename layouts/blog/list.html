@@ -2,11 +2,11 @@
 {{- $b := .Site.Data.business -}}
 
 {{/* Header */}}
-<section class="bg-gradient-to-br from-primary-light via-white to-white py-16 px-4 sm:px-6">
+<section class="bg-gradient-to-b from-mos-lys to-taage py-16 px-4 sm:px-6">
   <div class="container-width">
     <div class="max-w-3xl">
-      <h1 class="text-4xl md:text-5xl font-bold text-text-dark leading-tight mb-4">{{ .Title }}</h1>
-      {{- with .Description }}<p class="text-lg text-text-muted leading-relaxed mb-6 max-w-2xl">{{ . }}</p>{{- end }}
+      <h1 class="text-4xl md:text-5xl font-semibold text-skovbund leading-tight mb-4">{{ .Title }}</h1>
+      {{- with .Description }}<p class="text-lg text-tekst-daempet leading-relaxed mb-6 max-w-2xl">{{ . }}</p>{{- end }}
     </div>
   </div>
 </section>
@@ -18,26 +18,26 @@
     {{- if $pages }}
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
       {{- range $pages }}
-      <a href="{{ .Permalink }}" class="card group hover:border-primary hover:shadow-md transition-all border-2 border-transparent">
+      <a href="{{ .Permalink }}" class="card group hover:border-mos hover:shadow-md transition-all border-2 border-transparent">
         {{- with .Params.categories }}
         <div class="flex flex-wrap gap-1 mb-3">
           {{- range . }}
-          <span class="text-xs font-semibold text-primary bg-primary-light px-2 py-0.5 rounded-full uppercase tracking-wide">{{ . }}</span>
+          <span class="text-xs font-semibold text-mos bg-mos-lys px-2 py-0.5 rounded-full uppercase tracking-wide">{{ . }}</span>
           {{- end }}
         </div>
         {{- end }}
-        <h2 class="text-lg font-bold text-text-dark mb-2 group-hover:text-primary transition-colors leading-snug">{{ .Title }}</h2>
-        {{- with .Description }}<p class="text-text-muted text-sm leading-relaxed mb-4">{{ . }}</p>{{- end }}
-        <div class="flex items-center justify-between mt-auto pt-3 border-t border-gray-100">
-          <time class="text-xs text-text-muted" datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "2. Jan 2006" }}</time>
-          <span class="text-primary text-sm font-semibold group-hover:underline">Læs →</span>
+        <h2 class="text-lg font-semibold text-skovbund mb-2 group-hover:text-mos transition-colors leading-snug">{{ .Title }}</h2>
+        {{- with .Description }}<p class="text-tekst-daempet text-sm leading-relaxed mb-4">{{ . }}</p>{{- end }}
+        <div class="flex items-center justify-between mt-auto pt-3 border-t border-lav/40">
+          <time class="text-xs text-tekst-daempet" datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "2. Jan 2006" }}</time>
+          <span class="text-mos text-sm font-semibold group-hover:underline">Læs →</span>
         </div>
       </a>
       {{- end }}
     </div>
     {{- else }}
     <div class="text-center py-16">
-      <p class="text-text-muted text-lg mb-4">Blogindlæg kommer snart.</p>
+      <p class="text-tekst-daempet text-lg mb-4">Blogindlæg kommer snart.</p>
       <a href="/kontakt/" class="btn-primary">Kontakt Kristian</a>
     </div>
     {{- end }}
@@ -45,11 +45,11 @@
 </section>
 
 {{/* CTA */}}
-<section class="section-padding bg-primary">
+<section class="section-padding bg-skovbund text-taage">
   <div class="container-width px-4 sm:px-6 text-center">
-    <h2 class="text-2xl md:text-3xl font-bold text-white mb-4">Klar til at tage det første skridt?</h2>
-    <p class="text-primary-light text-lg mb-8 max-w-2xl mx-auto">Book en gratis og uforpligtende telefonsamtale med Kristian.</p>
-    <a href="{{ $b.phone_sms | safeURL }}" class="inline-block bg-white text-primary hover:bg-primary-light font-semibold px-8 py-4 rounded-lg transition-colors text-lg">Tag kontakt</a>
+    <h2 class="text-2xl md:text-3xl font-semibold text-white mb-4">Klar til at tage det første skridt?</h2>
+    <p class="text-mos-light text-lg mb-8 max-w-2xl mx-auto">Book en gratis og uforpligtende telefonsamtale med Kristian.</p>
+    <a href="{{ $b.phone_sms | safeURL }}" class="inline-block btn-lys font-semibold px-8 py-4 rounded-lg transition-colors text-lg">Tag kontakt</a>
   </div>
 </section>
 {{ end }}

@@ -1,0 +1,36 @@
+{{- /*
+  Rigtigt fotografi med responsivt sæt.
+
+  AVIF først, WebP som reserve, JPEG til sidst. Tre bredder, så en telefon
+  aldrig henter et skærmbredt billede. width og height er altid sat — det er
+  dét, der holder CLS nede.
+
+  Parametre:
+    navn      filnavn uden bredde og endelse, fra /images/natur/
+    alt       beskrivende alternativ tekst (påkrævet, må ikke gentage billedteksten)
+    bredder   liste over genererede bredder
+    forhold   sideforhold b/h, bruges til at udregne height
+    sizes     CSS sizes-attribut
+    prioritet true kun for billedet over folden — ét per side
+    klasse    ekstra klasser på <img>
+    ramme     ekstra klasser på <figure>
+*/ -}}
+{{- $n := .navn -}}
+{{- $b := .bredder -}}
+{{- $stor := index $b (sub (len $b) 1) -}}
+{{- $h := int (div (float $stor) .forhold) -}}
+{{- $sizes := .sizes | default "(min-width: 1024px) 50vw, 100vw" -}}
+{{- $pri := .prioritet | default false -}}
+<figure class="{{ .ramme | default "" }}">
+  <picture>
+    <source type="image/avif" sizes="{{ $sizes }}" srcset="{{ range $i, $w := $b }}{{ if $i }}, {{ end }}/images/natur/{{ $n }}-{{ $w }}.avif {{ $w }}w{{ end }}">
+    <source type="image/webp" sizes="{{ $sizes }}" srcset="{{ range $i, $w := $b }}{{ if $i }}, {{ end }}/images/natur/{{ $n }}-{{ $w }}.webp {{ $w }}w{{ end }}">
+    <img src="/images/natur/{{ $n }}-{{ index $b 1 }}.jpg"
+         sizes="{{ $sizes }}"
+         srcset="{{ range $i, $w := $b }}{{ if $i }}, {{ end }}/images/natur/{{ $n }}-{{ $w }}.jpg {{ $w }}w{{ end }}"
+         alt="{{ .alt }}"
+         width="{{ $stor }}" height="{{ $h }}"
+         {{ if $pri }}fetchpriority="high" decoding="async"{{ else }}loading="lazy" decoding="async"{{ end }}
+         class="w-full h-full object-cover {{ .klasse | default "rounded-xl" }}">
+  </picture>
+</figure>
