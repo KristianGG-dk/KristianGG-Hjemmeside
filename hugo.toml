@@ -5,7 +5,10 @@ title = "Kristian GG"
 
 [params]
   description = "Registreret psykoterapeut og naturterapeut i Odense. Psykoterapi, naturterapi og skovbad — i klinikken på Lumbyvej eller ude i naturen på Fyn."
-  webfonts = true
+  # Slået fra: fontene kan ikke selvhostes herfra, og previewet skal kunne
+  # vurderes uden en Google Fonts-afhængighed. Reservestakken er Georgia til
+  # overskrifter og system-ui til brødtekst.
+  webfonts = false
   og_image = "/images/kristian-hero.png"
 
 [taxonomies]

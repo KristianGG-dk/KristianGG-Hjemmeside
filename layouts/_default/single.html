@@ -128,15 +128,12 @@
           {{- end }}
         </ul>
         {{- with .note }}<p class="text-text-muted text-xs italic border-t border-gray-100 pt-3 mt-3">{{ . }}</p>{{- end }}
-        <div class="mt-4 flex flex-col gap-2">
-          <a href="{{ $b.phone_sms | safeURL }}" class="w-full !flex items-center justify-center btn-primary text-sm">Send en SMS</a>
-          <a href="{{ $b.email_link | safeURL }}" class="w-full !flex items-center justify-center btn-outline text-sm">Send en mail</a>
-        </div>
+
       </div>
       {{- end }}
     </div>
-    <div class="text-center mt-8">
-      <a href="{{ $b.phone_sms | safeURL }}" class="btn-primary">Tag kontakt</a>
+    <div class="mt-10 flex justify-center">
+      {{ partial "kontakt-knapper.html" (dict "business" $b) }}
     </div>
   </div>
 </section>

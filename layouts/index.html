@@ -1,4 +1,4 @@
-{{ define "schema" }}{{ partial "jsonld/localbusiness.html" . }}{{ partial "jsonld/person.html" . }}{{ end }}
+{{ define "schema" }}{{ partial "jsonld/person.html" . }}{{ end }}
 {{ define "main" }}
 {{- $b := site.Data.business -}}
 {{- $p := .Params -}}
