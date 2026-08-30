@@ -12,7 +12,7 @@ detalje_billede: "strandplante"
 detalje_alt: "Lav grøn plante der breder sig ud over lyst sand"
 
 er_ikke:
-  - "Det er ikke en vandretur. Vi tilbagelægger sjældent mere end en kilometer på to timer."
+  - "Det er ikke en vandretur. Vi bevæger os kort og langsomt."
   - "Det er ikke træning. Der er ingen puls at holde og ingen rute at nå."
   - "Det er ikke en naturvejledning. Jeg fortæller ikke, hvad træerne hedder, medmindre du spørger."
   - "Det er ikke terapi. Der bliver ikke arbejdet med din historie, og du skal ikke fortælle mig noget."
@@ -20,7 +20,7 @@ er_ikke:
 
 faq:
   - q: "Hvor lang tid tager det?"
-    a: "To til tre timer. Det lyder af meget, og det er en del af pointen: der skal være tid nok til, at man ikke går rundt og holder øje med uret."
+    a: "Vi aftaler varigheden, når vi taler sammen. Det tager tid, og det er en del af pointen: der skal være tid nok til, at man ikke går rundt og holder øje med uret."
   - q: "Skal jeg kunne noget?"
     a: "Nej. Du skal kunne gå langsomt. Det er sværere, end det lyder, og det er hele øvelsen."
   - q: "Kan man komme alene?"
@@ -40,7 +40,7 @@ Det lyder af ingenting. Det er også det, der gør det svært.
 
 ## Sådan foregår det
 
-Vi mødes ved skovkanten og går ind. Der går som regel et stykke tid, før tempoet falder. Det er der ikke noget galt i, og det er ikke noget, du skal skynde på.
+Vi mødes ved skovkanten og går ind. Der går gerne et stykke tid, før tempoet falder. Det er der ikke noget galt i, og det er ikke noget, du skal skynde på.
 
 Undervejs stopper vi flere gange. Jeg giver nogle enkle invitationer: læg mærke til lyden bag dig, mærk temperaturforskellen mellem skygge og lys, se hvor mange grønne nuancer du kan skelne. Du kan følge dem eller lade være. Der er ingen, der tjekker.
 

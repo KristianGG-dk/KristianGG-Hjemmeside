@@ -13,9 +13,9 @@ detalje_alt: "Kodrivere i blomst mellem visne blade på skovbunden"
 
 faq:
   - q: "Skal jeg være i god form?"
-    a: "Nej. Vi går langsomt og i fladt terræn, og vi holder pause, når det passer. Har du en skade, dårlige knæ eller andet, der gør det svært, siger du det, og så finder vi en rute, der virker."
+    a: "Nej. Vi går i det tempo, der passer dig, og vi holder pause undervejs. Har du en skade, dårlige knæ eller andet, der gør det svært, siger du det, når vi aftaler tid, så finder vi en rute, der virker."
   - q: "Hvad skal jeg have på?"
-    a: "Tøj du kan blive våd og beskidt i, og sko du kan gå i på ujævn skovbund. Der er ikke noget dresscode. Jeg har ekstra regntøj med, hvis vejret vender."
+    a: "Tøj du kan blive våd og beskidt i, og sko du kan gå i på ujævn skovbund. Der er ikke noget dresscode. Er du i tvivl, så spørg, når vi aftaler tid."
   - q: "Hvad hvis det regner?"
     a: "Så går vi alligevel. Gråvejr fungerer godt til det her — der er stille i skoven, og lyset er blødt. Kun ved storm eller isslag flytter vi indenfor eller rykker tiden."
   - q: "Skal jeg kunne noget med meditation eller mindfulness?"
