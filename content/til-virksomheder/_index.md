@@ -22,13 +22,6 @@ kurser_callout:
   title: "Kurser og forløb til organisationer"
   desc: "Regulering og stressforebyggelse i praksis for medarbejdere i sociale indsatser."
 
-stats:
-  - num: "↓"
-    label: "Reduktion i stressniveau"
-  - num: "↑"
-    label: "Øget arbejdsglæde efter trivselsprogram"
-  - num: "1 dag"
-    label: "Workshop giver redskaber der varer"
 ---
 
 Stress er den største årsag til sygefravær i Danmark. Virksomheder der investerer i trivsel og mental sundhed ser markant lavere sygefravær, højere engagement og bedre fastholdelse.

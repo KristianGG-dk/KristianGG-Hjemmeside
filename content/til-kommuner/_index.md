@@ -25,8 +25,8 @@ kurser_callout:
 stats:
   - num: "2019"
     label: "Ildsjælepris for frivilligt socialt arbejde"
-  - num: "6+"
-    label: "Terapeutiske metoder og certificeringer"
+  - num: "FaDP"
+    label: "Registreret psykoterapeut, underlagt tilsyn fra Styrelsen for Patientsikkerhed"
   - num: "Fyn"
     label: "Primær geografisk base, kører ud"
 ---
