@@ -7,7 +7,7 @@
   404, ikke en omdirigering til forsiden.
 */}}
 <section class="bg-gradient-to-b from-mos-lys to-taage py-16 sm:py-24 px-4 sm:px-6">
-  <div class="container-width max-w-2xl">
+  <div class="container-width [&>*]:max-w-2xl">
     <p class="etikette">Fejl 404</p>
     <h1 class="text-4xl md:text-5xl font-semibold leading-tight mt-2">Den side findes ikke</h1>
     <p class="prosa mt-5 text-lg">Adressen fører ikke længere nogen steder hen. Måske er siden flyttet, eller også er der en tastefejl i linket.</p>
@@ -16,7 +16,7 @@
 </section>
 
 <section class="section-padding">
-  <div class="container-width max-w-2xl px-4 sm:px-6">
+  <div class="container-width [&>*]:max-w-2xl px-4 sm:px-6">
     <h2 class="text-2xl font-semibold">Prøv i stedet</h2>
     <ul class="mt-5 space-y-1 list-none p-0">
       {{- range slice

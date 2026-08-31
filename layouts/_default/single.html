@@ -45,7 +45,7 @@
 {{/* Body content (if any) */}}
 {{- with .Content }}
 <section class="section-padding">
-  <div class="container-width max-w-3xl px-4 sm:px-6 prose prose-gray prose-headings:text-skovbund prose-headings:font-semibold prose-a:text-mos prose-strong:text-skovbund">
+  <div class="container-width [&>*]:max-w-3xl px-4 sm:px-6 prose prose-gray prose-headings:text-skovbund prose-headings:font-semibold prose-a:text-mos prose-strong:text-skovbund">
     {{ . }}
   </div>
 </section>
@@ -239,7 +239,7 @@
 {{/* Process steps */}}
 {{- with $p.process }}
 <section class="section-padding bg-birk">
-  <div class="container-width max-w-3xl px-4 sm:px-6">
+  <div class="container-width [&>*]:max-w-3xl px-4 sm:px-6">
     <h2 class="text-2xl font-semibold text-skovbund mb-6">Hvad indeholder et trivselsprogram?</h2>
     <div class="space-y-4">
       {{- range . }}
@@ -259,7 +259,7 @@
 {{/* Pricing (borgerforløb) */}}
 {{- with $p.pricing }}
 <section class="section-padding">
-  <div class="container-width max-w-3xl px-4 sm:px-6">
+  <div class="container-width [&>*]:max-w-3xl px-4 sm:px-6">
     <h2 class="text-2xl font-semibold text-skovbund mb-6">Priser og aftaleformer</h2>
     <div class="space-y-4">
       {{- range . }}
@@ -276,7 +276,7 @@
 {{/* Target groups */}}
 {{- with $p.target_groups }}
 <section class="section-padding">
-  <div class="container-width max-w-3xl px-4 sm:px-6">
+  <div class="container-width [&>*]:max-w-3xl px-4 sm:px-6">
     <h2 class="text-2xl font-semibold text-skovbund mb-6">Hvem er det for?</h2>
     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
       {{- range . }}
@@ -293,7 +293,7 @@
 {{/* Practical info table */}}
 {{- with $p.practical }}
 <section class="section-padding {{ if not $.Params.themes }}bg-birk{{ end }}">
-  <div class="container-width max-w-3xl px-4 sm:px-6">
+  <div class="container-width [&>*]:max-w-3xl px-4 sm:px-6">
     <h2 class="text-2xl font-semibold text-skovbund mb-6">Praktisk information</h2>
     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
       {{- range . }}
@@ -320,7 +320,7 @@
 
 {{- with .Params.faq }}
 <section class="section-padding">
-  <div class="container-width max-w-3xl px-4 sm:px-6">
+  <div class="container-width [&>*]:max-w-3xl px-4 sm:px-6">
     <h2 class="text-2xl font-semibold text-skovbund mb-6">Ofte stillede spørgsmål</h2>
     {{ partial "faq-accordion.html" $ }}
   </div>
