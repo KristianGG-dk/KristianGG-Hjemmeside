@@ -33,6 +33,11 @@
   p, li, td, dd, dt, figcaption {
     overflow-wrap: break-word;
   }
+  /* Sidehovedet er klæbende. Uden dette lander et ankerlink (fx #faq eller
+     springlinket) med overskriften gemt bag hovedet. */
+  :target, [id], main {
+    scroll-margin-top: 5.5rem;
+  }
   /* Grid-børn har min-width:auto. Det gør, at et langt dansk sammensat ord
      ("særforanstaltninger", "samarbejdsbetingelser") sætter kolonnens
      mindstebredde og skubber hele siden vandret ud ved 320 px, selv om ordet

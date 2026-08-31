@@ -31,6 +31,12 @@
          alt="{{ .alt }}"
          width="{{ $stor }}" height="{{ $h }}"
          {{ if $pri }}fetchpriority="high" decoding="async"{{ else }}loading="lazy" decoding="async"{{ end }}
+         {{/* aspect-ratio låser boksen til det sideforhold, pladsen er
+              designet til. Uden den bestemmer selve filens beskæring
+              højden, og et portrætbeskåret foto gjorde ét kort i en
+              række markant højere end de to andre. object-cover
+              beskærer i stedet. */}}
+         style="aspect-ratio: {{ .forhold }}"
          class="w-full h-full object-cover {{ .klasse | default "rounded-xl" }}">
   </picture>
 </figure>

@@ -2,13 +2,19 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 
-{{- $title := .Title }}
-{{- $desc  := .Description | default .Site.Params.description }}
+{{/* 404-siden har ingen indholdsfil og faar derfor Hugos engelske
+     standardtitel. Den saettes her, saa hele siden er paa dansk. */}}
+{{- $title := cond (eq .Kind "404") "Siden findes ikke" .Title }}
+{{- $desc  := .Description | default (cond (eq .Kind "404") "Adressen fører ikke længere nogen steder hen. Find i stedet vej til psykoterapi, naturterapi, skovbad, priser eller kontakt." site.Params.description) }}
 {{- $url   := .Permalink }}
 {{- $image := .Params.og_image | default .Site.Params.og_image }}
 {{- $siteTitle := .Site.Title }}
 
-<title>{{ if .IsHome }}{{ $siteTitle }}{{ else }}{{ $title }} | {{ $siteTitle }}{{ end }}</title>
+{{/* Forsiden brugte site.Title. Da site.Title blev forkortet til "Kristian GG"
+     for at holde undersidernes titler under 60 tegn, mistede forsiden sin
+     egen title fra content/_index.md — og dermed ordene psykoterapeut,
+     naturterapeut og Odense. Forsiden bruger nu sin egen title. */}}
+<title>{{ if .IsHome }}{{ $title }}{{ else }}{{ $title }} | {{ $siteTitle }}{{ end }}</title>
 <meta name="description" content="{{ $desc }}" />
 <link rel="canonical" href="{{ $url }}" />
 
@@ -26,7 +32,7 @@
 <meta name="twitter:description" content="{{ $desc }}" />
 
 {{/* Sitemap hint */}}
-<meta name="robots" content="{{ if .Params.noindex }}noindex, nofollow{{ else }}index, follow{{ end }}" />
+<meta name="robots" content="{{ if or .Params.noindex (eq .Kind "404") }}noindex, nofollow{{ else }}index, follow{{ end }}" />
 
 {{/* Skrifttyper.
      Slås til/fra med params.webfonts i hugo.toml.

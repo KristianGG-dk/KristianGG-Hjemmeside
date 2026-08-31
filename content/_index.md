@@ -24,7 +24,7 @@ omraader:
     url: "/til-dig/naturterapi/"
     kort: "Terapeutisk arbejde i landskabet, hvor bevægelse, sanser og omgivelser indgår aktivt i det, vi laver."
     linktekst: "Sådan foregår naturterapi"
-    billede: "gaatur"
+    billede: "gaatur-kort"
     alt: "To personer går ved siden af hinanden ad en sti langs en sø"
   - titel: "Skovbad"
     url: "/kurser/skovbad/"

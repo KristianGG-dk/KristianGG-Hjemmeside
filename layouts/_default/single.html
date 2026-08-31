@@ -55,8 +55,8 @@
 {{- with $p.credentials }}
 <section class="section-padding bg-birk">
   <div class="container-width px-4 sm:px-6">
-    <h2 class="text-2xl font-semibold text-skovbund mb-8 text-center">Uddannelser & certificeringer</h2>
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 max-w-4xl mx-auto">
+    <h2 class="text-2xl font-semibold text-skovbund mb-8 text-center">Uddannelser og certificeringer</h2>
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-3xl mx-auto">
       {{- range . }}
       <div class="p-4 bg-white rounded-lg border border-lav/40 shadow-sm">
         <h3 class="font-semibold text-skovbund mb-1">{{ .title }}</h3>
@@ -72,7 +72,7 @@
 {{- with $p.values }}
 <section class="section-padding">
   <div class="container-width px-4 sm:px-6">
-    <h2 class="text-2xl font-semibold text-skovbund mb-8 text-center">Værdier & tilgang</h2>
+    <h2 class="text-2xl font-semibold text-skovbund mb-8 text-center">Værdier og tilgang</h2>
     <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 max-w-3xl mx-auto">
       {{- range . }}
       <div class="card">
@@ -100,10 +100,14 @@
            class="inline-flex items-center min-h-[44px] mt-6 text-mos font-semibold hover:underline text-sm">Læs mere på fadp.dk →</a>
       </div>
       <div class="flex justify-center">
-        {{- with .logo }}
-        <img src="{{ . }}" alt="FaDP – Foreningen af Danske Psykoterapeuter"
-             class="w-56 h-56 object-contain" width="96" height="96" loading="lazy" decoding="async">
-        {{- end }}
+        {{/* Logoet blev vist i 224 px fra en 96 px-fil. Nu et sæt i den
+             rigtige størrelse, og width/height matcher visningen, så der
+             ikke opstår layoutskift. */}}
+        <img src="/images/fadp-logo-192.png"
+             srcset="/images/fadp-logo-192.png 192w, /images/fadp-logo-384.png 384w"
+             sizes="192px"
+             alt="FaDP – Foreningen af Danske Psykoterapeuter"
+             class="w-48 h-48 object-contain" width="192" height="192" loading="lazy" decoding="async">
       </div>
     </div>
   </div>
@@ -138,9 +142,9 @@
       </div>
       {{- end }}
     </div>
-    <div class="mt-10 flex justify-center">
-      {{ partial "kontakt-knapper.html" (dict "business" $b) }}
-    </div>
+    {{/* Ingen kontaktblok her. Sidens afsluttende CTA ligger få hundrede
+         pixels længere nede, og to ens blokke tæt på hinanden læses som
+         pres frem for hjælp. */}}
   </div>
 </section>
 {{- end }}

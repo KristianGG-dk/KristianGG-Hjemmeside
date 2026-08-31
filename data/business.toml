@@ -17,7 +17,9 @@ phone_sms = "sms:+4531509789"      # SMS — ingen ?body=, da parameteren er
 email = "kontakt@kristiangg.dk"
 email_link = "mailto:kontakt@kristiangg.dk"
 
-price_range = "450–900 kr"
+# Skal svare til de faktiske priser på /priser/. Forsamtalen er gratis,
+# den dyreste ydelse er naturterapi over to dage til 9.000 kr.
+price_range = "1200–9000 kr"
 opening_hours = "Man–Fre 09:00–17:00"
 svartid = "Jeg svarer inden for 24 timer på hverdage."
 

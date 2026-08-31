@@ -14,7 +14,7 @@ prices:
       - Ingen binding
     badge: Start her
     note: Altid det første skridt.
-  - title: Terapi session
+  - title: Terapisession
     price: "1200"
     duration: 90 minutter · Klinik eller online
     features:

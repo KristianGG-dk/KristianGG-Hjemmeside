@@ -1,0 +1,25 @@
+{{- /*
+  Sitemap. Eneste forskel fra Hugos indbyggede: sider med noindex udelades.
+  En side, der beder søgemaskinen om ikke at indeksere den, hører ikke hjemme
+  i det dokument, der beder om det modsatte. Det gælder i dag /tak/, som er
+  kvitteringssiden efter kontaktformularen.
+*/ -}}
+{{ printf "<?xml version=\"1.0\" encoding=\"utf-8\" standalone=\"yes\"?>" | safeHTML }}
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  {{- range .Data.Pages }}
+  {{- if and .Permalink (not .Params.noindex) }}
+  <url>
+    <loc>{{ .Permalink }}</loc>
+    {{- if not .Lastmod.IsZero }}
+    <lastmod>{{ safeHTML ( .Lastmod.Format "2006-01-02T15:04:05-07:00" ) }}</lastmod>
+    {{- end }}
+    {{- with .Sitemap.ChangeFreq }}
+    <changefreq>{{ . }}</changefreq>
+    {{- end }}
+    {{- if ge .Sitemap.Priority 0.0 }}
+    <priority>{{ .Sitemap.Priority }}</priority>
+    {{- end }}
+  </url>
+  {{- end }}
+  {{- end }}
+</urlset>
