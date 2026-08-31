@@ -1,9 +1,9 @@
 ---
 layout: "skovbad"
 title: "Skovbad på Fyn – hvad det er og ikke er"
-description: "Skovbad på Fyn og i Odense med registreret psykoterapeut. Langsom, opmærksom tid mellem træerne — individuelt eller i lille gruppe. Ingen præstation, ingen udstyr."
+description: "Skovbad på Fyn og i Odense med registreret psykoterapeut. Et langsomt ophold i skoven med sanserne — ikke badning, ikke en vandretur. Alene eller i lille gruppe."
 hero_title: "Skovbad"
-hero_subtitle: "Langsom, opmærksom tid mellem træerne. Ikke en gåtur, ikke en behandling — noget tredje."
+hero_subtitle: "Et langsomt ophold i skoven, hvor du bruger sanserne i stedet for at komme nogen steder hen. Man bader ikke i vand — navnet er en oversættelse fra japansk."
 service_name: "Skovbad på Fyn"
 service_desc: "Guidet skovbad i skovene omkring Odense og på Fyn, individuelt eller i lille gruppe."
 hero_billede: "skovbad-gruppe"
@@ -11,63 +11,91 @@ hero_alt: "En gruppe mennesker sidder spredt på skovbunden mellem bøgetræer"
 detalje_billede: "vintergaekker"
 detalje_alt: "Vintergækker i blomst mellem vedbend og visne blade på skovbunden"
 
-er_ikke:
-  - "Det er ikke en vandretur. Vi bevæger os kort og langsomt."
-  - "Det er ikke træning. Der er ingen puls at holde og ingen rute at nå."
-  - "Det er ikke en naturvejledning. Jeg fortæller ikke, hvad træerne hedder, medmindre du spørger."
-  - "Det er ikke terapi. Der bliver ikke arbejdet med din historie, og du skal ikke fortælle mig noget."
-  - "Det er ikke spirituelt. Der bliver ikke krammet træer, og du skal ikke tro på noget."
-
 faq:
+  - q: "Skal man bade i vand?"
+    a: "Nej. Der er intet vand involveret. Skovbad er en oversættelse af det japanske ord shinrin-yoku, hvor bad betyder at være omgivet af noget — her skoven, ligesom man taler om et solbad. Du bliver ikke våd, medmindre det regner."
+  - q: "Hvad skal jeg have med?"
+    a: "Du skal have fodtøj og tøj på, der passer til vejrforholdene. Vi går på skovbund og ujævnt terræn, så vælg sko, du kan gå i. Ellers skal du ikke have udstyr med. Vil du have noget at sidde på eller noget at drikke med, er du velkommen til det."
+  - q: "Hvor foregår det?"
+    a: "I skovene omkring Odense og rundt på Fyn. Vi aftaler mødested, når vi har talt sammen, og vi mødes ved skovkanten — du skal ikke finde vej ind i skoven selv."
   - q: "Hvor lang tid tager det?"
-    a: "Vi aftaler varigheden, når vi taler sammen. Det tager tid, og det er en del af pointen: Der skal være tid nok til, at man ikke går rundt og holder øje med uret."
-  - q: "Skal jeg kunne noget?"
-    a: "Nej. Du skal kunne gå langsomt. Det er sværere, end det lyder, og det er hele øvelsen."
+    a: "Vi aftaler varigheden, når vi taler sammen. Det tager længere tid end en gåtur, fordi vi går langsomt og stopper undervejs."
+  - q: "Skal jeg være i god form?"
+    a: "Nej. Vi går kort og langsomt og stopper flere gange undervejs. Har du en skade, dårlige knæ eller andet, der gør det svært at gå på ujævnt underlag, så sig det, når vi aftaler tid, så finder vi et sted, der passer."
   - q: "Kan man komme alene?"
-    a: "Ja. Individuelt skovbad er det mest almindelige, og det er der, der er mest plads til, at det bliver dit eget."
+    a: "Ja. Individuelt skovbad er det mest almindelige."
   - q: "Findes det i grupper?"
-    a: "Ja, i små grupper. Vi går sammen, men taler kun lidt — man er alene sammen med andre, hvilket for nogle er lettere end at være alene alene."
-  - q: "Hvad hvis jeg keder mig?"
-    a: "Det kan sagtens ske. Kedsomhed er en helt almindelig reaktion, når der pludselig ikke er noget, der skal nås, og den behøver ikke betyde noget som helst. Du må gerne sige det højt."
+    a: "Ja, i små grupper. Vi går sammen, men taler kun lidt undervejs, og der er ingen præsentationsrunde."
+  - q: "Skal jeg sige noget?"
+    a: "Nej. Du behøver ikke sige noget, hverken undervejs eller bagefter. Nogle vil gerne tale om, hvordan det var. Andre vil ikke."
+  - q: "Hvad hvis det regner?"
+    a: "Så går vi alligevel. Kun ved storm eller isslag rykker vi tidspunktet."
+  - q: "Er det det samme som naturterapi?"
+    a: "Nej. Skovbad er et ophold i skoven med sanserne, og vi arbejder ikke med det, du står i. Naturterapi er terapeutisk arbejde, hvor vi taler sammen om din situation, mens vi går. Læs mere om naturterapi, hvis det er dét, du søger."
 
 cta_heading: "Tag kontakt"
 cta_text: "Skriv, hvis du vil prøve. Vi finder en skov og et tidspunkt."
 ---
 
-Skovbad kommer fra det japanske *shinrin-yoku* og betyder ganske enkelt at opholde sig i skoven med sanserne åbne. Ikke for at komme nogen steder. Ikke for at lære noget. Bare være der, langsomt, i længere tid end man plejer.
+## Hvad skovbad er
 
-Det lyder af ingenting. Det er også det, der gør det svært.
+Skovbad er at opholde sig i skoven i længere tid end man plejer, i et langsomt tempo, med opmærksomheden rettet mod det, der er omkring én. Man går kun kort. Man stopper undervejs. Man bruger øjne, ører, næse og hud i stedet for at snakke.
 
-## Sådan foregår det
+Ordet kommer fra det japanske *shinrin-yoku*, som betyder skovbad. Bad skal forstås som at være omgivet af noget, ligesom når man taler om et solbad. **Der er intet vand involveret, og du skal ikke bade.**
 
-Vi mødes ved skovkanten og går ind. Der går gerne et stykke tid, før tempoet falder. Det er der ikke noget galt i, og det er ikke noget, du skal skynde på.
+Jeg guider undervejs. Det vil sige, at jeg foreslår nogle enkle ting at lægge mærke til, og at jeg holder styr på tid og retning, så du ikke selv skal.
 
-Undervejs stopper vi flere gange. Jeg giver nogle enkle invitationer: Læg mærke til lyden bag dig, mærk temperaturforskellen mellem skygge og lys, se hvor mange grønne nuancer du kan skelne. Du kan følge dem eller lade være. Der er ingen, der tjekker.
+## Hvad skovbad ikke er
 
-Til sidst sætter vi os. Nogle gange bliver der talt om, hvordan det var. Andre gange ikke.
+Der er en del forvirring om ordet, så det er nemmest at sige, hvad det ikke er.
 
-**Påklædning:** Fodtøj og tøj efter vejret.
+- **Det er ikke badning.** Der er intet vand involveret. Ordet er en oversættelse fra japansk.
+- **Det er ikke en vandretur.** Vi går kort og meget langsomt.
+- **Det er ikke træning.** Der er ingen puls at holde og ingen rute at nå.
+- **Det er ikke en naturvejledning.** Jeg fortæller ikke, hvad træerne hedder, medmindre du spørger.
+- **Det er ikke terapi.** Vi taler ikke om din historie, og du skal ikke fortælle mig noget om dig selv.
+- **Det er ikke spirituelt.** Der bliver ikke krammet træer, og du skal ikke tro på noget.
 
-## Hvad det ikke er
+## Sådan foregår et skovbad
 
-Der er en del forvirring om skovbad, så det er nemmest at sige, hvad det ikke er:
+Et skovbad følger nogenlunde det samme forløb hver gang.
 
-## Hvad forløbet indeholder
+**1. Vi mødes ved skovkanten.** Du skal ikke finde vej ind i skoven selv. Vi aftaler mødested på forhånd.
 
-**Forståelse af natur og nervesystem.** Kort og uden foredrag: hvorfor det er lettere at falde ned et sted, hvor ingenting kræver noget af dig.
+**2. Vi går ind, langsomt.** Langsommere, end de fleste synes er rimeligt. Der går gerne et stykke tid, før tempoet falder.
 
-**Regulering gennem åndedræt og sansning.** Nogle enkle måder at bruge vejrtrækningen og sanserne på, som du kan tage med hjem.
+**3. Vi stopper flere gange.** Ved hvert stop foreslår jeg noget at lægge mærke til: Lyden bag dig, temperaturforskellen mellem skygge og lys, hvor mange grønne nuancer du kan skelne. Du kan følge forslaget eller lade være. Der er ingen, der kontrollerer det.
 
-**Guidet tilstedeværelse i naturen.** Jeg giver invitationer undervejs — ting at lægge mærke til. Du kan følge dem eller lade være.
+**4. Vi sætter os.** En periode, hvor der hverken bliver gået eller nødvendigvis talt.
 
-**Afkobling fra hverdagens tempo.** Vi går langsommere, end du synes er rimeligt. Det er hele øvelsen.
+**5. Vi går tilbage.** Nogle gange taler vi om, hvordan det var. Andre gange ikke. Du bestemmer.
 
-**Integration i hverdagen.** Til sidst taler vi om, hvad der kan bruges derhjemme, og hvad der kun giver mening her.
+## Skovbad, naturterapi eller en almindelig gåtur
+
+De tre ting ligner hinanden udefra. Forskellen er, hvad man laver.
+
+**En almindelig gåtur** har et mål: Du skal ud og røre dig, eller du skal et sted hen. Du bestemmer selv tempoet, og du er alene om det.
+
+**Skovbad** har ikke det mål. Vi går meget kort og meget langsomt, og opmærksomheden er på omgivelserne. Vi taler ikke om dit liv. Jeg guider, så du ikke selv skal holde styr på noget.
+
+**Naturterapi** er terapeutisk arbejde. Her taler vi sammen om det, du står i, mens vi går, og din historie indgår. Det forudsætter, at du har lyst til at fortælle noget. [Læs mere om naturterapi](/til-dig/naturterapi/).
+
+Kort sagt er skovbad et ophold, og naturterapi er et stykke arbejde.
+
+## Alene eller i gruppe
+
+Du kan komme alene, og det er det mest almindelige. Du kan også komme i en lille gruppe.
+
+I en gruppe går vi sammen, men vi taler kun lidt undervejs. Du skal ikke sige noget til de andre, og der er ingen præsentationsrunde.
+
+## Hvad du skal have med
+
+**Påklædning:** Du skal have fodtøj og tøj på, der passer til vejrforholdene. Vi går på skovbund og ujævnt terræn, så vælg sko, du kan gå i.
+
+Ellers skal du ikke have udstyr med. Vil du have noget at sidde på eller noget at drikke med, er du velkommen til det, men det er ikke nødvendigt.
 
 ## Hvem det giver mening for
 
-Det er ofte det første, folk prøver hos mig. Tærsklen er lav: Du skal ikke fortælle om dig selv, du skal ikke være i krise, og du skal ikke forpligte dig til noget.
-
-Det bliver ofte valgt af mennesker, der er kørt trætte af at skulle præstere — også i det, der skulle være afslapning. Og af dem, der har svært ved at holde fri derhjemme, fordi vasketøjet ligger der.
+Det er ofte det første, folk prøver hos mig, fordi der ikke skal fortælles noget. Du skal ikke være i krise, og du skal ikke forpligte dig til et forløb.
 
 Står du et akut svært sted, vil jeg gerne tale med dig først. Så finder vi ud af, om skovbad er det rigtige at begynde med, eller om noget andet passer bedre.

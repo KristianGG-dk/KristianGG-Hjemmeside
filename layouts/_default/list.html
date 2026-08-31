@@ -10,7 +10,7 @@
 <section class="bg-gradient-to-b from-mos-lys to-taage py-16 px-4 sm:px-6">
   <div class="container-width">
     <div class="max-w-3xl">
-      <h1 class="text-4xl md:text-5xl font-semibold text-skovbund leading-tight mb-4">{{ $p.hero_title | default .Title }}</h1>
+      <h1 class="text-[2rem] sm:text-4xl md:text-5xl font-semibold text-skovbund leading-tight mb-4">{{ $p.hero_title | default .Title }}</h1>
       {{- with $p.hero_subtitle }}<p class="text-lg md:text-xl text-tekst-daempet leading-relaxed mb-8 max-w-2xl">{{ . }}</p>{{- end }}
       <div class="flex flex-wrap gap-4">
         {{ partial "kontakt-knapper.html" (dict "business" $b) }}</div>

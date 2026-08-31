@@ -14,7 +14,7 @@
     </nav>
     <div class="grid lg:grid-cols-2 gap-10 items-center">
       <div>
-        <h1 class="text-4xl sm:text-5xl font-semibold leading-tight">{{ $p.hero_title }}</h1>
+        <h1 class="text-[2rem] sm:text-4xl md:text-5xl font-semibold leading-tight">{{ $p.hero_title }}</h1>
         <p class="prosa mt-5 text-lg">{{ $p.hero_subtitle }}</p>
         {{ partial "kontakt-knapper.html" (dict "business" $b "klasse" "mt-8") }}
       </div>
@@ -25,19 +25,15 @@
   </div>
 </section>
 
+{{/* Én læsespalte. Listen "Hvad skovbad ikke er" stod tidligere i en
+     sidebjælke, som på telefon lå nederst på siden — langt fra sin egen
+     overskrift midt i teksten. Den står nu i selve teksten. */}}
 <section class="section-padding">
-  <div class="container-width grid lg:grid-cols-[1fr_20rem] gap-12">
-    <div class="prosa max-w-prose">{{ .Content }}</div>
-    <aside>
-      {{- with $p.er_ikke }}
-      <div class="bg-birk rounded-xl p-6 sticky top-28">
-        <h2 class="text-lg font-semibold mb-3">Kort sagt</h2>
-        <ul class="space-y-3 text-sm text-tekst-daempet list-none p-0">
-          {{- range . }}<li class="flex gap-2"><span aria-hidden="true" class="text-mos flex-none">—</span><span>{{ . }}</span></li>{{ end }}
-        </ul>
-      </div>
-      {{- end }}
-    </aside>
+  <div class="container-width">
+    {{/* Samme typografi som de øvrige indholdssider. Med .prosa fik h2 fra
+         markdown ingen størrelse og blev mindre end brødteksten, og lister
+         mistede punkttegn. */}}
+    <div class="[&>*]:max-w-3xl prose prose-gray prose-headings:text-skovbund prose-headings:font-semibold prose-a:text-mos prose-strong:text-skovbund">{{ .Content }}</div>
   </div>
 </section>
 

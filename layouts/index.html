@@ -9,7 +9,7 @@
     <div class="grid lg:grid-cols-2 gap-10 lg:gap-14 items-center">
       <div>
         <p class="etikette mb-4">{{ $p.hero_etikette }}</p>
-        <h1 class="text-4xl sm:text-5xl lg:text-6xl font-semibold leading-[1.05] tracking-tight">{{ $p.hero_titel }}</h1>
+        <h1 class="text-[2rem] sm:text-4xl md:text-5xl lg:text-6xl font-semibold leading-[1.05] tracking-tight">{{ $p.hero_titel }}</h1>
         <p class="prosa mt-6 text-lg">{{ $p.hero_tekst }}</p>
         {{ partial "kontakt-knapper.html" (dict "business" $b "klasse" "mt-8") }}
       </div>

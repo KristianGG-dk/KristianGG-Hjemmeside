@@ -15,7 +15,7 @@ faq:
   - q: "Skal jeg være i god form?"
     a: "Nej. Vi går i det tempo, der passer dig, og vi holder pause undervejs. Har du en skade, dårlige knæ eller andet, der gør det svært, siger du det, når vi aftaler tid, så finder vi en rute, der virker."
   - q: "Hvad skal jeg have på?"
-    a: "Tøj du kan blive våd og beskidt i, og sko du kan gå i på ujævn skovbund. Der er ikke noget dresscode. Er du i tvivl, så spørg, når vi aftaler tid."
+    a: "Du skal have fodtøj og tøj på, der passer til vejrforholdene. Vi går på skovbund og ujævnt terræn, så vælg sko, du kan gå i. Der er ikke noget dresscode. Er du i tvivl, så spørg, når vi aftaler tid."
   - q: "Hvad hvis det regner?"
     a: "Så går vi alligevel. Gråvejr fungerer godt til det her — der er stille i skoven, og lyset er blødt. Kun ved storm eller isslag flytter vi indenfor eller rykker tiden."
   - q: "Skal jeg kunne noget med meditation eller mindfulness?"
@@ -43,7 +43,7 @@ Vi går, mens vi taler. Blikket er rettet fremad i stedet for mod et andet menne
 
 Vejrtrækningen, tempoet, hvor tungt eller let du går. Når vi er i bevægelse, er den slags lettere at lægge mærke til. Vi arbejder med åndedrættet undervejs, hvis der er brug for det.
 
-Det er det samme somatiske arbejde, som jeg ellers laver med nervesystemet inde i klinikken — bare udendørs. Du kan læse mere om [arbejdet med nervesystemet](/til-dig/nervesystemet/).
+Det er det samme kropslige — somatiske — arbejde, som jeg ellers laver med nervesystemet inde i klinikken, bare udendørs. Du kan læse mere om [arbejdet med nervesystemet](/til-dig/nervesystemet/).
 
 ### Sanseopvækkelse
 
@@ -67,7 +67,7 @@ Vi mødes i skovene og ved kysterne omkring Odense og rundt på Fyn. En session 
 
 Der findes også længere forløb, hvor vi er ude en hel dag eller over to dage med overnatning. Det er ikke for alle, og det er ikke noget, man starter med.
 
-**Påklædning:** Fodtøj og tøj efter vejret.
+**Påklædning:** Du skal have fodtøj og tøj på, der passer til vejrforholdene.
 
 ## Mad og sankning
 

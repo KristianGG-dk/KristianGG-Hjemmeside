@@ -29,9 +29,15 @@
     </a>
   </div>
   {{- if $visNummer }}
-  <p class="mt-3 text-sm {{ if eq $variant "lys" }}text-birk{{ else }}text-tekst-daempet{{ end }}">
-    Eller ring: <a href="{{ $b.phone_tel | safeURL }}" class="font-semibold underline underline-offset-2 {{ if eq $variant "lys" }}text-white{{ else }}text-skovbund hover:text-mos{{ end }}">{{ $b.phone_display }}</a>
-    · <a href="{{ $b.email_link | safeURL }}" class="underline underline-offset-2 {{ if eq $variant "lys" }}text-white{{ else }}hover:text-mos{{ end }}">{{ $b.email }}</a>
-  </p>
+  {{/* Nummer og mailadresse står under hinanden på telefon og på én linje fra
+       640 px. Tidligere stod de på samme linje overalt, og på en telefon brød
+       linjen midt i adskillelsestegnet, så prikken blev efterladt alene i
+       slutningen af første linje. whitespace-nowrap sikrer desuden, at hverken
+       nummeret eller adressen selv kan brydes midt over. */}}
+  <div class="mt-4 text-sm flex flex-col sm:flex-row sm:flex-wrap sm:items-baseline gap-y-1 sm:gap-x-2 {{ if eq $variant "lys" }}text-birk{{ else }}text-tekst-daempet{{ end }}">
+    <span>Eller ring: <a href="{{ $b.phone_tel | safeURL }}" class="whitespace-nowrap font-semibold underline underline-offset-2 {{ if eq $variant "lys" }}text-white{{ else }}text-skovbund hover:text-mos{{ end }}">{{ $b.phone_display }}</a></span>
+    <span aria-hidden="true" class="hidden sm:inline">·</span>
+    <a href="{{ $b.email_link | safeURL }}" class="whitespace-nowrap underline underline-offset-2 {{ if eq $variant "lys" }}text-white{{ else }}hover:text-mos{{ end }}">{{ $b.email }}</a>
+  </div>
   {{- end }}
 </div>

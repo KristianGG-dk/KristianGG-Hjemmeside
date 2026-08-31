@@ -24,6 +24,6 @@ kurser_callout:
 
 ---
 
-Stress er den største årsag til sygefravær i Danmark. Virksomheder der investerer i trivsel og mental sundhed ser markant lavere sygefravær, højere engagement og bedre fastholdelse.
+Stress og mistrivsel fylder på mange arbejdspladser, og det er sjældent den enkelte medarbejders opgave alene at løse.
 
-Mine ydelser er baseret på videnskabelig viden om nervesystemet og kombinerer teori med praksis – dine medarbejdere går hjem med konkrete redskaber de kan bruge allerede næste dag.
+Jeg holder foredrag og workshops om stress, nervesystemet og overtænkning. Oplæggene kombinerer faglig baggrund med konkrete øvelser, som deltagerne kan bruge bagefter — og de er bygget op, så man ikke skal fortælle noget personligt for at få noget ud af dem.

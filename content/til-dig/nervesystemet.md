@@ -1,10 +1,10 @@
 ---
 title: "Stressbehandling og nervesystem i Odense"
-description: "Lær at regulere dit nervesystem med åndedrætsterapi, mindfulness og somatiske teknikker. Effektivt mod stress, angst og søvnproblemer i Odense og Fyn."
-hero_title: "Nervesystemet & ro"
-hero_subtitle: "Stress, angst og tankemylder er ofte tegn på et overaktiveret nervesystem. Jeg hjælper dig med at finde tilbage til ro – gennem kroppen, ikke mod den."
-service_name: "Nervesystemsregulering & Åndedrætsterapi"
-service_desc: "Nervesystemsbaseret terapi med åndedrætsterapi, mindfulness og somatiske teknikker mod stress og angst i Odense."
+description: "Arbejde med stress, angst, søvnproblemer og tankemylder gennem kroppen — åndedrætsterapi, mindfulness og somatiske øvelser. Registreret psykoterapeut i Odense og på Fyn."
+hero_title: "Nervesystemet og ro"
+hero_subtitle: "Når stress, angst eller tankemylder fylder, mærkes det ofte i kroppen først. Her arbejder vi gennem kroppen frem for kun gennem tankerne."
+service_name: "Nervesystemsregulering og åndedrætsterapi"
+service_desc: "Kropsbaseret arbejde med stress, angst og søvnproblemer hos registreret psykoterapeut i Odense."
 
 hero_billede: "skovsti"
 hero_alt: "Sti mellem høje træer med udsigt til vand i det fjerne"
@@ -12,37 +12,43 @@ hero_alt: "Sti mellem høje træer med udsigt til vand i det fjerne"
 methods:
   - icon: ""
     title: "Åndedrætsterapi"
-    desc: "Aktiverer det parasympatiske nervesystem direkte via vejrtrækning. Hurtigt virkende og let at bruge i hverdagen."
+    desc: "Vi bruger vejrtrækningen som indgang, når kroppen er et lettere sted at begynde end sproget. Øvelserne er enkle nok til at bruge derhjemme."
   - icon: ""
     title: "Mindfulness"
-    desc: "Øger nærvær og reducerer tankemylder. Træner evnen til at observere frem for at reagere automatisk."
+    desc: "At øve sig i at lægge mærke til, hvad der sker, uden at handle på det med det samme. Jeg er uddannet mindfulness-instruktør."
   - icon: ""
-    title: "Somatiske teknikker"
-    desc: "Kropsbaserede øvelser der frigiver spænding og signalerer tryghed til nervesystemet."
+    title: "Somatiske øvelser"
+    desc: "Kropsbaserede øvelser, hvor vi arbejder med spænding, holdning og bevægelse i stedet for at tale om det."
   - icon: ""
     title: "Visualisering"
-    desc: "Guidede visualiseringer der aktiverer ro, ressourcer og indre tryghed."
+    desc: "Guidede forestillingsbilleder. For nogle er det en lettere vej til ro end en instruktion om at slappe af."
   - icon: ""
     title: "Hypnoterapi"
-    desc: "Dyb afslapning der giver direkte adgang til underbevidstheden og forankrer ro på et dybt niveau."
+    desc: "En fokuseret tilstand, hvor opmærksomheden snævres ind. Bruges kun, hvis du selv har lyst til at prøve det. Jeg er uddannet Master Neuro Hypnoterapeut."
   - icon: ""
-    title: "Søvnoptimering"
-    desc: "Kombinerede teknikker til at regulere nervesystemet og skabe naturlig søvn."
+    title: "Arbejde med søvn"
+    desc: "Vi ser på, hvad der fylder omkring sengetid, og på hvilke af øvelserne der kan bruges om aftenen."
 
 faq:
-  - q: "Hvad vil det sige at regulere nervesystemet?"
-    a: "Nervesystemsregulering handler om at hjælpe din krop og dit sind med at skifte fra en aktiveret (stresset) tilstand til en rolig, tryg tilstand. Når nervesystemet er reguleret, sover du bedre, tænker klarere og reagerer mere hensigtsmæssigt på udfordringer."
+  - q: "Hvad mener du med at regulere nervesystemet?"
+    a: "Nervesystemet skifter mellem tilstande. Nogle gange er kroppen i beredskab — pulsen er oppe, muskler er spændte, tankerne kører. Andre gange er den i hvile. At regulere handler om at øve sig i at komme fra den ene tilstand til den anden med noget konkret: vejrtrækning, bevægelse, opmærksomhed. Det er en færdighed, man træner, ikke en behandling man modtager."
+  - q: "Er det i stedet for samtaleterapi?"
+    a: "Nej. Det er en anden indgang til det samme arbejde. Nogle har lettere ved at begynde med kroppen end med at fortælle. Vi kan sagtens gøre begge dele, og det gør vi tit. Læs mere om psykoterapi."
   - q: "Hvad er åndedrætsterapi?"
-    a: "Åndedrætsterapi bruger bevidst vejrtrækning til at aktivere det parasympatiske nervesystem – den del der er ansvarlig for ro og restitution. Det er videnskabeligt dokumenteret effektivt mod stress, angst og kronisk aktivering."
-  - q: "Kan det hjælpe mod søvnproblemer?"
-    a: "Ja. Mange søvnproblemer skyldes et overaktiveret nervesystem. Med nervesystemsbaserede teknikker – bl.a. åndedrætsterapi og visualiseringer – kan du lære at 'skrue ned' og falde i søvn naturligt."
-  - q: "Hvor mange sessioner kræves det?"
-    a: "Mange oplever tydelig forskel allerede efter 1–3 sessioner. Et fuldt forløb er typisk 4–8 sessioner, afhængigt af din situation og dine mål."
+    a: "Bevidst arbejde med vejrtrækningen — tempoet, dybden, forholdet mellem ind- og udånding. Vi prøver forskellige måder af og finder ud af, hvad der virker for dig. Du får nogle øvelser med hjem, som ikke kræver udstyr eller særlige omstændigheder."
+  - q: "Kan det bruges ved søvnproblemer?"
+    a: "Det er et af de områder, folk oftest kommer med. Vi ser på, hvad der fylder omkring sengetid, og hvilke øvelser der kan bruges om aftenen. Om det hjælper dig, kan jeg ikke sige på forhånd. Har du længerevarende søvnproblemer, er det en god idé også at tale med din læge."
+  - q: "Hvor mange gange skal jeg komme?"
+    a: "Det varierer. Nogle har brug for nogle få gange om noget afgrænset. Andre går i et længere forløb. Vi aftaler os frem undervejs, og du er aldrig bundet."
 
-cta_heading: "Klar til at finde ro?"
+cta_heading: "Klar til at komme i gang?"
 cta_text: "Skriv en SMS eller en mail. Vi starter med en kort telefonsamtale uden beregning."
 ---
 
-Vores nervesystem er designet til at reagere på trusler – men i moderne tid er det konstant aktiveret af deadlines, skærme, sociale forventninger og bekymringer. Resultatet er kronisk stress, angst, søvnproblemer og en følelse af aldrig rigtig at koble fra.
+Stress, angst, søvnproblemer og tankemylder viser sig ofte i kroppen, før man kan sætte ord på dem. Man sover dårligt, har ondt i maven, kan ikke sidde stille eller kan ikke komme i gang.
 
-Nervesystemsbaseret terapi starter ikke med at analysere tankerne – den starter med kroppen. Når nervesystemet er reguleret, løser mange psykiske udfordringer sig selv eller bliver langt lettere at arbejde med.
+Her begynder vi derfor med kroppen frem for med tankerne. Ikke fordi tankerne er ligegyldige, men fordi det for en del mennesker er en lettere indgang. Vi arbejder med vejrtrækning, bevægelse og opmærksomhed, og du får nogle enkle øvelser med, som du kan bruge mellem gangene.
+
+Det er ikke et alternativ til samtaleterapi, og det er ikke en behandling af en diagnose. Det er en måde at arbejde på, som kan stå alene eller kombineres med samtaler. [Sådan foregår psykoterapi](/til-dig/psykoterapi/) — og hvis du hellere vil arbejde udenfor, kan du [læse om naturterapi](/til-dig/naturterapi/).
+
+Er du i tvivl om, hvad der fylder, eller har du symptomer, der bekymrer dig, så tal med din læge først. Jeg behandler ikke sygdom, og jeg stiller ikke diagnoser.
