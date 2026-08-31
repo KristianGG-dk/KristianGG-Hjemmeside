@@ -322,54 +322,56 @@
   to = "/til-dig/nervesystemet/"
   status = 301
 
+# Search Console: 404 crawlet 18. jun. 2026. Sidens emne findes som
+# selvstændigt afsnit "Ungestøtte" på destinationen, og destinationens title
+# er "Pædagogiske særforanstaltninger og ungestøtte på Fyn". Entydig.
+[[redirects]]
+  from = "/unge-stotte/"
+  to = "/til-kommuner/saerforanstaltninger/"
+  status = 301
+
+[[redirects]]
+  from = "/unge-stotte"
+  to = "/til-kommuner/saerforanstaltninger/"
+  status = 301
+
+# Search Console: 404 crawlet 18. maj 2026. Taksonomien flyttede fra
+# /blog/categories/ til /categories/ ved Hugo-migreringen. Samme term,
+# samme indhold — derfor en splat-regel frem for én URL ad gangen.
+[[redirects]]
+  from = "/blog/categories/*"
+  to = "/categories/:splat/"
+  status = 301
+
+[[redirects]]
+  from = "/blog/tags/*"
+  to = "/tags/:splat/"
+  status = 301
+
 # ─────────────────────────────────────────────────────────────────────────────
-# AFVENTER BESLUTNING
-# Disse tre gamle adresser peger på destinationer, der ikke findes (404).
-# Der er ingen indholdsmæssig efterfølger på hjemmesiden, og de er derfor
-# bevidst IKKE omdirigeret til den nærmeste side. Reglerne står uændret,
-# indtil der er truffet beslutning om hver enkelt.
-#   /hypnose-stammen                             emnet stammen findes ikke i indholdet
-#   /stoette-til-foraeldre-naar-boern-anbringes  emnet anbringelse findes ikke i indholdet
-#   /udfordringen-opstaar                        emnet kan ikke fastslås
+# BEVIDST PARKEREDE LEGACY-404'ERE
 #
-# Fire yderligere gamle adresser fra Search Console giver 404 og har ingen
-# entydig efterfølger. De er bevidst IKKE omdirigeret:
-#   /tjenester/             ydelsesoversigt — kunne være /til-dig/ eller /kurser/
-#   /udtalelser/            udtalelser — der findes ingen udtalelsesside
-#   /misbrug/               misbrug — emnet findes ikke i indholdet
-#   /unge-stotte/           ungestøtte — emnet findes ikke i indholdet
-#                           (samme emne som /stoette-til-foraeldre-naar-boern-anbringes)
+# Disse gamle adresser har ingen reel, semantisk efterfølger på hjemmesiden.
+# De er bevidst IKKE omdirigeret. En korrekt 404 er bedre end en forkert 301:
+# en 301 til en side om et andet emne sender hverken brugeren eller Google et
+# sandt signal, og Google behandler den i praksis som et soft 404.
+#
+# De tre første HAVDE tidligere en 301 til en adresse, der ikke findes
+# (/hypnose, /ungestoette, /nervesystem). Det var en omdirigeringskæde, der
+# endte i 404. Reglerne er fjernet, så adresserne nu giver en ren 404 i ét hop.
+#
+#   /hypnose-stammen                             stammen som emne findes ikke
+#   /stoette-til-foraeldre-naar-boern-anbringes  anbringelse/pårørende findes ikke
+#   /udfordringen-opstaar                        emnet kan ikke fastslås
+#   /tjenester/     ydelsesoversigt — hverken /til-dig/ eller /kurser/ er entydig
+#   /udtalelser/    der findes ingen udtalelsesside (og ingen udtalelser med samtykke)
+#   /misbrug/       misbrug findes ikke som emne. Search Console: 6 eksponeringer,
+#                   gennemsnitlig position 5,0 — det er en indholdsmulighed,
+#                   ikke en omdirigering.
+#
+# Revurderes, hvis der senere oprettes indhold om emnet, eller hvis Search
+# Console giver ny dokumentation.
 # ─────────────────────────────────────────────────────────────────────────────
-
-[[redirects]]
-  from = "/hypnose-stammen"
-  to = "/hypnose"
-  status = 301
-
-[[redirects]]
-  from = "/hypnose-stammen/"
-  to = "/hypnose"
-  status = 301
-
-[[redirects]]
-  from = "/stoette-til-foraeldre-naar-boern-anbringes"
-  to = "/ungestoette"
-  status = 301
-
-[[redirects]]
-  from = "/stoette-til-foraeldre-naar-boern-anbringes/"
-  to = "/ungestoette"
-  status = 301
-
-[[redirects]]
-  from = "/udfordringen-opstaar"
-  to = "/nervesystem"
-  status = 301
-
-[[redirects]]
-  from = "/udfordringen-opstaar/"
-  to = "/nervesystem"
-  status = 301
 
 # ── Security headers ──────────────────────────────────────────────────────────
 [[headers]]
