@@ -1,7 +1,7 @@
 ---
 title: "Psykoterapi i Odense – reg. psykoterapeut"
-hero_billede: "skovsti"
-hero_alt: "Sti mellem høje traeer med udsigt til vand i det fjerne"
+hero_billede: "skovsoe"
+hero_alt: "Åbning i bøgeskoven med udsigt ned til en stille sø"
 description: "Registreret psykoterapeut i Odense. Samtaleterapi, hypnoterapi og NLP i klinikken på Lumbyvej eller online — når du står et sted, du ikke kommer videre fra."
 hero_title: "Psykoterapi"
 hero_subtitle: "Samtaler i klinikken på Lumbyvej — eller online. Der hvor det, du står i, kan få plads, ord og en anden retning."

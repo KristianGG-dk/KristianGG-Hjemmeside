@@ -8,8 +8,8 @@ service_name: "Skovbad på Fyn"
 service_desc: "Guidet skovbad i skovene omkring Odense og på Fyn, individuelt eller i lille gruppe."
 hero_billede: "skovbad-gruppe"
 hero_alt: "En gruppe mennesker sidder spredt på skovbunden mellem bøgetræer"
-detalje_billede: "strandplante"
-detalje_alt: "Lav grøn plante der breder sig ud over lyst sand"
+detalje_billede: "vintergaekker"
+detalje_alt: "Vintergækker i blomst mellem vedbend og visne blade på skovbunden"
 
 er_ikke:
   - "Det er ikke en vandretur. Vi bevæger os kort og langsomt."

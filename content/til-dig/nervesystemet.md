@@ -6,6 +6,9 @@ hero_subtitle: "Stress, angst og tankemylder er ofte tegn på et overaktiveret n
 service_name: "Nervesystemsregulering & Åndedrætsterapi"
 service_desc: "Nervesystemsbaseret terapi med åndedrætsterapi, mindfulness og somatiske teknikker mod stress og angst i Odense."
 
+hero_billede: "skovsti"
+hero_alt: "Sti mellem høje træer med udsigt til vand i det fjerne"
+
 methods:
   - icon: ""
     title: "Åndedrætsterapi"

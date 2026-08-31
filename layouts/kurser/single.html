@@ -5,11 +5,18 @@
 {{/* Hero */}}
 <section class="bg-gradient-to-b from-mos-lys to-taage py-16 px-4 sm:px-6">
   <div class="container-width">
-    <div class="max-w-3xl">
-      <p class="text-mos text-sm font-semibold uppercase tracking-wide mb-2"><a href="/kurser/" class="hover:underline">Kurser</a></p>
-      <h1 class="text-4xl md:text-5xl font-semibold text-skovbund leading-tight mb-2">{{ .Title }}</h1>
-      <p class="text-xl text-mos font-semibold mb-8">{{ $p.tagline }}</p>
-      {{ partial "kontakt-knapper.html" (dict "business" $b) }}</div>
+    <div class="grid {{ if $p.hero_billede }}lg:grid-cols-2 gap-10 lg:gap-14 items-center{{ end }}">
+      <div class="{{ if not $p.hero_billede }}max-w-3xl{{ end }}">
+        <p class="text-mos text-sm font-semibold uppercase tracking-wide mb-2"><a href="/kurser/" class="hover:underline">Kurser</a></p>
+        <h1 class="text-4xl md:text-5xl font-semibold text-skovbund leading-tight mb-2">{{ .Title }}</h1>
+        <p class="text-xl text-mos font-semibold mb-8">{{ $p.tagline }}</p>
+        {{ partial "kontakt-knapper.html" (dict "business" $b) }}
+      </div>
+      {{- with $p.hero_billede }}
+      <div>{{ partial "billede.html" (dict "navn" . "alt" $p.hero_alt "forhold" (or $p.hero_forhold 0.8)
+        "bredder" (or $p.hero_bredder (slice 420 640 860)) "sizes" "(min-width: 1024px) 46vw, 92vw" "prioritet" true) }}</div>
+      {{- end }}
+    </div>
   </div>
 </section>
 

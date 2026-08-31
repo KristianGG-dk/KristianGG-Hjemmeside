@@ -2,6 +2,8 @@
 title: "Madterapi og Sankning"
 description: "Madterapi og Sankning — Nærvær, natur og regulering gennem mad. Forløb hos Kristian GG, registreret psykoterapeut i Odense."
 tagline: "Nærvær, natur og regulering gennem mad"
+hero_billede: "kaffe-i-skoven"
+hero_alt: "Kaffekande og to kopper stillet på skovbunden mellem visne blade"
 jeg_hoerer_ofte: '"Jeg ved ikke, hvad jeg har brug for", "jeg fylder bare på" eller "jeg får ikke ryddet op i mit liv."'
 open_question: "Men hvad gør du, når du ikke længere kan mærke, hvad der er godt for dig – og hvad der bare fylder?"
 focus:

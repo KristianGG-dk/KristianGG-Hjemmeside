@@ -17,8 +17,8 @@
         {{ partial "kontakt-knapper.html" (dict "business" $b "klasse" "mt-8") }}
       </div>
       {{- with $p.hero_billede }}
-      <div>{{ partial "billede.html" (dict "navn" . "alt" $p.hero_alt "forhold" 0.8
-        "bredder" (slice 420 640 860) "sizes" "(min-width: 1024px) 46vw, 92vw" "prioritet" true) }}</div>
+      <div>{{ partial "billede.html" (dict "navn" . "alt" $p.hero_alt "forhold" (or $p.hero_forhold 0.8)
+        "bredder" (or $p.hero_bredder (slice 420 640 860)) "sizes" "(min-width: 1024px) 46vw, 92vw" "prioritet" true) }}</div>
       {{- end }}
     </div>
   </div>
