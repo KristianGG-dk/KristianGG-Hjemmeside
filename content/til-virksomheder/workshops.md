@@ -1,6 +1,6 @@
 ---
 title: "Stressworkshops til virksomheder – Odense og Fyn"
-description: "Praksisnære workshops om stresshåndtering og nervesystemet til virksomheder på Fyn og i Danmark. Certificeret psykoterapeut og foredragsholder. Kontakt for tilbud."
+description: "Praksisnære workshops om stresshåndtering og nervesystemet til virksomheder på Fyn og i Danmark. Registreret psykoterapeut og foredragsholder. Kontakt for tilbud."
 hero_title: "Workshops til virksomheder"
 hero_subtitle: "Praksisnær viden der gør en forskel – fra dag ét. Alle workshops kombinerer teori, øvelser og konkrete redskaber som dine medarbejdere tager med hjem."
 service_name: "Stressworkshops til virksomheder"

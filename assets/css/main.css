@@ -123,6 +123,14 @@
   .prosa strong { @apply text-skovbund font-semibold; }
   .prosa a { @apply text-mos underline underline-offset-2 hover:text-mos-dyb; }
 
+  /* Tailwind Typography saetter selv anførselstegn paa afsnit i blockquote.
+     Citaterne i indholdet har allerede rigtige anførselstegn, og resultatet
+     var dobbelte tegn i begge ender. */
+  .prose blockquote p::before,
+  .prose blockquote p::after {
+    content: none;
+  }
+
   .etikette {
     @apply text-[0.8125rem] uppercase tracking-[0.14em] font-semibold text-mos;
   }
