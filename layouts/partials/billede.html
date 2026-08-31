@@ -25,9 +25,10 @@
   <picture>
     <source type="image/avif" sizes="{{ $sizes }}" srcset="{{ range $i, $w := $b }}{{ if $i }}, {{ end }}/images/natur/{{ $n }}-{{ $w }}.avif {{ $w }}w{{ end }}">
     <source type="image/webp" sizes="{{ $sizes }}" srcset="{{ range $i, $w := $b }}{{ if $i }}, {{ end }}/images/natur/{{ $n }}-{{ $w }}.webp {{ $w }}w{{ end }}">
+    {{/* JPEG er ren reserve for browsere uden hverken AVIF eller WebP.
+         Det er under et par procent af trafikken, og de faar én fornuftig
+         stoerrelse frem for tre. AVIF og WebP har fuldt srcset. */}}
     <img src="/images/natur/{{ $n }}-{{ index $b 1 }}.jpg"
-         sizes="{{ $sizes }}"
-         srcset="{{ range $i, $w := $b }}{{ if $i }}, {{ end }}/images/natur/{{ $n }}-{{ $w }}.jpg {{ $w }}w{{ end }}"
          alt="{{ .alt }}"
          width="{{ $stor }}" height="{{ $h }}"
          {{ if $pri }}fetchpriority="high" decoding="async"{{ else }}loading="lazy" decoding="async"{{ end }}
