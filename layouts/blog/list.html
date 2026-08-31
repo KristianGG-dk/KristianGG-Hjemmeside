@@ -18,7 +18,10 @@
     {{- if $pages }}
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
       {{- range $pages }}
-      <a href="{{ .Permalink }}" class="card group hover:border-mos hover:shadow-md transition-all border-2 border-transparent">
+      {{/* RelPermalink, ikke Permalink. Permalink er absolut og peger på
+           kristiangg.dk — på testsiden sendte blogkortet derfor brugeren
+           væk fra testsiden og over på production. */}}
+      <a href="{{ .RelPermalink }}" class="card group hover:border-mos hover:shadow-md transition-all border-2 border-transparent">
         {{- with .Params.categories }}
         <div class="flex flex-wrap gap-1 mb-3">
           {{- range . }}
