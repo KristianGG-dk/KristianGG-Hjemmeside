@@ -20,7 +20,7 @@ er_ikke:
 
 faq:
   - q: "Hvor lang tid tager det?"
-    a: "Vi aftaler varigheden, når vi taler sammen. Det tager tid, og det er en del af pointen: der skal være tid nok til, at man ikke går rundt og holder øje med uret."
+    a: "Vi aftaler varigheden, når vi taler sammen. Det tager tid, og det er en del af pointen: Der skal være tid nok til, at man ikke går rundt og holder øje med uret."
   - q: "Skal jeg kunne noget?"
     a: "Nej. Du skal kunne gå langsomt. Det er sværere, end det lyder, og det er hele øvelsen."
   - q: "Kan man komme alene?"
@@ -42,9 +42,11 @@ Det lyder af ingenting. Det er også det, der gør det svært.
 
 Vi mødes ved skovkanten og går ind. Der går gerne et stykke tid, før tempoet falder. Det er der ikke noget galt i, og det er ikke noget, du skal skynde på.
 
-Undervejs stopper vi flere gange. Jeg giver nogle enkle invitationer: læg mærke til lyden bag dig, mærk temperaturforskellen mellem skygge og lys, se hvor mange grønne nuancer du kan skelne. Du kan følge dem eller lade være. Der er ingen, der tjekker.
+Undervejs stopper vi flere gange. Jeg giver nogle enkle invitationer: Læg mærke til lyden bag dig, mærk temperaturforskellen mellem skygge og lys, se hvor mange grønne nuancer du kan skelne. Du kan følge dem eller lade være. Der er ingen, der tjekker.
 
 Til sidst sætter vi os. Nogle gange bliver der talt om, hvordan det var. Andre gange ikke.
+
+**Påklædning:** Fodtøj og tøj efter vejret.
 
 ## Hvad det ikke er
 
@@ -64,7 +66,7 @@ Der er en del forvirring om skovbad, så det er nemmest at sige, hvad det ikke e
 
 ## Hvem det giver mening for
 
-Det er ofte det første, folk prøver hos mig. Tærsklen er lav: du skal ikke fortælle om dig selv, du skal ikke være i krise, og du skal ikke forpligte dig til noget.
+Det er ofte det første, folk prøver hos mig. Tærsklen er lav: Du skal ikke fortælle om dig selv, du skal ikke være i krise, og du skal ikke forpligte dig til noget.
 
 Det bliver ofte valgt af mennesker, der er kørt trætte af at skulle præstere — også i det, der skulle være afslapning. Og af dem, der har svært ved at holde fri derhjemme, fordi vasketøjet ligger der.
 

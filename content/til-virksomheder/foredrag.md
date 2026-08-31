@@ -52,6 +52,10 @@ cta_button: "Kontakt for tilbud"
 
 Foredraget kombinerer neuropsykologi, mindfulness og konkrete teknikker – og slutter altid med en fælles øvelse som deltagerne kan bruge allerede samme aften.
 
+**Anbefaling fra en gruppeopgave**
+
+Ud over foredrag holder jeg breathwork-sessions for grupper. Anbefalingen herunder er fra Danish Vanlife Festival og handler om det arbejde med grupper — ikke om individuelle terapiforløb.
+
 > "Tak til Kristian GG, Kursus og Workshop, for nogle fantastiske breathworkshops på Danish Vanlife Festival. Begge sessions var velbesøgte og med forespørgsel om flere. Kristian er både super nærværende i sit arbejde og er kompetent og lun i sin tilgang til at arbejde med kroppen. Vi glæder os til at have Kristian tilbage næste år. Hvis jeres forening eller firma skal have en alternativ oplevelse eller dygtig breathwork-formidler, kan jeg varmt anbefale Kristian."
 >
-> — Christian, Danish Vanlife Festival
+> — Christian, Danish Vanlife Festival, om breathwork-sessions for grupper

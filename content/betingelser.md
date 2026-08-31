@@ -59,7 +59,7 @@ Afbud skal ske senest 48 timer før start. Ved senere afbud eller udeblivelse fa
 
 - Afbud senest 7 døgn før: 100 % refundering
 - Afbud mellem 7 døgn og 48 timer før: 50 % refundering
-- Afbud senere end 48 timer før: ingen refundering
+- Afbud senere end 48 timer før: Ingen refundering
 
 **Vikardækning og særforanstaltninger (B2B)**
 

@@ -21,7 +21,7 @@ faq:
   - q: "Skal jeg kunne noget med meditation eller mindfulness?"
     a: "Nej. Du skal ikke præstere noget som helst. Der er ingen øvelser, du kan gøre forkert, og det er helt i orden bare at gå og tale."
   - q: "Er naturterapi det samme som en samtale i klinikken?"
-    a: "Nej. Fagligheden bag er den samme, og jeg har den samme tavshedspligt og den samme registrering. Men fremgangsmåden er en anden: vi arbejder med kroppen i bevægelse, med sanserne og med det, omgivelserne bringer med sig. Det giver nogle andre indgange end en samtale ansigt til ansigt."
+    a: "Nej. Fagligheden bag er den samme, og jeg har den samme tavshedspligt og den samme registrering. Men fremgangsmåden er en anden: Vi arbejder med kroppen i bevægelse, med sanserne og med det, omgivelserne bringer med sig. Det giver nogle andre indgange end en samtale ansigt til ansigt."
   - q: "Hvor foregår det?"
     a: "I skovene og ved kysterne omkring Odense og på Fyn. Vi aftaler mødested, når vi har talt sammen, og du kan altid sige, hvis et sted føles forkert."
 
@@ -29,7 +29,7 @@ cta_heading: "Tag kontakt"
 cta_text: "Skriv, hvis du har lyst til at prøve. Vi kan sagtens starte med en enkelt tur og se, hvordan det føles."
 ---
 
-Naturterapi er en selvstændig terapeutisk arbejdsform. Den bygger på den samme faglighed som psykoterapien, men den gør noget andet: her er kroppen i bevægelse, sanserne er åbne, og omgivelserne er ikke bare kulisse — de er noget, vi arbejder med.
+Naturterapi er en selvstændig terapeutisk arbejdsform. Den bygger på den samme faglighed som psykoterapien, men den gør noget andet: Her er kroppen i bevægelse, sanserne er åbne, og omgivelserne er ikke bare kulisse — de er noget, vi arbejder med.
 
 Det betyder også, at nogle ting bliver lettere og andre bliver sværere. Man kan sjældent gennemgå et forløb lige så systematisk, som man kan i et rum med to stole. Til gengæld er det min erfaring, at nogle får lettere ved at sige tingene, når vi går.
 
@@ -66,6 +66,8 @@ Du skal ikke præstere noget. Ikke gå hurtigt, ikke være åben på kommando, i
 Vi mødes i skovene og ved kysterne omkring Odense og rundt på Fyn. En session varer typisk halvanden til tre timer — længere end en samtale i klinikken, fordi der skal være tid til at komme ud, komme i gang og komme tilbage igen.
 
 Der findes også længere forløb, hvor vi er ude en hel dag eller over to dage med overnatning. Det er ikke for alle, og det er ikke noget, man starter med.
+
+**Påklædning:** Fodtøj og tøj efter vejret.
 
 ## Mad og sankning
 

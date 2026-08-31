@@ -27,6 +27,6 @@ Forløbet er målrettet voksne, der vil have konkret styr på deres økonomi. He
 
 Når pengene ikke er synlige, mister du hurtigt overblikket. Små køb bliver til store beløb, og økonomien begynder at styre dig i stedet for omvendt. Det kræver en enkel metode – ikke mere kompleksitet.
 
-Forløbet tager afsæt i forskellen mellem det, du tror, du bruger – og det, du faktisk bruger. Vi arbejder med cashstuffing som metode: du fordeler dine penge fysisk i kategorier, så du kan se, hvad du har – og hvad du bruger.
+Forløbet tager afsæt i forskellen mellem det, du tror, du bruger – og det, du faktisk bruger. Vi arbejder med cashstuffing som metode: Du fordeler dine penge fysisk i kategorier, så du kan se, hvad du har – og hvad du bruger.
 
 Du lærer ikke bare at lave et budget. Du lærer at styre dine penge i praksis.

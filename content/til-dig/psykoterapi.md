@@ -71,6 +71,6 @@ Det er ikke metoderne, der bærer arbejdet, men de skal nævnes, så du ved hvad
 
 ## Hvor og hvordan
 
-En session foregår i klinikken på Lumbyvej 11 i Odense. De fleste kommer fra Odense og resten af Fyn, men afstanden behøver ikke afgøre det: vi kan også mødes online, hvis hverdagen gør det lettere — det fungerer bedre, end mange tror.
+En session foregår i klinikken på Lumbyvej 11 i Odense. De fleste kommer fra Odense og resten af Fyn, men afstanden behøver ikke afgøre det: Vi kan også mødes online, hvis hverdagen gør det lettere — det fungerer bedre, end mange tror.
 
 Og vi kan arbejde udenfor. Naturterapi er en selvstændig arbejdsform med sin egen fremgangsmåde — læs mere om [naturterapi](/til-dig/naturterapi/), hvis det lyder som noget for dig.

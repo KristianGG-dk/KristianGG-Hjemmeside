@@ -29,6 +29,6 @@ Forløbet er målrettet voksne, der vil have mere retning og mindre støj. Det h
 
 Mad er livets gryderet. Noget skal i. Noget skal ud. Noget nærer. Noget dræner. Hvis du ikke vælger bevidst, sker det bare automatisk – og så ender du med noget, der ikke fungerer.
 
-Forløbet tager afsæt i forskellen mellem det liv, du lever – og det liv, du faktisk vil have. Vi arbejder konkret: du går ud, samler, vælger, sorterer, tilbereder. Undervejs bliver det tydeligt, hvordan du også gør i dit eget liv.
+Forløbet tager afsæt i forskellen mellem det liv, du lever – og det liv, du faktisk vil have. Vi arbejder konkret: Du går ud, samler, vælger, sorterer, tilbereder. Undervejs bliver det tydeligt, hvordan du også gør i dit eget liv.
 
 Du lærer ikke at lave mad. Du lærer at vælge. Og du lærer at stå ved det.
