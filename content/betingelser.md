@@ -33,9 +33,11 @@ Der tilbydes blandt andet:
 
 Ydelser leveres som faglig støtte og udviklingsarbejde.
 
-## 4. Booking og aftaleindgåelse
+## 4. Aftaleindgåelse
 
-- **B2C:** Booking er bindende ved bekræftelse
+Der findes ingen onlinebooking. Aftaler indgås ved kontakt via SMS, e-mail eller kontaktformularen på hjemmesiden, og bekræftes efterfølgende skriftligt.
+
+- **B2C:** Aftalen er bindende, når tidspunktet er bekræftet
 - **B2B:** Aftaler indgås skriftligt (mail er tilstrækkeligt) og er bindende fra accept
 
 Ved længerevarende eller komplekse opgaver kan der udarbejdes særskilt kontrakt.
@@ -88,8 +90,8 @@ Kristian GG fungerer som dataansvarlig for de personoplysninger, der behandles i
 
 I forbindelse med drift og levering anvendes følgende databehandlere og samarbejdspartnere:
 
-- Terapeutbooking
 - Google (herunder mail, kalender og cloud-løsninger)
+- Netlify (drift af hjemmesiden og modtagelse af beskeder fra kontaktformularen)
 - Revisorskyen
 
 Disse behandler udelukkende personoplysninger på vegne af Kristian GG og i henhold til indgåede databehandleraftaler.

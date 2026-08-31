@@ -32,7 +32,14 @@
 <meta name="twitter:description" content="{{ $desc }}" />
 
 {{/* Sitemap hint */}}
-<meta name="robots" content="{{ if or .Params.noindex (eq .Kind "404") }}noindex, nofollow{{ else }}index, follow{{ end }}" />
+{{/* Taksonomisiderne (/categories/, /tags/ og de enkelte termer) har ingen
+     dokumenteret værdi i Search Console — de optræder ikke i rapporten over
+     sider — og indeholder omkring 38 ord hver. /tags/ har slet ingen tags.
+     De noindexes, men bevares som fungerende sider, så det gamle
+     /blog/categories/nervesystemet stadig lander et meningsfuldt sted.
+     follow bevares, så linkene på dem stadig følges. */}}
+{{- $taksonomi := in (slice "taxonomy" "term") .Kind -}}
+<meta name="robots" content="{{ if or .Params.noindex (eq .Kind "404") }}noindex, nofollow{{ else if $taksonomi }}noindex, follow{{ else }}index, follow{{ end }}" />
 
 {{/* Skrifttyper.
      Slås til/fra med params.webfonts i hugo.toml.

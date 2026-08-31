@@ -55,10 +55,10 @@ fadp:
 
 ## Min historie
 
-Som 21-årig var Kristian udsat for en alvorlig ulykke der ændrede alt. Den fysiske og mentale rejse tilbage til et fuldt liv gav ham en indefra-forståelse af hvad det vil sige at stå midt i noget svært – og hvad der faktisk hjælper.
+Jeg blev ikke psykoterapeut ad den lige vej. Som 21-årig håndværker kom jeg alvorligt til skade i ryggen, og det tvang mig til at bygge et liv op fra bunden. Den fysiske og mentale vej tilbage gav mig en indefra-forståelse af, hvad det vil sige at stå midt i noget, der ikke bare går over — og af, hvad der faktisk hjælper.
 
-Den erfaring blev startskuddet til en faglig rejse: uddannelse til reg. psykoterapeut (FaDP), Master Neuro Hypnoterapeut, Master NLP Practitioner, åndedrætsterapeut og mindfulness-instruktør. Dertil pædagogisk erfaring fra botilbud og asylcentre.
+Den erfaring blev begyndelsen på en faglig vej: uddannelse til registreret psykoterapeut (FaDP), Master Neuro Hypnoterapeut, Master NLP Practitioner, åndedrætsterapeut og mindfulness-instruktør. Dertil pædagogisk erfaring fra botilbud og asylcentre.
 
-I 2019 modtog Kristian Ildsjæleprisen for sit frivillige sociale arbejde – en anerkendelse af den indsats han lægger i at gøre en forskel for andre.
+I 2019 modtog jeg Ildsjæleprisen for mit frivillige sociale arbejde.
 
-I dag driver han praksis fra Lumbyvej 11 i Odense og arbejder med private klienter, virksomheder og kommunale samarbejdspartnere over hele Fyn og Syddanmark.
+I dag driver jeg praksis fra Lumbyvej 11 i Odense og arbejder med private klienter, virksomheder og kommunale samarbejdspartnere på Fyn og i Syddanmark.

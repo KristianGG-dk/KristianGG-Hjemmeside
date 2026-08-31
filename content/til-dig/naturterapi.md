@@ -31,7 +31,7 @@ cta_text: "Skriv, hvis du har lyst til at prøve. Vi kan sagtens starte med en e
 
 Naturterapi er en selvstændig terapeutisk arbejdsform. Den bygger på den samme faglighed som psykoterapien, men den gør noget andet: her er kroppen i bevægelse, sanserne er åbne, og omgivelserne er ikke bare kulisse — de er noget, vi arbejder med.
 
-Det betyder også, at nogle ting bliver lettere og andre bliver sværere. Man kan sjældent gennemgå et forløb lige så systematisk, som man kan i et rum med to stole. Til gengæld kommer der ofte noget frem, der ikke ville være kommet frem sagt ansigt til ansigt.
+Det betyder også, at nogle ting bliver lettere og andre bliver sværere. Man kan sjældent gennemgå et forløb lige så systematisk, som man kan i et rum med to stole. Til gengæld er det min erfaring, at nogle får lettere ved at sige tingene, når vi går.
 
 ## Sådan arbejder vi
 
@@ -41,7 +41,7 @@ Vi går, mens vi taler. Blikket er rettet fremad i stedet for mod et andet menne
 
 ### Åndedræt i naturen
 
-Vejrtrækningen, tempoet, hvor tungt eller let du går. Kroppen er tit længere fremme end sproget, og når vi er i bevægelse, er den til at få øje på. Vi arbejder med åndedrættet undervejs, når der er brug for det.
+Vejrtrækningen, tempoet, hvor tungt eller let du går. Når vi er i bevægelse, er den slags lettere at lægge mærke til. Vi arbejder med åndedrættet undervejs, hvis der er brug for det.
 
 Det er det samme somatiske arbejde, som jeg ellers laver med nervesystemet inde i klinikken — bare udendørs. Du kan læse mere om [arbejdet med nervesystemet](/til-dig/nervesystemet/).
 

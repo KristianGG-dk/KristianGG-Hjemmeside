@@ -27,7 +27,7 @@ faq:
   - q: "Hvad er forskellen på en psykolog og en psykoterapeut?"
     a: "En psykolog har en universitetsuddannelse i psykologi og er en beskyttet titel. Psykoterapeut er ikke en beskyttet titel i Danmark, men registrerede psykoterapeuter er underlagt uddannelseskrav og etiske regler gennem deres forening. Jeg er registreret hos Foreningen af Danske Psykoterapeuter. Er det psykologfaglig udredning eller behandling, du har brug for, siger jeg det ærligt og henviser videre."
   - q: "Har du tavshedspligt?"
-    a: "Ja. Det, du fortæller, bliver i rummet."
+    a: "Ja. Det, du fortæller, bliver i rummet. Der findes enkelte lovbestemte undtagelser — blandt andet underretningspligt, hvis jeg får viden om et barn, der mistrives, og pligten til at handle, hvis der er alvorlig og nærliggende fare for liv eller helbred. Bliver det aktuelt, siger jeg det til dig."
   - q: "Kan vi mødes udenfor i stedet?"
     a: "Ja. Mange foretrækker at gå, mens vi taler. Læs mere om naturterapi."
 

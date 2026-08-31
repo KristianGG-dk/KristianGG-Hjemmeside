@@ -42,11 +42,11 @@ forloeb:
   - titel: "Vi aftaler en tid"
     tekst: "Inde eller ude. Du bestemmer, og du kan skifte mening undervejs."
 
-om_titel: "Hvorfor jeg gør det her"
+om_titel: "Kort om mig"
 om_tekst: |
-  Jeg blev ikke psykoterapeut ad den lige vej. Som 21-årig håndværker kom jeg alvorligt til skade i ryggen, og det tvang mig til at bygge et liv op fra bunden. Den erfaring — at stå midt i noget, der ikke bare går over — er en del af grunden til, at jeg sidder her i dag.
+  Jeg er registreret psykoterapeut hos Foreningen af Danske Psykoterapeuter og naturterapeut, med praksis på Lumbyvej 11 i Odense. Jeg har uddannelser i blandt andet hypnoterapi, NLP, kognitiv adfærdsterapi og åndedrætsterapi, og en pædagogisk baggrund fra botilbud og asylcentre.
 
-  Jeg er registreret psykoterapeut hos Foreningen af Danske Psykoterapeuter og har en pædagogisk baggrund fra botilbud og asylcentre.
+  Jeg arbejder med voksne, der står i stress, angst, søvnproblemer, lavt selvværd, sorg eller en større forandring i livet — og med virksomheder og kommuner, der har brug for en fagperson udefra.
 om_billede: "kristian-portraet"
 om_alt: "Kristian G. G. Dansted udendørs med et stykke træ i hånden"
 
