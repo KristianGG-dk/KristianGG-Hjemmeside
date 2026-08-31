@@ -12,15 +12,19 @@
 </section>
 
 <section class="section-padding">
+  {{/* Aside står først i DOM'en, så telefon, SMS og mail møder én øverst på
+       mobil. På store skærme flytter order-klasserne formularen tilbage til
+       venstre, hvor den har den bredde, den skal bruge. Formularen er det
+       sekundære spor — den primære vej ind er SMS og mail. */}}
   <div class="container-width grid lg:grid-cols-[1fr_22rem] gap-12">
 
-    <div>
+    <div class="lg:order-1">
       <h2 class="text-2xl font-semibold">Vil du hellere skrive lidt mere?</h2>
       <p class="prosa mt-3">Så brug formularen. Den lander i den samme indbakke — den er bare bedre, hvis du har mere på hjerte, end der er plads til i en SMS.</p>
       <div class="mt-8">{{ partial "contact-form.html" . }}</div>
     </div>
 
-    <aside class="space-y-5">
+    <aside class="space-y-5 lg:order-2">
       <div class="card">
         <h2 class="text-lg font-semibold">Direkte</h2>
         <dl class="mt-3 space-y-3 text-sm">

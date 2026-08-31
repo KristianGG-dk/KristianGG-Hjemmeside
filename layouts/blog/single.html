@@ -57,9 +57,9 @@
         </div>
         <div>
           <p class="font-semibold text-skovbund">{{ $p.author | default "Kristian G. G. Dansted" }}</p>
-          <p class="text-tekst-daempet text-sm mb-2">{{ $p.author_credentials | default "Reg. Psykoterapeut (FaDP), Master Neuro Hypnoterapeut" }}</p>
+          <p class="text-tekst-daempet text-sm mb-2">{{ $p.author_credentials | default "Registreret psykoterapeut og naturterapeut (FaDP)" }}</p>
           {{- with $p.personal_experience }}<p class="text-tekst-daempet text-sm leading-relaxed">{{ . }}</p>{{- end }}
-          {{- if not $p.personal_experience }}<p class="text-tekst-daempet text-sm leading-relaxed">Kristian har hjulpet hundredvis af mennesker med at finde tilbage til sig selv siden 2019. Reg. psykoterapeut (FaDP), Master NLP og åndedrætsterapeut med praksis i Odense.</p>{{- end }}
+          {{- if not $p.personal_experience }}<p class="text-tekst-daempet text-sm leading-relaxed">Registreret psykoterapeut hos Foreningen af Danske Psykoterapeuter, naturterapeut og åndedrætsterapeut med praksis på Lumbyvej i Odense.</p>{{- end }}
         </div>
       </div>
     </div>
@@ -70,8 +70,8 @@
 <section class="section-padding bg-skovbund text-taage">
   <div class="container-width px-4 sm:px-6 text-center">
     <h2 class="text-2xl md:text-3xl font-semibold text-white mb-4">Har du spørgsmål?</h2>
-    <p class="text-mos-light text-lg mb-8 max-w-2xl mx-auto">Book en gratis og uforpligtende telefonsamtale med Kristian.</p>
-    <a href="{{ $b.phone_sms | safeURL }}" class="inline-block btn-lys font-semibold px-8 py-4 rounded-lg transition-colors text-lg">Tag kontakt</a>
+    <p class="text-mos-light text-lg mb-8 max-w-2xl mx-auto">Skriv en SMS eller en mail. Vi starter med en kort telefonsamtale uden beregning.</p>
+    {{ partial "kontakt-knapper.html" (dict "business" $b "variant" "lys" "klasse" "flex flex-col items-center") }}
   </div>
 </section>
 {{ end }}
