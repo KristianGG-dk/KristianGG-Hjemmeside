@@ -1,5 +1,6 @@
 ---
 title: "Kvinder Ingen Adgang – Et Forløb for Mænd"
+description: "Kvinder Ingen Adgang – Et Forløb for Mænd — Mental stabilitet og selvledelse. Forløb hos Kristian GG, registreret psykoterapeut i Odense."
 tagline: "Mental stabilitet og selvledelse"
 jeg_hoerer_ofte: '"Jeg klarer det selv", "jeg gider ikke snakke om det" eller "jeg skal bare have styr på det."'
 open_question: "Men hvad gør du, når presset vokser – og du ikke længere kan løse det alene?"

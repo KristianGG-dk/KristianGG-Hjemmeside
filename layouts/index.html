@@ -1,135 +1,135 @@
-{{ define "schema" }}
-  {{ partial "jsonld/person.html" . }}
-{{ end }}
-
+{{ define "schema" }}{{ partial "jsonld/person.html" . }}{{ end }}
 {{ define "main" }}
+{{- $b := site.Data.business -}}
 {{- $p := .Params -}}
-{{- $b := .Site.Data.business -}}
 
-{{/* Hero */}}
-<section class="bg-gradient-to-br from-primary-light via-white to-white">
-  <div class="container-width py-16 md:py-24 px-4 sm:px-6">
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+{{/* ── Hero ─────────────────────────────────────────────────────────────── */}}
+<section class="bg-gradient-to-b from-mos-lys to-taage">
+  <div class="container-width px-4 sm:px-6 py-14 sm:py-20 lg:py-24">
+    <div class="grid lg:grid-cols-2 gap-10 lg:gap-14 items-center">
       <div>
-        <p class="text-primary font-medium text-sm uppercase tracking-wide mb-4">Reg. Psykoterapeut (FaDP) · Odense, Fyn</p>
-        <h1 class="text-4xl md:text-5xl font-bold text-text-dark leading-tight mb-6">{{ $p.hero_title }}</h1>
-        <p class="text-lg md:text-xl text-text-muted leading-relaxed mb-8">{{ $p.hero_subtitle }}</p>
-        <div class="flex flex-wrap gap-4">
-          <a href="{{ $b.booking }}" target="_blank" rel="noopener" class="btn-primary">Book gratis samtale</a>
-          <a href="/om" class="btn-outline">Om Kristian</a>
+        <p class="etikette mb-4">{{ $p.hero_etikette }}</p>
+        <h1 class="text-[2rem] sm:text-4xl md:text-5xl lg:text-6xl font-semibold leading-[1.05] tracking-tight">{{ $p.hero_titel }}</h1>
+        <p class="prosa mt-6 text-lg">{{ $p.hero_tekst }}</p>
+        {{ partial "kontakt-knapper.html" (dict "business" $b "klasse" "mt-8") }}
+      </div>
+      <div>
+        {{ partial "medie.html" (dict "navn" $p.hero_billede "alt" $p.hero_alt "motiv" $p.hero_foto
+             "forhold" 0.75 "bredder" (slice 480 720 960) "prioritet" true
+             "sizes" "(min-width: 1024px) 46vw, 92vw" "hoejde" "h-72 sm:h-96") }}
+      </div>
+    </div>
+  </div>
+</section>
+
+{{/* ── Tre hovedområder ─────────────────────────────────────────────────── */}}
+<section class="section-padding" aria-labelledby="omraader">
+  <div class="container-width">
+    <h2 id="omraader" class="text-3xl sm:text-4xl font-semibold">{{ $p.omraader_titel }}</h2>
+    <p class="prosa mt-3">{{ $p.omraader_tekst }}</p>
+
+    <ul class="grid gap-6 md:grid-cols-3 mt-10 list-none p-0">
+      {{- range $p.omraader }}
+      <li class="card flex flex-col p-0 overflow-hidden">
+        {{ partial "medie.html" (dict "navn" .billede "alt" .alt "motiv" .foto
+             "forhold" 1.5 "bredder" (slice 420 640 860) "sizes" "(min-width: 768px) 32vw, 92vw"
+             "klasse" "rounded-none" "hoejde" "h-44") }}
+        <div class="p-6 flex flex-col flex-1">
+          <h3 class="text-xl font-semibold">{{ .titel }}</h3>
+          <p class="text-[0.975rem] leading-relaxed text-tekst-daempet mt-2 flex-1">{{ .kort }}</p>
+          <a href="{{ .url }}" class="mt-4 inline-flex items-center gap-1.5 min-h-[44px] font-semibold text-mos hover:text-mos-dyb">
+            {{ .linktekst }}
+            <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </a>
         </div>
-      </div>
-      <div class="flex justify-center md:justify-end">
-        <img src="/images/kristian-hero.png"
-             alt="Kristian G. G. Dansted – Reg. Psykoterapeut i Odense"
-             class="max-h-72 md:max-h-[420px] w-auto object-contain drop-shadow-lg" />
-      </div>
-    </div>
-  </div>
-  <div class="h-1 bg-gradient-to-r from-primary via-accent to-primary-light"></div>
-</section>
-
-{{/* FaDP trust strip */}}
-<section class="bg-white border-b border-gray-100 py-4 px-4 sm:px-6">
-  <div class="container-width flex flex-col sm:flex-row items-center justify-center gap-4 text-center sm:text-left">
-    <img src="/images/fadp-logo.png" alt="FaDP – Foreningen af Danske Psykoterapeuter"
-         class="w-12 h-12 object-contain flex-shrink-0" />
-    <div>
-      <p class="text-sm font-semibold text-text-dark">Registreret under Foreningen af Danske Psykoterapeuter</p>
-      <p class="text-xs text-text-muted">Medlem og politisk rådgiver – faglighed, etik og ansvar i praksis</p>
-    </div>
-    <a href="/om" class="text-xs text-primary font-semibold hover:underline whitespace-nowrap sm:ml-4">Læs mere →</a>
-  </div>
-</section>
-
-{{/* 3-segment audience cards */}}
-<section class="section-padding">
-  <div class="container-width px-4 sm:px-6">
-    <div class="text-center mb-10">
-      <h2 class="text-2xl md:text-3xl font-bold text-text-dark mb-3">Hvem kan jeg hjælpe?</h2>
-      <p class="text-text-muted max-w-2xl mx-auto">Jeg arbejder med tre målgrupper – med samme menneskesyn og samme forankring i nervesystemet.</p>
-    </div>
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-      {{- range $p.audiences }}
-      <a href="{{ .href }}" class="card group hover:border-primary hover:shadow-md transition-all border-2 border-transparent">
-        <div class="text-3xl mb-4">{{ .icon }}</div>
-        <h3 class="text-xl font-bold text-text-dark mb-1 group-hover:text-primary transition-colors">{{ .title }}</h3>
-        <p class="text-text-muted text-sm mb-4">{{ .subtitle }}</p>
-        <ul class="space-y-1.5 mb-5">
-          {{- range .bullets }}
-          <li class="flex items-center gap-2 text-sm text-text-muted">
-            <span class="text-primary font-bold">✓</span> {{ . }}
-          </li>
-          {{- end }}
-        </ul>
-        <span class="text-primary text-sm font-semibold group-hover:underline">Læs mere →</span>
-      </a>
+      </li>
       {{- end }}
+    </ul>
+  </div>
+</section>
+
+{{/* ── Billedbånd ───────────────────────────────────────────────────────── */}}
+<section aria-hidden="true" class="px-4 sm:px-6">
+  <div class="container-width">
+    {{ partial "medie.html" (dict "navn" $p.baand_billede "alt" $p.baand_alt "motiv" $p.baand_foto
+         "forhold" 2.333 "bredder" (slice 900 1350 1800) "sizes" "94vw" "hoejde" "h-52 sm:h-64 lg:h-80") }}
+  </div>
+</section>
+
+{{/* ── Sådan foregår det ────────────────────────────────────────────────── */}}
+<section class="section-padding" aria-labelledby="forloeb">
+  <div class="container-width">
+    <h2 id="forloeb" class="text-3xl sm:text-4xl font-semibold">{{ $p.forloeb_titel }}</h2>
+    <ol class="grid gap-6 md:grid-cols-3 mt-10 list-none p-0 counter-reset">
+      {{- range $i, $t := $p.forloeb }}
+      <li class="bg-birk rounded-xl p-6">
+        <span class="font-display text-3xl text-mos" aria-hidden="true">{{ add $i 1 }}</span>
+        <h3 class="text-lg font-semibold mt-2">{{ $t.titel }}</h3>
+        <p class="text-[0.975rem] leading-relaxed text-tekst-daempet mt-2">{{ $t.tekst }}</p>
+      </li>
+      {{- end }}
+    </ol>
+  </div>
+</section>
+
+{{/* ── Om Kristian ──────────────────────────────────────────────────────── */}}
+<section class="section-padding bg-birk" aria-labelledby="om">
+  <div class="container-width grid lg:grid-cols-2 gap-10 lg:gap-14 items-center">
+    <div class="order-2 lg:order-1">
+      {{ partial "medie.html" (dict "navn" $p.om_billede "alt" $p.om_alt "motiv" $p.om_foto
+           "forhold" 0.8 "bredder" (slice 420 640 860) "sizes" "(min-width: 1024px) 46vw, 92vw" "hoejde" "h-72 sm:h-96") }}
+    </div>
+    <div class="order-1 lg:order-2">
+      <h2 id="om" class="text-3xl sm:text-4xl font-semibold">{{ $p.om_titel }}</h2>
+      <div class="prosa mt-5">{{ $p.om_tekst | markdownify }}</div>
+      <ul class="flex flex-wrap gap-x-5 gap-y-2 mt-6 text-sm text-tekst-daempet list-none p-0">
+        <li>Reg. psykoterapeut (FaDP)</li>
+        <li aria-hidden="true">·</li>
+        <li>Ildsjælepris 2019</li>
+        <li aria-hidden="true">·</li>
+        <li>{{ $b.trustpilot_score }} af 5 på Trustpilot ({{ $b.trustpilot_antal }} anmeldelser)</li>
+      </ul>
+      <a href="/om/" class="mt-6 inline-flex items-center gap-1.5 min-h-[44px] font-semibold text-mos hover:text-mos-dyb">
+        Læs hele historien
+        <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+      </a>
     </div>
   </div>
 </section>
 
-{{/* TRÅD-metoden */}}
-<section class="section-padding bg-bg-cream">
-  <div class="container-width px-4 sm:px-6">
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-      <div>
-        <h2 class="text-2xl md:text-3xl font-bold text-text-dark mb-3">TRÅD-metoden</h2>
-        <p class="text-text-muted leading-relaxed mb-6">En integreret tilgang der kombinerer det bedste fra nervesystemsbaseret terapi, åndedrætsterapi, hypnoterapi og kognitiv psykologi.</p>
-        <p class="text-text-muted leading-relaxed mb-6">TRÅD er ikke en enkelt teknik – det er en filosofi om, hvordan varig forandring opstår. Den er udviklet ud fra Kristians uddannelser, kliniske erfaring og personlige rejse fra en alvorlig rygulykke til psykoterapeut med Ildsjælepris.</p>
-        <a href="/om" class="btn-outline">Læs mere om tilgangen</a>
-      </div>
-      <div class="divide-y divide-gray-100">
-        {{- range $p.traad }}
-        <div class="flex gap-4 items-center py-4">
-          <div class="w-12 h-12 bg-primary rounded-xl flex items-center justify-center flex-shrink-0">
-            <span class="text-white font-bold text-xl">{{ .letter }}</span>
-          </div>
-          <div>
-            <h3 class="font-semibold text-text-dark">{{ .word }}</h3>
-            <p class="text-text-muted text-sm leading-relaxed">{{ .desc }}</p>
-          </div>
-        </div>
-        {{- end }}
-      </div>
-    </div>
+{{ partial "anbefalinger.html" (dict "Page" . ) }}
+{{ partial "partnere.html" (dict "Page" . ) }}
+
+{{/* ── Erhverv ──────────────────────────────────────────────────────────── */}}
+<section class="section-padding" aria-labelledby="erhverv">
+  <div class="container-width [&>*]:max-w-4xl">
+    <h2 id="erhverv" class="text-2xl font-semibold">{{ $p.erhverv_titel }}</h2>
+    <p class="prosa mt-3">{{ $p.erhverv_tekst }}</p>
+    <p class="mt-4 flex flex-wrap gap-x-5 gap-y-2 text-sm">
+      <a href="/til-virksomheder/" class="inline-flex items-center min-h-[44px] font-semibold text-mos hover:text-mos-dyb underline underline-offset-2">Til virksomheder</a>
+      <a href="/til-kommuner/" class="inline-flex items-center min-h-[44px] font-semibold text-mos hover:text-mos-dyb underline underline-offset-2">Til kommuner</a>
+      <a href="/til-organisationer/" class="inline-flex items-center min-h-[44px] font-semibold text-mos hover:text-mos-dyb underline underline-offset-2">Til organisationer</a>
+    </p>
   </div>
 </section>
 
-{{/* About teaser */}}
-<section class="section-padding">
-  <div class="container-width px-4 sm:px-6">
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
-      <div class="bg-primary-light rounded-2xl p-8 flex flex-col items-center text-center">
-        <div class="w-24 h-24 bg-primary rounded-full flex items-center justify-center mb-4">
-          <span class="text-white text-4xl font-bold">K</span>
-        </div>
-        <p class="font-bold text-lg text-text-dark">Kristian G. G. Dansted</p>
-        <p class="text-text-muted text-sm mt-1">Reg. Psykoterapeut (FaDP)</p>
-        <p class="text-text-muted text-sm">Master Neuro Hypnoterapeut · Master NLP</p>
-        <p class="text-text-muted text-sm">Åndedrætsterapeut · KAT/DAT</p>
-        <div class="mt-3 flex items-center gap-1">
-          {{- range (seq 5) }}<span class="text-yellow-400 text-lg">★</span>{{- end }}
-        </div>
-        <p class="text-text-muted text-xs mt-1">Top-rated på Trustpilot</p>
-        <p class="mt-3 text-xs text-primary font-medium">🏆 Ildsjælepris 2019</p>
-      </div>
-      <div>
-        <h2 class="text-2xl md:text-3xl font-bold text-text-dark mb-4">En personlig rejse bag faglig dybde</h2>
-        <p class="text-text-muted leading-relaxed mb-4">Jeg hedder Kristian og har selv oplevet, hvad det vil sige at skulle genopbygge sig selv fra bunden. Efter en alvorlig rygulykke som 21-årig håndværker fandt jeg vejen til psykoterapien – og har siden 2019 hjulpet hundredvis af mennesker med at finde tilbage til sig selv.</p>
-        <p class="text-text-muted leading-relaxed mb-6">Jeg er uddannet reg. psykoterapeut (FaDP), Master Neuro Hypnoterapeut, Master NLP Practitioner og åndedrætsterapeut. Min pædagogiske baggrund fra botilbud og asylcentre giver mig en særlig forståelse for sårbare grupper og komplekse forløb.</p>
-        <a href="/om" class="btn-primary">Læs min historie</a>
-      </div>
+{{/* ── Kontakt ──────────────────────────────────────────────────────────── */}}
+<section class="bg-skovbund text-taage" aria-labelledby="kontakt">
+  <div class="container-width px-4 sm:px-6 py-16 sm:py-20">
+    <div class="max-w-2xl">
+      <h2 id="kontakt" class="text-3xl sm:text-4xl font-semibold text-white">{{ $p.kontakt_titel }}</h2>
+      <p class="mt-4 text-birk leading-relaxed text-lg">{{ $p.kontakt_tekst }}</p>
+      {{ partial "kontakt-knapper.html" (dict "business" $b "variant" "lys" "klasse" "mt-8") }}
+      <p class="mt-6 text-sm text-lav">{{ $b.svartid }} {{ $b.opening_hours }}.</p>
     </div>
-  </div>
-</section>
-
-{{/* CTA */}}
-<section class="section-padding bg-primary">
-  <div class="container-width px-4 sm:px-6 text-center">
-    <h2 class="text-2xl md:text-3xl font-bold text-white mb-4">Tag det første skridt i dag</h2>
-    <p class="text-primary-light text-lg mb-8 max-w-2xl mx-auto">Book en gratis og uforpligtende telefonsamtale. Jeg vender tilbage inden for 24 timer.</p>
-    <a href="{{ $b.booking }}" target="_blank" rel="noopener" class="inline-block bg-white text-primary hover:bg-primary-light font-semibold px-8 py-4 rounded-lg transition-colors text-lg">Book gratis samtale</a>
+    {{- with $p.kontakt_billede }}
+    <div class="mt-12">
+      {{ partial "billede.html" (dict "navn" . "alt" $p.kontakt_alt "forhold" 1.777
+         "bredder" (slice 640 960 1280) "sizes" "94vw") }}
+    </div>
+    {{- end }}
+    <div class="hidden">
+    </div>
   </div>
 </section>
 {{ end }}

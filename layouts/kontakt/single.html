@@ -1,94 +1,79 @@
-{{ define "schema" }}
-  {{ partial "jsonld/faqpage.html" . }}
-{{ end }}
-
+{{ define "schema" }}{{ if .Params.faq }}{{ partial "jsonld/faqpage.html" . }}{{ end }}{{ end }}
 {{ define "main" }}
+{{- $b := site.Data.business -}}
 {{- $p := .Params -}}
-{{- $b := .Site.Data.business -}}
 
-{{/* Hero */}}
-<section class="bg-gradient-to-br from-primary-light via-white to-white py-16 px-4 sm:px-6">
-  <div class="container-width">
-    <div class="max-w-3xl">
-      <h1 class="text-4xl md:text-5xl font-bold text-text-dark leading-tight mb-4">{{ $p.hero_title | default .Title }}</h1>
-      {{- with $p.hero_subtitle }}<p class="text-lg md:text-xl text-text-muted leading-relaxed mb-4 max-w-2xl">{{ . }}</p>{{- end }}
-    </div>
+<section class="bg-gradient-to-b from-mos-lys to-taage">
+  <div class="container-width px-4 sm:px-6 py-12 sm:py-16">
+    <h1 class="text-[2rem] sm:text-4xl md:text-5xl font-semibold">{{ $p.hero_title }}</h1>
+    <p class="prosa mt-5 text-lg">{{ $p.hero_subtitle }}</p>
+    {{ partial "kontakt-knapper.html" (dict "business" $b "klasse" "mt-8") }}
   </div>
 </section>
 
-{{/* Contact grid */}}
 <section class="section-padding">
-  <div class="container-width px-4 sm:px-6">
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+  {{/* Aside står først i DOM'en, så telefon, SMS og mail møder én øverst på
+       mobil. På store skærme flytter order-klasserne formularen tilbage til
+       venstre, hvor den har den bredde, den skal bruge. Formularen er det
+       sekundære spor — den primære vej ind er SMS og mail. */}}
+  <div class="container-width grid lg:grid-cols-[1fr_22rem] gap-12">
 
-      {{/* Form */}}
-      <div>
-        <h2 class="text-xl font-bold text-text-dark mb-6">Send en besked</h2>
-        {{ partial "contact-form.html" . }}
+    <aside class="space-y-5 lg:order-2">
+      <div class="card">
+        <h2 class="text-lg font-semibold">Direkte</h2>
+        <dl class="mt-3 space-y-3 text-sm">
+          <div>
+            <dt class="text-tekst-daempet">Telefon og SMS</dt>
+            <dd class="mt-0.5"><a href="{{ $b.phone_tel | safeURL }}" class="font-semibold text-skovbund hover:text-mos underline underline-offset-2">{{ $b.phone_display }}</a></dd>
+          </div>
+          <div>
+            <dt class="text-tekst-daempet">E-mail</dt>
+            <dd class="mt-0.5"><a href="{{ $b.email_link | safeURL }}" class="font-semibold text-skovbund hover:text-mos underline underline-offset-2 break-all">{{ $b.email }}</a></dd>
+          </div>
+        </dl>
       </div>
 
-      {{/* Contact info */}}
-      <div class="space-y-6">
-        <h2 class="text-xl font-bold text-text-dark">Find mig</h2>
-
-        <div class="card">
-          <div class="flex items-start gap-3">
-            <span class="text-2xl">📍</span>
-            <div>
-              <p class="font-semibold text-text-dark">Klinik</p>
-              <p class="text-text-muted text-sm">{{ $b.address.street }}</p>
-              <p class="text-text-muted text-sm">{{ $b.address.postal_code }} {{ $b.address.city }}</p>
-            </div>
-          </div>
-        </div>
-
-        <div class="card">
-          <div class="flex items-start gap-3">
-            <span class="text-2xl">📞</span>
-            <div>
-              <p class="font-semibold text-text-dark">Telefon</p>
-              <a href="tel:{{ $b.phone }}" class="text-primary hover:underline text-sm">{{ $b.phone }}</a>
-            </div>
-          </div>
-        </div>
-
-        <div class="card">
-          <div class="flex items-start gap-3">
-            <span class="text-2xl">📧</span>
-            <div>
-              <p class="font-semibold text-text-dark">Email</p>
-              <a href="mailto:{{ $b.email }}" class="text-primary hover:underline text-sm">{{ $b.email }}</a>
-            </div>
-          </div>
-        </div>
-
-        <div class="card">
-          <div class="flex items-start gap-3">
-            <span class="text-2xl">📅</span>
-            <div>
-              <p class="font-semibold text-text-dark">Book tid direkte</p>
-              <p class="text-text-muted text-sm mb-2">Vælg tid i min online-kalender</p>
-              <a href="{{ $b.booking }}" target="_blank" rel="noopener" class="btn-primary text-sm inline-block">Åbn bookingkalender</a>
-            </div>
-          </div>
-        </div>
-
-        <div class="bg-bg-cream rounded-xl p-4 text-sm text-text-muted">
-          <p class="font-semibold text-text-dark mb-1">Åbningstider</p>
-          <p>Mandag–fredag: 09:00–17:00</p>
-          <p class="mt-1">Jeg svarer på alle henvendelser inden for 24 timer på hverdage.</p>
-        </div>
+      <div class="card">
+        <h2 class="text-lg font-semibold">Klinikken</h2>
+        <address class="not-italic text-sm text-tekst-daempet mt-2 leading-relaxed">
+          {{ $b.address.street }}<br />{{ $b.address.postal_code }} {{ $b.address.city }}
+        </address>
+        <p class="text-sm text-tekst-daempet mt-3">Der er parkering ved bygningen.</p>
       </div>
+
+      <div class="bg-birk rounded-xl p-5 text-sm">
+        <h2 class="font-semibold text-skovbund">Åbningstider</h2>
+        <p class="text-tekst-daempet mt-1">{{ $b.opening_hours }}</p>
+        <p class="text-tekst-daempet mt-2">{{ $b.svartid }}</p>
+      </div>
+
+      <div class="bg-birk rounded-xl p-5 text-sm">
+        <h2 class="font-semibold text-skovbund">Der er ingen kalender</h2>
+        <p class="text-tekst-daempet mt-1">Jeg bruger ikke onlinebooking. Vi aftaler tid, når vi har talt sammen.</p>
+      </div>
+    </aside>
+
+    <div class="lg:order-1">
+      <h2 class="text-2xl font-semibold">Vil du hellere skrive lidt mere?</h2>
+      <p class="prosa mt-3">Så brug formularen. Den lander i den samme indbakke — den er bare bedre, hvis du har mere på hjerte, end der er plads til i en SMS.</p>
+      <div class="mt-8">{{ partial "contact-form.html" . }}</div>
     </div>
+
   </div>
 </section>
 
-{{/* FAQ */}}
-{{- with .Params.faq }}
-<section class="section-padding bg-bg-cream">
-  <div class="container-width max-w-3xl px-4 sm:px-6">
-    <h2 class="text-2xl font-bold text-text-dark mb-6">Ofte stillede spørgsmål</h2>
-    {{ partial "faq-accordion.html" $ }}
+{{- with $p.afslut_billede }}
+<section class="px-4 sm:px-6 pb-4">
+  <div class="container-width">{{ partial "billede.html" (dict "navn" . "alt" $p.afslut_alt
+     "forhold" 1.777 "bredder" (slice 640 960 1280) "sizes" "94vw") }}</div>
+</section>
+{{- end }}
+
+{{- with $p.faq }}
+<section class="section-padding bg-birk" aria-labelledby="faq">
+  <div class="container-width [&>*]:max-w-3xl">
+    <h2 id="faq" class="text-2xl font-semibold mb-6">Ofte stillede spørgsmål</h2>
+    {{ partial "faq-accordion.html" . }}
   </div>
 </section>
 {{- end }}

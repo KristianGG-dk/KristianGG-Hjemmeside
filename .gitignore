@@ -5,3 +5,7 @@ out
 public/
 resources/
 .hugo_build.lock
+
+# Pakket preview-zip til testsiden — må aldrig i repoet
+kristiangg-preview.zip
+*.zip

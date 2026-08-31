@@ -2,13 +2,19 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 
-{{- $title := .Title }}
-{{- $desc  := .Description | default .Site.Params.description }}
+{{/* 404-siden har ingen indholdsfil og faar derfor Hugos engelske
+     standardtitel. Den saettes her, saa hele siden er paa dansk. */}}
+{{- $title := cond (eq .Kind "404") "Siden findes ikke" .Title }}
+{{- $desc  := .Description | default (cond (eq .Kind "404") "Adressen fører ikke længere nogen steder hen. Find i stedet vej til psykoterapi, naturterapi, skovbad, priser eller kontakt." site.Params.description) }}
 {{- $url   := .Permalink }}
 {{- $image := .Params.og_image | default .Site.Params.og_image }}
 {{- $siteTitle := .Site.Title }}
 
-<title>{{ if .IsHome }}{{ $siteTitle }}{{ else }}{{ $title }} | {{ $siteTitle }}{{ end }}</title>
+{{/* Forsiden brugte site.Title. Da site.Title blev forkortet til "Kristian GG"
+     for at holde undersidernes titler under 60 tegn, mistede forsiden sin
+     egen title fra content/_index.md — og dermed ordene psykoterapeut,
+     naturterapeut og Odense. Forsiden bruger nu sin egen title. */}}
+<title>{{ if .IsHome }}{{ $title }}{{ else }}{{ $title }} | {{ $siteTitle }}{{ end }}</title>
 <meta name="description" content="{{ $desc }}" />
 <link rel="canonical" href="{{ $url }}" />
 
@@ -26,7 +32,28 @@
 <meta name="twitter:description" content="{{ $desc }}" />
 
 {{/* Sitemap hint */}}
-<meta name="robots" content="{{ if .Params.noindex }}noindex, nofollow{{ else }}index, follow{{ end }}" />
+{{/* Taksonomisiderne (/categories/, /tags/ og de enkelte termer) har ingen
+     dokumenteret værdi i Search Console — de optræder ikke i rapporten over
+     sider — og indeholder omkring 38 ord hver. /tags/ har slet ingen tags.
+     De noindexes, men bevares som fungerende sider, så det gamle
+     /blog/categories/nervesystemet stadig lander et meningsfuldt sted.
+     follow bevares, så linkene på dem stadig følges. */}}
+{{- $taksonomi := in (slice "taxonomy" "term") .Kind -}}
+<meta name="robots" content="{{ if or .Params.noindex (eq .Kind "404") }}noindex, nofollow{{ else if $taksonomi }}noindex, follow{{ else }}index, follow{{ end }}" />
+
+{{/* Skrifttyper.
+     Slås til/fra med params.webfonts i hugo.toml.
+
+     TODO før production: hent Fraunces og Karla ned som WOFF2, beskåret til
+     dansk tegnsæt, og server dem fra /fonts/ på eget domæne. Det fjerner den
+     tredjepart, som tyske domstole har haft indvendinger mod under GDPR, og
+     sparer to DNS-opslag. Reservestakken (Georgia / system-ui) er valgt, så
+     siden er fuldt læsbar uden webfonts og ikke skifter layout mærkbart. */}}
+{{- if site.Params.webfonts }}
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Karla:wght@400;500;700&display=swap" />
+{{- end }}
 
 {{/* CSS via Hugo Pipes + PostCSS */}}
 {{- $css := resources.Get "css/main.css" | css.PostCSS | minify | fingerprint }}

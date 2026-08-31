@@ -1,0 +1,28 @@
+# Udtalelser, anbefalinger og cases.
+#
+# TOM MED VILJE. Der må ikke opfindes indhold her. Hver post vises kun, når den
+# faktisk findes, og hvert felt skal kunne dokumenteres.
+#
+# For klientudtalelser gælder skærpet krav: der skal foreligge dokumenteret
+# samtykke, fordi selve det at være klient hos en psykoterapeut er en
+# helbredsoplysning. Anonymisering fjerner ikke kravet om samtykke.
+#
+# Felter:
+#   type      klient | faglig | samarbejdspartner | case   (afgør hvor den vises)
+#   citat     ordret, må ikke redigeres til det bedre
+#   navn      eller "Anonym" hvis samtykket kun rækker dertil
+#   rolle     valgfri, fx "HR-chef" eller "Sagsbehandler"
+#   sted      valgfri, fx virksomhed eller kommune
+#   sider     hvilke sider den må vises på, fx ["/til-dig/psykoterapi/"]
+#   samtykke  dato for indhentet samtykke — posten vises ikke uden
+#
+# Eksempel på formen (udkommenteret — ikke rigtige data):
+#
+# - type: faglig
+#   citat: "…"
+#   navn: "…"
+#   rolle: "…"
+#   sider: ["/om/"]
+#   samtykke: "2026-00-00"
+
+poster: []

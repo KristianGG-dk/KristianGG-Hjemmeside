@@ -1,0 +1,39 @@
+{{ define "main" }}
+{{- $b := site.Data.business -}}
+{{/*
+  Egen 404-side. Uden den svarer Netlify med sin egen standardside, hvor
+  hverken navigation, kontaktoplysninger eller hjemmesidens udtryk er med.
+  Siden sender ikke videre automatisk — en forkert adresse skal give en ærlig
+  404, ikke en omdirigering til forsiden.
+*/}}
+<section class="bg-gradient-to-b from-mos-lys to-taage py-16 sm:py-24 px-4 sm:px-6">
+  <div class="container-width [&>*]:max-w-2xl">
+    <p class="etikette">Fejl 404</p>
+    <h1 class="text-[2rem] sm:text-4xl md:text-5xl font-semibold leading-tight mt-2">Den side findes ikke</h1>
+    <p class="prosa mt-5 text-lg">Adressen fører ikke længere nogen steder hen. Måske er siden flyttet, eller også er der en tastefejl i linket.</p>
+    {{ partial "kontakt-knapper.html" (dict "business" $b "klasse" "mt-8") }}
+  </div>
+</section>
+
+<section class="section-padding">
+  <div class="container-width [&>*]:max-w-2xl px-4 sm:px-6">
+    <h2 class="text-2xl font-semibold">Prøv i stedet</h2>
+    <ul class="mt-5 space-y-1 list-none p-0">
+      {{- range slice
+          (dict "u" "/" "t" "Forsiden" "d" "Hvem jeg er, og hvad jeg laver")
+          (dict "u" "/til-dig/psykoterapi/" "t" "Psykoterapi" "d" "Samtaler i klinikken på Lumbyvej eller online")
+          (dict "u" "/til-dig/naturterapi/" "t" "Naturterapi" "d" "Terapeutisk arbejde ude i landskabet")
+          (dict "u" "/kurser/skovbad/" "t" "Skovbad" "d" "Langsom, opmærksom tid mellem træerne")
+          (dict "u" "/priser/" "t" "Priser" "d" "Hvad de enkelte forløb koster")
+          (dict "u" "/kontakt/" "t" "Kontakt" "d" "SMS, mail og adressen på klinikken") }}
+      <li>
+        <a href="{{ .u }}" class="flex items-baseline gap-3 min-h-[44px] py-2 rounded-lg hover:bg-mos-lys px-3 -mx-3 transition-colors">
+          <span class="font-semibold text-mos">{{ .t }}</span>
+          <span class="text-sm text-tekst-daempet">{{ .d }}</span>
+        </a>
+      </li>
+      {{- end }}
+    </ul>
+  </div>
+</section>
+{{ end }}

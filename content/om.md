@@ -1,40 +1,41 @@
 ---
-title: "Om Kristian GG – Reg. Psykoterapeut & Hypnoterapeut i Odense"
-description: "Mød Kristian G. G. Dansted – reg. psykoterapeut (FaDP), Master NLP og hypnoterapeut i Odense. Ildsjælepris 2019. Personlig rejse fra ulykke til terapeutisk praksis."
+title: "Om Kristian – psykoterapeut og naturterapeut"
+description: "Kristian G. G. Dansted er registreret psykoterapeut (FaDP) og naturterapeut i Odense. Fra en rygulykke som 21-årig håndværker til egen praksis på Lumbyvej."
 hero_title: "Om Kristian"
-hero_subtitle: "Reg. psykoterapeut, hypnoterapeut og foredragsholder – med en personlig rejse der har formet min faglige tilgang."
+hero_subtitle: "Registreret psykoterapeut og naturterapeut i Odense. Jeg arbejder både i klinikken og ude i naturen på Fyn."
+person_schema: true
+hero_billede: "kristian-studie"
+hero_alt: "Portræt af Kristian G. G. Dansted i hvid skjorte"
+hero_bredder: [320, 420, 640]
 
+credentials_note: "Metoden skal passe til mennesket — ikke mennesket til metoden. Uddannelserne herunder er baggrund, ikke et katalog at vælge fra. Jeg trækker på det, der giver mening for den, der sidder over for mig."
 credentials:
-  - title: "Reg. Psykoterapeut"
-    body: "Registreret hos FaDP (Foreningen af Danske Psykoterapeuter)"
-  - title: "Master Neuro Hypnoterapeut"
-    body: "Certificeret til det højeste niveau inden for hypnoterapi"
-  - title: "Master NLP Practitioner"
-    body: "Master-niveau i Neuro-Lingvistisk Programmering"
-  - title: "Åndedrætsterapeut"
-    body: "Certificeret i terapeutisk brug af vejrtrækning"
-  - title: "Mindfulness-instruktør"
-    body: "Uddannet mindfulness-instruktør"
-  - title: "Kognitiv grunduddannelse"
-    body: "Uddannet i KAT (Kognitiv Adfærdsterapi) og DAT (Dialektisk Adfærdsterapi)"
+  - title: "Registreret psykoterapeut"
+    body: "Registreret hos Foreningen af Danske Psykoterapeuter (FaDP) og underlagt foreningens uddannelseskrav og etiske regler."
+  - title: "Naturterapeut"
+    body: "Terapeutisk arbejde i naturen — vandresamtaler, ophold og skovbad."
+  - title: "Øvrige uddannelser"
+    body: "Master Neuro Hypnoterapeut, Master NLP Practitioner, åndedrætsterapeut, mindfulness-instruktør samt grunduddannelse i kognitiv adfærdsterapi (KAT) og dialektisk adfærdsterapi (DAT)."
+  - title: "Pædagogisk baggrund"
+    body: "Mange års arbejde på botilbud og asylcentre. Erfaring med mennesker i komplekse og pressede situationer, og med at samarbejde med kommuner og andre fagpersoner om et forløb."
 
 values:
-  - icon: "🌱"
+  - icon: ""
     title: "Autenticitet"
     desc: "Jeg møder dig som et helt menneske – ikke bare som en udfordring der skal løses. Ærlighed og nærvær er fundamentet."
-  - icon: "🧬"
-    title: "Videnskabelig tilgang"
-    desc: "Mine metoder er evidensbaserede og bygger på forskning i nervesystemet, psykologi og adfærdsvidenskab."
-  - icon: "🔄"
+  - icon: ""
+    title: "Fagligt forankret"
+    desc: "Jeg holder mig opdateret på forskningen i nervesystem og stressregulering og bruger den, hvor den rækker. Hvor den ikke rækker, siger jeg det."
+  - icon: ""
     title: "Praksisnærhed"
     desc: "Viden der ikke kan bruges i hverdagen, er halvt så meget værd. Jeg fokuserer altid på konkrete, brugbare redskaber."
-  - icon: "❤️"
+  - icon: ""
     title: "Menneskesyn"
     desc: "Jeg tror på at alle mennesker bærer på ressourcer og kapacitet til forandring – min opgave er at hjælpe dem frem."
 
 fadp:
   heading: "Registreret under Foreningen af Danske Psykoterapeuter"
-  logo: "/images/fadp-logo.png"
+  logo: "/images/fadp-logo-96.png"
   link: "https://www.fadp.dk/"
   text: |
     Jeg er medlem af Foreningen af Danske Psykoterapeuter (FaDP) og arbejder frivilligt som politisk rådgiver i foreningen.
@@ -54,10 +55,10 @@ fadp:
 
 ## Min historie
 
-Som 21-årig var Kristian udsat for en alvorlig ulykke der ændrede alt. Den fysiske og mentale rejse tilbage til et fuldt liv gav ham en indefra-forståelse af hvad det vil sige at stå midt i noget svært – og hvad der faktisk hjælper.
+Jeg blev ikke psykoterapeut ad den lige vej. Som 21-årig håndværker kom jeg alvorligt til skade i ryggen, og det tvang mig til at bygge et liv op fra bunden. Den fysiske og mentale vej tilbage gav mig en indefra-forståelse af, hvad det vil sige at stå midt i noget, der ikke bare går over — og af, hvad der faktisk hjælper.
 
-Den erfaring blev startskuddet til en faglig rejse: uddannelse til reg. psykoterapeut (FaDP), Master Neuro Hypnoterapeut, Master NLP Practitioner, åndedrætsterapeut og mindfulness-instruktør. Dertil pædagogisk erfaring fra botilbud og asylcentre.
+Den erfaring blev begyndelsen på en faglig vej: uddannelse til registreret psykoterapeut (FaDP), Master Neuro Hypnoterapeut, Master NLP Practitioner, åndedrætsterapeut og mindfulness-instruktør. Dertil pædagogisk erfaring fra botilbud og asylcentre.
 
-I 2019 modtog Kristian Ildsjæleprisen for sit frivillige sociale arbejde – en anerkendelse af den indsats han lægger i at gøre en forskel for andre.
+I 2019 modtog jeg Ildsjæleprisen for mit frivillige sociale arbejde.
 
-I dag driver han praksis fra Lumbyvej 11 i Odense og arbejder med private klienter, virksomheder og kommunale samarbejdspartnere over hele Fyn og Syddanmark.
+I dag driver jeg praksis fra Lumbyvej 11 i Odense og arbejder med private klienter, virksomheder og kommunale samarbejdspartnere på Fyn og i Syddanmark.

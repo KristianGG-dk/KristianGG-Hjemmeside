@@ -1,5 +1,6 @@
 ---
 title: "Mere Energi – Mindre Præstationsstress"
+description: "Mere Energi – Mindre Præstationsstress — Energiforvaltning uden selvoptimeringspres. Forløb hos Kristian GG, registreret psykoterapeut i Odense."
 tagline: "Energiforvaltning uden selvoptimeringspres"
 jeg_hoerer_ofte: '"Jeg burde kunne mere", "jeg er bagud" eller "jeg skal bare tage mig sammen."'
 open_question: "Men hvad gør du, når du gør alt det rigtige – og stadig er træt?"

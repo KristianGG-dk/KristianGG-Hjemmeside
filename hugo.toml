@@ -1,10 +1,14 @@
 baseURL = "https://kristiangg.dk/"
 languageCode = "da"
 defaultContentLanguage = "da"
-title = "Kristian GG – Psykoterapeut & Hypnoterapeut i Odense"
+title = "Kristian GG"
 
 [params]
-  description = "Reg. psykoterapeut og hypnoterapeut i Odense. Hjælp til private, virksomheder og kommuner via TRÅD-metoden."
+  description = "Registreret psykoterapeut og naturterapeut i Odense. Psykoterapi, naturterapi og skovbad — i klinikken på Lumbyvej eller ude i naturen på Fyn."
+  # Slået fra: fontene kan ikke selvhostes herfra, og previewet skal kunne
+  # vurderes uden en Google Fonts-afhængighed. Reservestakken er Georgia til
+  # overskrifter og system-ui til brødtekst.
+  webfonts = false
   og_image = "/images/kristian-hero.png"
 
 [taxonomies]

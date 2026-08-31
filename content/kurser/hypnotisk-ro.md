@@ -1,5 +1,6 @@
 ---
 title: "Hypnotisk Ro – Selvregulering i Praksis"
+description: "Hypnotisk Ro – Selvregulering i Praksis — Guidede hypnoser til ro og stabilitet. Forløb hos Kristian GG, registreret psykoterapeut i Odense."
 tagline: "Guidede hypnoser til ro og stabilitet"
 jeg_hoerer_ofte: '"Jeg kan ikke finde ro", "mit hoved kører hele tiden" eller "jeg kan ikke selv stoppe det."'
 open_question: "Men hvad gør du, når du ikke kan tænke dig til ro – og kroppen ikke følger med?"

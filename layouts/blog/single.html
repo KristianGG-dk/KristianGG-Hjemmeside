@@ -7,18 +7,18 @@
 {{- $b := .Site.Data.business -}}
 
 {{/* Article header */}}
-<section class="bg-gradient-to-br from-primary-light via-white to-white py-12 px-4 sm:px-6">
-  <div class="container-width max-w-3xl">
+<section class="bg-gradient-to-b from-mos-lys to-taage py-12 px-4 sm:px-6">
+  <div class="container-width [&>*]:max-w-3xl">
     {{- with $p.categories }}
     <div class="flex flex-wrap gap-2 mb-4">
       {{- range . }}
-      <a href="/blog/categories/{{ . | urlize }}" class="text-xs font-semibold text-primary bg-primary-light px-3 py-1 rounded-full uppercase tracking-wide hover:bg-primary hover:text-white transition-colors">{{ . }}</a>
+      <a href="/categories/{{ . | urlize }}/" class="text-xs font-semibold text-mos bg-mos-lys px-3 py-1 rounded-full uppercase tracking-wide hover:bg-skovbund hover:text-white transition-colors">{{ . }}</a>
       {{- end }}
     </div>
     {{- end }}
-    <h1 class="text-3xl md:text-4xl font-bold text-text-dark leading-tight mb-4">{{ .Title }}</h1>
-    {{- with .Description }}<p class="text-lg text-text-muted leading-relaxed mb-6">{{ . }}</p>{{- end }}
-    <div class="flex items-center gap-4 text-sm text-text-muted">
+    <h1 class="text-3xl md:text-4xl font-semibold text-skovbund leading-tight mb-4">{{ .Title }}</h1>
+    {{- with .Description }}<p class="text-lg text-tekst-daempet leading-relaxed mb-6">{{ . }}</p>{{- end }}
+    <div class="flex items-center gap-4 text-sm text-tekst-daempet">
       <span>Af {{ $p.author | default "Kristian G. G. Dansted" }}</span>
       <span>·</span>
       <time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "2. January 2006" }}</time>
@@ -32,34 +32,34 @@
 
 {{/* Article body */}}
 <section class="section-padding">
-  <div class="container-width max-w-3xl px-4 sm:px-6">
-    <article class="prose prose-gray max-w-none prose-headings:text-text-dark prose-a:text-primary">
+  <div class="container-width [&>*]:max-w-3xl px-4 sm:px-6">
+    <article class="prose prose-gray max-w-none prose-headings:text-skovbund prose-a:text-mos">
       {{ .Content }}
     </article>
 
     {{/* Sources */}}
     {{- with $p.sources }}
-    <div class="mt-10 pt-6 border-t border-gray-200">
-      <h3 class="text-sm font-semibold text-text-dark mb-3">Kilder</h3>
+    <div class="mt-10 pt-6 border-t border-lav/50">
+      <h3 class="text-sm font-semibold text-skovbund mb-3">Kilder</h3>
       <ul class="space-y-1">
         {{- range . }}
-        <li class="text-xs text-text-muted"><a href="{{ . }}" class="hover:text-primary underline" rel="nofollow noopener" target="_blank">{{ . }}</a></li>
+        <li class="text-xs text-tekst-daempet"><a href="{{ . }}" class="hover:text-mos underline" rel="nofollow noopener" target="_blank">{{ . }}</a></li>
         {{- end }}
       </ul>
     </div>
     {{- end }}
 
     {{/* Author bio */}}
-    <div class="mt-10 p-6 bg-bg-cream rounded-xl border border-gray-100">
+    <div class="mt-10 p-6 bg-birk rounded-xl border border-lav/40">
       <div class="flex items-start gap-4">
-        <div class="w-14 h-14 bg-primary rounded-full flex items-center justify-center flex-shrink-0">
-          <span class="text-white text-2xl font-bold">K</span>
+        <div class="w-14 h-14 bg-skovbund rounded-full flex items-center justify-center flex-shrink-0">
+          <span class="text-white text-2xl font-semibold">K</span>
         </div>
         <div>
-          <p class="font-bold text-text-dark">{{ $p.author | default "Kristian G. G. Dansted" }}</p>
-          <p class="text-text-muted text-sm mb-2">{{ $p.author_credentials | default "Reg. Psykoterapeut (FaDP), Master Neuro Hypnoterapeut" }}</p>
-          {{- with $p.personal_experience }}<p class="text-text-muted text-sm leading-relaxed">{{ . }}</p>{{- end }}
-          {{- if not $p.personal_experience }}<p class="text-text-muted text-sm leading-relaxed">Kristian har hjulpet hundredvis af mennesker med at finde tilbage til sig selv siden 2019. Reg. psykoterapeut (FaDP), Master NLP og åndedrætsterapeut med praksis i Odense.</p>{{- end }}
+          <p class="font-semibold text-skovbund">{{ $p.author | default "Kristian G. G. Dansted" }}</p>
+          <p class="text-tekst-daempet text-sm mb-2">{{ $p.author_credentials | default "Registreret psykoterapeut og naturterapeut (FaDP)" }}</p>
+          {{- with $p.personal_experience }}<p class="text-tekst-daempet text-sm leading-relaxed">{{ . }}</p>{{- end }}
+          {{- if not $p.personal_experience }}<p class="text-tekst-daempet text-sm leading-relaxed">Registreret psykoterapeut hos Foreningen af Danske Psykoterapeuter, naturterapeut og åndedrætsterapeut med praksis på Lumbyvej i Odense.</p>{{- end }}
         </div>
       </div>
     </div>
@@ -67,11 +67,11 @@
 </section>
 
 {{/* CTA */}}
-<section class="section-padding bg-primary">
+<section class="section-padding bg-skovbund text-taage">
   <div class="container-width px-4 sm:px-6 text-center">
-    <h2 class="text-2xl md:text-3xl font-bold text-white mb-4">Har du spørgsmål?</h2>
-    <p class="text-primary-light text-lg mb-8 max-w-2xl mx-auto">Book en gratis og uforpligtende telefonsamtale med Kristian.</p>
-    <a href="{{ $b.booking }}" target="_blank" rel="noopener" class="inline-block bg-white text-primary hover:bg-primary-light font-semibold px-8 py-4 rounded-lg transition-colors text-lg">Book gratis samtale</a>
+    <h2 class="text-2xl md:text-3xl font-semibold text-white mb-4">Har du spørgsmål?</h2>
+    <p class="text-mos-lys text-lg mb-8 max-w-2xl mx-auto">Skriv en SMS eller en mail. Vi starter med en kort telefonsamtale uden beregning.</p>
+    {{ partial "kontakt-knapper.html" (dict "business" $b "variant" "lys" "klasse" "flex flex-col items-center") }}
   </div>
 </section>
 {{ end }}

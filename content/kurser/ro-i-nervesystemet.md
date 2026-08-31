@@ -1,5 +1,6 @@
 ---
 title: "Ro i Nervesystemet Gennem Åndedræt"
+description: "Ro i Nervesystemet Gennem Åndedræt — Terapeutisk åndedrætskursus. Forløb hos Kristian GG, registreret psykoterapeut i Odense."
 tagline: "Terapeutisk åndedrætskursus"
 jeg_hoerer_ofte: '"Tag en dyb indånding", "træk vejret roligt" eller "bare slap af."'
 open_question: "Men hvad gør du, når hjernen ikke har kontakt til kroppen – og åndedrættet bare bliver siddende oppe i brystet?"

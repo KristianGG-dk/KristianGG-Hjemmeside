@@ -81,22 +81,9 @@
   });
 })();
 
-// FAQAccordion — click delegation on data-faq containers
-(function () {
-  document.querySelectorAll('[data-faq]').forEach(function (faq) {
-    faq.addEventListener('click', function (e) {
-      var trigger = e.target.closest('[data-faq-trigger]');
-      if (!trigger) return;
-      var panel = trigger.nextElementSibling;
-      if (!panel || !panel.hasAttribute('data-faq-panel')) return;
-      var arrow = trigger.querySelector('[data-faq-arrow]');
-      var expanded = trigger.getAttribute('aria-expanded') === 'true';
-      trigger.setAttribute('aria-expanded', expanded ? 'false' : 'true');
-      panel.classList.toggle('hidden', expanded);
-      if (arrow) arrow.classList.toggle('rotate-180', !expanded);
-    });
-  });
-})();
+// FAQ bruger nu <details>/<summary> og har ingen JavaScript.
+// Den gamle accordion-kode er fjernet: den skjulte svarene med
+// class="hidden", saa de var utilgaengelige uden JavaScript.
 
 // ContactForm — AJAX submission for Netlify forms
 (function () {

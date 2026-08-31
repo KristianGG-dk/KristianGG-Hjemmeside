@@ -1,5 +1,6 @@
 ---
 title: "Tal Så Du Bliver Hørt"
+description: "Tal Så Du Bliver Hørt — Konflikthåndtering og relationel kommunikation. Forløb hos Kristian GG, registreret psykoterapeut i Odense."
 tagline: "Konflikthåndtering og relationel kommunikation"
 jeg_hoerer_ofte: '"Jeg prøver at forklare mig, men det virker ikke", "det ender altid i konflikt" eller "jeg bliver ikke hørt."'
 open_question: "Men hvad gør du, når du siger det rigtige – og det stadig ikke bliver modtaget?"

@@ -1,5 +1,6 @@
 ---
 title: "Skab Struktur i Hverdagen"
+description: "Skab Struktur i Hverdagen — Helhedsorienteret struktur for familieliv og overskud. Forløb hos Kristian GG, registreret psykoterapeut i Odense."
 tagline: "Helhedsorienteret struktur for familieliv og overskud"
 jeg_hoerer_ofte: '"Vi prøver at få det til at hænge sammen", "det hele roder" eller "der er aldrig rigtig ro på."'
 open_question: "Men hvad gør du, når hverdagen kører – men ingen føler, de har overblik?"

@@ -1,46 +1,60 @@
 ---
-title: "Psykoterapeut & Hypnoterapeut i Odense | Kristian GG"
-description: "Reg. psykoterapeut og hypnoterapeut i Odense. TRÅD-metoden – nervesystemsbaseret terapi for private, virksomheder og kommuner på Fyn. Book gratis samtale."
-hero_title: "Find ro i nervesystemet – og varig forandring"
-hero_subtitle: "Jeg er Kristian G. G. Dansted, reg. psykoterapeut og hypnoterapeut. Med TRÅD-metoden hjælper jeg dig, din virksomhed eller din kommune med at skabe reel og varig forandring – i klinikken i Odense, online eller i naturen på Fyn."
+title: "Registreret psykoterapeut og naturterapeut i Odense"
+description: "Registreret psykoterapeut og naturterapeut i Odense. Psykoterapi i klinikken på Lumbyvej, naturterapi og skovbad ude i landskabet på Fyn."
 
-audiences:
-  - icon: "🌿"
-    title: "Til dig"
-    subtitle: "Privat terapi og nervesystemsregulering"
-    bullets:
-      - "Ro på nervesystemet"
-      - "Naturterapi på Fyn"
-      - "Psykoterapi, hypnose & NLP"
-    href: "/til-dig"
-  - icon: "🏢"
-    title: "Til virksomheder"
-    subtitle: "Workshops, foredrag og medarbejdertrivsel"
-    bullets:
-      - "Praksisnære stressworkshops"
-      - "Foredrag om nervesystemet"
-      - "Trivselsprogrammer"
-    href: "/til-virksomheder"
-  - icon: "🏛️"
-    title: "Til kommuner"
-    subtitle: "Faglig støtte, vikardækning og borgerforløb"
-    bullets:
-      - "Pædagogiske særforanstaltninger"
-      - "Faglig vikardækning"
-      - "Individuelle borgerforløb"
-    href: "/til-kommuner"
+hero_etikette: "Reg. psykoterapeut (FaDP) · Odense og Fyn"
+hero_titel: "Registreret psykoterapeut og naturterapeut"
+hero_tekst: "Jeg hedder Kristian G. G. Dansted og arbejder med mennesker, der står et sted, de ikke kommer videre fra ved egen kraft. Nogle gange sidder vi i klinikken på Lumbyvej. Andre gange arbejder vi ude i landskabet, hvor omgivelserne selv indgår i arbejdet."
+hero_billede: "kristian-hero"
+hero_alt: "Kristian G. G. Dansted står udendørs på en græsplæne med træer bagved"
 
-traad:
-  - letter: "T"
-    word: "Tryg tilstedeværelse"
-    desc: "Et trygt rum og en nærværende relation er forudsætningen for forandring."
-  - letter: "R"
-    word: "Relation"
-    desc: "Den terapeutiske relation er ikke midlet – den er en del af behandlingen."
-  - letter: "Å"
-    word: "Åndedræt"
-    desc: "Åndedrætsterapi og somatisk forankring aktiverer det parasympatiske system."
-  - letter: "D"
-    word: "Deltagelse"
-    desc: "Aktiv deltagelse og medejerskab i processen skaber varig forandring."
+baand_billede: "kyst-baand"
+baand_alt: "Strandeng med små vandhuller, kystlinje og hav under klar himmel"
+
+omraader_titel: "Tre områder"
+omraader_tekst: "Psykoterapien er det faglige fundament under det hele. Jeg er registreret psykoterapeut og har uddannelser i blandt andet hypnoterapi, NLP og kognitiv adfærdsterapi. Hypnose er ét redskab blandt flere — metoden skal passe til mennesket, ikke omvendt. Naturterapi og skovbad er selvstændige arbejdsformer med deres eget indhold og deres egen fremgangsmåde — ikke samtaler, der er flyttet udenfor."
+omraader:
+  - titel: "Psykoterapi"
+    url: "/til-dig/psykoterapi/"
+    kort: "Samtaler i klinikken på Lumbyvej eller online. Der hvor det, du står i, kan få plads og ord."
+    linktekst: "Sådan foregår psykoterapi"
+    billede: "vintersol-skov"
+    alt: "Vintersol mellem høje bøgestammer med sne og lange skygger på skovbunden"
+  - titel: "Naturterapi"
+    url: "/til-dig/naturterapi/"
+    kort: "Terapeutisk arbejde i landskabet, hvor bevægelse, sanser og omgivelser indgår aktivt i det, vi laver."
+    linktekst: "Sådan foregår naturterapi"
+    billede: "gaatur-kort"
+    alt: "To personer går ved siden af hinanden ad en sti langs en sø"
+  - titel: "Skovbad"
+    url: "/kurser/skovbad/"
+    kort: "Langsom, opmærksom tid mellem træerne. Ikke en gåtur, ikke en behandling — noget tredje."
+    linktekst: "Hvad skovbad er"
+    billede: "skovbad-gruppe"
+    alt: "En gruppe mennesker sidder spredt på skovbunden mellem bøgetræer"
+
+forloeb_titel: "Sådan kommer du i gang"
+forloeb:
+  - titel: "Du skriver"
+    tekst: "En SMS eller en mail. Du behøver ikke forklare dig ordentligt eller have styr på, hvad det handler om."
+  - titel: "Vi taler sammen"
+    tekst: "En kort telefonsamtale, uden beregning. Vi finder ud af, om jeg er den rigtige — og du hører, hvordan jeg arbejder."
+  - titel: "Vi aftaler en tid"
+    tekst: "Inde eller ude. Du bestemmer, og du kan skifte mening undervejs."
+
+om_titel: "Kort om mig"
+om_tekst: |
+  Jeg er registreret psykoterapeut hos Foreningen af Danske Psykoterapeuter og naturterapeut, med praksis på Lumbyvej 11 i Odense. Jeg har uddannelser i blandt andet hypnoterapi, NLP, kognitiv adfærdsterapi og åndedrætsterapi, og en pædagogisk baggrund fra botilbud og asylcentre.
+
+  Jeg arbejder med voksne, der står i stress, angst, søvnproblemer, lavt selvværd, sorg eller en større forandring i livet — og med virksomheder og kommuner, der har brug for en fagperson udefra.
+om_billede: "kristian-portraet"
+om_alt: "Kristian G. G. Dansted udendørs med et stykke træ i hånden"
+
+erhverv_titel: "Til virksomheder og kommuner"
+erhverv_tekst: "Jeg holder foredrag og workshops om stress, trivsel og nervesystemet, og løser opgaver for kommuner inden for særforanstaltninger, vikardækning og individuelle borgerforløb."
+
+kontakt_titel: "Tag kontakt"
+kontakt_tekst: "Skriv en SMS eller en mail. Der er ingen kalender, du skal igennem, og ingen formular du skal udfylde først."
+kontakt_billede: "solnedgang-kyst"
+kontakt_alt: "Solnedgang over kysten med en gren i silhuet i forgrunden"
 ---

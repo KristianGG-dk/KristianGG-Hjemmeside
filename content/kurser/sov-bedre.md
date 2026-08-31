@@ -1,5 +1,6 @@
 ---
 title: "Sov Bedre – Forstå og Reguler Tankemylder"
+description: "Forløb om søvnproblemer, søvnbesvær og tankemylder hos Kristian GG, registreret psykoterapeut i Odense og på Fyn."
 tagline: "Søvn, nervesystem og mental afkobling"
 jeg_hoerer_ofte: '"Jeg er træt, men kan ikke falde i søvn", "mit hoved stopper ikke" eller "jeg vågner midt om natten og kan ikke finde ro igen."'
 open_question: "Men hvad gør du, når kroppen er træt – men nervesystemet ikke vil give slip?"

@@ -6,8 +6,52 @@
   html {
     scroll-behavior: smooth;
   }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
   body {
-    @apply text-text-dark bg-white;
+    @apply text-skovbund bg-taage;
+  }
+  /* Overskrifter i display-serif. Sat her, så alle sider følger med uden at
+     hver skabelon skal røres. */
+  h1, h2, h3 {
+    @apply font-display;
+    text-wrap: balance;
+    /* Danske sammensatte ord — "særforanstaltninger", "betingelser",
+       "åndedrætsterapi" — er længere end 320 px ved 36 px skrift og skabte
+       vandret scroll på de smalleste telefoner. Orddeling først, brud som
+       sidste udvej. */
+    hyphens: auto;
+    overflow-wrap: break-word;
+  }
+  /* Samme problem i brødtekst og lister med lange fagord og adresser. */
+  p, li, td, dd, dt, figcaption {
+    overflow-wrap: break-word;
+  }
+  /* Sidehovedet er klæbende. Uden dette lander et ankerlink (fx #faq eller
+     springlinket) med overskriften gemt bag hovedet. */
+  :target, [id], main {
+    scroll-margin-top: 5.5rem;
+  }
+  /* Grid-børn har min-width:auto. Det gør, at et langt dansk sammensat ord
+     ("særforanstaltninger", "samarbejdsbetingelser") sætter kolonnens
+     mindstebredde og skubber hele siden vandret ud ved 320 px, selv om ordet
+     godt måtte brydes. min-width:0 lader kolonnen krympe, så orddelingen
+     ovenfor får lov at virke. Flex-børn rettes målrettet i skabelonerne, da
+     en generel regel dér ville klemme knapper sammen. */
+  .grid > * {
+    min-width: 0;
+  }
+  /* Synlig fokusmarkering overalt — erstatter browserens, fjerner den aldrig. */
+  :focus-visible {
+    outline: 3px solid theme('colors.mos.DEFAULT');
+    outline-offset: 2px;
+    border-radius: 2px;
   }
 }
 
@@ -19,29 +63,75 @@
     @apply max-w-6xl mx-auto;
   }
   .card {
-    @apply bg-white rounded-xl p-6 shadow-sm border border-gray-100;
-  }
-  .btn-primary {
-    @apply inline-block bg-primary hover:bg-primary-dark text-white font-semibold px-6 py-3 rounded-lg transition-colors;
-  }
-  .btn-outline {
-    @apply inline-block border-2 border-primary text-primary hover:bg-primary hover:text-white font-semibold px-6 py-3 rounded-lg transition-colors;
+    @apply bg-white rounded-xl p-6 shadow-sm border border-lav/40;
   }
 
-  /* Nav components (must live here — @apply in HTML <style> tags is not processed by PostCSS) */
+  /* Hyben er den eneste varme farve på siden og bruges udelukkende til
+     handlinger. Hvid på hyben giver 6,70 (AA). */
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-2 min-h-[48px] bg-hyben hover:bg-hyben-dyb text-white font-semibold px-6 py-3 rounded-lg transition-colors;
+  }
+  .btn-outline {
+    @apply inline-flex items-center justify-center gap-2 min-h-[48px] border-2 border-mos text-mos hover:bg-mos hover:text-white font-semibold px-6 py-3 rounded-lg transition-colors;
+  }
+  /* Til brug på mørk skovbund-flade */
+  .btn-lys {
+    @apply inline-flex items-center justify-center gap-2 min-h-[48px] bg-taage text-skovbund hover:bg-birk font-semibold px-6 py-3 rounded-lg transition-colors;
+  }
+
+  /* Springlink — første element i tabrækkefølgen, synligt kun ved fokus. */
+  .skip-link {
+    @apply sr-only;
+  }
+  .skip-link:focus {
+    @apply not-sr-only fixed top-3 left-3 z-[100] bg-skovbund text-taage px-4 py-3 rounded-lg font-semibold;
+  }
+
+  /* Navigation. Alle klikmål mindst 44 px høje. */
   .nav-link {
-    @apply px-3 py-2 rounded-lg text-sm font-medium text-text-muted hover:text-primary hover:bg-primary-light transition-colors;
+    @apply inline-flex items-center min-h-[44px] px-3 rounded-lg text-sm font-medium text-tekst-daempet hover:text-mos hover:bg-mos-lys transition-colors;
   }
-  .dropdown-panel {
-    @apply absolute top-full left-0 mt-1 w-56 bg-white rounded-xl shadow-lg border border-gray-100 py-2 z-50;
-  }
-  .dropdown-item {
-    @apply block px-4 py-2.5 text-sm text-text-muted hover:text-primary hover:bg-gray-50 transition-colors;
-  }
-  .mobile-section-btn {
-    @apply w-full flex items-center text-sm font-medium text-text-muted py-2.5 px-3 rounded-lg hover:bg-gray-50 transition-colors;
+  .nav-link-aktiv {
+    @apply text-mos bg-mos-lys;
   }
   .mobile-link {
-    @apply block text-sm text-text-muted py-2 px-3 rounded-lg hover:bg-gray-50 hover:text-primary transition-colors;
+    @apply flex items-center min-h-[48px] text-base text-skovbund py-2 px-3 rounded-lg hover:bg-mos-lys hover:text-mos transition-colors;
+  }
+  .footer-link {
+    @apply inline-flex items-center min-h-[36px] text-sm hover:text-white transition-colors;
+  }
+
+  /* Billedplads. Markerer tydeligt, at her mangler et rigtigt fotografi —
+     bruges i stedet for stockfotos. Se partials/billedplads.html. */
+  .billedplads {
+    @apply relative flex flex-col items-center justify-center text-center
+           bg-mos-lys border-2 border-dashed border-lav rounded-xl
+           text-tekst-daempet p-6 overflow-hidden;
+  }
+  .billedplads-note {
+    @apply text-[0.8125rem] sm:text-sm max-w-xs leading-snug;
+  }
+  .billedplads-maerke {
+    @apply text-[0.75rem] uppercase tracking-[0.14em] font-semibold text-mos mb-2;
+  }
+
+  /* Læsbar brødtekstbredde */
+  .prosa {
+    @apply max-w-prose text-[1.0625rem] leading-relaxed text-tekst-daempet;
+  }
+  .prosa p { @apply mb-4; }
+  .prosa strong { @apply text-skovbund font-semibold; }
+  .prosa a { @apply text-mos underline underline-offset-2 hover:text-mos-dyb; }
+
+  /* Tailwind Typography saetter selv anførselstegn paa afsnit i blockquote.
+     Citaterne i indholdet har allerede rigtige anførselstegn, og resultatet
+     var dobbelte tegn i begge ender. */
+  .prose blockquote p::before,
+  .prose blockquote p::after {
+    content: none;
+  }
+
+  .etikette {
+    @apply text-[0.8125rem] uppercase tracking-[0.14em] font-semibold text-mos;
   }
 }

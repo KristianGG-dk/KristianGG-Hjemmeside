@@ -1,5 +1,6 @@
 ---
 title: "Rolige Voksne – Trygge Børn"
+description: "Rolige Voksne – Trygge Børn — Forældre og nervesystemets betydning for børns trivsel. Forløb hos Kristian GG, registreret psykoterapeut i Odense."
 tagline: "Forældre og nervesystemets betydning for børns trivsel"
 jeg_hoerer_ofte: '"Jeg ved godt, hvad jeg burde gøre", "jeg mister tålmodigheden" eller "jeg bliver selv presset, når mit barn er det."'
 open_question: "Men hvad gør du, når dit barns uro smitter – og din egen ro forsvinder?"

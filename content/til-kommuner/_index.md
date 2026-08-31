@@ -1,22 +1,22 @@
 ---
-title: "Til kommuner – Pæd. særforanstaltninger, vikardækning & borgerforløb på Fyn"
+title: "Til kommuner – særforanstaltninger og borgerforløb"
 description: "Pædagogiske særforanstaltninger, faglig vikardækning og individuelle borgerforløb til kommuner på Fyn og i Syddanmark. Reg. psykoterapeut med erfaring fra botilbud og asylcenter."
 hero_title: "Til kommuner"
 hero_subtitle: "Specialiseret pædagogisk og terapeutisk bistand til kommunale institutioner og borgere på Fyn og i Syddanmark."
 
 services:
-  - icon: "🏠"
+  - icon: ""
     title: "Pæd. særforanstaltninger"
     description: "Specialiseret pædagogisk støtte til udsatte unge og borgere med komplekse behov. Erfaring fra botilbud og asylcentre."
-    href: "/til-kommuner/saerforanstaltninger"
-  - icon: "📋"
+    href: "/til-kommuner/saerforanstaltninger/"
+  - icon: ""
     title: "Vikardækning"
     description: "Faglig og kvalificeret vikardækning til sociale institutioner og botilbud. Psykoterapeut-baggrund sikrer faglig kvalitet."
-    href: "/til-kommuner/vikardaekning"
-  - icon: "🤝"
+    href: "/til-kommuner/vikardaekning/"
+  - icon: ""
     title: "Borgerforløb"
     description: "Individuelle terapeutiske forløb for borgere henvist af kommunen. Støtte til borgere med stress, angst og sociale udfordringer."
-    href: "/til-kommuner/borgerforloeb"
+    href: "/til-kommuner/borgerforloeb/"
 
 kurser_callout:
   title: "Kurser og forløb til organisationer"
@@ -25,8 +25,8 @@ kurser_callout:
 stats:
   - num: "2019"
     label: "Ildsjælepris for frivilligt socialt arbejde"
-  - num: "6+"
-    label: "Terapeutiske metoder og certificeringer"
+  - num: "FaDP"
+    label: "Registreret psykoterapeut, underlagt tilsyn fra Styrelsen for Patientsikkerhed"
   - num: "Fyn"
     label: "Primær geografisk base, kører ud"
 ---

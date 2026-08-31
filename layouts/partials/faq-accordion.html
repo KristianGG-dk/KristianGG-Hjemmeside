@@ -1,20 +1,27 @@
-{{- with .Params.faq -}}
-<div class="space-y-3" data-faq>
-  {{- range . -}}
-  <div class="border border-gray-200 rounded-xl overflow-hidden">
-    <button
-      class="w-full flex items-center justify-between px-5 py-4 text-left font-semibold text-text-dark hover:bg-gray-50 transition-colors"
-      aria-expanded="false"
-      data-faq-trigger>
+{{- /*
+  Ofte stillede spørgsmål.
+
+  Bygget på <details>/<summary> frem for knapper og JavaScript. Det betyder:
+    · svarene er tilgængelige, også hvis JavaScript fejler eller er slået fra
+    · browseren giver selv tastaturbetjening og korrekt tilgængelighedsrolle
+    · den samme visning kan bruges på alle sider, så ingen side skiller sig ud
+
+  Den tidligere udgave skjulte svarene med class="hidden" og krævede
+  JavaScript for at åbne dem. Uden JavaScript var svarene helt utilgængelige,
+  selv om FAQPage-markuppen lovede dem.
+*/ -}}
+{{- with . -}}
+<div class="space-y-3">
+  {{- range . }}
+  <details class="group border border-lav/50 rounded-xl overflow-hidden bg-white">
+    <summary class="flex items-center justify-between gap-4 px-5 py-4 min-h-[56px] cursor-pointer list-none font-semibold text-skovbund hover:bg-birk transition-colors [&::-webkit-details-marker]:hidden">
       <span>{{ .q }}</span>
-      <svg class="w-5 h-5 text-primary flex-shrink-0 transition-transform" data-faq-arrow fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+      <svg class="w-5 h-5 text-mos flex-shrink-0 transition-transform group-open:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
       </svg>
-    </button>
-    <div class="hidden px-5 pb-4 text-text-muted text-sm leading-relaxed" data-faq-panel>
-      {{ .a }}
-    </div>
-  </div>
+    </summary>
+    <div class="px-5 pb-5 -mt-1 text-tekst-daempet leading-relaxed">{{ .a }}</div>
+  </details>
   {{- end }}
 </div>
 {{- end -}}

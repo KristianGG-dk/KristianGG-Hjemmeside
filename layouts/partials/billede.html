@@ -1,0 +1,43 @@
+{{- /*
+  Rigtigt fotografi med responsivt sæt.
+
+  AVIF først, WebP som reserve, JPEG til sidst. Tre bredder, så en telefon
+  aldrig henter et skærmbredt billede. width og height er altid sat — det er
+  dét, der holder CLS nede.
+
+  Parametre:
+    navn      filnavn uden bredde og endelse, fra /images/natur/
+    alt       beskrivende alternativ tekst (påkrævet, må ikke gentage billedteksten)
+    bredder   liste over genererede bredder
+    forhold   sideforhold b/h, bruges til at udregne height
+    sizes     CSS sizes-attribut
+    prioritet true kun for billedet over folden — ét per side
+    klasse    ekstra klasser på <img>
+    ramme     ekstra klasser på <figure>
+*/ -}}
+{{- $n := .navn -}}
+{{- $b := .bredder -}}
+{{- $stor := index $b (sub (len $b) 1) -}}
+{{- $h := int (div (float $stor) .forhold) -}}
+{{- $sizes := .sizes | default "(min-width: 1024px) 50vw, 100vw" -}}
+{{- $pri := .prioritet | default false -}}
+<figure class="{{ .ramme | default "" }}">
+  <picture>
+    <source type="image/avif" sizes="{{ $sizes }}" srcset="{{ range $i, $w := $b }}{{ if $i }}, {{ end }}/images/natur/{{ $n }}-{{ $w }}.avif {{ $w }}w{{ end }}">
+    <source type="image/webp" sizes="{{ $sizes }}" srcset="{{ range $i, $w := $b }}{{ if $i }}, {{ end }}/images/natur/{{ $n }}-{{ $w }}.webp {{ $w }}w{{ end }}">
+    {{/* JPEG er ren reserve for browsere uden hverken AVIF eller WebP.
+         Det er under et par procent af trafikken, og de faar én fornuftig
+         stoerrelse frem for tre. AVIF og WebP har fuldt srcset. */}}
+    <img src="/images/natur/{{ $n }}-{{ index $b 1 }}.jpg"
+         alt="{{ .alt }}"
+         width="{{ $stor }}" height="{{ $h }}"
+         {{ if $pri }}fetchpriority="high" decoding="async"{{ else }}loading="lazy" decoding="async"{{ end }}
+         {{/* aspect-ratio låser boksen til det sideforhold, pladsen er
+              designet til. Uden den bestemmer selve filens beskæring
+              højden, og et portrætbeskåret foto gjorde ét kort i en
+              række markant højere end de to andre. object-cover
+              beskærer i stedet. */}}
+         style="aspect-ratio: {{ .forhold }}"
+         class="w-full h-full object-cover {{ .klasse | default "rounded-xl" }}">
+  </picture>
+</figure>

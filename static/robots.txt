@@ -1,5 +1,6 @@
 User-agent: *
 Disallow: /admin/
-Disallow: /tak/
+# /tak/ er ikke blokeret her. Siden har meta noindex, og en robots.txt-blokering
+# ville forhindre Google i overhovedet at hente siden og dermed i at læse den.
 
 Sitemap: https://kristiangg.dk/sitemap.xml

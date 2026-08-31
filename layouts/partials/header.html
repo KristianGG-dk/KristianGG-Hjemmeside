@@ -1,159 +1,86 @@
-{{- $b := .Site.Data.business -}}
-{{- $booking := $b.booking -}}
-<header class="sticky top-0 z-40 bg-white border-b border-gray-100 shadow-sm">
-  <div class="max-w-6xl mx-auto px-4 sm:px-6 flex items-center justify-between h-16">
+{{- $b := site.Data.business -}}
+{{- $sti := .RelPermalink -}}
+{{- /*
+  Forenklet hovednavigation.
 
-    {{/* Logo */}}
-    <a href="/" class="font-bold text-xl text-primary hover:text-primary-dark transition-colors">
-      Kristian GG
-    </a>
+  De tre hovedområder løftes til første niveau i MENUEN, men beholder deres
+  nuværende adresser. URL-dybde er ikke en rangeringsfaktor af betydning —
+  intern linkning er. Derfor koster forfremmelsen ingen optjent søgeværdi.
 
-    {{/* Desktop nav */}}
-    <nav class="hidden lg:flex items-center gap-1" aria-label="Primær navigation">
+  Mobilmenuen er bygget på <details>/<summary> og virker derfor uden
+  JavaScript, med tastaturbetjening og korrekt fokusrækkefølge fra browseren.
+*/ -}}
+{{/* Nervesystemet ligger under Psykoterapi, ikke ved siden af. Det er en del
+     af den faglige tilgang, ikke et fjerde hovedområde. */}}
+{{- $menu := slice
+    (dict "titel" "Psykoterapi" "url" "/til-dig/psykoterapi/" "under" (slice
+       (dict "titel" "Nervesystemet og ro" "url" "/til-dig/nervesystemet/")))
+    (dict "titel" "Naturterapi" "url" "/til-dig/naturterapi/")
+    (dict "titel" "Skovbad"     "url" "/kurser/skovbad/")
+    (dict "titel" "Om mig"      "url" "/om/")
+    (dict "titel" "Priser"      "url" "/priser/")
+    (dict "titel" "Kontakt"     "url" "/kontakt/")
+-}}
 
-      {{/* Til dig */}}
-      <div class="relative" data-dropdown>
-        <a href="/til-dig" class="nav-link flex items-center gap-1" data-dropdown-trigger aria-expanded="false" aria-haspopup="true">
-          Til dig
-          <svg class="w-3.5 h-3.5 transition-transform" data-dropdown-arrow fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
-          </svg>
-        </a>
-        <div class="dropdown-panel hidden" data-dropdown-panel>
-          <a href="/til-dig/nervesystemet" class="dropdown-item">Nervesystemet & ro</a>
-          <a href="/til-dig/naturterapi"   class="dropdown-item">Naturterapi</a>
-          <a href="/til-dig/psykoterapi"   class="dropdown-item">Psykoterapi</a>
-          <hr class="my-1 border-gray-100" />
-          <a href="/til-dig" class="dropdown-item text-primary font-medium">Se alle →</a>
-        </div>
-      </div>
+<header class="bg-taage/95 backdrop-blur border-b border-lav/40 sticky top-0 z-40">
+  <div class="container-width px-4 sm:px-6">
+    <div class="flex items-center justify-between h-16 sm:h-20 gap-4">
 
-      {{/* Til virksomheder */}}
-      <div class="relative" data-dropdown>
-        <a href="/til-virksomheder" class="nav-link flex items-center gap-1" data-dropdown-trigger aria-expanded="false" aria-haspopup="true">
-          Til virksomheder
-          <svg class="w-3.5 h-3.5 transition-transform" data-dropdown-arrow fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
-          </svg>
-        </a>
-        <div class="dropdown-panel hidden" data-dropdown-panel>
-          <a href="/til-virksomheder/workshops" class="dropdown-item">Workshops</a>
-          <a href="/til-virksomheder/foredrag"  class="dropdown-item">Foredrag</a>
-          <a href="/til-virksomheder/trivsel"   class="dropdown-item">Medarbejdertrivsel</a>
-          <hr class="my-1 border-gray-100" />
-          <a href="/til-virksomheder" class="dropdown-item text-primary font-medium">Se alle →</a>
-        </div>
-      </div>
-
-      {{/* Til kommuner */}}
-      <div class="relative" data-dropdown>
-        <a href="/til-kommuner" class="nav-link flex items-center gap-1" data-dropdown-trigger aria-expanded="false" aria-haspopup="true">
-          Til kommuner
-          <svg class="w-3.5 h-3.5 transition-transform" data-dropdown-arrow fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
-          </svg>
-        </a>
-        <div class="dropdown-panel hidden" data-dropdown-panel>
-          <a href="/til-kommuner/saerforanstaltninger" class="dropdown-item">Pæd. særforanstaltninger</a>
-          <a href="/til-kommuner/vikardaekning"        class="dropdown-item">Vikardækning</a>
-          <a href="/til-kommuner/borgerforloeb"        class="dropdown-item">Borgerforløb</a>
-          <hr class="my-1 border-gray-100" />
-          <a href="/til-kommuner" class="dropdown-item text-primary font-medium">Se alle →</a>
-        </div>
-      </div>
-
-      {{/* Kurser */}}
-      <div class="relative" data-dropdown>
-        <button class="nav-link flex items-center gap-1" data-dropdown-trigger aria-expanded="false" aria-haspopup="true">
-          Kurser
-          <svg class="w-3.5 h-3.5 transition-transform" data-dropdown-arrow fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
-          </svg>
-        </button>
-        <div class="dropdown-panel hidden" data-dropdown-panel>
-          <a href="/kurser"           class="dropdown-item">Til dig som privatperson</a>
-          <a href="/til-organisationer" class="dropdown-item">Til din organisation</a>
-        </div>
-      </div>
-
-      <a href="/blog"    class="nav-link">Blog</a>
-      <a href="/priser"  class="nav-link">Priser</a>
-      <a href="/kontakt" class="nav-link">Kontakt</a>
-
-      <a href="{{ $booking }}" target="_blank" rel="noopener"
-         class="ml-3 btn-primary text-sm py-2 px-4">
-        Book gratis samtale
+      <a href="/" class="flex items-baseline gap-2 min-h-[44px] py-2 flex-none">
+        <span class="font-display text-xl sm:text-2xl font-semibold text-skovbund">Kristian GG</span>
+        <span class="hidden lg:inline text-xs text-tekst-daempet">Reg. psykoterapeut &amp; naturterapeut</span>
       </a>
-    </nav>
 
-    {{/* Mobile hamburger */}}
-    <button class="lg:hidden p-2 rounded-lg text-text-muted hover:bg-gray-100 transition-colors"
-            data-mobile-menu-trigger aria-label="Åbn menu" aria-expanded="false">
-      <svg class="w-6 h-6" data-hamburger-icon fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
-      </svg>
-      <svg class="w-6 h-6 hidden" data-close-icon fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
-      </svg>
-    </button>
-  </div>
-
-  {{/* Mobile menu */}}
-  <div class="lg:hidden hidden border-t border-gray-100 bg-white" data-mobile-menu>
-    <nav class="max-w-6xl mx-auto px-4 py-4 space-y-1" aria-label="Mobil navigation">
-
-      {{/* Accordion sections */}}
-      <div data-mobile-section>
-        <button class="mobile-section-btn" data-mobile-section-trigger>
-          Til dig <svg class="w-4 h-4 ml-auto transition-transform" data-mobile-arrow fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
-        </button>
-        <div class="hidden pl-4 space-y-1 mt-1" data-mobile-section-panel>
-          <a href="/til-dig/nervesystemet" class="mobile-link">Nervesystemet & ro</a>
-          <a href="/til-dig/naturterapi"   class="mobile-link">Naturterapi</a>
-          <a href="/til-dig/psykoterapi"   class="mobile-link">Psykoterapi</a>
-          <a href="/til-dig"               class="mobile-link text-primary font-medium">Se alle →</a>
+      {{/* Desktop */}}
+      {{/* Undermenuen åbner på hover OG på tastaturfokus (group-focus-within),
+           så den kan nås uden mus og uden JavaScript. Forældrepunktet er
+           fortsat et almindeligt link til siden selv — man behøver ikke åbne
+           undermenuen for at komme videre. */}}
+      <nav class="hidden lg:flex items-center gap-1" aria-label="Hovedmenu">
+        {{- range $menu }}
+        {{- if .under }}
+        <div class="relative group">
+          <a href="{{ .url }}" class="nav-link{{ if eq $sti .url }} nav-link-aktiv{{ end }}"{{ if eq $sti .url }} aria-current="page"{{ end }}>
+            {{ .titel }}
+            <svg aria-hidden="true" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="ml-1 opacity-60"><path d="m6 9 6 6 6-6"/></svg>
+          </a>
+          <div class="invisible opacity-0 group-hover:visible group-hover:opacity-100 group-focus-within:visible group-focus-within:opacity-100 transition-opacity absolute left-0 top-full pt-1 w-56 z-50">
+            <div class="bg-white rounded-xl shadow-lg border border-lav/40 p-2">
+              {{- range .under }}
+              <a href="{{ .url }}" class="mobile-link text-sm"{{ if eq $sti .url }} aria-current="page"{{ end }}>{{ .titel }}</a>
+              {{- end }}
+            </div>
+          </div>
         </div>
-      </div>
+        {{- else }}
+        <a href="{{ .url }}" class="nav-link{{ if eq $sti .url }} nav-link-aktiv{{ end }}"{{ if eq $sti .url }} aria-current="page"{{ end }}>{{ .titel }}</a>
+        {{- end }}
+        {{- end }}
+        <a href="{{ $b.phone_sms | safeURL }}" class="btn-primary ml-2 !px-5 text-sm">Tag kontakt</a>
+      </nav>
 
-      <div data-mobile-section>
-        <button class="mobile-section-btn" data-mobile-section-trigger>
-          Til virksomheder <svg class="w-4 h-4 ml-auto transition-transform" data-mobile-arrow fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
-        </button>
-        <div class="hidden pl-4 space-y-1 mt-1" data-mobile-section-panel>
-          <a href="/til-virksomheder/workshops" class="mobile-link">Workshops</a>
-          <a href="/til-virksomheder/foredrag"  class="mobile-link">Foredrag</a>
-          <a href="/til-virksomheder/trivsel"   class="mobile-link">Medarbejdertrivsel</a>
-          <a href="/til-virksomheder"            class="mobile-link text-primary font-medium">Se alle →</a>
-        </div>
-      </div>
+      {{/* Mobil — ren HTML, ingen JavaScript */}}
+      <details class="lg:hidden relative group">
+        <summary class="list-none flex items-center gap-2 min-h-[44px] px-3 rounded-lg cursor-pointer text-skovbund font-medium marker:hidden">
+          <svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+          <span class="sr-only">Åbn menu</span>
+          <span aria-hidden="true" class="text-sm">Menu</span>
+        </summary>
+        <nav class="absolute right-0 top-full mt-2 w-64 bg-white rounded-xl shadow-lg border border-lav/40 p-2 z-50" aria-label="Hovedmenu, mobil">
+          <a href="/" class="mobile-link">Forside</a>
+          {{- range $menu }}
+          <a href="{{ .url }}" class="mobile-link"{{ if eq $sti .url }} aria-current="page"{{ end }}>{{ .titel }}</a>
+          {{- range .under }}
+          <a href="{{ .url }}" class="mobile-link pl-7 text-sm text-tekst-daempet"{{ if eq $sti .url }} aria-current="page"{{ end }}>{{ .titel }}</a>
+          {{- end }}
+          {{- end }}
+          <div class="border-t border-lav/40 my-2"></div>
+          <a href="{{ $b.phone_sms | safeURL }}" class="mobile-link font-semibold text-hyben">Send en SMS</a>
+          <a href="{{ $b.email_link | safeURL }}" class="mobile-link font-semibold text-hyben">Send en mail</a>
+          <p class="px-3 py-2 text-xs text-tekst-daempet">{{ $b.phone_display }}</p>
+        </nav>
+      </details>
 
-      <div data-mobile-section>
-        <button class="mobile-section-btn" data-mobile-section-trigger>
-          Til kommuner <svg class="w-4 h-4 ml-auto transition-transform" data-mobile-arrow fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
-        </button>
-        <div class="hidden pl-4 space-y-1 mt-1" data-mobile-section-panel>
-          <a href="/til-kommuner/saerforanstaltninger" class="mobile-link">Pæd. særforanstaltninger</a>
-          <a href="/til-kommuner/vikardaekning"        class="mobile-link">Vikardækning</a>
-          <a href="/til-kommuner/borgerforloeb"        class="mobile-link">Borgerforløb</a>
-          <a href="/til-kommuner"                      class="mobile-link text-primary font-medium">Se alle →</a>
-        </div>
-      </div>
-
-      <div data-mobile-section>
-        <button class="mobile-section-btn" data-mobile-section-trigger>
-          Kurser <svg class="w-4 h-4 ml-auto transition-transform" data-mobile-arrow fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
-        </button>
-        <div class="hidden pl-4 space-y-1 mt-1" data-mobile-section-panel>
-          <a href="/kurser"            class="mobile-link">Til dig som privatperson</a>
-          <a href="/til-organisationer" class="mobile-link">Til din organisation</a>
-        </div>
-      </div>
-
-      <a href="/blog"    class="mobile-link block">Blog</a>
-      <a href="/priser"  class="mobile-link block">Priser</a>
-      <a href="/kontakt" class="mobile-link block">Kontakt</a>
-      <a href="{{ $booking }}" target="_blank" rel="noopener"
-         class="btn-primary block text-center mt-3">Book gratis samtale</a>
-    </nav>
+    </div>
   </div>
 </header>

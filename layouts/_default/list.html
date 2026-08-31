@@ -7,27 +7,26 @@
 {{- $b := .Site.Data.business -}}
 
 {{/* Hero */}}
-<section class="bg-gradient-to-br from-primary-light via-white to-white py-16 px-4 sm:px-6">
+<section class="bg-gradient-to-b from-mos-lys to-taage py-16 px-4 sm:px-6">
   <div class="container-width">
     <div class="max-w-3xl">
-      <h1 class="text-4xl md:text-5xl font-bold text-text-dark leading-tight mb-4">{{ $p.hero_title | default .Title }}</h1>
-      {{- with $p.hero_subtitle }}<p class="text-lg md:text-xl text-text-muted leading-relaxed mb-8 max-w-2xl">{{ . }}</p>{{- end }}
+      <h1 class="text-[2rem] sm:text-4xl md:text-5xl font-semibold text-skovbund leading-tight mb-4">{{ $p.hero_title | default .Title }}</h1>
+      {{- with $p.hero_subtitle }}<p class="text-lg md:text-xl text-tekst-daempet leading-relaxed mb-8 max-w-2xl">{{ . }}</p>{{- end }}
       <div class="flex flex-wrap gap-4">
-        <a href="{{ $b.booking }}" target="_blank" rel="noopener" class="btn-primary">Book gratis samtale</a>
-      </div>
+        {{ partial "kontakt-knapper.html" (dict "business" $b) }}</div>
     </div>
   </div>
 </section>
 
 {{/* Stats bar */}}
 {{- with $p.stats }}
-<section class="bg-primary py-8">
+<section class="bg-skovbund py-8">
   <div class="container-width px-4 sm:px-6">
     <div class="grid grid-cols-1 sm:grid-cols-3 gap-6 text-center">
       {{- range . }}
       <div>
-        <div class="text-3xl font-bold text-white">{{ .num }}</div>
-        <div class="text-primary-light text-sm mt-1">{{ .label }}</div>
+        <div class="text-3xl font-semibold text-white">{{ .num }}</div>
+        <div class="text-mos-lys text-sm mt-1">{{ .label }}</div>
       </div>
       {{- end }}
     </div>
@@ -41,11 +40,11 @@
   <div class="container-width px-4 sm:px-6">
     <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
       {{- range . }}
-      <a href="{{ .href }}" class="card group hover:border-primary hover:shadow-md transition-all border-2 border-transparent">
+      <a href="{{ .href }}" class="card group hover:border-mos hover:shadow-md transition-all border-2 border-transparent">
         <div class="text-3xl mb-4">{{ .icon }}</div>
-        <h2 class="text-xl font-bold text-text-dark mb-2 group-hover:text-primary transition-colors">{{ .title }}</h2>
-        <p class="text-text-muted text-sm leading-relaxed mb-4">{{ .description }}</p>
-        <span class="text-primary text-sm font-semibold group-hover:underline">Læs mere →</span>
+        <h2 class="text-xl font-semibold text-skovbund mb-2 group-hover:text-mos transition-colors">{{ .title }}</h2>
+        <p class="text-tekst-daempet text-sm leading-relaxed mb-4">{{ .description }}</p>
+        <span class="text-mos text-sm font-semibold group-hover:underline">Læs mere →</span>
       </a>
       {{- end }}
     </div>
@@ -55,22 +54,22 @@
 
 {{/* Kurser callout */}}
 {{- with $p.kurser_callout }}
-<section class="py-6 px-4 sm:px-6 bg-primary-light border-y border-primary border-opacity-20">
+<section class="py-6 px-4 sm:px-6 bg-mos-lys border-y border-mos border-opacity-20">
   <div class="container-width flex flex-col sm:flex-row items-center gap-6">
     <div class="flex-1 text-center sm:text-left">
-      <p class="text-primary font-semibold text-sm uppercase tracking-wide mb-1">Kurser</p>
-      <h3 class="font-bold text-text-dark mb-1">{{ .title }}</h3>
-      <p class="text-text-muted text-sm">{{ .desc }}</p>
+      <p class="text-mos font-semibold text-sm uppercase tracking-wide mb-1">Kurser</p>
+      <h3 class="font-semibold text-skovbund mb-1">{{ .title }}</h3>
+      <p class="text-tekst-daempet text-sm">{{ .desc }}</p>
     </div>
-    <a href="/kurser" class="btn-primary text-sm py-2 px-5 whitespace-nowrap flex-shrink-0">Se kurser →</a>
+    <a href="/kurser/" class="btn-primary text-sm py-2 px-5 whitespace-nowrap flex-shrink-0">Se kurser →</a>
   </div>
 </section>
 {{- end }}
 
 {{/* Body content */}}
 {{- with .Content }}
-<section class="section-padding bg-bg-cream">
-  <div class="container-width max-w-3xl px-4 sm:px-6 prose prose-gray">
+<section class="section-padding bg-birk">
+  <div class="container-width [&>*]:max-w-3xl px-4 sm:px-6 prose prose-gray">
     {{ . }}
   </div>
 </section>
@@ -78,15 +77,15 @@
 
 {{/* Delivery formats (til-dig) */}}
 {{- with $p.delivery_formats }}
-<section class="section-padding {{ if $p.services }}bg-bg-cream{{ end }}">
+<section class="section-padding {{ if $p.services }}bg-birk{{ end }}">
   <div class="container-width px-4 sm:px-6">
-    <h2 class="text-2xl font-bold text-text-dark mb-6 text-center">Hvordan foregår sessionerne?</h2>
+    <h2 class="text-2xl font-semibold text-skovbund mb-6 text-center">Hvordan foregår sessionerne?</h2>
     <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 max-w-2xl mx-auto">
       {{- range . }}
       <div class="card text-center">
         <div class="text-3xl mb-2">{{ .icon }}</div>
-        <h3 class="font-semibold text-text-dark mb-1">{{ .title }}</h3>
-        <p class="text-text-muted text-sm">{{ .desc }}</p>
+        <h3 class="font-semibold text-skovbund mb-1">{{ .title }}</h3>
+        <p class="text-tekst-daempet text-sm">{{ .desc }}</p>
       </div>
       {{- end }}
     </div>
@@ -95,11 +94,11 @@
 {{- end }}
 
 {{/* CTA */}}
-<section class="section-padding bg-primary">
+<section class="section-padding bg-skovbund text-taage">
   <div class="container-width px-4 sm:px-6 text-center">
-    <h2 class="text-2xl md:text-3xl font-bold text-white mb-4">Klar til at komme i gang?</h2>
-    <p class="text-primary-light text-lg mb-8 max-w-2xl mx-auto">Book en gratis og uforpligtende telefonsamtale.</p>
-    <a href="{{ $b.booking }}" target="_blank" rel="noopener" class="inline-block bg-white text-primary hover:bg-primary-light font-semibold px-8 py-4 rounded-lg transition-colors text-lg">Book gratis samtale</a>
+    <h2 class="text-2xl md:text-3xl font-semibold text-white mb-4">Klar til at komme i gang?</h2>
+    <p class="text-mos-lys text-lg mb-8 max-w-2xl mx-auto">Skriv en SMS eller en mail. Vi starter med en kort telefonsamtale uden beregning.</p>
+    {{ partial "kontakt-knapper.html" (dict "business" $b "variant" "lys" "klasse" "flex flex-col items-center") }}
   </div>
 </section>
 {{ end }}

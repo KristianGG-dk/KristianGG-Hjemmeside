@@ -4,9 +4,10 @@
   {{ partial "head.html" . }}
   {{ block "schema" . }}{{ end }}
 </head>
-<body class="flex flex-col min-h-screen bg-white text-text-dark">
+<body class="flex flex-col min-h-screen bg-taage text-skovbund font-sans">
+  <a href="#indhold" class="skip-link">Spring til indhold</a>
   {{ partial "header.html" . }}
-  <main class="flex-1">
+  <main id="indhold" class="flex-1" tabindex="-1">
     {{ block "main" . }}{{ end }}
   </main>
   {{ partial "footer.html" . }}

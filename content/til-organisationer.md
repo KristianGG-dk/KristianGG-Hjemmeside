@@ -1,5 +1,6 @@
 ---
 title: "Til Din Organisation"
+description: "Faglig støtte, supervision og undervisning til organisationer og botilbud på Fyn og i Syddanmark. Registreret psykoterapeut med pædagogisk baggrund."
 type: "til-organisationer"
 hero_title: "Når kroppen går i alarm – udfordres fagligheden"
 hero_subtitle: "Mindre stress. Færre konflikter. Mere stabil drift."

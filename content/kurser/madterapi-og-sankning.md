@@ -1,6 +1,9 @@
 ---
 title: "Madterapi og Sankning"
+description: "Madterapi og Sankning — Nærvær, natur og regulering gennem mad. Forløb hos Kristian GG, registreret psykoterapeut i Odense."
 tagline: "Nærvær, natur og regulering gennem mad"
+hero_billede: "kaffe-i-skoven"
+hero_alt: "Kaffekande og to kopper stillet på skovbunden mellem visne blade"
 jeg_hoerer_ofte: '"Jeg ved ikke, hvad jeg har brug for", "jeg fylder bare på" eller "jeg får ikke ryddet op i mit liv."'
 open_question: "Men hvad gør du, når du ikke længere kan mærke, hvad der er godt for dig – og hvad der bare fylder?"
 focus:
@@ -26,6 +29,6 @@ Forløbet er målrettet voksne, der vil have mere retning og mindre støj. Det h
 
 Mad er livets gryderet. Noget skal i. Noget skal ud. Noget nærer. Noget dræner. Hvis du ikke vælger bevidst, sker det bare automatisk – og så ender du med noget, der ikke fungerer.
 
-Forløbet tager afsæt i forskellen mellem det liv, du lever – og det liv, du faktisk vil have. Vi arbejder konkret: du går ud, samler, vælger, sorterer, tilbereder. Undervejs bliver det tydeligt, hvordan du også gør i dit eget liv.
+Forløbet tager afsæt i forskellen mellem det liv, du lever – og det liv, du faktisk vil have. Vi arbejder konkret: Du går ud, samler, vælger, sorterer, tilbereder. Undervejs bliver det tydeligt, hvordan du også gør i dit eget liv.
 
 Du lærer ikke at lave mad. Du lærer at vælge. Og du lærer at stå ved det.

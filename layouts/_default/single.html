@@ -1,6 +1,9 @@
 {{ define "schema" }}
   {{ partial "jsonld/service.html" . }}
   {{ partial "jsonld/faqpage.html" . }}
+  {{/* /om/ er personens egen side og ligger på position 2,5 i Search Console.
+       Person-blokken hører hjemme dér lige så meget som på forsiden. */}}
+  {{ if .Params.person_schema }}{{ partial "jsonld/person.html" . }}{{ end }}
 {{ end }}
 
 {{ define "main" }}
@@ -8,30 +11,33 @@
 {{- $b := .Site.Data.business -}}
 
 {{/* Hero */}}
-<section class="bg-gradient-to-br from-primary-light via-white to-white py-16 px-4 sm:px-6">
+<section class="bg-gradient-to-b from-mos-lys to-taage py-14 sm:py-16 px-4 sm:px-6">
   <div class="container-width">
-    <div class="max-w-3xl">
-      <h1 class="text-4xl md:text-5xl font-bold text-text-dark leading-tight mb-4">{{ $p.hero_title | default .Title }}</h1>
-      {{- with $p.hero_subtitle }}<p class="text-lg md:text-xl text-text-muted leading-relaxed mb-8 max-w-2xl">{{ . }}</p>{{- end }}
-      <div class="flex flex-wrap gap-4">
-        <a href="{{ $b.booking }}" target="_blank" rel="noopener" class="btn-primary">{{ $p.cta_button | default "Book gratis samtale" }}</a>
-        <a href="/priser" class="btn-outline">Se priser</a>
+    <div class="grid {{ if $p.hero_billede }}lg:grid-cols-2 gap-10 lg:gap-14 items-center{{ end }}">
+      <div class="{{ if not $p.hero_billede }}max-w-3xl{{ end }}">
+        <h1 class="text-[2rem] sm:text-4xl md:text-5xl font-semibold leading-tight">{{ $p.hero_title | default .Title }}</h1>
+        {{- with $p.hero_subtitle }}<p class="prosa mt-5 text-lg">{{ . }}</p>{{- end }}
+        {{ partial "kontakt-knapper.html" (dict "business" $b "klasse" "mt-8") }}
       </div>
+      {{- with $p.hero_billede }}
+      <div>{{ partial "billede.html" (dict "navn" . "alt" $p.hero_alt "forhold" (or $p.hero_forhold 0.8)
+        "bredder" (or $p.hero_bredder (slice 420 640 860)) "sizes" "(min-width: 1024px) 46vw, 92vw" "prioritet" true) }}</div>
+      {{- end }}
     </div>
   </div>
 </section>
 
 {{/* FaDP badge (kommuner-sider) */}}
 {{- if $p.show_fadp_badge }}
-<section class="py-6 px-4 sm:px-6 bg-primary-light border-y border-primary border-opacity-20">
+<section class="py-6 px-4 sm:px-6 bg-mos-lys border-y border-mos border-opacity-20">
   <div class="container-width flex flex-col sm:flex-row items-center gap-4">
-    <img src="/images/fadp-logo.png" alt="FaDP – Foreningen af Danske Psykoterapeuter"
+    <img src="/images/fadp-logo-96.png" alt="FaDP – Foreningen af Danske Psykoterapeuter" width="96" height="96" loading="lazy" decoding="async"
          class="w-14 h-14 object-contain flex-shrink-0" />
     <div>
-      <p class="font-semibold text-text-dark text-sm">Registreret psykoterapeut og tilknyttet Foreningen af Danske Psykoterapeuter</p>
-      <p class="text-text-muted text-xs mt-0.5">Politisk rådgiver med indsigt i fagets udvikling og standarder · Underlagt tilsyn fra Styrelsen for Patientsikkerhed</p>
+      <p class="font-semibold text-skovbund text-sm">Registreret psykoterapeut og tilknyttet Foreningen af Danske Psykoterapeuter</p>
+      <p class="text-tekst-daempet text-xs mt-0.5">Politisk rådgiver med indsigt i fagets udvikling og standarder · Underlagt tilsyn fra Styrelsen for Patientsikkerhed</p>
     </div>
-    <a href="/om" class="sm:ml-auto text-xs text-primary font-semibold hover:underline whitespace-nowrap">Om Kristian →</a>
+    <a href="/om/" class="sm:ml-auto text-xs text-mos font-semibold hover:underline whitespace-nowrap">Om Kristian →</a>
   </div>
 </section>
 {{- end }}
@@ -39,7 +45,7 @@
 {{/* Body content (if any) */}}
 {{- with .Content }}
 <section class="section-padding">
-  <div class="container-width max-w-3xl px-4 sm:px-6 prose prose-gray prose-headings:text-text-dark prose-headings:font-bold prose-a:text-primary prose-strong:text-text-dark">
+  <div class="container-width [&>*]:max-w-3xl px-4 sm:px-6 prose prose-gray prose-headings:text-skovbund prose-headings:font-semibold prose-a:text-mos prose-strong:text-skovbund">
     {{ . }}
   </div>
 </section>
@@ -47,14 +53,14 @@
 
 {{/* Credentials (om-siden) */}}
 {{- with $p.credentials }}
-<section class="section-padding bg-bg-cream">
+<section class="section-padding bg-birk">
   <div class="container-width px-4 sm:px-6">
-    <h2 class="text-2xl font-bold text-text-dark mb-8 text-center">Uddannelser & certificeringer</h2>
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 max-w-4xl mx-auto">
+    <h2 class="text-2xl font-semibold text-skovbund mb-8 text-center">Uddannelser og certificeringer</h2>
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-3xl mx-auto">
       {{- range . }}
-      <div class="p-4 bg-white rounded-lg border border-gray-100 shadow-sm">
-        <h3 class="font-semibold text-text-dark mb-1">{{ .title }}</h3>
-        <p class="text-text-muted text-sm">{{ .body }}</p>
+      <div class="p-4 bg-white rounded-lg border border-lav/40 shadow-sm">
+        <h3 class="font-semibold text-skovbund mb-1">{{ .title }}</h3>
+        <p class="text-tekst-daempet text-sm">{{ .body }}</p>
       </div>
       {{- end }}
     </div>
@@ -66,13 +72,13 @@
 {{- with $p.values }}
 <section class="section-padding">
   <div class="container-width px-4 sm:px-6">
-    <h2 class="text-2xl font-bold text-text-dark mb-8 text-center">Værdier & tilgang</h2>
+    <h2 class="text-2xl font-semibold text-skovbund mb-8 text-center">Værdier og tilgang</h2>
     <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 max-w-3xl mx-auto">
       {{- range . }}
       <div class="card">
         <div class="text-3xl mb-3">{{ .icon }}</div>
-        <h3 class="font-semibold text-text-dark mb-2">{{ .title }}</h3>
-        <p class="text-text-muted text-sm leading-relaxed">{{ .desc }}</p>
+        <h3 class="font-semibold text-skovbund mb-2">{{ .title }}</h3>
+        <p class="text-tekst-daempet text-sm leading-relaxed">{{ .desc }}</p>
       </div>
       {{- end }}
     </div>
@@ -82,22 +88,26 @@
 
 {{/* FaDP section (om-siden) */}}
 {{- with $p.fadp }}
-<section class="section-padding bg-bg-cream">
+<section class="section-padding bg-birk">
   <div class="container-width px-4 sm:px-6">
     <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
       <div>
-        <h2 class="text-2xl font-bold text-text-dark mb-6">{{ .heading }}</h2>
-        <div class="prose prose-gray prose-p:text-text-muted prose-p:leading-relaxed max-w-none">
+        <h2 class="text-2xl font-semibold text-skovbund mb-6">{{ .heading }}</h2>
+        <div class="prose prose-gray prose-p:text-tekst-daempet prose-p:leading-relaxed max-w-none">
           {{ .text | markdownify }}
         </div>
         <a href="{{ .link }}" target="_blank" rel="noopener"
-           class="inline-block mt-6 text-primary font-semibold hover:underline text-sm">Læs mere på fadp.dk →</a>
+           class="inline-flex items-center min-h-[44px] mt-6 text-mos font-semibold hover:underline text-sm">Læs mere på fadp.dk →</a>
       </div>
       <div class="flex justify-center">
-        {{- with .logo }}
-        <img src="{{ . }}" alt="FaDP – Foreningen af Danske Psykoterapeuter"
-             class="w-56 h-56 object-contain" />
-        {{- end }}
+        {{/* Logoet blev vist i 224 px fra en 96 px-fil. Nu et sæt i den
+             rigtige størrelse, og width/height matcher visningen, så der
+             ikke opstår layoutskift. */}}
+        <img src="/images/fadp-logo-192.png"
+             srcset="/images/fadp-logo-192.png 192w, /images/fadp-logo-384.png 384w"
+             sizes="192px"
+             alt="FaDP – Foreningen af Danske Psykoterapeuter"
+             class="w-48 h-48 object-contain" width="192" height="192" loading="lazy" decoding="async">
       </div>
     </div>
   </div>
@@ -105,55 +115,52 @@
 {{- end }}
 
 {{/* Price cards (priser-siden) */}}
-{{- with $p.prices }}<section class="section-padding {{ if not $.Params.credentials }}bg-bg-cream{{ end }}">
+{{- with $p.prices }}<section class="section-padding {{ if not $.Params.credentials }}bg-birk{{ end }}">
   <div class="container-width px-4 sm:px-6">
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
       {{- range . }}
-      <div class="card relative flex flex-col {{ if .highlighted }}border-primary border-2{{ end }}">
-        {{- if .highlighted }}<div class="absolute -top-3 left-1/2 -translate-x-1/2 bg-primary text-white text-xs font-semibold px-3 py-1 rounded-full whitespace-nowrap">Mest populær</div>{{- end }}
-        <h3 class="font-bold text-text-dark mb-2">{{ .title }}</h3>
+      <div class="card relative flex flex-col {{ if .highlighted }}border-mos border-2{{ end }}">
+        {{- with .badge }}<div class="absolute -top-3 left-1/2 -translate-x-1/2 bg-mos text-white text-xs font-semibold px-3 py-1 rounded-full whitespace-nowrap">{{ . }}</div>{{- end }}
+        <h2 class="font-semibold text-skovbund mb-2 text-base">{{ .title }}</h2>
         <div class="mb-1">
           {{- if eq .price "Gratis" -}}
-          <span class="text-3xl font-bold text-primary">Gratis</span>
+          <span class="text-3xl font-semibold text-mos">Gratis</span>
           {{- else -}}
-          <span class="text-3xl font-bold text-primary">{{ .price }}</span><span class="text-text-muted text-sm"> kr</span>
+          <span class="text-3xl font-semibold text-mos">{{ .price }}</span><span class="text-tekst-daempet text-sm"> kr</span>
           {{- end }}
         </div>
-        <p class="text-text-muted text-xs mb-4">{{ .duration }}</p>
+        <p class="text-tekst-daempet text-xs mb-4">{{ .duration }}</p>
         <ul class="space-y-2 mb-4">
           {{- range .features }}
-          <li class="flex items-center gap-2 text-sm text-text-muted">
-            <span class="text-primary font-bold flex-shrink-0">✓</span> {{ . }}
+          <li class="flex items-center gap-2 text-sm text-tekst-daempet">
+            <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="text-mos flex-shrink-0 mt-1"><path d="M20 6 9 17l-5-5"/></svg> {{ . }}
           </li>
           {{- end }}
         </ul>
-        {{- with .note }}<p class="text-text-muted text-xs italic border-t border-gray-100 pt-3 mt-3">{{ . }}</p>{{- end }}
-        {{- with .booking_url }}
-        <a href="{{ . }}" target="_blank" rel="noopener"
-           class="mt-4 w-full !flex items-center justify-center btn-primary text-sm">Book nu</a>
-        {{- end }}
+        {{- with .note }}<p class="text-tekst-daempet text-xs italic border-t border-lav/40 pt-3 mt-3">{{ . }}</p>{{- end }}
+
       </div>
       {{- end }}
     </div>
-    <div class="text-center mt-8">
-      <a href="{{ $b.booking }}" target="_blank" rel="noopener" class="btn-primary">Book gratis opstartsamtale</a>
-    </div>
+    {{/* Ingen kontaktblok her. Sidens afsluttende CTA ligger få hundrede
+         pixels længere nede, og to ens blokke tæt på hinanden læses som
+         pres frem for hjælp. */}}
   </div>
 </section>
 {{- end }}
 
 {{/* Methods / cards grid */}}
 {{- with $p.methods }}
-<section class="section-padding bg-bg-cream">
+<section class="section-padding bg-birk">
   <div class="container-width px-4 sm:px-6">
-    <h2 class="text-2xl font-bold text-text-dark mb-2 text-center">Mine terapeutiske metoder</h2>
-    <p class="text-text-muted text-center mb-8">Jeg er uddannet i seks komplementære tilgange – og vælger altid den kombination der passer bedst til dig.</p>
+    <h2 class="text-2xl font-semibold text-skovbund mb-2 text-center">Metoder jeg trækker på</h2>
+    <p class="text-tekst-daempet text-center mb-8 max-w-2xl mx-auto">Metoden skal passe til mennesket — ikke mennesket til metoden. Herunder står det, jeg er uddannet i. Det er baggrund, ikke et katalog, du skal vælge fra.</p>
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
       {{- range . }}
       <div class="card">
         <div class="text-3xl mb-3">{{ .icon }}</div>
-        <h3 class="font-semibold text-text-dark mb-2">{{ .title }}</h3>
-        <p class="text-text-muted text-sm leading-relaxed">{{ .desc }}</p>
+        <h3 class="font-semibold text-skovbund mb-2">{{ .title }}</h3>
+        <p class="text-tekst-daempet text-sm leading-relaxed">{{ .desc }}</p>
       </div>
       {{- end }}
     </div>
@@ -165,13 +172,13 @@
 {{- with $p.competencies }}
 <section class="section-padding">
   <div class="container-width px-4 sm:px-6">
-    <h2 class="text-2xl font-bold text-text-dark mb-8 text-center">Faglige kompetencer</h2>
+    <h2 class="text-2xl font-semibold text-skovbund mb-8 text-center">Faglige kompetencer</h2>
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
       {{- range . }}
       <div class="card">
         <div class="text-3xl mb-3">{{ .icon }}</div>
-        <h3 class="font-semibold text-text-dark mb-2">{{ .title }}</h3>
-        <p class="text-text-muted text-sm leading-relaxed">{{ .desc }}</p>
+        <h3 class="font-semibold text-skovbund mb-2">{{ .title }}</h3>
+        <p class="text-tekst-daempet text-sm leading-relaxed">{{ .desc }}</p>
       </div>
       {{- end }}
     </div>
@@ -181,14 +188,15 @@
 
 {{/* Workshop themes / topics / formats */}}
 {{- with ($p.themes | default $p.topics | default $p.formats) }}
-<section class="section-padding {{ if not $.Params.methods }}bg-bg-cream{{ end }}">
+<section class="section-padding {{ if not $.Params.methods }}bg-birk{{ end }}">
   <div class="container-width px-4 sm:px-6">
+    <h2 class="text-2xl font-semibold text-skovbund mb-8 text-center">{{ $p.temaer_titel | default "Temaer" }}</h2>
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-4xl mx-auto">
       {{- range . }}
       <div class="card">
         <div class="text-3xl mb-3">{{ .icon }}</div>
-        <h3 class="font-semibold text-text-dark mb-2">{{ .title }}</h3>
-        <p class="text-text-muted text-sm leading-relaxed">{{ .desc }}</p>
+        <h3 class="font-semibold text-skovbund mb-2">{{ .title }}</h3>
+        <p class="text-tekst-daempet text-sm leading-relaxed">{{ .desc }}</p>
       </div>
       {{- end }}
     </div>
@@ -198,15 +206,15 @@
 
 {{/* Session types (naturterapi) */}}
 {{- with $p.session_types }}
-<section class="section-padding bg-bg-cream">
+<section class="section-padding bg-birk">
   <div class="container-width px-4 sm:px-6">
-    <h2 class="text-2xl font-bold text-text-dark mb-8 text-center">Hvad foregår i en naturterapisession?</h2>
+    <h2 class="text-2xl font-semibold text-skovbund mb-8 text-center">Hvad foregår i en naturterapisession?</h2>
     <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 max-w-3xl mx-auto">
       {{- range . }}
       <div class="card">
         <div class="text-2xl mb-3">{{ .icon }}</div>
-        <h3 class="font-semibold text-text-dark mb-2">{{ .title }}</h3>
-        <p class="text-text-muted text-sm leading-relaxed">{{ .desc }}</p>
+        <h3 class="font-semibold text-skovbund mb-2">{{ .title }}</h3>
+        <p class="text-tekst-daempet text-sm leading-relaxed">{{ .desc }}</p>
       </div>
       {{- end }}
     </div>
@@ -216,12 +224,12 @@
 
 {{/* Helps with */}}
 {{- with $p.helps_with }}
-<section class="section-padding bg-bg-cream">
+<section class="section-padding bg-birk">
   <div class="container-width px-4 sm:px-6">
-    <h2 class="text-2xl font-bold text-text-dark mb-8 text-center">Hvad kan det hjælpe med?</h2>
+    <h2 class="text-2xl font-semibold text-skovbund mb-8 text-center">Hvad kan det hjælpe med?</h2>
     <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 max-w-3xl mx-auto">
       {{- range . }}
-      <div class="bg-white rounded-lg px-3 py-2.5 text-sm text-text-muted text-center border border-gray-100 shadow-sm">{{ . }}</div>
+      <div class="bg-white rounded-lg px-3 py-2.5 text-sm text-tekst-daempet text-center border border-lav/40 shadow-sm">{{ . }}</div>
       {{- end }}
     </div>
   </div>
@@ -230,16 +238,16 @@
 
 {{/* Process steps */}}
 {{- with $p.process }}
-<section class="section-padding bg-bg-cream">
-  <div class="container-width max-w-3xl px-4 sm:px-6">
-    <h2 class="text-2xl font-bold text-text-dark mb-6">Hvad indeholder et trivselsprogram?</h2>
+<section class="section-padding bg-birk">
+  <div class="container-width [&>*]:max-w-3xl px-4 sm:px-6">
+    <h2 class="text-2xl font-semibold text-skovbund mb-6">Hvad indeholder et trivselsprogram?</h2>
     <div class="space-y-4">
       {{- range . }}
-      <div class="flex gap-4 p-4 bg-white rounded-lg border border-gray-100">
-        <div class="w-8 h-8 rounded-full bg-primary text-white flex items-center justify-center text-sm font-bold flex-shrink-0">{{ .step }}</div>
+      <div class="flex gap-4 p-4 bg-white rounded-lg border border-lav/40">
+        <div class="w-8 h-8 rounded-full bg-skovbund text-taage flex items-center justify-center text-sm font-semibold flex-shrink-0">{{ .step }}</div>
         <div>
-          <h4 class="font-semibold text-text-dark text-sm mb-1">{{ .title }}</h4>
-          <p class="text-text-muted text-sm leading-relaxed">{{ .text }}</p>
+          <h3 class="font-semibold text-skovbund text-sm mb-1">{{ .title }}</h3>
+          <p class="text-tekst-daempet text-sm leading-relaxed">{{ .text }}</p>
         </div>
       </div>
       {{- end }}
@@ -251,13 +259,13 @@
 {{/* Pricing (borgerforløb) */}}
 {{- with $p.pricing }}
 <section class="section-padding">
-  <div class="container-width max-w-3xl px-4 sm:px-6">
-    <h2 class="text-2xl font-bold text-text-dark mb-6">Priser og aftaleformer</h2>
+  <div class="container-width [&>*]:max-w-3xl px-4 sm:px-6">
+    <h2 class="text-2xl font-semibold text-skovbund mb-6">Priser og aftaleformer</h2>
     <div class="space-y-4">
       {{- range . }}
-      <div class="p-5 bg-bg-cream rounded-lg border border-gray-100">
-        <h4 class="font-semibold text-text-dark mb-2">{{ .title }}</h4>
-        <p class="text-text-muted text-sm leading-relaxed">{{ .text }}</p>
+      <div class="p-5 bg-birk rounded-lg border border-lav/40">
+        <h3 class="font-semibold text-skovbund mb-2">{{ .title }}</h3>
+        <p class="text-tekst-daempet text-sm leading-relaxed">{{ .text }}</p>
       </div>
       {{- end }}
     </div>
@@ -268,13 +276,13 @@
 {{/* Target groups */}}
 {{- with $p.target_groups }}
 <section class="section-padding">
-  <div class="container-width max-w-3xl px-4 sm:px-6">
-    <h2 class="text-2xl font-bold text-text-dark mb-6">Hvem er det for?</h2>
+  <div class="container-width [&>*]:max-w-3xl px-4 sm:px-6">
+    <h2 class="text-2xl font-semibold text-skovbund mb-6">Hvem er det for?</h2>
     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
       {{- range . }}
-      <div class="flex items-center gap-3 p-3 bg-bg-cream rounded-lg">
-        <span class="text-primary font-bold">✓</span>
-        <span class="text-text-muted text-sm">{{ . }}</span>
+      <div class="flex items-center gap-3 p-3 bg-birk rounded-lg">
+        <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="text-mos flex-shrink-0 mt-1"><path d="M20 6 9 17l-5-5"/></svg>
+        <span class="text-tekst-daempet text-sm">{{ . }}</span>
       </div>
       {{- end }}
     </div>
@@ -284,14 +292,17 @@
 
 {{/* Practical info table */}}
 {{- with $p.practical }}
-<section class="section-padding {{ if not $.Params.themes }}bg-bg-cream{{ end }}">
-  <div class="container-width max-w-3xl px-4 sm:px-6">
-    <h2 class="text-2xl font-bold text-text-dark mb-6">Praktisk information</h2>
+<section class="section-padding {{ if not $.Params.themes }}bg-birk{{ end }}">
+  <div class="container-width [&>*]:max-w-3xl px-4 sm:px-6">
+    <h2 class="text-2xl font-semibold text-skovbund mb-6">Praktisk information</h2>
     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
       {{- range . }}
-      <div class="flex gap-3 p-4 bg-white rounded-lg border border-gray-100">
-        <span class="text-primary font-semibold text-sm w-40 flex-shrink-0">{{ .label }}</span>
-        <span class="text-text-muted text-sm">{{ .value }}</span>
+      {{/* Etiket og værdi står under hinanden på smalle skærme. Med fast
+           w-40 til etiketten var der kun ~84 px tilbage til værdien ved
+           320 px, og "konferencelokale" skubbede siden vandret ud. */}}
+      <div class="flex flex-col md:flex-row gap-1 md:gap-3 p-4 bg-white rounded-lg border border-lav/40 min-w-0">
+        <span class="text-mos font-semibold text-sm md:w-36 md:flex-shrink-0">{{ .label }}</span>
+        <span class="text-tekst-daempet text-sm min-w-0">{{ .value }}</span>
       </div>
       {{- end }}
     </div>
@@ -300,21 +311,28 @@
 {{- end }}
 
 {{/* FAQ */}}
+{{- with $p.detalje_billede }}
+<section class="px-4 sm:px-6 pt-4">
+  <div class="container-width">{{ partial "billede.html" (dict "navn" . "alt" $p.detalje_alt
+     "forhold" 1.333 "bredder" (slice 420 640 860) "sizes" "94vw") }}</div>
+</section>
+{{- end }}
+
 {{- with .Params.faq }}
 <section class="section-padding">
-  <div class="container-width max-w-3xl px-4 sm:px-6">
-    <h2 class="text-2xl font-bold text-text-dark mb-6">Ofte stillede spørgsmål</h2>
-    {{ partial "faq-accordion.html" $ }}
+  <div class="container-width [&>*]:max-w-3xl px-4 sm:px-6">
+    <h2 class="text-2xl font-semibold text-skovbund mb-6">Ofte stillede spørgsmål</h2>
+    {{ partial "faq-accordion.html" . }}
   </div>
 </section>
 {{- end }}
 
 {{/* CTA */}}
-<section class="section-padding bg-primary">
+<section class="section-padding bg-skovbund text-taage">
   <div class="container-width px-4 sm:px-6 text-center">
-    <h2 class="text-2xl md:text-3xl font-bold text-white mb-4">{{ $p.cta_heading | default "Klar til at komme i gang?" }}</h2>
-    <p class="text-primary-light text-lg mb-8 max-w-2xl mx-auto">{{ $p.cta_text | default "Book en gratis og uforpligtende telefonsamtale." }}</p>
-    <a href="{{ $b.booking }}" target="_blank" rel="noopener" class="inline-block bg-white text-primary hover:bg-primary-light font-semibold px-8 py-4 rounded-lg transition-colors text-lg">{{ $p.cta_button | default "Book gratis samtale" }}</a>
+    <h2 class="text-2xl md:text-3xl font-semibold text-white mb-4">{{ $p.cta_heading | default "Klar til at komme i gang?" }}</h2>
+    <p class="text-mos-lys text-lg mb-8 max-w-2xl mx-auto">{{ $p.cta_text | default "Skriv en SMS eller en mail. Vi starter med en kort telefonsamtale uden beregning." }}</p>
+    {{ partial "kontakt-knapper.html" (dict "business" $b "variant" "lys" "klasse" "flex flex-col items-center") }}
   </div>
 </section>
 {{ end }}

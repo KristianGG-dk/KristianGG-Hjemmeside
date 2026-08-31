@@ -1,26 +1,40 @@
-{{- $b := .Site.Data.business -}}
+{{- /*
+  Service. provider peger på LocalBusiness'ens @id i stedet for at gentage
+  navn og adresse — så beskriver hele siden én virksomhed frem for elleve
+  næsten ens kopier.
+
+  availableChannel beskriver, hvordan man reelt kommer i kontakt: SMS og
+  telefon. Der findes ingen bookingkanal, og der markeres derfor ingen.
+*/ -}}
+{{- $b := site.Data.business -}}
 {{- with .Params.service_name -}}
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@type": "Service",
-  "name": "{{ . }}",
-  "description": "{{ $.Params.service_desc }}",
-  "provider": {
-    "@type": "LocalBusiness",
-    "name": "{{ $b.full_name }}",
-    "url": "{{ $.Site.BaseURL }}"
-  },
+  "name": {{ . | jsonify | safeJS }},
+  "description": {{ $.Params.service_desc | jsonify | safeJS }},
+  "url": "{{ $.Permalink }}",
+  "serviceType": {{ . | jsonify | safeJS }},
+  "provider": { "@id": "{{ site.BaseURL }}" },
   "areaServed": [
     { "@type": "City", "name": "Odense" },
     { "@type": "AdministrativeArea", "name": "Fyn" },
     { "@type": "AdministrativeArea", "name": "Syddanmark" }
   ],
-  "availableChannel": {
-    "@type": "ServiceChannel",
-    "serviceUrl": "{{ $b.booking }}",
-    "servicePhone": "{{ $b.phone }}"
-  }
+  "availableChannel": [
+    {
+      "@type": "ServiceChannel",
+      "name": "SMS",
+      "serviceUrl": {{ $b.phone_sms | jsonify | safeJS }},
+      "servicePhone": {{ $b.phone | jsonify | safeJS }}
+    },
+    {
+      "@type": "ServiceChannel",
+      "name": "E-mail",
+      "serviceUrl": {{ $b.email_link | jsonify | safeJS }}
+    }
+  ]
 }
 </script>
 {{- end -}}

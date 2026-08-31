@@ -3,24 +3,23 @@
 {{- $b := .Site.Data.business -}}
 
 {{/* Hero */}}
-<section class="bg-gradient-to-br from-primary-light via-white to-white py-16 px-4 sm:px-6">
+<section class="bg-gradient-to-b from-mos-lys to-taage py-16 px-4 sm:px-6">
   <div class="container-width">
     <div class="max-w-3xl">
-      <h1 class="text-4xl md:text-5xl font-bold text-text-dark leading-tight mb-2">{{ $p.hero_title | default .Title }}</h1>
-      {{- with $p.hero_subtitle }}<p class="text-xl text-primary font-semibold mb-6">{{ . }}</p>{{- end }}
-      <a href="{{ $b.booking }}" target="_blank" rel="noopener" class="btn-primary">Book gratis samtale</a>
-    </div>
+      <h1 class="text-[2rem] sm:text-4xl md:text-5xl font-semibold text-skovbund leading-tight mb-2">{{ $p.hero_title | default .Title }}</h1>
+      {{- with $p.hero_subtitle }}<p class="text-xl text-mos font-semibold mb-6">{{ . }}</p>{{- end }}
+      {{ partial "kontakt-knapper.html" (dict "business" $b) }}</div>
   </div>
 </section>
 
 {{/* Jeg hører ofte */}}
 {{- with $p.jeg_hoerer_ofte }}
-<section class="py-10 px-4 sm:px-6 bg-bg-cream">
+<section class="py-10 px-4 sm:px-6 bg-birk">
   <div class="container-width">
     <div class="max-w-3xl">
-      <blockquote class="border-l-4 border-primary pl-6">
-        <p class="text-text-muted italic mb-1">Jeg hører ofte:</p>
-        <p class="text-text-dark font-medium italic">{{ . }}</p>
+      <blockquote class="border-l-4 border-mos pl-6">
+        <p class="text-tekst-daempet italic mb-1">Jeg hører ofte:</p>
+        <p class="text-skovbund font-medium italic">{{ . }}</p>
       </blockquote>
     </div>
   </div>
@@ -32,7 +31,7 @@
 <section class="py-8 px-4 sm:px-6">
   <div class="container-width">
     <div class="max-w-3xl">
-      <p class="text-lg font-semibold text-text-dark">{{ . }}</p>
+      <p class="text-lg font-semibold text-skovbund">{{ . }}</p>
     </div>
   </div>
 </section>
@@ -42,7 +41,7 @@
 {{- with .Content }}
 <section class="pb-10 px-4 sm:px-6">
   <div class="container-width">
-    <div class="max-w-3xl prose prose-gray prose-headings:text-text-dark prose-headings:font-bold prose-a:text-primary prose-strong:text-text-dark">
+    <div class="max-w-3xl prose prose-gray prose-headings:text-skovbund prose-headings:font-semibold prose-a:text-mos prose-strong:text-skovbund">
       {{ . }}
     </div>
   </div>
@@ -51,15 +50,15 @@
 
 {{/* Focus */}}
 {{- with $p.focus }}
-<section class="section-padding bg-bg-cream">
+<section class="section-padding bg-birk">
   <div class="container-width px-4 sm:px-6">
     <div class="max-w-3xl">
-      <h2 class="text-2xl font-bold text-text-dark mb-6">Dette forløb har fokus på</h2>
+      <h2 class="text-2xl font-semibold text-skovbund mb-6">Dette forløb har fokus på</h2>
       <ul class="space-y-3">
         {{- range . }}
         <li class="flex items-start gap-3">
-          <span class="text-primary font-bold mt-0.5 flex-shrink-0">✓</span>
-          <span class="text-text-muted">{{ . }}</span>
+          <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="text-mos flex-shrink-0 mt-1"><path d="M20 6 9 17l-5-5"/></svg>
+          <span class="text-tekst-daempet">{{ . }}</span>
         </li>
         {{- end }}
       </ul>
@@ -73,12 +72,12 @@
 <section class="section-padding">
   <div class="container-width px-4 sm:px-6">
     <div class="max-w-3xl">
-      <h2 class="text-2xl font-bold text-text-dark mb-6">Vigtige elementer i forløbet</h2>
+      <h2 class="text-2xl font-semibold text-skovbund mb-6">Vigtige elementer i forløbet</h2>
       <div class="space-y-4">
         {{- range . }}
-        <div class="p-5 bg-white rounded-xl border border-gray-100 shadow-sm">
-          <h3 class="font-semibold text-text-dark mb-1">{{ .title }}</h3>
-          <p class="text-text-muted text-sm leading-relaxed">{{ .desc }}</p>
+        <div class="p-5 bg-white rounded-xl border border-lav/40 shadow-sm">
+          <h3 class="font-semibold text-skovbund mb-1">{{ .title }}</h3>
+          <p class="text-tekst-daempet text-sm leading-relaxed">{{ .desc }}</p>
         </div>
         {{- end }}
       </div>
@@ -89,15 +88,15 @@
 
 {{/* Formats */}}
 {{- with $p.formats }}
-<section class="section-padding bg-bg-cream">
+<section class="section-padding bg-birk">
   <div class="container-width px-4 sm:px-6">
-    <h2 class="text-2xl font-bold text-text-dark mb-8 text-center">Forløbsformater</h2>
+    <h2 class="text-2xl font-semibold text-skovbund mb-8 text-center">Forløbsformater</h2>
     <div class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto">
       {{- range . }}
-      <div class="bg-white rounded-xl p-6 border border-gray-100 shadow-sm">
-        <h3 class="font-bold text-text-dark mb-1">{{ .title }}</h3>
-        <p class="text-primary text-sm font-semibold mb-3">{{ .subtitle }}</p>
-        <p class="text-text-muted text-sm leading-relaxed">{{ .desc }}</p>
+      <div class="bg-white rounded-xl p-6 border border-lav/40 shadow-sm">
+        <h3 class="font-semibold text-skovbund mb-1">{{ .title }}</h3>
+        <p class="text-mos text-sm font-semibold mb-3">{{ .subtitle }}</p>
+        <p class="text-tekst-daempet text-sm leading-relaxed">{{ .desc }}</p>
       </div>
       {{- end }}
     </div>
@@ -109,9 +108,9 @@
 <section class="section-padding">
   <div class="container-width px-4 sm:px-6">
     <div class="max-w-3xl">
-      <h2 class="text-2xl font-bold text-text-dark mb-6">Om Kristian GG – Kurser og Workshops</h2>
-      <p class="text-primary font-semibold mb-4">Praksisnær undervisning i regulering, relation og stressforebyggelse</p>
-      <div class="prose prose-gray prose-headings:text-text-dark prose-a:text-primary prose-strong:text-text-dark">
+      <h2 class="text-2xl font-semibold text-skovbund mb-6">Om Kristian GG – Kurser og Workshops</h2>
+      <p class="text-mos font-semibold mb-4">Praksisnær undervisning i regulering, relation og stressforebyggelse</p>
+      <div class="prose prose-gray prose-headings:text-skovbund prose-a:text-mos prose-strong:text-skovbund">
         <p>Kristian G. G. Dansted arbejder i krydsfeltet mellem psykoterapi og socialpædagogisk praksis med særligt fokus på regulering af nervesystemet i højbelastede miljøer.</p>
         <p>Med afsæt i både klinisk erfaring og arbejde i sociale indsatser tilbyder Kristian GG kurser og workshops, der tager udgangspunkt i den virkelighed, medarbejdere står i til daglig – hvor kravene til nærvær, relationsarbejde og faglig dømmekraft ofte er høje, og belastningen kan være betydelig.</p>
         <p>Undervisningen er praksisnær, konkret og direkte anvendelig – med fokus på det, der virker i situationer, hvor presset er højt, og hvor medarbejderen skal kunne bevare ro, overblik og handlekompetence.</p>
@@ -124,20 +123,20 @@
 
 {{/* Hvorfor det betyder noget */}}
 {{- with $p.why_bullets }}
-<section class="section-padding bg-bg-cream">
+<section class="section-padding bg-birk">
   <div class="container-width px-4 sm:px-6">
     <div class="max-w-3xl">
-      <h2 class="text-2xl font-bold text-text-dark mb-4">Hvorfor Det Betyder Noget</h2>
-      <p class="text-text-muted leading-relaxed mb-6">Medarbejdere i sociale indsatser arbejder under høje følelsesmæssige krav og belastning. Forskning i psykisk arbejdsmiljø viser, at manglende håndtering af belastning kan føre til:</p>
+      <h2 class="text-2xl font-semibold text-skovbund mb-4">Hvorfor Det Betyder Noget</h2>
+      <p class="text-tekst-daempet leading-relaxed mb-6">Medarbejdere i sociale indsatser arbejder under høje følelsesmæssige krav og belastning. Forskning i psykisk arbejdsmiljø viser, at manglende håndtering af belastning kan føre til:</p>
       <ul class="space-y-3 mb-6">
         {{- range . }}
         <li class="flex items-start gap-3">
-          <span class="text-primary font-bold flex-shrink-0">→</span>
-          <span class="text-text-muted">{{ . }}</span>
+          <span class="text-mos font-semibold flex-shrink-0">→</span>
+          <span class="text-tekst-daempet">{{ . }}</span>
         </li>
         {{- end }}
       </ul>
-      <p class="text-text-muted leading-relaxed">Tidlig indsats med fokus på regulering er en central faktor i forebyggelse og fastholdelse af trivsel i arbejdet.</p>
+      <p class="text-tekst-daempet leading-relaxed">Tidlig indsats med fokus på regulering er en central faktor i forebyggelse og fastholdelse af trivsel i arbejdet.</p>
     </div>
   </div>
 </section>
@@ -147,12 +146,12 @@
 {{- with $p.testimonials }}
 <section class="section-padding">
   <div class="container-width px-4 sm:px-6">
-    <h2 class="text-2xl font-bold text-text-dark mb-8 text-center">Det siger andre</h2>
+    <h2 class="text-2xl font-semibold text-skovbund mb-8 text-center">Det siger andre</h2>
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
       {{- range . }}
-      <div class="bg-bg-cream rounded-xl p-6 border border-gray-100">
-        <p class="text-text-muted leading-relaxed italic mb-4">"{{ .quote }}"</p>
-        <p class="font-semibold text-text-dark text-sm">— {{ .name }}{{- with .role }}, {{ . }}{{- end }}</p>
+      <div class="bg-birk rounded-xl p-6 border border-lav/40">
+        <p class="text-tekst-daempet leading-relaxed italic mb-4">"{{ .quote }}"</p>
+        <p class="font-semibold text-skovbund text-sm">— {{ .name }}{{- with .role }}, {{ . }}{{- end }}</p>
       </div>
       {{- end }}
     </div>
@@ -161,11 +160,11 @@
 {{- end }}
 
 {{/* CTA */}}
-<section class="section-padding bg-primary">
+<section class="section-padding bg-skovbund text-taage">
   <div class="container-width px-4 sm:px-6 text-center">
-    <h2 class="text-2xl md:text-3xl font-bold text-white mb-4">Interesseret i et samarbejde?</h2>
-    <p class="text-primary-light text-lg mb-8 max-w-2xl mx-auto">Kontakt mig for en uforpligtende snak om forløb og mulige aftaleformer.</p>
-    <a href="{{ $b.booking }}" target="_blank" rel="noopener" class="inline-block bg-white text-primary hover:bg-primary-light font-semibold px-8 py-4 rounded-lg transition-colors text-lg">Book gratis samtale</a>
+    <h2 class="text-2xl md:text-3xl font-semibold text-white mb-4">Interesseret i et samarbejde?</h2>
+    <p class="text-mos-lys text-lg mb-8 max-w-2xl mx-auto">Kontakt mig for en uforpligtende snak om forløb og mulige aftaleformer.</p>
+    {{ partial "kontakt-knapper.html" (dict "business" $b "variant" "lys" "klasse" "flex flex-col items-center") }}
   </div>
 </section>
 {{ end }}

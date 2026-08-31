@@ -1,0 +1,17 @@
+{{- /*
+  Vælger mellem et rigtigt fotografi og en billedplads.
+
+  Sendes 'navn', bruges fotografiet. Ellers vises pladsen med beskrivelsen af
+  det motiv, der mangler. Det gør det muligt at sætte billeder ind ét ad gangen
+  uden at røre skabelonerne.
+*/ -}}
+{{- if .navn -}}
+  {{ partial "billede.html" (dict
+      "navn" .navn "alt" .alt
+      "bredder" (.bredder | default (slice 420 640 860))
+      "forhold" (.forhold | default 0.8)
+      "sizes" .sizes "prioritet" .prioritet
+      "klasse" .klasse "ramme" .ramme) }}
+{{- else -}}
+  {{ partial "billedplads.html" (dict "motiv" .motiv "hoejde" .hoejde "klasse" .ramme) }}
+{{- end -}}

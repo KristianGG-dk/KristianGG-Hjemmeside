@@ -1,0 +1,66 @@
+{{ define "schema" }}{{ partial "jsonld/service.html" . }}{{ if .Params.faq }}{{ partial "jsonld/faqpage.html" . }}{{ end }}{{ end }}
+{{ define "main" }}
+{{- $b := site.Data.business -}}
+{{- $p := .Params -}}
+
+<section class="bg-gradient-to-b from-mos-lys to-taage">
+  <div class="container-width px-4 sm:px-6 py-12 sm:py-16">
+    <nav aria-label="Brødkrumme" class="text-sm text-tekst-daempet mb-6">
+      <a href="/" class="hover:text-mos underline underline-offset-2">Forside</a>
+      <span aria-hidden="true" class="mx-2">/</span>
+      <a href="/kurser/" class="hover:text-mos underline underline-offset-2">Forløb</a>
+      <span aria-hidden="true" class="mx-2">/</span>
+      <span>Skovbad</span>
+    </nav>
+    <div class="grid lg:grid-cols-2 gap-10 items-center">
+      <div>
+        <h1 class="text-[2rem] sm:text-4xl md:text-5xl font-semibold leading-tight">{{ $p.hero_title }}</h1>
+        <p class="prosa mt-5 text-lg">{{ $p.hero_subtitle }}</p>
+        {{ partial "kontakt-knapper.html" (dict "business" $b "klasse" "mt-8") }}
+      </div>
+      <div>{{ partial "medie.html" (dict "navn" $p.hero_billede "alt" $p.hero_alt
+        "motiv" "Lys der falder ned gennem kronerne, ingen mennesker" "forhold" 1.5
+        "bredder" (slice 560 840 1200) "sizes" "(min-width: 1024px) 46vw, 92vw" "prioritet" true "hoejde" "h-72 sm:h-96") }}</div>
+    </div>
+  </div>
+</section>
+
+{{/* Én læsespalte. Listen "Hvad skovbad ikke er" stod tidligere i en
+     sidebjælke, som på telefon lå nederst på siden — langt fra sin egen
+     overskrift midt i teksten. Den står nu i selve teksten. */}}
+<section class="section-padding">
+  <div class="container-width">
+    {{/* Samme typografi som de øvrige indholdssider. Med .prosa fik h2 fra
+         markdown ingen størrelse og blev mindre end brødteksten, og lister
+         mistede punkttegn. */}}
+    <div class="[&>*]:max-w-3xl prose prose-gray prose-headings:text-skovbund prose-headings:font-semibold prose-a:text-mos prose-strong:text-skovbund">{{ .Content }}</div>
+  </div>
+</section>
+
+<section class="px-4 sm:px-6">
+  <div class="container-width">{{ partial "medie.html" (dict "navn" $p.detalje_billede "alt" $p.detalje_alt
+     "motiv" "En hånd der rører ved bark eller blad, nærbillede" "forhold" 1.333
+     "bredder" (slice 420 640 860) "sizes" "94vw" "hoejde" "h-52 sm:h-72") }}</div>
+</section>
+
+{{- with $p.faq }}
+<section class="section-padding" aria-labelledby="faq">
+  <div class="container-width [&>*]:max-w-3xl">
+    <h2 id="faq" class="text-2xl font-semibold mb-6">Ofte stillede spørgsmål</h2>
+    {{ partial "faq-accordion.html" . }}
+  </div>
+</section>
+{{- end }}
+
+{{ partial "anbefalinger.html" (dict "Page" .) }}
+
+<section class="bg-skovbund text-taage">
+  <div class="container-width px-4 sm:px-6 py-16">
+    <div class="max-w-2xl">
+      <h2 class="text-3xl font-semibold text-white">{{ $p.cta_heading }}</h2>
+      <p class="mt-4 text-birk leading-relaxed">{{ $p.cta_text }}</p>
+      {{ partial "kontakt-knapper.html" (dict "business" $b "variant" "lys" "klasse" "mt-8") }}
+    </div>
+  </div>
+</section>
+{{ end }}
