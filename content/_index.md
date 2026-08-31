@@ -12,7 +12,7 @@ baand_billede: "kyst-baand"
 baand_alt: "Strandeng med små vandhuller, kystlinje og hav under klar himmel"
 
 omraader_titel: "Tre områder"
-omraader_tekst: "Psykoterapien er det faglige fundament under det hele. Naturterapi og skovbad er selvstændige arbejdsformer med deres eget indhold og deres egen fremgangsmåde — ikke samtaler, der er flyttet udenfor."
+omraader_tekst: "Psykoterapien er det faglige fundament under det hele. Jeg er registreret psykoterapeut og har uddannelser i blandt andet hypnoterapi, NLP og kognitiv adfærdsterapi. Hypnose er ét redskab blandt flere — metoden skal passe til mennesket, ikke omvendt. Naturterapi og skovbad er selvstændige arbejdsformer med deres eget indhold og deres egen fremgangsmåde — ikke samtaler, der er flyttet udenfor."
 omraader:
   - titel: "Psykoterapi"
     url: "/til-dig/psykoterapi/"
@@ -51,7 +51,7 @@ om_billede: "kristian-portraet"
 om_alt: "Kristian G. G. Dansted udendørs med et stykke træ i hånden"
 
 erhverv_titel: "Til virksomheder og kommuner"
-erhverv_tekst: "Jeg holder foredrag og workshops om stress og nervesystemet, og løser opgaver for kommuner inden for særforanstaltninger, vikardækning og borgerforløb."
+erhverv_tekst: "Jeg holder foredrag og workshops om stress, trivsel og nervesystemet, og løser opgaver for kommuner inden for særforanstaltninger, vikardækning og individuelle borgerforløb."
 
 kontakt_titel: "Tag kontakt"
 kontakt_tekst: "Skriv en SMS eller en mail. Der er ingen kalender, du skal igennem, og ingen formular du skal udfylde først."

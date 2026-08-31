@@ -49,7 +49,7 @@ Metoden skal passe til mennesket — ikke mennesket til metoden. Jeg har uddanne
 
 Jeg er uddannet Master Neuro Hypnoterapeut, og hypnose er ét af de redskaber, jeg kan tage i brug, når det giver mening for mennesket og for det, vi arbejder med. Det samme gælder NLP og kognitiv adfærdsterapi.
 
-Hypnose er ikke show, og du mister ikke kontrollen. Du er vågen hele vejen, du kan tale, og du kan stoppe når som helst. Vi bruger det kun, hvis du selv har lyst til at prøve det.
+Hypnose er en fokuseret tilstand, hvor opmærksomheden snævres ind. Det er dét, der i daglig tale kaldes at arbejde med underbevidstheden. Hypnose er ikke show, og du mister ikke kontrollen. Du er vågen hele vejen, du kan tale, og du kan stoppe når som helst. Vi bruger det kun, hvis du selv har lyst til at prøve det.
 
 Nogle kommer specifikt for at arbejde med hypnose. Andre har ingen interesse i det, og så gør vi noget andet. Redskabet vælges efter mennesket og problemstillingen — ikke omvendt.
 
@@ -71,6 +71,6 @@ Det er ikke metoderne, der bærer arbejdet, men de skal nævnes, så du ved hvad
 
 ## Hvor og hvordan
 
-Samtalerne foregår i klinikken på Lumbyvej 11 i Odense. Vi kan også mødes online, hvis afstanden eller hverdagen gør det lettere — det fungerer bedre, end mange tror.
+En session foregår i klinikken på Lumbyvej 11 i Odense. De fleste kommer fra Odense og resten af Fyn, men afstanden behøver ikke afgøre det: vi kan også mødes online, hvis hverdagen gør det lettere — det fungerer bedre, end mange tror.
 
 Og vi kan arbejde udenfor. Naturterapi er en selvstændig arbejdsform med sin egen fremgangsmåde — læs mere om [naturterapi](/til-dig/naturterapi/), hvis det lyder som noget for dig.

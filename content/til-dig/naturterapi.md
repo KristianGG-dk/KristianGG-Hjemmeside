@@ -43,6 +43,8 @@ Vi går, mens vi taler. Blikket er rettet fremad i stedet for mod et andet menne
 
 Vejrtrækningen, tempoet, hvor tungt eller let du går. Kroppen er tit længere fremme end sproget, og når vi er i bevægelse, er den til at få øje på. Vi arbejder med åndedrættet undervejs, når der er brug for det.
 
+Det er det samme somatiske arbejde, som jeg ellers laver med nervesystemet inde i klinikken — bare udendørs. Du kan læse mere om [arbejdet med nervesystemet](/til-dig/nervesystemet/).
+
 ### Sanseopvækkelse
 
 Temperaturen, lyden, hvordan underlaget skifter. Det er konkrete ting at holde fast i, når tankerne kører i ring — og det er noget, du kan tage med hjem og bruge selv.
