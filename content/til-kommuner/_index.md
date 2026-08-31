@@ -8,15 +8,15 @@ services:
   - icon: ""
     title: "Pæd. særforanstaltninger"
     description: "Specialiseret pædagogisk støtte til udsatte unge og borgere med komplekse behov. Erfaring fra botilbud og asylcentre."
-    href: "/til-kommuner/saerforanstaltninger"
+    href: "/til-kommuner/saerforanstaltninger/"
   - icon: ""
     title: "Vikardækning"
     description: "Faglig og kvalificeret vikardækning til sociale institutioner og botilbud. Psykoterapeut-baggrund sikrer faglig kvalitet."
-    href: "/til-kommuner/vikardaekning"
+    href: "/til-kommuner/vikardaekning/"
   - icon: ""
     title: "Borgerforløb"
     description: "Individuelle terapeutiske forløb for borgere henvist af kommunen. Støtte til borgere med stress, angst og sociale udfordringer."
-    href: "/til-kommuner/borgerforloeb"
+    href: "/til-kommuner/borgerforloeb/"
 
 kurser_callout:
   title: "Kurser og forløb til organisationer"

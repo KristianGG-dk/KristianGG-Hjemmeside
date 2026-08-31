@@ -40,7 +40,7 @@ faq:
     a: "Mange oplever tydelig forskel allerede efter 1–3 sessioner. Et fuldt forløb er typisk 4–8 sessioner, afhængigt af din situation og dine mål."
 
 cta_heading: "Klar til at finde ro?"
-cta_text: "Book en gratis telefonsamtale, og lad os tale om, hvad der holder dig tilbage fra ro."
+cta_text: "Skriv en SMS eller en mail. Vi starter med en kort telefonsamtale uden beregning."
 ---
 
 Vores nervesystem er designet til at reagere på trusler – men i moderne tid er det konstant aktiveret af deadlines, skærme, sociale forventninger og bekymringer. Resultatet er kronisk stress, angst, søvnproblemer og en følelse af aldrig rigtig at koble fra.

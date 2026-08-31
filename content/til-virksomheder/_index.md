@@ -8,15 +8,15 @@ services:
   - icon: ""
     title: "Workshops"
     description: "Praksisnære workshops om stresshåndtering, nervesystemet og pædagogiske metoder. Skræddersyet til jeres team og behov."
-    href: "/til-virksomheder/workshops"
+    href: "/til-virksomheder/workshops/"
   - icon: ""
     title: "Foredrag"
     description: "Engagerende foredrag om overtænkning, nervesystemet og mental robusthed. Inspirerer og giver konkrete redskaber."
-    href: "/til-virksomheder/foredrag"
+    href: "/til-virksomheder/foredrag/"
   - icon: ""
     title: "Medarbejdertrivsel"
     description: "Individuelle eller gruppebaserede trivselsprogrammer der styrker medarbejdernes mentale sundhed og arbejdsglæde."
-    href: "/til-virksomheder/trivsel"
+    href: "/til-virksomheder/trivsel/"
 
 kurser_callout:
   title: "Kurser og forløb til organisationer"

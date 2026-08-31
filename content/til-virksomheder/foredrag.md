@@ -6,6 +6,7 @@ hero_subtitle: "Faglig viden der inspirerer, underholder og giver dine medarbejd
 service_name: "Foredrag til virksomheder"
 service_desc: "Engagerende foredrag om nervesystemet, overtænkning og mental robusthed til virksomheder og organisationer."
 
+temaer_titel: "Foredrag jeg holder"
 topics:
   - icon: ""
     title: "Forstå dit nervesystem"
@@ -40,7 +41,7 @@ practical:
   - label: "Pris"
     value: "Efter aftale – kontakt for tilbud"
 
-cta_heading: "Book et foredrag"
+cta_heading: "Få et foredrag ud til jer"
 cta_text: "Kontakt mig for et uforpligtende tilbud. Jeg tilpasser altid foredraget til jeres målgruppe og anledning."
 cta_button: "Kontakt for tilbud"
 ---

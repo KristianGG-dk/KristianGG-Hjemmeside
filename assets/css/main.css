@@ -22,6 +22,25 @@
   h1, h2, h3 {
     @apply font-display;
     text-wrap: balance;
+    /* Danske sammensatte ord — "særforanstaltninger", "betingelser",
+       "åndedrætsterapi" — er længere end 320 px ved 36 px skrift og skabte
+       vandret scroll på de smalleste telefoner. Orddeling først, brud som
+       sidste udvej. */
+    hyphens: auto;
+    overflow-wrap: break-word;
+  }
+  /* Samme problem i brødtekst og lister med lange fagord og adresser. */
+  p, li, td, dd, dt, figcaption {
+    overflow-wrap: break-word;
+  }
+  /* Grid-børn har min-width:auto. Det gør, at et langt dansk sammensat ord
+     ("særforanstaltninger", "samarbejdsbetingelser") sætter kolonnens
+     mindstebredde og skubber hele siden vandret ud ved 320 px, selv om ordet
+     godt måtte brydes. min-width:0 lader kolonnen krympe, så orddelingen
+     ovenfor får lov at virke. Flex-børn rettes målrettet i skabelonerne, da
+     en generel regel dér ville klemme knapper sammen. */
+  .grid > * {
+    min-width: 0;
   }
   /* Synlig fokusmarkering overalt — erstatter browserens, fjerner den aldrig. */
   :focus-visible {

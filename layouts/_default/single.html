@@ -114,7 +114,7 @@
       {{- range . }}
       <div class="card relative flex flex-col {{ if .highlighted }}border-mos border-2{{ end }}">
         {{- with .badge }}<div class="absolute -top-3 left-1/2 -translate-x-1/2 bg-mos text-white text-xs font-semibold px-3 py-1 rounded-full whitespace-nowrap">{{ . }}</div>{{- end }}
-        <h3 class="font-semibold text-skovbund mb-2">{{ .title }}</h3>
+        <h2 class="font-semibold text-skovbund mb-2 text-base">{{ .title }}</h2>
         <div class="mb-1">
           {{- if eq .price "Gratis" -}}
           <span class="text-3xl font-semibold text-mos">Gratis</span>
@@ -146,8 +146,8 @@
 {{- with $p.methods }}
 <section class="section-padding bg-birk">
   <div class="container-width px-4 sm:px-6">
-    <h2 class="text-2xl font-semibold text-skovbund mb-2 text-center">Mine terapeutiske metoder</h2>
-    <p class="text-tekst-daempet text-center mb-8">Jeg er uddannet i seks komplementære tilgange – og vælger altid den kombination der passer bedst til dig.</p>
+    <h2 class="text-2xl font-semibold text-skovbund mb-2 text-center">Metoder jeg trækker på</h2>
+    <p class="text-tekst-daempet text-center mb-8 max-w-2xl mx-auto">Metoden skal passe til mennesket — ikke mennesket til metoden. Herunder står det, jeg er uddannet i. Det er baggrund, ikke et katalog, du skal vælge fra.</p>
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
       {{- range . }}
       <div class="card">
@@ -183,6 +183,7 @@
 {{- with ($p.themes | default $p.topics | default $p.formats) }}
 <section class="section-padding {{ if not $.Params.methods }}bg-birk{{ end }}">
   <div class="container-width px-4 sm:px-6">
+    <h2 class="text-2xl font-semibold text-skovbund mb-8 text-center">{{ $p.temaer_titel | default "Temaer" }}</h2>
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-4xl mx-auto">
       {{- range . }}
       <div class="card">
@@ -238,7 +239,7 @@
       <div class="flex gap-4 p-4 bg-white rounded-lg border border-lav/40">
         <div class="w-8 h-8 rounded-full bg-skovbund text-taage flex items-center justify-center text-sm font-semibold flex-shrink-0">{{ .step }}</div>
         <div>
-          <h4 class="font-semibold text-skovbund text-sm mb-1">{{ .title }}</h4>
+          <h3 class="font-semibold text-skovbund text-sm mb-1">{{ .title }}</h3>
           <p class="text-tekst-daempet text-sm leading-relaxed">{{ .text }}</p>
         </div>
       </div>
@@ -256,7 +257,7 @@
     <div class="space-y-4">
       {{- range . }}
       <div class="p-5 bg-birk rounded-lg border border-lav/40">
-        <h4 class="font-semibold text-skovbund mb-2">{{ .title }}</h4>
+        <h3 class="font-semibold text-skovbund mb-2">{{ .title }}</h3>
         <p class="text-tekst-daempet text-sm leading-relaxed">{{ .text }}</p>
       </div>
       {{- end }}
@@ -289,9 +290,12 @@
     <h2 class="text-2xl font-semibold text-skovbund mb-6">Praktisk information</h2>
     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
       {{- range . }}
-      <div class="flex gap-3 p-4 bg-white rounded-lg border border-lav/40">
-        <span class="text-mos font-semibold text-sm w-40 flex-shrink-0">{{ .label }}</span>
-        <span class="text-tekst-daempet text-sm">{{ .value }}</span>
+      {{/* Etiket og værdi står under hinanden på smalle skærme. Med fast
+           w-40 til etiketten var der kun ~84 px tilbage til værdien ved
+           320 px, og "konferencelokale" skubbede siden vandret ud. */}}
+      <div class="flex flex-col md:flex-row gap-1 md:gap-3 p-4 bg-white rounded-lg border border-lav/40 min-w-0">
+        <span class="text-mos font-semibold text-sm md:w-36 md:flex-shrink-0">{{ .label }}</span>
+        <span class="text-tekst-daempet text-sm min-w-0">{{ .value }}</span>
       </div>
       {{- end }}
     </div>
@@ -320,7 +324,7 @@
 <section class="section-padding bg-skovbund text-taage">
   <div class="container-width px-4 sm:px-6 text-center">
     <h2 class="text-2xl md:text-3xl font-semibold text-white mb-4">{{ $p.cta_heading | default "Klar til at komme i gang?" }}</h2>
-    <p class="text-mos-light text-lg mb-8 max-w-2xl mx-auto">{{ $p.cta_text | default "Book en gratis og uforpligtende telefonsamtale." }}</p>
+    <p class="text-mos-light text-lg mb-8 max-w-2xl mx-auto">{{ $p.cta_text | default "Skriv en SMS eller en mail. Vi starter med en kort telefonsamtale uden beregning." }}</p>
     <a href="{{ $b.phone_sms | safeURL }}" class="inline-block btn-lys font-semibold px-8 py-4 rounded-lg transition-colors text-lg">{{ $p.cta_button | default "Tag kontakt" }}</a>
   </div>
 </section>

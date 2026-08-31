@@ -26,7 +26,7 @@
       <h3 class="text-xl font-semibold text-skovbund mb-6 pb-2 border-b border-lav/40">Ro og regulering</h3>
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {{- range . }}
-        <a href="/kurser/{{ .slug }}" class="bg-white rounded-xl p-6 shadow-sm border border-lav/40 group hover:border-mos hover:shadow-md transition-all">
+        <a href="/kurser/{{ .slug }}/" class="bg-white rounded-xl p-6 shadow-sm border border-lav/40 group hover:border-mos hover:shadow-md transition-all">
           <h4 class="text-lg font-semibold text-skovbund mb-2 group-hover:text-mos transition-colors">{{ .title }}</h4>
           <p class="text-tekst-daempet text-sm leading-relaxed mb-4">{{ .tagline }}</p>
           <span class="text-mos text-sm font-semibold group-hover:underline">Læs mere →</span>
@@ -42,7 +42,7 @@
       <h3 class="text-xl font-semibold text-skovbund mb-6 pb-2 border-b border-lav/40">Energi og struktur</h3>
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {{- range . }}
-        <a href="/kurser/{{ .slug }}" class="bg-white rounded-xl p-6 shadow-sm relative group hover:shadow-md transition-all {{ if .flagship }}border-2 border-mos{{ else }}border border-lav/40 hover:border-mos{{ end }}">
+        <a href="/kurser/{{ .slug }}/" class="bg-white rounded-xl p-6 shadow-sm relative group hover:shadow-md transition-all {{ if .flagship }}border-2 border-mos{{ else }}border border-lav/40 hover:border-mos{{ end }}">
           {{- if .flagship }}<div class="absolute -top-3 left-4 bg-skovbund text-taage text-xs font-semibold px-3 py-1 rounded-full">Flagskibsforløb</div>{{- end }}
           <h4 class="text-lg font-semibold text-skovbund mb-2 group-hover:text-mos transition-colors">{{ .title }}</h4>
           <p class="text-tekst-daempet text-sm leading-relaxed mb-4">{{ .tagline }}</p>
@@ -59,7 +59,7 @@
       <h3 class="text-xl font-semibold text-skovbund mb-6 pb-2 border-b border-lav/40">Relationer og kommunikation</h3>
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {{- range . }}
-        <a href="/kurser/{{ .slug }}" class="bg-white rounded-xl p-6 shadow-sm border border-lav/40 group hover:border-mos hover:shadow-md transition-all">
+        <a href="/kurser/{{ .slug }}/" class="bg-white rounded-xl p-6 shadow-sm border border-lav/40 group hover:border-mos hover:shadow-md transition-all">
           <h4 class="text-lg font-semibold text-skovbund mb-2 group-hover:text-mos transition-colors">{{ .title }}</h4>
           <p class="text-tekst-daempet text-sm leading-relaxed mb-4">{{ .tagline }}</p>
           <span class="text-mos text-sm font-semibold group-hover:underline">Læs mere →</span>
@@ -75,7 +75,7 @@
       <h3 class="text-xl font-semibold text-skovbund mb-6 pb-2 border-b border-lav/40">Livsretning</h3>
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {{- range . }}
-        <a href="/kurser/{{ .slug }}" class="bg-white rounded-xl p-6 shadow-sm border border-lav/40 group hover:border-mos hover:shadow-md transition-all">
+        <a href="/kurser/{{ .slug }}/" class="bg-white rounded-xl p-6 shadow-sm border border-lav/40 group hover:border-mos hover:shadow-md transition-all">
           <h4 class="text-lg font-semibold text-skovbund mb-2 group-hover:text-mos transition-colors">{{ .title }}</h4>
           <p class="text-tekst-daempet text-sm leading-relaxed mb-4">{{ .tagline }}</p>
           <span class="text-mos text-sm font-semibold group-hover:underline">Læs mere →</span>
@@ -127,7 +127,7 @@
 <section class="section-padding bg-skovbund text-taage">
   <div class="container-width px-4 sm:px-6 text-center">
     <h2 class="text-2xl md:text-3xl font-semibold text-white mb-4">Klar til at komme i gang?</h2>
-    <p class="text-mos-light text-lg mb-8 max-w-2xl mx-auto">Book en gratis og uforpligtende telefonsamtale.</p>
+    <p class="text-mos-light text-lg mb-8 max-w-2xl mx-auto">Skriv en SMS eller en mail. Vi starter med en kort telefonsamtale uden beregning.</p>
     <a href="{{ $b.phone_sms | safeURL }}" class="inline-block btn-lys font-semibold px-8 py-4 rounded-lg transition-colors text-lg">Tag kontakt</a>
   </div>
 </section>

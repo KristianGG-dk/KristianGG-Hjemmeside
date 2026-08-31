@@ -40,7 +40,7 @@ practical:
   - label: "Pris"
     value: "Efter aftale – kontakt for tilbud"
 
-cta_heading: "Book en workshop"
+cta_heading: "Få en workshop ud til jer"
 cta_text: "Kontakt mig for et uforpligtende tilbud – jeg svarer inden for 24 timer."
 cta_button: "Kontakt for tilbud"
 ---

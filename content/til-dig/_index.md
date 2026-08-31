@@ -8,15 +8,15 @@ services:
   - icon: ""
     title: "Nervesystemet & ro"
     description: "Lær at regulere dit nervesystem med åndedrætsterapi, mindfulness og somatiske teknikker. Effektivt mod stress, angst og søvnproblemer."
-    href: "/til-dig/nervesystemet"
+    href: "/til-dig/nervesystemet/"
   - icon: ""
     title: "Naturterapi"
     description: "Terapeutiske forløb i naturen på Fyn. Naturen som medterapeut – rolig, nærværende og virkningsfuld. Særligt egnet til stressramte."
-    href: "/til-dig/naturterapi"
+    href: "/til-dig/naturterapi/"
   - icon: ""
     title: "Psykoterapi"
     description: "Helhedsorienteret psykoterapi der kombinerer samtaleterapi, hypnoterapi, NLP, KAT og DAT. Tilpasset netop dig og din situation."
-    href: "/til-dig/psykoterapi"
+    href: "/til-dig/psykoterapi/"
 
 kurser_callout:
   title: "Se alle kurser og forløb"
