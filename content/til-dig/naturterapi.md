@@ -21,9 +21,9 @@ faq:
   - q: "Skal jeg kunne noget med meditation eller mindfulness?"
     a: "Nej. Du skal ikke præstere noget som helst. Der er ingen øvelser, du kan gøre forkert, og det er helt i orden bare at gå og tale."
   - q: "Er naturterapi det samme som en samtale i klinikken?"
-    a: "Nej. Fagligheden bag er den samme, og jeg har den samme tavshedspligt og den samme registrering. Men fremgangsmåden er en anden: Vi arbejder med kroppen i bevægelse, med sanserne og med det, omgivelserne bringer med sig. Det giver nogle andre indgange end en samtale ansigt til ansigt."
+    a: "Nej. Fagligheden bag er den samme, og jeg har den samme tavshedspligt og den samme registrering. Men fremgangsmåden er en anden. Naturen er ikke bare stedet, hvor samtalen tilfældigvis foregår — den er vores assistent. Vi bruger det, vi møder undervejs, når det er relevant for det, vi arbejder med: et væltet træ, en sti der deler sig, vind der tager til, en lyd der får dig til at stoppe op. Jeg er terapeuten. Naturen leverer noget af materialet."
   - q: "Hvor foregår det?"
-    a: "I skovene og ved kysterne omkring Odense og på Fyn. Vi aftaler mødested, når vi har talt sammen, og du kan altid sige, hvis et sted føles forkert."
+    a: "På et mødested, vi finder sammen ud fra dine behov. Det kan for eksempel være en skov, en bålhytte på en naturgrund, en strand, en terapihave eller et andet egnet naturområde omkring Odense og på Fyn. Vi tilpasser altid både stedet og sessionen til dig, og du kan altid sige, hvis et sted føles forkert."
 
 cta_heading: "Tag kontakt"
 cta_text: "Skriv, hvis du har lyst til at prøve. Vi kan sagtens starte med en enkelt tur og se, hvordan det føles."
@@ -63,12 +63,14 @@ Du skal ikke præstere noget. Ikke gå hurtigt, ikke være åben på kommando, i
 
 ## Hvor og hvor længe
 
-Vi mødes i skovene og ved kysterne omkring Odense og rundt på Fyn. En session varer typisk halvanden til tre timer — længere end en samtale i klinikken, fordi der skal være tid til at komme ud, komme i gang og komme tilbage igen.
+Vi mødes på et sted, vi finder sammen ud fra dine behov. Det kan for eksempel være en skov, en bålhytte på en naturgrund, en strand, en terapihave eller et andet egnet naturområde omkring Odense og på Fyn. Stedet er ikke tilfældigt valgt, og du kan altid sige, hvis et sted føles forkert.
 
-Der findes også længere forløb, hvor vi er ude en hel dag eller over to dage med overnatning. Det er ikke for alle, og det er ikke noget, man starter med.
+En session varer mellem halvanden og 24 timer. Alle sessioner varer altså ikke det samme — længden aftaler vi ud fra, hvad forløbet skal, og hvad der giver mening for dig. En kort session ligner mest en samtale, hvor vi går imens. En lang session giver plads til, at der kan ske noget undervejs, som ikke lader sig planlægge.
 
 **Påklædning:** Du skal have fodtøj og tøj på, der passer til vejrforholdene.
 
-## Mad og sankning
+## Mad undervejs
 
-I nogle forløb indgår sankning — at finde og tilberede noget af det, der vokser omkring os. Det lyder som en aktivitet, og det er det også. Men det gør noget ved forholdet til at sørge for sig selv, som er svært at tale sig frem til.
+Ved de lange sessioner tager jeg råvarer med, og vi tilbereder maden sammen ude i naturen. Det er praktisk arbejde: Bålet skal tændes, der skal skæres ud, og der skal ventes, mens det bliver færdigt.
+
+I nogle forløb indgår sankning — at finde noget af det, der vokser omkring os, og bruge det i maden.

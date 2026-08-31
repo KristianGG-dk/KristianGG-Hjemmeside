@@ -1,7 +1,7 @@
 {{- $b := site.Data.business -}}
 {{- $sti := .RelPermalink -}}
 {{- /*
-  Forenklet hovednavigation: syv punkter, ingen dropdowns.
+  Forenklet hovednavigation.
 
   De tre hovedområder løftes til første niveau i MENUEN, men beholder deres
   nuværende adresser. URL-dybde er ikke en rangeringsfaktor af betydning —
@@ -10,8 +10,11 @@
   Mobilmenuen er bygget på <details>/<summary> og virker derfor uden
   JavaScript, med tastaturbetjening og korrekt fokusrækkefølge fra browseren.
 */ -}}
+{{/* Nervesystemet ligger under Psykoterapi, ikke ved siden af. Det er en del
+     af den faglige tilgang, ikke et fjerde hovedområde. */}}
 {{- $menu := slice
-    (dict "titel" "Psykoterapi" "url" "/til-dig/psykoterapi/")
+    (dict "titel" "Psykoterapi" "url" "/til-dig/psykoterapi/" "under" (slice
+       (dict "titel" "Nervesystemet og ro" "url" "/til-dig/nervesystemet/")))
     (dict "titel" "Naturterapi" "url" "/til-dig/naturterapi/")
     (dict "titel" "Skovbad"     "url" "/kurser/skovbad/")
     (dict "titel" "Om mig"      "url" "/om/")
@@ -29,9 +32,29 @@
       </a>
 
       {{/* Desktop */}}
+      {{/* Undermenuen åbner på hover OG på tastaturfokus (group-focus-within),
+           så den kan nås uden mus og uden JavaScript. Forældrepunktet er
+           fortsat et almindeligt link til siden selv — man behøver ikke åbne
+           undermenuen for at komme videre. */}}
       <nav class="hidden lg:flex items-center gap-1" aria-label="Hovedmenu">
         {{- range $menu }}
+        {{- if .under }}
+        <div class="relative group">
+          <a href="{{ .url }}" class="nav-link{{ if eq $sti .url }} nav-link-aktiv{{ end }}"{{ if eq $sti .url }} aria-current="page"{{ end }}>
+            {{ .titel }}
+            <svg aria-hidden="true" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="ml-1 opacity-60"><path d="m6 9 6 6 6-6"/></svg>
+          </a>
+          <div class="invisible opacity-0 group-hover:visible group-hover:opacity-100 group-focus-within:visible group-focus-within:opacity-100 transition-opacity absolute left-0 top-full pt-1 w-56 z-50">
+            <div class="bg-white rounded-xl shadow-lg border border-lav/40 p-2">
+              {{- range .under }}
+              <a href="{{ .url }}" class="mobile-link text-sm"{{ if eq $sti .url }} aria-current="page"{{ end }}>{{ .titel }}</a>
+              {{- end }}
+            </div>
+          </div>
+        </div>
+        {{- else }}
         <a href="{{ .url }}" class="nav-link{{ if eq $sti .url }} nav-link-aktiv{{ end }}"{{ if eq $sti .url }} aria-current="page"{{ end }}>{{ .titel }}</a>
+        {{- end }}
         {{- end }}
         <a href="{{ $b.phone_sms | safeURL }}" class="btn-primary ml-2 !px-5 text-sm">Tag kontakt</a>
       </nav>
@@ -47,6 +70,9 @@
           <a href="/" class="mobile-link">Forside</a>
           {{- range $menu }}
           <a href="{{ .url }}" class="mobile-link"{{ if eq $sti .url }} aria-current="page"{{ end }}>{{ .titel }}</a>
+          {{- range .under }}
+          <a href="{{ .url }}" class="mobile-link pl-7 text-sm text-tekst-daempet"{{ if eq $sti .url }} aria-current="page"{{ end }}>{{ .titel }}</a>
+          {{- end }}
           {{- end }}
           <div class="border-t border-lav/40 my-2"></div>
           <a href="{{ $b.phone_sms | safeURL }}" class="mobile-link font-semibold text-hyben">Send en SMS</a>
