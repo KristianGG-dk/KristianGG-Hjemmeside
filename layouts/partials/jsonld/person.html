@@ -1,21 +1,59 @@
-{{- $b := .Site.Data.business -}}
+{{- /*
+  Person. Alle oplysninger stammer fra hjemmesidens eget indhold: titlen,
+  uddannelserne, foreningsmedlemskabet og prisen står på /om/. Der tilføjes
+  intet, som ikke også kan læses på siden.
+
+  url peger altid på /om/, som er personens egen side. Den samme @id bruges,
+  hvor end blokken skrives ud, så forsiden og /om/ beskriver samme entitet
+  frem for to.
+*/ -}}
+{{- $b := site.Data.business -}}
+{{- $url := printf "%som/" site.BaseURL -}}
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@type": "Person",
+  "@id": "{{ site.BaseURL }}#kristian",
   "name": "Kristian G. G. Dansted",
-  "jobTitle": "Reg. Psykoterapeut & Hypnoterapeut",
-  "url": "{{ .Site.BaseURL }}",
-  "telephone": "{{ $b.phone }}",
-  "email": "{{ $b.email }}",
+  "jobTitle": "Registreret psykoterapeut og naturterapeut",
+  "url": "{{ $url }}",
+  "image": "{{ site.BaseURL }}images/natur/kristian-studie-640.jpg",
+  "telephone": {{ $b.phone | jsonify | safeJS }},
+  "email": {{ $b.email | jsonify | safeJS }},
   "award": "Ildsjælepris 2019",
-  "worksFor": { "@type": "LocalBusiness", "@id": "{{ .Site.BaseURL }}", "name": "{{ $b.full_name }}" },
+  "worksFor": { "@type": "LocalBusiness", "@id": "{{ site.BaseURL }}", "name": {{ $b.full_name | jsonify | safeJS }} },
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": {{ $b.address.street | jsonify | safeJS }},
+    "addressLocality": {{ $b.address.city | jsonify | safeJS }},
+    "postalCode": {{ $b.address.postal_code | jsonify | safeJS }},
+    "addressRegion": {{ $b.address.region | jsonify | safeJS }},
+    "addressCountry": {{ $b.address.country | jsonify | safeJS }}
+  },
   "hasCredential": [
-    { "@type": "EducationalOccupationalCredential", "name": "Reg. Psykoterapeut (FaDP)" },
+    { "@type": "EducationalOccupationalCredential", "name": "Registreret psykoterapeut (FaDP)" },
     { "@type": "EducationalOccupationalCredential", "name": "Master Neuro Hypnoterapeut" },
     { "@type": "EducationalOccupationalCredential", "name": "Master NLP Practitioner" },
-    { "@type": "EducationalOccupationalCredential", "name": "Åndedrætsterapeut" }
+    { "@type": "EducationalOccupationalCredential", "name": "Åndedrætsterapeut" },
+    { "@type": "EducationalOccupationalCredential", "name": "Mindfulness-instruktør" },
+    { "@type": "EducationalOccupationalCredential", "name": "Grunduddannelse i kognitiv adfærdsterapi (KAT) og dialektisk adfærdsterapi (DAT)" }
   ],
-  "knowsAbout": ["Psykoterapi", "Hypnoterapi", "NLP", "Nervesystemsregulering", "Naturterapi", "Åndedrætsterapi"]
+  "memberOf": { "@type": "Organization", "name": "Foreningen af Danske Psykoterapeuter (FaDP)", "url": "https://fadp.dk/" },
+  "knowsAbout": [
+    "Psykoterapi",
+    "Naturterapi",
+    "Skovbad",
+    "Hypnoterapi",
+    "NLP",
+    "Åndedrætsterapi",
+    "Nervesystemsregulering",
+    "Stress",
+    "Angst",
+    "Søvnproblemer"
+  ],
+  "sameAs": [
+    {{ $b.facebook | jsonify | safeJS }},
+    {{ $b.trustpilot | jsonify | safeJS }}
+  ]
 }
 </script>

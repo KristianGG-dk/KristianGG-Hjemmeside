@@ -1,6 +1,9 @@
 {{ define "schema" }}
   {{ partial "jsonld/service.html" . }}
   {{ partial "jsonld/faqpage.html" . }}
+  {{/* /om/ er personens egen side og ligger på position 2,5 i Search Console.
+       Person-blokken hører hjemme dér lige så meget som på forsiden. */}}
+  {{ if .Params.person_schema }}{{ partial "jsonld/person.html" . }}{{ end }}
 {{ end }}
 
 {{ define "main" }}

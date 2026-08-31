@@ -1,30 +1,51 @@
-{{- $b := .Site.Data.business -}}
+{{- /*
+  LocalBusiness. Skrives ud én gang pr. side fra head.html — aldrig fra en
+  sideskabelon. Alle værdier hentes fra data/business.toml, så et telefonnummer
+  eller en adresse aldrig kan komme til at stå to forskellige steder.
+
+  openingHours skal være i schema.org's format med engelske dagsforkortelser
+  (Mo, Tu, ...). "Man–Fre 09:00–17:00" er ugyldigt og bliver ignoreret.
+  Den læsbare danske form står i business.toml og bruges i selve markuppen.
+
+  Alle strenge køres gennem jsonify, så et komma eller et anførselstegn i
+  data aldrig kan bryde blokken.
+*/ -}}
+{{- $b := site.Data.business -}}
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@type": "LocalBusiness",
-  "@id": "{{ .Site.BaseURL }}",
-  "name": "{{ $b.full_name }}",
-  "image": "{{ $b.image }}",
-  "description": "Registreret psykoterapeut og naturterapeut i Odense. Psykoterapi, naturterapi og skovbad for private, virksomheder og kommuner på Fyn.",
-  "url": "{{ .Site.BaseURL }}",
-  "telephone": "{{ $b.phone }}",
-  "email": "{{ $b.email }}",
-  "priceRange": "{{ $b.price_range }}",
-  "openingHours": "{{ $b.opening_hours }}",
+  "@id": "{{ site.BaseURL }}",
+  "name": {{ $b.full_name | jsonify | safeJS }},
+  "image": {{ $b.image | jsonify | safeJS }},
+  "description": {{ "Registreret psykoterapeut og naturterapeut i Odense. Psykoterapi i klinikken på Lumbyvej, naturterapi og skovbad i skovene og ved kysterne på Fyn." | jsonify | safeJS }},
+  "url": "{{ site.BaseURL }}",
+  "telephone": {{ $b.phone | jsonify | safeJS }},
+  "email": {{ $b.email | jsonify | safeJS }},
+  "priceRange": {{ $b.price_range | jsonify | safeJS }},
+  "openingHoursSpecification": [{
+    "@type": "OpeningHoursSpecification",
+    "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+    "opens": "09:00",
+    "closes": "17:00"
+  }],
   "address": {
     "@type": "PostalAddress",
-    "streetAddress": "{{ $b.address.street }}",
-    "addressLocality": "{{ $b.address.city }}",
-    "postalCode": "{{ $b.address.postal_code }}",
-    "addressRegion": "{{ $b.address.region }}",
-    "addressCountry": "{{ $b.address.country }}"
+    "streetAddress": {{ $b.address.street | jsonify | safeJS }},
+    "addressLocality": {{ $b.address.city | jsonify | safeJS }},
+    "postalCode": {{ $b.address.postal_code | jsonify | safeJS }},
+    "addressRegion": {{ $b.address.region | jsonify | safeJS }},
+    "addressCountry": {{ $b.address.country | jsonify | safeJS }}
   },
   "areaServed": [
     { "@type": "City", "name": "Odense" },
     { "@type": "AdministrativeArea", "name": "Fyn" },
     { "@type": "AdministrativeArea", "name": "Syddanmark" }
   ],
-  "sameAs": ["{{ $b.facebook }}", "{{ $b.trustpilot }}"]
+  "founder": { "@id": "{{ site.BaseURL }}#kristian" },
+  "sameAs": [
+    {{ $b.facebook | jsonify | safeJS }},
+    {{ $b.trustpilot | jsonify | safeJS }}
+  ]
 }
 </script>

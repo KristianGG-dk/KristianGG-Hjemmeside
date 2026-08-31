@@ -3,6 +3,7 @@ title: "Om Kristian – psykoterapeut og naturterapeut"
 description: "Kristian G. G. Dansted er registreret psykoterapeut (FaDP) og naturterapeut i Odense. Fra en rygulykke som 21-årig håndværker til egen praksis på Lumbyvej."
 hero_title: "Om Kristian"
 hero_subtitle: "Registreret psykoterapeut og naturterapeut i Odense. Jeg arbejder både i klinikken og ude i naturen på Fyn."
+person_schema: true
 hero_billede: "kristian-studie"
 hero_alt: "Portræt af Kristian G. G. Dansted i hvid skjorte"
 hero_bredder: [320, 420, 640]

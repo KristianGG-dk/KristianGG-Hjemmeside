@@ -1,21 +1,25 @@
-{{- $b := .Site.Data.business -}}
+{{- /*
+  BlogPosting. author peger på Person-entiteten via @id, så artiklen og
+  forfatteren er samme entitet som på /om/ og forsiden.
+*/ -}}
+{{- $b := site.Data.business -}}
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
-  "@type": "{{ .Params.schema_type | default "BlogPosting" }}",
+  "@type": {{ (.Params.schema_type | default "BlogPosting") | jsonify | safeJS }},
   "headline": {{ .Title | jsonify | safeJS }},
   "description": {{ .Description | jsonify | safeJS }},
   "datePublished": "{{ .Date.Format "2006-01-02" }}",
   "dateModified": "{{ (.Params.updated | default .Date).Format "2006-01-02" }}",
+  "inLanguage": "da-DK",
   "author": {
+    "@id": "{{ site.BaseURL }}#kristian",
     "@type": "Person",
-    "name": "{{ .Params.author | default "Kristian G. G. Dansted" }}",
-    "jobTitle": "{{ .Params.author_credentials | default "Reg. Psykoterapeut (FaDP)" }}"
+    "name": {{ (.Params.author | default "Kristian G. G. Dansted") | jsonify | safeJS }},
+    "jobTitle": {{ (.Params.author_credentials | default "Registreret psykoterapeut og naturterapeut") | jsonify | safeJS }}
   },
-  "publisher": {
-    "@type": "Organization",
-    "name": "{{ $b.full_name }}"
-  },
+  "publisher": { "@id": "{{ site.BaseURL }}" },
+  "mainEntityOfPage": { "@type": "WebPage", "@id": "{{ .Permalink }}" },
   "url": "{{ .Permalink }}"
 }
 </script>
