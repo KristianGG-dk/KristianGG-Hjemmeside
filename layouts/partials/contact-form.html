@@ -10,18 +10,26 @@
   <input type="hidden" name="form-name" value="kontakt" />
   <p class="hidden"><label>Lad dette felt stå tomt: <input name="bot-field" /></label></p>
 
+  <p class="text-sm text-tekst-daempet">
+    Kun <span class="text-primary font-semibold">*</span> skal udfyldes — jeg skal bruge din
+    e-mail for at kunne svare dig. Alt andet er frivilligt, og du kan sende, selv om du kun
+    udfylder e-mailfeltet.
+  </p>
+
   <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
     <div>
-      <label for="name" class="block text-sm font-medium text-skovbund mb-1.5">Navn *</label>
-      <input id="name" name="name" type="text" required
+      <label for="name" class="block text-sm font-medium text-skovbund mb-1.5">Navn</label>
+      <input id="name" name="name" type="text"
         placeholder="Dit fulde navn"
         class="w-full px-4 py-3 rounded-lg border border-lav/50 text-skovbund placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all text-sm" />
     </div>
     <div>
-      <label for="email" class="block text-sm font-medium text-skovbund mb-1.5">Email *</label>
+      <label for="email" class="block text-sm font-medium text-skovbund mb-1.5">Email <span class="text-primary font-semibold" aria-hidden="true">*</span></label>
       <input id="email" name="email" type="email" required
+        aria-describedby="email-hjaelp"
         placeholder="din@email.dk"
         class="w-full px-4 py-3 rounded-lg border border-lav/50 text-skovbund placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all text-sm" />
+      <p id="email-hjaelp" class="mt-1 text-xs text-tekst-daempet">Skal udfyldes, før du kan sende — ellers kan jeg ikke vende tilbage.</p>
     </div>
   </div>
 
@@ -34,21 +42,43 @@
 
   <div>
     <label for="subject" class="block text-sm font-medium text-skovbund mb-1.5">Emne</label>
+    {{- /* INGEN AF DISSE OPTIONS MÅ HAVE EN TOM VALUE.
+
+           Netlify bruger et indsendt felt ved navn "subject" som emnelinje på
+           notifikationsmailen. Er værdien tom, sendes der SLET INGEN mail.
+           Indsendelsen gemmes og ser helt normal ud under "Verified
+           submissions", men henvendelsen når aldrig frem til indbakken.
+
+           Det var præcis fejlen her: pladsholderen "Vælg emne..." havde
+           value="", så enhver henvendelse uden valgt emne forsvandt lydløst.
+
+           Pladsholderen har derfor nu en rigtig værdi. Sættes den tom igen —
+           eller omdøbes feltet, så "subject" mangler helt — er fejlen tilbage.
+           Bemærk også: fjernes feltet blot fra HTML'en, beholder Netlify det i
+           formularens registrerede feltliste, og indsendelser uden det får
+           stadig ingen mail. Formularen skal i så fald slettes og registreres
+           på ny hos Netlify (hent indsendelserne som CSV først — de slettes
+           med).
+
+           assets/js/main.js har desuden et sikkerhedsnet, der udfylder
+           subject, hvis værdien mod forventning er tom.
+
+           tests/kontaktformular.mjs fejler, hvis en tom værdi kommer tilbage. */ -}}
     <select id="subject" name="subject"
       class="w-full px-4 py-3 rounded-lg border border-lav/50 text-skovbund focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all text-sm bg-white">
-      <option value="">Vælg emne...</option>
-      <option value="privat-terapi">Privat terapi</option>
-      <option value="naturterapi">Naturterapi</option>
-      <option value="workshop">Workshop til virksomhed</option>
-      <option value="foredrag">Foredrag</option>
-      <option value="kommune">Kommunalt samarbejde</option>
-      <option value="andet">Andet</option>
+      <option value="Henvendelse uden emne">Vælg emne...</option>
+      <option value="Privat terapi">Privat terapi</option>
+      <option value="Naturterapi">Naturterapi</option>
+      <option value="Workshop til virksomhed">Workshop til virksomhed</option>
+      <option value="Foredrag">Foredrag</option>
+      <option value="Kommunalt samarbejde">Kommunalt samarbejde</option>
+      <option value="Andet">Andet</option>
     </select>
   </div>
 
   <div>
-    <label for="message" class="block text-sm font-medium text-skovbund mb-1.5">Besked *</label>
-    <textarea id="message" name="message" required rows="5"
+    <label for="message" class="block text-sm font-medium text-skovbund mb-1.5">Besked</label>
+    <textarea id="message" name="message" rows="5"
       placeholder="Fortæl kort hvad du ønsker hjælp til..."
       class="w-full px-4 py-3 rounded-lg border border-lav/50 text-skovbund placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all text-sm resize-none"></textarea>
   </div>

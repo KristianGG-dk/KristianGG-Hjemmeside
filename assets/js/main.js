@@ -104,6 +104,17 @@
   form.addEventListener('submit', function (e) {
     e.preventDefault();
     var data = new FormData(form);
+
+    // Sikkerhedsnet: Netlify bruger feltet "subject" som emnelinje paa
+    // notifikationsmailen, og en TOM vaerdi betyder, at der slet ingen mail
+    // sendes — henvendelsen gemmes, men naar aldrig frem til indbakken.
+    // Pladsholderen i formularen har derfor en rigtig vaerdi; det her fanger
+    // tilfaelde, hvor feltet alligevel er tomt (gammel side i en aaben fane,
+    // browser-autofyld, en fremtidig aendring af formularen).
+    if (!String(data.get('subject') || '').trim()) {
+      data.set('subject', 'Henvendelse uden emne');
+    }
+
     if (submitBtn) {
       submitBtn.disabled = true;
       submitBtn.textContent = 'Sender\u2026';
