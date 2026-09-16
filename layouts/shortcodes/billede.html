@@ -1,0 +1,26 @@
+{{- /*
+  Shortcode-indpakning af partial "billede.html", saa redaktionelt indhold
+  (blogindlaeg fra publiceringsmotoren) kan bruge det samme responsive
+  billedsaet som resten af sitet, uden at der skrives <picture> i haanden.
+
+  Brug:
+    {{< billede navn="skovsti" alt="..." forhold="1.5" >}}
+
+  bredder og forhold har defaults, der passer til /images/natur/.
+*/ -}}
+{{- $bredder := slice 420 640 860 -}}
+{{- with .Get "bredder" -}}
+  {{- $bredder = slice -}}
+  {{- range (split . ",") -}}
+    {{- $bredder = $bredder | append (int (trim . " ")) -}}
+  {{- end -}}
+{{- end -}}
+{{- partial "billede.html" (dict
+      "navn"      (.Get "navn")
+      "alt"       (.Get "alt")
+      "bredder"   $bredder
+      "forhold"   (float (.Get "forhold" | default 1.5))
+      "sizes"     (.Get "sizes" | default "(min-width: 768px) 768px, 100vw")
+      "prioritet" (eq (.Get "prioritet") "true")
+      "ramme"     (.Get "ramme" | default "my-8")
+) -}}
