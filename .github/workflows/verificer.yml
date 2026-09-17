@@ -25,10 +25,15 @@ jobs:
           tar xzf hugo.tar.gz hugo && sudo mv hugo /usr/local/bin/
           hugo version
 
-      - name: Byg som Netlify gør
+      # --buildFuture er den ene bevidste afvigelse fra produktionsbygget.
+      # Gatens opgave er at kontrollere godkendt indhold, ogsaa indhold hvis
+      # dato endnu ikke er naaet. Uden flaget er gaten roed paa hvert eneste
+      # planlagte indlaeg. hugo.toml forbliver uroert: Netlify skal fortsat
+      # udelade fremtidige indlaeg - det er dét, der goer planlaegningen mulig.
+      - name: Byg som Netlify gør, men med fremtidige indlæg
         run: |
           npm install
-          hugo --minify 2>&1 | tee byg.log
+          hugo --minify --buildFuture 2>&1 | tee byg.log
           if grep -qiE "^(ERROR|WARN)" byg.log; then
             echo "Build gav fejl eller advarsler"; exit 1
           fi

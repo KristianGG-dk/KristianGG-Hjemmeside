@@ -1,0 +1,44 @@
+name: Genopbyg site (planlagte indlaeg)
+
+# Hugo bygger som standard IKKE indlaeg med en dato i fremtiden.
+# Netlify bygger kun ved push. Uden denne koersel ville et indlaeg dateret
+# 23-09 foerst dukke op, naeste gang nogen tilfaeldigvis pushede til main.
+#
+# Denne workflow kalder Netlifys build hook hver morgen. Den publicerer intet
+# nyt: den faar kun Netlify til at bygge det, der allerede ligger paa main.
+# Et indlaeg bliver dermed synligt den dag, dets godkendte dato er naaet.
+
+on:
+  schedule:
+    # To koersler, fordi cron er UTC og Danmark skifter tid. Et indlaeg er
+    # typisk dateret 07:00 dansk. I sommertid er det 05:00 UTC, men fra
+    # 25-10-2026 er 07:00 dansk lig 06:00 UTC - og en koersel 05:05 UTC ville
+    # da ligge FOER indlaeggets dato og udelade det. De to linjer daekker hvert
+    # sit halvaar. At bygge to gange paa en dag er harmloest: Netlify bygger
+    # bare det samme igen.
+    - cron: '5 5 * * *'   # 07:05 dansk sommertid
+    - cron: '5 6 * * *'   # 07:05 dansk vintertid
+  workflow_dispatch:
+
+permissions: {}
+
+jobs:
+  genopbyg:
+    runs-on: ubuntu-latest
+    environment: publicering
+    steps:
+      - name: Udloes Netlify-build
+        shell: bash
+        env:
+          HOOK: ${{ secrets.NETLIFY_BUILD_HOOK }}
+        run: |
+          if [ -z "$HOOK" ]; then
+            echo "NETLIFY_BUILD_HOOK mangler i environment 'publicering'." >&2
+            exit 1
+          fi
+          kode=$(curl -sS -o /dev/null -w '%{http_code}' -X POST -d '{}' "$HOOK")
+          echo "Netlify svarede $kode"
+          case "$kode" in
+            2*) echo "Build udloest." ;;
+            *)  echo "Netlify afviste kaldet." >&2; exit 1 ;;
+          esac

@@ -1,0 +1,35 @@
+{
+  "element": 8,
+  "kanal": "website",
+  "kildefil": "content/blog/2026-09-23-kan-man-gaa-i-terapi-udenfor-hvis-man-har-angst.md",
+  "titel": "Kan man gå i terapi udenfor, hvis man har angst?",
+  "meta_description": "Et ærligt svar på om man kan gå i terapi udenfor med angst: hvad der gør det svært, hvad vi gør ved det, og hvornår klinikken er det bedre valg.",
+  "slug": "kan-man-gaa-i-terapi-udenfor-hvis-man-har-angst",
+  "slut_url": "/blog/kan-man-gaa-i-terapi-udenfor-hvis-man-har-angst/",
+  "dato": "2026-09-23T07:00:00.000+02:00",
+  "kategorier": [
+    "naturterapi"
+  ],
+  "billede": "gaatur",
+  "alt_tekst": "To personer på gåtur ad en sti i det fynske landskab",
+  "og_image": "/images/natur/gaatur-640.jpg",
+  "links": [
+    "https://kristiangg.dk/kontakt/",
+    "sms:+4531509789",
+    "mailto:kontakt@kristiangg.dk"
+  ],
+  "cta": "SMS og mail",
+  "hashtags": [],
+  "brodtekst_sha256": "b9a8d2611e1c1b2dff718f59c80cb56afa4c5f46f29ce2d186387f3c74975490",
+  "godkendt_af": "Kristian G. G. Dansted",
+  "godkendt_dato": "2026-09-17",
+  "godkendelsespakke": "Google Docs 17M0wTdSZ6i2BhA13m9lX-Nmi_hu6Z7vn4bnIrVctv-0",
+  "tidligere_laase": [
+    {
+      "laas": "fec8a9d307022cde",
+      "godkendt_dato": "2026-09-14",
+      "afloest_fordi": "ny laaseordning daekker alle felter, ikke kun teksten"
+    }
+  ],
+  "versionslaas": "0c0a3a42431d7334"
+}
