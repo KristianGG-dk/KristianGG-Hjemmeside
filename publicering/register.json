@@ -14,5 +14,41 @@
     "status": "PUBLICERET",
     "post_id": "102635371317473_1508516001296002",
     "tidspunkt": "2026-09-17T20:04:31.732Z"
+  },
+  {
+    "element": 6,
+    "kanal": "facebook",
+    "versionslaas": "ed972070d00e0b37",
+    "status": "PLANLAGT",
+    "post_id": "1508539554626980",
+    "planlagt_til": 1790010000,
+    "tidspunkt": "2026-09-17T20:44:13.830Z"
+  },
+  {
+    "element": 10,
+    "kanal": "facebook",
+    "versionslaas": "eb925f98648505b8",
+    "status": "PLANLAGT",
+    "post_id": "1508539594626976",
+    "planlagt_til": 1790355600,
+    "tidspunkt": "2026-09-17T20:44:18.249Z"
+  },
+  {
+    "element": 12,
+    "kanal": "facebook",
+    "versionslaas": "888466ddcbae76d5",
+    "status": "PLANLAGT",
+    "post_id": "1508539651293637",
+    "planlagt_til": 1790701200,
+    "tidspunkt": "2026-09-17T20:44:21.396Z"
+  },
+  {
+    "element": 15,
+    "kanal": "facebook",
+    "versionslaas": "2f6b22f73af54437",
+    "status": "PLANLAGT",
+    "post_id": "1508539694626966",
+    "planlagt_til": 1790960400,
+    "tidspunkt": "2026-09-17T20:44:24.199Z"
   }
 ]
