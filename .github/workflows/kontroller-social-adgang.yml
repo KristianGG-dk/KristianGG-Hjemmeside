@@ -1,0 +1,33 @@
+# Kontrollerer at Meta-adgangen virker. Publicerer ALDRIG noget.
+#
+# Scriptet sender udelukkende GET. Der findes ingen sti gennem dette workflow
+# der kan skrive et opslag. Derfor er contents: read nok, og der er ingen
+# publicer-parameter at saette forkert.
+#
+# Startes manuelt, naar secrets er lagt i miljoeet "publicering".
+name: Kontroller social adgang
+
+on:
+  workflow_dispatch:
+
+permissions: {}
+
+jobs:
+  kontroller:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    environment: publicering
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+
+      - name: Kontroller Facebook-adgang
+        env:
+          FB_PAGE_ID: ${{ secrets.FB_PAGE_ID }}
+          FB_PAGE_TOKEN: ${{ secrets.FB_PAGE_TOKEN }}
+          FB_APP_ID: ${{ secrets.FB_APP_ID }}
+          FB_APP_SECRET: ${{ secrets.FB_APP_SECRET }}
+        run: node publicering/scripts/kontroller-adgang.mjs
