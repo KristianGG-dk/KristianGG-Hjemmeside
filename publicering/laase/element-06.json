@@ -1,0 +1,32 @@
+{
+  "element": 6,
+  "kanal": "facebook",
+  "titel": "Hvor mødes vi så?",
+  "meta_description": "Facebook-opslag om hvor vi mødes — skov, kyst eller klinikken på Lumbyvej.",
+  "slug": "element-06-hvor-moedes-vi",
+  "slut_url": "(facebook-opslag, ingen URL foer publicering)",
+  "dato": "2026-09-21T19:00:00.000+02:00",
+  "kategorier": [
+    "naturterapi"
+  ],
+  "billede": "gaatur-kort",
+  "alt_tekst": "Sti gennem det fynske landskab en efterårsdag",
+  "billede_url": "https://kristiangg.dk/images/natur/gaatur-kort-640.jpg",
+  "links": [],
+  "cta": "Ingen hård CTA. Opslaget fjerner en praktisk barriere",
+  "hashtags": [],
+  "tekst": "\"Hvor mødes vi så?\"\n\nDet er et af de første praktiske spørgsmål, når man overvejer at arbejde udenfor. Og svaret er, at det kommer an på dig.\n\nSkoven, hvis du vil have læ og noget at gå ind i. Der er læ mellem stammerne, også når det blæser, og der er altid en sti, der er kortere end den, man havde tænkt sig.\n\nKysten, hvis du vil have udsyn. Vinden er hårdere derude, og der er længere mellem stederne at sætte sig. Til gengæld kan man se langt.\n\nOg klinikken på Lumbyvej, hvis udenfor ikke er det rigtige den dag. Det er ikke en nødløsning — det er et af stederne.\n\nVi aftaler stedet, inden vi mødes. Du skal ikke stå et sted, du ikke kender, og regne ud, hvor jeg er.",
+  "tekst_sha256": "217ce3a1f75916bb417ba4dba99a0de3b00a541f904eefb1c295f69e42b0b2ef",
+  "brodtekst_sha256": "217ce3a1f75916bb417ba4dba99a0de3b00a541f904eefb1c295f69e42b0b2ef",
+  "godkendt_af": "Kristian G. G. Dansted",
+  "godkendt_dato": "2026-09-17",
+  "godkendelsespakke": "Google Docs 17M0wTdSZ6i2BhA13m9lX-Nmi_hu6Z7vn4bnIrVctv-0",
+  "tidligere_laase": [
+    {
+      "laas": "6348c834ee3c796c",
+      "godkendt_dato": "2026-09-14",
+      "afloest_fordi": "ny laaseordning daekker alle felter, ikke kun teksten"
+    }
+  ],
+  "versionslaas": "ed972070d00e0b37"
+}

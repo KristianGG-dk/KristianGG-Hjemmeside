@@ -1,0 +1,32 @@
+{
+  "element": 10,
+  "kanal": "facebook",
+  "titel": "Hvad sker der egentlig på tre timer i naturen?",
+  "meta_description": "Facebook-opslag om forløbet af en tre timers naturterapisession.",
+  "slug": "element-10-tre-timer-i-naturen",
+  "slut_url": "(facebook-opslag, ingen URL foer publicering)",
+  "dato": "2026-09-25T19:00:00.000+02:00",
+  "kategorier": [
+    "naturterapi"
+  ],
+  "billede": "kaffe-i-skoven",
+  "alt_tekst": "Kaffe over bål under et naturterapiforløb",
+  "billede_url": "https://kristiangg.dk/images/natur/kaffe-i-skoven-640.jpg",
+  "links": [],
+  "cta": "Blød. Prisen er handlingsinformationen",
+  "hashtags": [],
+  "tekst": "Hvad sker der egentlig på tre timer i naturen?\n\nVi mødes et sted, vi har aftalt på forhånd. Så går vi. Langsomt, og ikke langt.\n\nVi taler undervejs. Nogle gange meget, nogle gange næsten ikke. Vi stopper, når der er noget at stoppe ved. Vi arbejder med vejrtrækningen, hvis der er brug for det, og med det, sanserne henter ind.\n\nDer er lyde hele vejen. Vind i toppen af træerne, fugle, grus under fødderne. Ingen af dem kræver et svar.\n\nTre timer lyder af meget, når man er vant til en samtale i en stol. Det er også meningen. Der er ingen dagsorden, vi skal nå igennem, og ingen der kigger på uret.\n\nNaturterapi foregår i skovene og ved kysterne omkring Odense. Tre timer koster 1.800 kr.",
+  "tekst_sha256": "b7993d7a2c105c7911919d4dca2878b3b1a1d1733692dcd05021f0964398fc33",
+  "brodtekst_sha256": "b7993d7a2c105c7911919d4dca2878b3b1a1d1733692dcd05021f0964398fc33",
+  "godkendt_af": "Kristian G. G. Dansted",
+  "godkendt_dato": "2026-09-17",
+  "godkendelsespakke": "Google Docs 17M0wTdSZ6i2BhA13m9lX-Nmi_hu6Z7vn4bnIrVctv-0",
+  "tidligere_laase": [
+    {
+      "laas": "b430856443872851",
+      "godkendt_dato": "2026-09-14",
+      "afloest_fordi": "ny laaseordning daekker alle felter, ikke kun teksten"
+    }
+  ],
+  "versionslaas": "eb925f98648505b8"
+}
