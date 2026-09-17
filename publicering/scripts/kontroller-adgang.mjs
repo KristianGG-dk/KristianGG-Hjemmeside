@@ -24,6 +24,11 @@ const TOKEN = process.env.FB_PAGE_TOKEN;
 const APP_ID = process.env.FB_APP_ID;
 const APP_SECRET = process.env.FB_APP_SECRET;
 
+// Det udledte side-token er ogsaa en hemmelighed. Det deklareres her frem for
+// inde i main(), saa skrub() kan naa det: kaldet der inspicerer det sender det
+// som input_token, og en fejl derfra ville ellers baere det med ud i loggen.
+let sideToken = null;
+
 let fejl = 0;
 const ok = (m) => console.log(`  OK    ${m}`);
 const nej = (m) => { console.log(`  FEJL  ${m}`); fejl++; };
@@ -32,7 +37,7 @@ const info = (m) => console.log(`  ·     ${m}`);
 /** Fjerner alt der ligner et token fra en tekst, foer den logges. */
 function skrub(s) {
   let t = String(s);
-  for (const hemmelig of [TOKEN, APP_SECRET].filter(Boolean)) {
+  for (const hemmelig of [TOKEN, APP_SECRET, sideToken].filter(Boolean)) {
     t = t.split(hemmelig).join('«udeladt»');
   }
   return t.replace(/(access_token=)[^&\s"']+/gi, '$1«udeladt»');
@@ -129,7 +134,6 @@ async function main() {
 
   // 3. Kan vi se siden — og kan vi udlede et side-token af den
   console.log('\n── siden ──');
-  let sideToken = null;
   try {
     const side = await hent(PAGE_ID, { fields: 'id,name,category,access_token' });
     side.id === PAGE_ID ? ok(`side-id bekraeftet: ${side.id}`) : nej(`forkert id: ${side.id}`);
