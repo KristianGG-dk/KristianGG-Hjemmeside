@@ -1,0 +1,22 @@
+{
+  "element": 999,
+  "kanal": "facebook",
+  "titel": "Testfixtur",
+  "meta_description": "Testfixtur",
+  "slug": "testfixtur",
+  "slut_url": "/test/",
+  "dato": "2026-09-16T19:00:00.000+02:00",
+  "kategorier": [],
+  "billede": "skovsti",
+  "alt_tekst": "Smal skovsti mellem høje træer på Fyn",
+  "billede_url": "https://kristiangg.dk/images/natur/skovsti-640.jpg",
+  "links": [],
+  "cta": "ingen",
+  "hashtags": [],
+  "tekst": "TESTFIXTUR — ikke et godkendt element. Bruges kun til at afprøve mekanikken.",
+  "tekst_sha256": "5a3d44878e00a81377b56b5208c74566fac21611b3c07ead9a2d5aa2aa16438d",
+  "brodtekst_sha256": "5a3d44878e00a81377b56b5208c74566fac21611b3c07ead9a2d5aa2aa16438d",
+  "godkendt_af": "TESTFIXTUR",
+  "godkendt_dato": "2026-09-16",
+  "versionslaas": "5c61d4f161ea501a"
+}

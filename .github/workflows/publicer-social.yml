@@ -1,0 +1,142 @@
+# Publicerer ét godkendt socialt element.
+# Startes ALDRIG automatisk. Tørløb er standard.
+#
+# Delt i to jobs, så publiceringen kører uden skriveadgang til repoet.
+# Kun registreringen bagefter må skrive, og den rører kun register.json.
+name: Publicer socialt element
+
+on:
+  workflow_dispatch:
+    inputs:
+      element:
+        description: 'Elementnummer, fx 3'
+        required: true
+        type: string
+      publicer:
+        description: 'Sæt til true for at publicere. Ellers tørløb.'
+        required: true
+        type: boolean
+        default: false
+
+permissions: {}          # intet som udgangspunkt; hvert job beder om sit eget
+
+jobs:
+  publicer:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read     # publiceringen må ikke kunne skrive i repoet
+    # Beskyt miljøet i repo-indstillingerne: begræns "Deployment branches"
+    # til main, så workflow_dispatch fra en vilkårlig branch ikke får secrets.
+    environment: publicering
+    outputs:
+      kanal: ${{ steps.laas.outputs.kanal }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+
+      # Inputs går gennem env, aldrig direkte i shell. Kun cifre accepteres.
+      - name: Valider elementnummer
+        id: nr
+        env:
+          ELEMENT: ${{ inputs.element }}
+        run: |
+          case "$ELEMENT" in
+            ''|*[!0-9]*) echo "Ugyldigt elementnummer: $ELEMENT"; exit 1 ;;
+          esac
+          printf 'nr=%02d\n' "$ELEMENT" >> "$GITHUB_OUTPUT"
+
+      - name: Find låsefilen og aflæs kanal
+        id: laas
+        env:
+          NR: ${{ steps.nr.outputs.nr }}
+        run: |
+          F="publicering/laase/element-$NR.json"
+          test -f "$F" || { echo "Ingen låsefil: $F"; exit 1; }
+          echo "fil=$F" >> "$GITHUB_OUTPUT"
+          FIL="$F" node -e '
+            const e=require("./"+process.env.FIL);
+            require("fs").appendFileSync(process.env.GITHUB_OUTPUT,"kanal="+e.kanal+"\n");
+          '
+
+      # Stopper jobbet hårdt hvis elementet allerede er publiceret.
+      - name: Allerede publiceret?
+        env:
+          ELEMENT: ${{ inputs.element }}
+        run: |
+          node -e '
+            const fs=require("fs");
+            if(!fs.existsSync("publicering/register.json")) process.exit(0);
+            const r=JSON.parse(fs.readFileSync("publicering/register.json","utf8"));
+            const n=Number(process.env.ELEMENT);
+            if(r.some(x=>x.element===n && x.status==="PUBLICERET")){
+              console.error(`Element ${n} står som PUBLICERET i registret. Stopper.`);
+              process.exit(1);
+            }
+            console.log("ikke publiceret endnu");
+          '
+
+      - name: Facebook
+        if: steps.laas.outputs.kanal == 'facebook'
+        env:
+          FB_PAGE_ID: ${{ secrets.FB_PAGE_ID }}
+          FB_PAGE_TOKEN: ${{ secrets.FB_PAGE_TOKEN }}
+          FIL: ${{ steps.laas.outputs.fil }}
+          PUBLICER: ${{ inputs.publicer }}
+        run: |
+          ARGS=""; [ "$PUBLICER" = "true" ] && ARGS="--publicer"
+          node publicering/scripts/publicer-facebook.mjs "$FIL" $ARGS | tee resultat.json
+
+      - name: LinkedIn
+        if: steps.laas.outputs.kanal == 'linkedin'
+        env:
+          LI_ACCESS_TOKEN: ${{ secrets.LI_ACCESS_TOKEN }}
+          LI_PERSON_URN: ${{ secrets.LI_PERSON_URN }}
+          FIL: ${{ steps.laas.outputs.fil }}
+          PUBLICER: ${{ inputs.publicer }}
+        run: |
+          ARGS=""; [ "$PUBLICER" = "true" ] && ARGS="--publicer"
+          node publicering/scripts/publicer-linkedin.mjs "$FIL" $ARGS | tee resultat.json
+
+      - name: Gem resultatet til registrering
+        if: ${{ inputs.publicer }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: resultat
+          path: resultat.json
+
+  registrer:
+    needs: publicer
+    if: ${{ always() && inputs.publicer }}   # også når publicering fejlede
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write    # eneste sted der skrives, og kun register.json
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - uses: actions/download-artifact@v4
+        with:
+          name: resultat
+        continue-on-error: true      # intet artefakt = publicering nåede aldrig at svare
+
+      - name: Skriv i registret
+        env:
+          ELEMENT: ${{ inputs.element }}
+        run: node publicering/scripts/registrer.mjs "$ELEMENT" resultat.json
+
+      - name: Commit registret
+        if: always()
+        run: |
+          git config user.name "publiceringsmotor"
+          git config user.email "kontakt@kristiangg.dk"
+          git add publicering/register.json
+          git diff --staged --quiet || git commit -m "registrer: element $ELEMENT"
+          git push
+        env:
+          ELEMENT: ${{ inputs.element }}
+
+      - name: Fejl jobbet hvis publiceringen ikke lykkedes
+        run: node publicering/scripts/registrer.mjs --status-kun "${{ inputs.element }}"
