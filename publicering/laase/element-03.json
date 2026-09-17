@@ -1,0 +1,33 @@
+{
+  "element": 3,
+  "kanal": "facebook",
+  "titel": "Skal jeg have badetøj med?",
+  "meta_description": "Facebook-opslag om hvad skovbad er — og at der ikke er vand involveret.",
+  "slug": "element-03-skovbad-badetoej",
+  "slut_url": "(facebook-opslag, ingen URL foer publicering)",
+  "dato": "2026-09-16T19:00:00.000+02:00",
+  "kategorier": [
+    "skovbad"
+  ],
+  "billede": "skovsti",
+  "alt_tekst": "Smal skovsti mellem høje træer på Fyn",
+  "billede_url": "https://kristiangg.dk/images/natur/skovsti-640.jpg",
+  "links": [],
+  "cta": "Ingen hård CTA. Bevidst — det er et oplysende opslag",
+  "hashtags": [],
+  "tekst": "\"Skal jeg have badetøj med?\"\n\nDet spørgsmål er der god grund til at stille. Svaret er nej.\n\nSkovbad har intet med vand at gøre. Ordet er en oversættelse af det japanske shinrin-yoku, og bad betyder her at være omgivet af noget — ligesom når vi siger solbad.\n\nMan bliver altså ikke våd. Medmindre det regner.\n\nTil gengæld går vi langsommere, end du er vant til. Vi stopper undervejs. Og du skal ikke fortælle mig noget om dig selv.\n\nDet er ikke terapi, ikke træning og ikke en vandretur. Det er et ophold i skoven, hvor du bruger sanserne i stedet for at snakke.\n\nSkovbad foregår i skovene omkring Odense og rundt på Fyn.",
+  "tekst_sha256": "e60d821e632829d14c763181295e80118d75894f82f87d02ea47d542977ac2e3",
+  "brodtekst_sha256": "e60d821e632829d14c763181295e80118d75894f82f87d02ea47d542977ac2e3",
+  "godkendt_af": "Kristian G. G. Dansted",
+  "godkendt_dato": "2026-09-17",
+  "godkendelsespakke": "Google Docs 17M0wTdSZ6i2BhA13m9lX-Nmi_hu6Z7vn4bnIrVctv-0",
+  "tidligere_laase": [
+    {
+      "laas": "b7dc2569e1615a9c",
+      "godkendt_dato": "2026-09-14",
+      "afloest_fordi": "ny laaseordning daekker alle felter, ikke kun teksten"
+    }
+  ],
+  "versionslaas": "2b0bdf48ed8d0511",
+  "bemaerkning_tidspunkt": "Feltet \"dato\" er det oprindeligt godkendte planlagte tidspunkt og indgaar i versionslaasen. Kristian godkendte 17-09-2026 at elementet publiceres samme aften. Det faktiske publiceringstidspunkt registreres i publicering/register.json."
+}
