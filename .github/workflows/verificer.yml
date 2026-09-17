@@ -1,0 +1,37 @@
+# Gate på hver PR. Læser, bygger og dømmer. Skriver intet.
+name: Verificer godkendt indhold
+
+on:
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read        # kun læse. Kan ikke ændre det, den kontrollerer.
+
+jobs:
+  verificer:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+
+      - name: Installer Hugo 0.147.0 extended
+        run: |
+          curl -sSL -o hugo.tar.gz \
+            https://github.com/gohugoio/hugo/releases/download/v0.147.0/hugo_extended_0.147.0_linux-amd64.tar.gz
+          tar xzf hugo.tar.gz hugo && sudo mv hugo /usr/local/bin/
+          hugo version
+
+      - name: Byg som Netlify gør
+        run: |
+          npm install
+          hugo --minify 2>&1 | tee byg.log
+          if grep -qiE "^(ERROR|WARN)" byg.log; then
+            echo "Build gav fejl eller advarsler"; exit 1
+          fi
+
+      - name: Versionslås og publiceringsfelter
+        run: node publicering/scripts/verificer.mjs
