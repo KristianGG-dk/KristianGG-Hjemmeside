@@ -1,0 +1,32 @@
+{
+  "element": 12,
+  "kanal": "facebook",
+  "titel": "\"Slap nu af\" er sjældent en brugbar besked",
+  "meta_description": "Facebook-opslag om de tre ting jeg arbejder med i stedet for at sige slap af.",
+  "slug": "element-12-slap-nu-af",
+  "slut_url": "(facebook-opslag, ingen URL foer publicering)",
+  "dato": "2026-09-29T19:00:00.000+02:00",
+  "kategorier": [
+    "nervesystem"
+  ],
+  "billede": "skovsoe",
+  "alt_tekst": "Stille skovsø med spejling af træerne",
+  "billede_url": "https://kristiangg.dk/images/natur/skovsoe-640.jpg",
+  "links": [],
+  "cta": "Blød åbning",
+  "hashtags": [],
+  "tekst": "\"Slap nu af\" er sjældent en brugbar besked.\n\nDer er tre ting, jeg arbejder med i stedet. Ikke som tricks, og ikke med et bestemt resultat i udsigt — det er dem, jeg holder øje med, og dem vi øver, når vi er i gang.\n\nUdåndingen. Ikke de dybe indåndinger. Den lange udånding, og hvor lang den får lov at være.\n\nNoget konkret. Temperaturen på huden. Underlaget under fødderne. En lyd langt væk. Noget, opmærksomheden kan lægge sig på, som ikke er tankerne.\n\nTempoet. Ikke hvor hurtigt du går, men hvor hurtigt du skifter fra det ene til det andet. Det er dér, jeg oftest stopper op og spørger.\n\nDet er ikke noget, man læser sig til. Det er noget, vi øver, mens vi er i gang.\n\nFylder det for dig, er du velkommen til at skrive.",
+  "tekst_sha256": "9e467fca7bafb78ac850bb857e8c9c3e4fd5383f3a329947b8d4fab4c7dbf60a",
+  "brodtekst_sha256": "9e467fca7bafb78ac850bb857e8c9c3e4fd5383f3a329947b8d4fab4c7dbf60a",
+  "godkendt_af": "Kristian G. G. Dansted",
+  "godkendt_dato": "2026-09-17",
+  "godkendelsespakke": "Google Docs 17M0wTdSZ6i2BhA13m9lX-Nmi_hu6Z7vn4bnIrVctv-0",
+  "tidligere_laase": [
+    {
+      "laas": "9a9979ed5e14f4ec",
+      "godkendt_dato": "2026-09-14",
+      "afloest_fordi": "ny laaseordning daekker alle felter, ikke kun teksten"
+    }
+  ],
+  "versionslaas": "888466ddcbae76d5"
+}

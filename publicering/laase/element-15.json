@@ -1,0 +1,32 @@
+{
+  "element": 15,
+  "kanal": "facebook",
+  "titel": "Hvor længe skal jeg være derude?",
+  "meta_description": "Facebook-opslag om varighed — og om hvorfor forskningen ikke giver et tal.",
+  "slug": "element-15-hvor-laenge-derude",
+  "slut_url": "(facebook-opslag, ingen URL foer publicering)",
+  "dato": "2026-10-02T19:00:00.000+02:00",
+  "kategorier": [
+    "naturterapi"
+  ],
+  "billede": "kodriver",
+  "alt_tekst": "Kodriver i græsset tidligt på foråret",
+  "billede_url": "https://kristiangg.dk/images/natur/kodriver-640.jpg",
+  "links": [],
+  "cta": "Ingen. Bevidst — det er et troværdighedsopslag",
+  "hashtags": [],
+  "tekst": "\"Hvor længe skal jeg være derude?\"\n\nDet spørgsmål fortjener et ærligt svar frem for et tal.\n\nForskningen giver ikke et tal. En oversigt over feltet fra 2017 beskriver små studier med meget forskellige metoder, som ikke måler det samme. Og de ophold, der er undersøgt, er ikke mine forløb. Der er ingen fastlagt varighed, og den, der giver dig et bestemt antal minutter, går videre, end forskningen rækker.\n\nMine naturterapiforløb varer fra tre til 24 timer. Det er ikke et forskningsbaseret valg — det er et praktisk et. En kort session ligner mest en samtale, hvor vi går imens. En lang session giver plads til det, der ikke lader sig planlægge: bålet skal passes, vejret skifter, og der bliver tid til stilhed, der ikke er akavet.\n\nDet er en beskrivelse af rammen. Ikke en dosis, og ikke et løfte om, hvad der kommer ud af den.\n\nMøder du et bestemt antal minutter om ugen fremstillet som svaret, er det rimeligt at spørge, hvor tallet kommer fra, og hvad det blev målt på.",
+  "tekst_sha256": "ca24df6eede4eed7bcc49784872f59b2d1415ff8af4c4d3e9fbcd0af222b54fb",
+  "brodtekst_sha256": "ca24df6eede4eed7bcc49784872f59b2d1415ff8af4c4d3e9fbcd0af222b54fb",
+  "godkendt_af": "Kristian G. G. Dansted",
+  "godkendt_dato": "2026-09-17",
+  "godkendelsespakke": "Google Docs 17M0wTdSZ6i2BhA13m9lX-Nmi_hu6Z7vn4bnIrVctv-0",
+  "tidligere_laase": [
+    {
+      "laas": "98077e532635dbc4",
+      "godkendt_dato": "2026-09-14",
+      "afloest_fordi": "ny laaseordning daekker alle felter, ikke kun teksten"
+    }
+  ],
+  "versionslaas": "2f6b22f73af54437"
+}
