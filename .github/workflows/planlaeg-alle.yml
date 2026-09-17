@@ -1,0 +1,88 @@
+# Godkender ALLE ventende Facebook-elementer paa én gang.
+#
+# Hvert element afleveres til Meta med published=false og sit eget laaste
+# tidspunkt. Meta holder opslagene og offentliggoer dem selv paa datoen.
+# Du trykker altsaa én gang, og de gaar ud hver for sig.
+#
+# Startes ALDRIG automatisk. Toerloeb er standard.
+#
+# Delt i to jobs som publicer-social.yml: planlaegningen koerer uden
+# skriveadgang til repoet, og kun registreringen bagefter maa skrive.
+name: Planlaeg alle ventende elementer
+
+on:
+  workflow_dispatch:
+    inputs:
+      planlaeg:
+        description: 'Sæt til true for at planlægge hos Meta. Ellers tørløb.'
+        required: true
+        type: boolean
+        default: false
+
+permissions: {}
+
+jobs:
+  planlaeg:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    environment: publicering
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+
+      - name: Planlaeg
+        # shell: bash giver 'bash -eo pipefail', saa nodes exit-kode ikke
+        # maskeres af tee.
+        shell: bash
+        env:
+          FB_PAGE_ID: ${{ secrets.FB_PAGE_ID }}
+          FB_PAGE_TOKEN: ${{ secrets.FB_PAGE_TOKEN }}
+          PLANLAEG: ${{ inputs.planlaeg }}
+        run: |
+          ARGS=""; [ "$PLANLAEG" = "true" ] && ARGS="--planlaeg"
+          node publicering/scripts/planlaeg-facebook.mjs $ARGS
+
+      - name: Gem resultatet til registrering
+        if: ${{ always() && inputs.planlaeg }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: resultat-planlaegning
+          path: resultat-planlaegning.json
+          if-no-files-found: warn
+
+  registrer:
+    needs: planlaeg
+    if: ${{ always() && inputs.planlaeg }}   # ogsaa naar planlaegningen fejlede
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write    # eneste sted der skrives, og kun register.json
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - uses: actions/download-artifact@v4
+        with:
+          name: resultat-planlaegning
+        continue-on-error: true
+
+      - name: Skriv i registret
+        if: always()
+        continue-on-error: true
+        run: node publicering/scripts/planlaeg-facebook.mjs --skriv-register resultat-planlaegning.json
+
+      - name: Commit registret
+        if: always()
+        run: |
+          git config user.name "publiceringsmotor"
+          git config user.email "kontakt@kristiangg.dk"
+          git add publicering/register.json
+          git diff --staged --quiet || git commit -m "registrer: planlagte elementer"
+          git push
+
+      # Doemmer kun — skriver ikke. Ellers ville posterne staa i registret to gange.
+      - name: Fejl jobbet hvis noget ikke blev planlagt
+        run: node publicering/scripts/planlaeg-facebook.mjs --status-kun resultat-planlaegning.json

@@ -25,7 +25,7 @@ export function byggPayload(e) {
 }
 
 /** Veksler system user-tokenet til et side-token for netop denne side. */
-async function hentSidetoken(sideId, brugertoken) {
+export async function hentSidetoken(sideId, brugertoken) {
   const url = `${GRAPH}/${sideId}?fields=access_token&access_token=${encodeURIComponent(brugertoken)}`;
   const r = await fetch(url);
   const svar = await r.json();

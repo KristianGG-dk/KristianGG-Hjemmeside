@@ -9,3 +9,7 @@ resources/
 # Pakket preview-zip til testsiden — må aldrig i repoet
 kristiangg-preview.zip
 *.zip
+
+# Resultatfiler fra publicerings- og planlaegningskoersler. Kun CI-artefakter.
+resultat.json
+resultat-planlaegning.json

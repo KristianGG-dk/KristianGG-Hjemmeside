@@ -60,7 +60,9 @@ jobs:
             require("fs").appendFileSync(process.env.GITHUB_OUTPUT,"kanal="+e.kanal+"\n");
           '
 
-      # Stopper jobbet hårdt hvis elementet allerede er publiceret.
+      # Stopper jobbet hårdt hvis elementet allerede er afsendt.
+      # PLANLAGT tæller med: et element, der ligger hos Meta og venter på sin
+      # dato, ville ellers blive slået op én gang til her og nu.
       - name: Allerede publiceret?
         env:
           ELEMENT: ${{ inputs.element }}
@@ -70,11 +72,12 @@ jobs:
             if(!fs.existsSync("publicering/register.json")) process.exit(0);
             const r=JSON.parse(fs.readFileSync("publicering/register.json","utf8"));
             const n=Number(process.env.ELEMENT);
-            if(r.some(x=>x.element===n && x.status==="PUBLICERET")){
-              console.error(`Element ${n} står som PUBLICERET i registret. Stopper.`);
+            const post=[...r].reverse().find(x=>x.element===n && ["PUBLICERET","PLANLAGT"].includes(x.status));
+            if(post){
+              console.error(`Element ${n} står som ${post.status} i registret. Stopper.`);
               process.exit(1);
             }
-            console.log("ikke publiceret endnu");
+            console.log("ikke afsendt endnu");
           '
 
       - name: Facebook
