@@ -2,17 +2,19 @@
 // Ingen browserautomation. Ingen hemmeligheder i koden — kun fra miljøet.
 //
 //   FB_PAGE_ID         siden der publiceres til
-//   FB_PAGE_TOKEN      Page access token (langtids), fra GitHub Secrets
+//   FB_PAGE_TOKEN      system user-token (udløber aldrig), fra GitHub Secrets
 //
-// Kør med --dry-run for at se præcis hvad der ville blive sendt, uden at sende.
+// Et system user-token er et BRUGER-token. Meta tillader ikke at poste til en
+// side med det — forsøget giver 403 "(#200) publish_actions ... deprecated",
+// hvilket er en misvisende besked for "du bruger ikke et side-token".
+// Derfor veksles det til et side-token her, lige før opslaget sendes.
+// Vekslingen sker hver kørsel, så der aldrig opbevares et side-token.
 import { readFileSync } from 'node:fs';
 import { beregnLaas, sha256 } from './laas.mjs';
 
 const GRAPH = 'https://graph.facebook.com/v21.0';
 
 export function byggPayload(e) {
-  // Teksten sendes ordret som låst. Hashtags og CTA er allerede en del af
-  // den godkendte tekst — der sammensættes intet nyt her.
   const message = e.tekst;
   if (e.billede_url) {
     return { sti: `${e.side_id}/photos`, body: { url: e.billede_url, caption: message } };
@@ -22,8 +24,21 @@ export function byggPayload(e) {
   return { sti: `${e.side_id}/feed`, body };
 }
 
+/** Veksler system user-tokenet til et side-token for netop denne side. */
+async function hentSidetoken(sideId, brugertoken) {
+  const url = `${GRAPH}/${sideId}?fields=access_token&access_token=${encodeURIComponent(brugertoken)}`;
+  const r = await fetch(url);
+  const svar = await r.json();
+  if (!r.ok || !svar.access_token) {
+    throw new Error(
+      `Kunne ikke hente side-token for ${sideId}: ${r.status} ${JSON.stringify(svar)}. ` +
+      'Kontrollér at systembrugeren er tildelt siden med rettigheder til indhold.'
+    );
+  }
+  return svar.access_token;
+}
+
 export async function publicer(e, { dryRun = true } = {}) {
-  // Låsen kontrolleres igen lige før afsendelse — forsvar i dybden.
   const { laas } = beregnLaas(e);
   if (laas !== e.versionslaas) {
     throw new Error(`Versionslås afviger (${laas} vs ${e.versionslaas}). Publicering stoppet.`);
@@ -35,23 +50,28 @@ export async function publicer(e, { dryRun = true } = {}) {
     throw new Error('Elementet bærer ingen godkendelse. Publicering stoppet.');
   }
 
-  const { sti, body } = byggPayload({ ...e, side_id: process.env.FB_PAGE_ID });
+  const sideId = process.env.FB_PAGE_ID;
+  const { sti, body } = byggPayload({ ...e, side_id: sideId });
   if (dryRun) {
     console.log('TØRLØB — intet sendt. Ville POSTe til', sti);
     console.log(JSON.stringify(body, null, 2));
     return { dryRun: true, sti, body };
   }
 
-  const token = process.env.FB_PAGE_TOKEN;
-  if (!token) throw new Error('FB_PAGE_TOKEN mangler i miljøet.');
+  const brugertoken = process.env.FB_PAGE_TOKEN;
+  if (!brugertoken) throw new Error('FB_PAGE_TOKEN mangler i miljøet.');
+  if (!sideId) throw new Error('FB_PAGE_ID mangler i miljøet.');
+
+  const sidetoken = await hentSidetoken(sideId, brugertoken);
+
   const r = await fetch(`${GRAPH}/${sti}`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ ...body, access_token: token }),
+    body: JSON.stringify({ ...body, access_token: sidetoken }),
   });
   const svar = await r.json();
   if (!r.ok) throw new Error(`Meta afviste: ${r.status} ${JSON.stringify(svar)}`);
-  return { post_id: svar.id ?? svar.post_id, svar };
+  return { post_id: svar.post_id ?? svar.id, svar };
 }
 
 if (import.meta.url === `file://${process.argv[1]}`) {

@@ -79,6 +79,9 @@ jobs:
 
       - name: Facebook
         if: steps.laas.outputs.kanal == 'facebook'
+        # shell: bash giver 'bash -eo pipefail'. Uden pipefail er trinnets
+        # exit-kode tee's, ikke nodes — en fejlet publicering saa groen ud.
+        shell: bash
         env:
           FB_PAGE_ID: ${{ secrets.FB_PAGE_ID }}
           FB_PAGE_TOKEN: ${{ secrets.FB_PAGE_TOKEN }}
@@ -90,6 +93,9 @@ jobs:
 
       - name: LinkedIn
         if: steps.laas.outputs.kanal == 'linkedin'
+        # shell: bash giver 'bash -eo pipefail'. Uden pipefail er trinnets
+        # exit-kode tee's, ikke nodes — en fejlet publicering saa groen ud.
+        shell: bash
         env:
           LI_ACCESS_TOKEN: ${{ secrets.LI_ACCESS_TOKEN }}
           LI_PERSON_URN: ${{ secrets.LI_PERSON_URN }}
