@@ -1,12 +1,12 @@
 ---
-title: "Skovbad, walk & talk og naturterapi: hvad er forskellen?"
+title: "Forskellen på skovbad, walk & talk og naturterapi"
 slug: skovbad-walk-and-talk-naturterapi-forskellen
 date: 2026-09-14T07:00:00.000+02:00
 author: Kristian G. G. Dansted
 author_credentials: Reg. Psykoterapeut (FaDP)
 categories:
   - naturterapi
-description: "Skovbad, walk & talk og naturterapi bliver brugt i flæng — også af fagfolk. Her er forskellen sagt så konkret som muligt: hvad der er terapi, hvornår vi taler om dig, og hvordan naturen indgår."
+description: "Skovbad, walk & talk og naturterapi bliver brugt i flæng. Her er forskellen: hvad der er terapi, hvad der ikke er, og hvad du skal vælge."
 og_image: /images/natur/skovsti-640.jpg
 draft: false
 ---
