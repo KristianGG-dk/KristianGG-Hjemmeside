@@ -178,5 +178,32 @@
     "tidspunkt": "2026-09-18T05:50:16.529Z",
     "registreret_af": "manuel",
     "noter": "Planlagt i LinkedIns brugerflade. Motoren kan ikke aflaese status. Ingen laasefil under nuvaerende ordning."
+  },
+  {
+    "element": 2,
+    "kanal": "linkedin",
+    "status": "PUBLICERET",
+    "post_id": null,
+    "registreret_af": "manuel",
+    "tidspunkt": "2026-09-18T15:50:28.541Z",
+    "noter": "Manuelt verificeret på platformen af Kristian 18-09-2026."
+  },
+  {
+    "element": 5,
+    "kanal": "linkedin",
+    "status": "PUBLICERET",
+    "post_id": null,
+    "registreret_af": "manuel",
+    "tidspunkt": "2026-09-18T15:50:28.541Z",
+    "noter": "Manuelt verificeret på platformen af Kristian 18-09-2026."
+  },
+  {
+    "element": 9,
+    "kanal": "gbp",
+    "status": "PUBLICERET",
+    "post_id": null,
+    "registreret_af": "manuel",
+    "tidspunkt": "2026-09-18T15:50:28.541Z",
+    "noter": "Manuelt verificeret på platformen af Kristian 18-09-2026."
   }
 ]
