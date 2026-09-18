@@ -1,0 +1,37 @@
+name: Vagthund
+
+# Sammenholder koeen med registret og raaber op, naar noget ikke stemmer.
+#
+# Baggrund: element 2 og 9 passerede deres godkendte dato uden at nogen
+# opdagede det, og det blev foerst fanget ti timer senere ved et tilfaelde.
+# Naar opslag ligger hos Meta, Google og LinkedIn og gaar ud af sig selv,
+# staar ingen laengere og kigger paa en knap, der bliver groen.
+#
+# Alarmkanalen er jobbets exit-kode: GitHub sender selv mail til ejeren, naar
+# en planlagt koersel fejler. Ingen mailserver, ingen ny secret.
+#
+# Den koerer IKKE som PR-gate. En ny laasefil faar foerst en raekke i registret
+# naar elementet er sendt, saa gaten ville fejle paa hver eneste ny-element-PR.
+
+on:
+  schedule:
+    # To koersler. Klokkeslettene er valgt saa begge ligger EFTER dagens
+    # publiceringsvinduer i baade sommer- og vintertid.
+    - cron: '30 8 * * *'    # 10.30 sommertid / 09.30 vintertid — efter morgenopslagene (07, 08, 09)
+    - cron: '30 18 * * *'   # 20.30 sommertid / 19.30 vintertid — efter aftenopslagene (19)
+  workflow_dispatch:
+
+permissions: {}
+
+jobs:
+  vagthund:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read      # laeser kun. Skriver intet, publicerer intet.
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Se koeen efter
+        run: node publicering/scripts/vagthund.mjs

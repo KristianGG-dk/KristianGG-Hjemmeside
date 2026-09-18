@@ -43,10 +43,10 @@ function skrub(s) {
   return t.replace(/(access_token=)[^&\s"']+/gi, '$1«udeladt»');
 }
 
-async function hent(sti, params = {}) {
+async function hentMed(token, sti, params = {}) {
   const u = new URL(`${GRAPH}/${sti}`);
   for (const [k, v] of Object.entries(params)) u.searchParams.set(k, v);
-  u.searchParams.set('access_token', TOKEN);
+  u.searchParams.set('access_token', token);
   let r, svar;
   try {
     r = await fetch(u);
@@ -63,6 +63,8 @@ async function hent(sti, params = {}) {
   }
   return svar;
 }
+
+const hent = (sti, params) => hentMed(TOKEN, sti, params);
 
 function tid(sekunder) {
   if (sekunder === 0 || sekunder === undefined || sekunder === null) return 'udloeber aldrig';
@@ -108,11 +110,19 @@ async function main() {
       info(`dataadgang udloeber: ${tid(d.data_access_expires_at)}`);
     }
 
-    const kraevede = ['pages_show_list', 'pages_read_engagement', 'pages_manage_posts'];
+    // Motoren udleder et side-token med GET /{side}?fields=access_token og
+    // sender POST til /{side}/photos eller /{side}/feed. Det kraever disse to.
+    // pages_show_list bruges kun af /me/accounts, som motoren ikke kalder —
+    // den blev tidligere krævet her og gav en falsk alarm.
+    const kraevede = ['pages_read_engagement', 'pages_manage_posts'];
+    const valgfrie = ['pages_show_list', 'pages_manage_metadata'];
     const scopes = d.scopes ?? [];
     info(`scopes: ${scopes.join(', ') || '(ingen)'}`);
     for (const s of kraevede) {
       scopes.includes(s) ? ok(`scope ${s}`) : nej(`scope mangler: ${s}`);
+    }
+    for (const s of valgfrie) {
+      info(`scope ${s}: ${scopes.includes(s) ? 'til stede' : 'ikke til stede — bruges ikke af motoren'}`);
     }
 
     // Granulaere scopes afsloerer, om rettigheden gaelder netop denne side.
@@ -150,12 +160,19 @@ async function main() {
 
   // 4. Laeseadgang til opslag. Bekraefter reel adgang uden at skrive.
   console.log('\n── laeseadgang ──');
-  try {
-    const feed = await hent(`${PAGE_ID}/feed`, { limit: '1', fields: 'id,created_time' });
-    const n = (feed.data ?? []).length;
-    ok(`kan laese sidens opslag (${n === 0 ? 'siden har ingen opslag endnu' : 'hentede 1 opslag'})`);
-  } catch (err) {
-    nej(err.message);
+  // Et bruger-token kan ikke laese en sides feed. Det skal vaere side-tokenet —
+  // samme faelde som ved publicering, hvor Meta svarer misvisende. Testen
+  // brugte tidligere brugertokenet og gav derfor en falsk alarm.
+  if (!sideToken) {
+    info('intet side-token kunne udledes ovenfor — laeseadgang kan ikke proeves');
+  } else {
+    try {
+      const feed = await hentMed(sideToken, `${PAGE_ID}/feed`, { limit: '1', fields: 'id,created_time' });
+      const n = (feed.data ?? []).length;
+      ok(`kan laese sidens opslag med side-tokenet (${n === 0 ? 'siden har ingen opslag endnu' : 'hentede 1 opslag'})`);
+    } catch (err) {
+      nej(err.message);
+    }
   }
 
   // 5. Hvis et side-token kunne udledes: hvad er DET for et token
