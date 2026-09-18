@@ -13,5 +13,6 @@
   { "element": 12, "kanal": "facebook", "tidspunkt": "2026-09-29T19:00:00.000+02:00", "metode": "motor",  "laasefil": "publicering/laase/element-12.json", "url": null },
   { "element": 13, "kanal": "gbp",      "tidspunkt": "2026-09-30T09:00:00.000+02:00", "metode": "manuel", "laasefil": null, "url": null },
   { "element": 14, "kanal": "linkedin", "tidspunkt": "2026-10-01T08:00:00.000+02:00", "metode": "manuel", "laasefil": null, "url": null },
-  { "element": 15, "kanal": "facebook", "tidspunkt": "2026-10-02T19:00:00.000+02:00", "metode": "motor",  "laasefil": "publicering/laase/element-15.json", "url": null }
+  { "element": 15, "kanal": "facebook", "tidspunkt": "2026-10-02T19:00:00.000+02:00", "metode": "motor",  "laasefil": "publicering/laase/element-15.json", "url": null },
+  { "element": 16, "kanal": "instagram","tidspunkt": "2026-09-19T19:00:00.000+02:00", "metode": "motor",  "laasefil": "publicering/laase/element-16.json", "url": null }
 ]
