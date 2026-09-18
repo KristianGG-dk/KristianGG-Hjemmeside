@@ -30,6 +30,21 @@ const REGISTER = 'publicering/register.json';
 const MIN_SEK = 10 * 60;
 const MAX_SEK = 30 * 24 * 60 * 60;
 
+// Det udledte side-token er en hemmelighed, GitHub IKKE maskerer: kun
+// registrerede secrets maskeres, og dette er afledt under koerslen.
+// Fejltekster fra Meta ender i register.json, som ligger i et OFFENTLIGT repo.
+// Derfor skal alt, der skrives derind, gennem skrub().
+let sidetoken = null;
+
+/** Fjerner alt der ligner et token fra en tekst, foer den gemmes eller logges. */
+function skrub(s) {
+  let t = String(s);
+  for (const hemmelig of [process.env.FB_PAGE_TOKEN, sidetoken].filter(Boolean)) {
+    t = t.split(hemmelig).join('«udeladt»');
+  }
+  return t.replace(/(access_token"?\s*[:=]\s*"?)[^&\s",}]+/gi, '$1«udeladt»');
+}
+
 /** Statusser der betyder "roer ikke elementet igen". */
 const AFSENDT = ['PUBLICERET', 'PLANLAGT'];
 
@@ -129,7 +144,7 @@ async function planlaeg({ toerloeb = true } = {}) {
   if (!brugertoken) throw new Error('FB_PAGE_TOKEN mangler i miljoeet.');
   // Samme veksling som ved direkte publicering: side-tokenet hentes pr. koersel
   // og opbevares aldrig.
-  const sidetoken = await hentSidetoken(sideId, brugertoken);
+  sidetoken = await hentSidetoken(sideId, brugertoken);
 
   for (const { e, naar } of valgt) {
     const { sti, body } = byggPayload({ ...e, side_id: sideId });
@@ -148,7 +163,7 @@ async function planlaeg({ toerloeb = true } = {}) {
       post = { ...post, status: 'PLANLAGT', post_id: svar.post_id ?? svar.id };
       console.log(`  OK    element ${e.element} planlagt til ${tid(naar)} (${post.post_id})`);
     } catch (err) {
-      post.fejl = String(err.message).slice(0, 500);
+      post.fejl = skrub(err.message).slice(0, 500);
       console.log(`  FEJL  element ${e.element}: ${post.fejl}`);
     }
     resultater.push(post);
@@ -204,5 +219,5 @@ if (args[0] === '--skriv-register') {
       console.log(fejlede ? `\n${fejlede} element(er) fejlede.` : '\nFaerdig.');
       process.exit(fejlede > 0 ? 1 : 0);
     })
-    .catch((err) => { console.error('FEJL:', err.message); process.exit(1); });
+    .catch((err) => { console.error('FEJL:', skrub(err.message)); process.exit(1); });
 }
