@@ -76,7 +76,7 @@
           {{- end }}
           <div class="border-t border-lav/40 my-2"></div>
           <a href="{{ $b.phone_sms | safeURL }}" class="mobile-link font-semibold text-hyben">Send en SMS</a>
-          <a href="{{ $b.email_link | safeURL }}" class="mobile-link font-semibold text-hyben">Send en mail</a>
+          <a href="{{ $b.kontakt_url | safeURL }}" class="mobile-link font-semibold text-hyben">Skriv til mig</a>
           <p class="px-3 py-2 text-xs text-tekst-daempet">{{ $b.phone_display }}</p>
         </nav>
       </details>

@@ -13,7 +13,7 @@ faq:
   - q: "Er der parkering ved klinikken?"
     a: "Ja, der er parkering ved Lumbyvej 11. Indgang B."
   - q: "Hvad skal jeg tage med til første session?"
-    a: "Ingenting. Skal vi ud i naturen, tøj du kan blive våd i."
+    a: "Ingenting. Skal vi ud i naturen, påklædning efter vejret."
   - q: "Kan jeg ringe i stedet?"
     a: "Ja. Nummeret står her på siden. Får du telefonsvareren, så læg en besked eller send en SMS, så vender jeg tilbage."
 ---

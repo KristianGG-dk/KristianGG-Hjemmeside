@@ -1,8 +1,8 @@
 ---
 title: "Om Kristian – psykoterapeut og naturterapeut"
-description: "Kristian G. G. Dansted er registreret psykoterapeut (FaDP) og naturterapeut i Odense. Fra en rygulykke som 21-årig håndværker til egen praksis på Lumbyvej."
+description: "Kristian G. G. Dansted er registreret psykoterapeut (FaDP) og naturterapeut i Odense. Om vejen fra håndværker til terapeut — og hvordan jeg er at møde."
 hero_title: "Om Kristian"
-hero_subtitle: "Registreret psykoterapeut og naturterapeut i Odense. Jeg arbejder både i klinikken og ude i naturen på Fyn."
+hero_subtitle: "Registreret psykoterapeut og naturterapeut i Odense. Jeg arbejder med mennesker, når livet er blevet svært at stå i — og mere og mere af arbejdet foregår ude i naturen på Fyn."
 person_schema: true
 hero_billede: "kristian-studie"
 hero_alt: "Portræt af Kristian G. G. Dansted i hvid skjorte"
@@ -21,17 +21,17 @@ credentials:
 
 values:
   - icon: ""
-    title: "Autenticitet"
-    desc: "Jeg møder dig som et helt menneske – ikke bare som en udfordring der skal løses. Ærlighed og nærvær er fundamentet."
+    title: "Jeg siger tingene, som de er"
+    desc: "Hvis jeg tænker noget, du ikke har sagt højt, spørger jeg hellere end at lade som ingenting. Og hvis jeg ikke er den rigtige for dig, siger jeg det."
   - icon: ""
     title: "Fagligt forankret"
     desc: "Jeg holder mig opdateret på forskningen i nervesystem og stressregulering og bruger den, hvor den rækker. Hvor den ikke rækker, siger jeg det."
   - icon: ""
-    title: "Praksisnærhed"
-    desc: "Viden der ikke kan bruges i hverdagen, er halvt så meget værd. Jeg fokuserer altid på konkrete, brugbare redskaber."
+    title: "Det skal kunne bruges"
+    desc: "Viden, der ikke kan bruges i hverdagen, er halvt så meget værd. Vi ender altid et sted, hvor du kan gøre noget med det."
   - icon: ""
-    title: "Menneskesyn"
-    desc: "Jeg tror på at alle mennesker bærer på ressourcer og kapacitet til forandring – min opgave er at hjælpe dem frem."
+    title: "Du bestemmer tempoet"
+    desc: "Du skal ikke fortælle mig noget, før du er klar. Jeg presser ikke, og du skal ikke præstere noget for min skyld."
 
 fadp:
   heading: "Registreret under Foreningen af Danske Psykoterapeuter"
@@ -47,7 +47,7 @@ fadp:
 
     Jeg arbejder inden for FaDP's etiske rammer. Det betyder, at der er nogle klare retningslinjer for, hvordan jeg arbejder – og at der er et etisk råd, man kan gå til, hvis der opstår tvivl eller spørgsmål.
 
-    Samtidig er registrerede psykoterapeuter underlagt tilsyn fra Styrelsen for Patientsikkerhed. Det er med til at sikre en vis kvalitet og gennemsigtighed i det arbejde, jeg laver.
+    FaDP er en privat brancheforening, og foreningen er godkendt af Styrelsen for Patientsikkerhed til at registrere behandlere. Det er foreningens registreringsordning, styrelsen har godkendt — ikke den enkelte psykoterapeut. Psykoterapeut er ikke en beskyttet titel, og registreringen er derfor ikke en offentlig autorisation. Klager over mit arbejde behandles af FaDP's etiske råd.
 
     Min rolle som politisk rådgiver betyder, at jeg ikke kun sidder i samtalerummet – jeg er også med til at påvirke, hvordan faget udvikler sig.
     Det holder mig nysgerrig. Og det forpligter.
@@ -55,10 +55,24 @@ fadp:
 
 ## Min historie
 
-Jeg blev ikke psykoterapeut ad den lige vej. Som 21-årig håndværker kom jeg alvorligt til skade i ryggen, og det tvang mig til at bygge et liv op fra bunden. Den fysiske og mentale vej tilbage gav mig en indefra-forståelse af, hvad det vil sige at stå midt i noget, der ikke bare går over — og af, hvad der faktisk hjælper.
+Jeg er ikke kommet til psykoterapien ad den lige vej. Jeg begyndte som håndværker, og som 21-årig kom jeg alvorligt til skade med ryggen. Pludselig var der en masse af det, jeg troede mit liv skulle være, som måtte tænkes om.
 
-Den erfaring blev begyndelsen på en faglig vej: uddannelse til registreret psykoterapeut (FaDP), Master Neuro Hypnoterapeut, Master NLP Practitioner, åndedrætsterapeut og mindfulness-instruktør. Dertil pædagogisk erfaring fra botilbud og asylcentre.
+Siden har mit arbejdsliv bragt mig tæt på mange forskellige mennesker – også mennesker, hvis liv ikke passer særlig godt ned i de pæne kasser. Det har lært mig at være nysgerrig, før jeg bliver klog på andre.
 
-I 2019 modtog jeg Ildsjæleprisen for mit frivillige sociale arbejde.
+Jeg er selv ret ligefrem. Jeg spørger, når der er noget, jeg ikke forstår, og jeg går ikke så meget op i fine facader. Hos mig må tingene gerne siges, som de er. Der må også gerne være humor og et grin midt i det alvorlige – det ene udelukker ikke det andet.
 
-I dag driver jeg praksis fra Lumbyvej 11 i Odense og arbejder med private klienter, virksomheder og kommunale samarbejdspartnere på Fyn og i Syddanmark.
+Som terapeut kommer jeg derfor heller ikke med én bestemt metode, som du skal passe ind i. Nogle gange skal vi tale. Andre gange skal vi gå, være stille, mærke kroppen eller undersøge noget helt andet. Metoden skal passe til mennesket – ikke omvendt.
+
+Det er også en af grundene til, at jeg søger mere og mere ud af kliniklokalet og ind i naturen. Her oplever jeg en anden plads til både samtalen, stilheden og det, der ikke altid kommer frem, når to mennesker sidder overfor hinanden i et rum.
+
+Klinikken ligger stadig på Lumbyvej i Odense, og en del af arbejdet foregår der. Resten foregår ude på Fyn. I 2019 fik jeg Ildsjæleprisen for mit frivillige sociale arbejde.
+
+## Sådan er jeg at møde
+
+Jeg er nysgerrig, direkte og ret jordnær. Jeg kan godt finde på at stille det spørgsmål, vi begge to ved ligger i rummet, men jeg gør det med respekt for, at det er dit liv og dit tempo.
+
+Jeg har ikke brug for, at vores samtaler ser ud på en bestemt måde. Der må være stilhed, alvor, bandeord og humor – og vi må gerne opdage undervejs, at vi var på vej det forkerte sted hen.
+
+Du behøver ikke komme og være god til terapi. Du behøver heller ikke have regnet ud, hvad der er galt, eller hvad du vil sige.
+
+**Kom som dig. Så tager vi den derfra.**

@@ -17,7 +17,7 @@
         </address>
         <p class="text-sm mt-4">
           <a href="{{ $b.phone_tel | safeURL }}" class="footer-link font-semibold">{{ $b.phone_display }}</a><br />
-          <a href="{{ $b.email_link | safeURL }}" class="footer-link">{{ $b.email }}</a>
+          <a href="{{ $b.kontakt_url | safeURL }}" class="footer-link">{{ $b.email }}</a>
         </p>
         <p class="text-sm mt-3">{{ $b.opening_hours }}</p>
       </div>
@@ -68,7 +68,18 @@
 
     <div class="border-t border-white/15 mt-10 pt-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 text-xs text-lav">
       <p>© {{ now.Year }} {{ $b.full_name }} · CVR 40996761</p>
-      <p>Registreret psykoterapeut hos <a href="https://www.fadp.dk/" rel="noopener" class="underline underline-offset-2 hover:text-white">Foreningen af Danske Psykoterapeuter</a></p>
+      {{/* FaDP-mærket vises på hvid skive, fordi logoets eget blå ikke har
+           tilstrækkelig kontrast mod skovbund. Mærket gengives uændret —
+           det må hverken omfarves eller beskæres. Bredde og højde er sat, så
+           der ikke opstår layoutskift, mens billedet hentes. */}}
+      <p class="flex items-center gap-3">
+        <img src="/images/fadp-logo-96.png"
+             srcset="/images/fadp-logo-96.png 96w, /images/fadp-logo-192.png 192w" sizes="48px"
+             width="48" height="48" loading="lazy" decoding="async"
+             alt="FaDP – Foreningen af Danske Psykoterapeuter, reg. psykoterapeut"
+             class="w-12 h-12 rounded-full bg-white p-0.5 flex-shrink-0" />
+        <span>Registreret psykoterapeut hos <a href="https://www.fadp.dk/" rel="noopener" class="underline underline-offset-2 hover:text-white">Foreningen af Danske Psykoterapeuter</a></span>
+      </p>
     </div>
   </div>
 </footer>

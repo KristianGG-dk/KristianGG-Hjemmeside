@@ -28,7 +28,7 @@
           </div>
           <div>
             <dt class="text-tekst-daempet">E-mail</dt>
-            <dd class="mt-0.5"><a href="{{ $b.email_link | safeURL }}" class="font-semibold text-skovbund hover:text-mos underline underline-offset-2 break-all">{{ $b.email }}</a></dd>
+            <dd class="mt-0.5"><a href="{{ $b.kontakt_url | safeURL }}" class="font-semibold text-skovbund hover:text-mos underline underline-offset-2 break-all">{{ $b.email }}</a></dd>
           </div>
         </dl>
       </div>
@@ -54,7 +54,9 @@
     </aside>
 
     <div class="lg:order-1">
-      <h2 class="text-2xl font-semibold">Vil du hellere skrive lidt mere?</h2>
+      {{/* id="skriv" er maalet for alle "Skriv til mig"-links paa sitet. Offset
+           saa overskriften ikke gemmer sig bag den faste header ved spring. */}}
+      <h2 id="skriv" class="text-2xl font-semibold scroll-mt-24">Vil du hellere skrive lidt mere?</h2>
       <p class="prosa mt-3">Så brug formularen. Den lander i den samme indbakke — den er bare bedre, hvis du har mere på hjerte, end der er plads til i en SMS.</p>
       <div class="mt-8">{{ partial "contact-form.html" . }}</div>
     </div>
