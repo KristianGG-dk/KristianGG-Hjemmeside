@@ -1,0 +1,31 @@
+# Kontrollerer at Instagram-adgangen virker. Publicerer ALDRIG noget.
+#
+# Scriptet sender udelukkende GET. Der findes ingen sti gennem dette workflow
+# der kan oprette en mediecontainer eller et opslag: publiceringsscripts
+# kaldes ikke, og der er ingen parameter at saette forkert.
+#
+# Startes kun manuelt.
+name: Kontroller Instagram-adgang
+
+on:
+  workflow_dispatch:
+
+permissions: {}
+
+jobs:
+  kontroller:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    environment: publicering
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+
+      - name: Kontroller Instagram-adgang
+        env:
+          IG_USER_ID: ${{ secrets.IG_USER_ID }}
+          IG_ACCESS_TOKEN: ${{ secrets.IG_ACCESS_TOKEN }}
+        run: node publicering/scripts/kontroller-instagram-adgang.mjs
