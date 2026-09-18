@@ -143,6 +143,24 @@ async function main() {
 
     // Facebook, Google og LinkedIn holder selv opslaget. Motoren kan ikke se
     // ind i dem herfra, saa dette kan ikke bevises — kun paamindes om.
+    //
+    // Instagram er en undtagelse: Meta holder IKKE et Instagram-opslag for os.
+    // Der er ingen scheduled_publish_time, saa motoren publicerer selv paa
+    // tidspunktet. Staar et forfaldent Instagram-element uden resultat, ligger
+    // det altsaa ingen steder og venter — den planlagte koersel har svigtet.
+    if (e.kanal === 'instagram') {
+      // Her kan vi faktisk bevise noget. Havde koerslen gjort sit arbejde,
+      // stod der en raekke i registret. Den planlagte koersel gaar hver halve
+      // time, saa vi giver en times naade for forsinkelse hos GitHub.
+      const NAADE_MS = 60 * 60 * 1000;
+      if (NU - forfald > NAADE_MS) {
+        FEJL(e.element, `instagram: forfaldt ${dk(forfald)} og er hverken publiceret eller fejlregistreret. Den planlagte koersel har ikke gjort sit arbejde.`);
+      } else {
+        ADVAR(e.element, `instagram: forfaldt ${dk(forfald)} for nylig — den planlagte koersel har endnu ikke meldt tilbage. Se efter igen om lidt.`);
+      }
+      continue;
+    }
+
     const hvor = e.metode === 'motor' ? 'hos Meta' : 'i platformens brugerflade';
     ADVAR(e.element, `${e.kanal}: planlagt ${hvor} til ${dk(forfald)} — passeret for ${dageSiden} dag(e) siden. Bekraeft selv at opslaget er gaaet ud.`);
   }

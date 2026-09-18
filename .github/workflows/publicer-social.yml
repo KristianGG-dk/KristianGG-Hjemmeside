@@ -80,6 +80,21 @@ jobs:
             console.log("ikke afsendt endnu");
           '
 
+      # En kanal uden gren her ville ellers fejle uklart: begge trin springes
+      # over, resultat.json skrives aldrig, og registret ender med
+      # PUBLICERING FEJLET uden at nogen kan se hvorfor. Hellere sige det.
+      # Instagram hoerer ikke til her - den publiceres af sit eget planlagte
+      # workflow, fordi Meta ikke kan holde et Instagram-opslag for os.
+      - name: Kender vi kanalen?
+        env:
+          KANAL: ${{ steps.laas.outputs.kanal }}
+        run: |
+          case "$KANAL" in
+            facebook|linkedin) echo "kanal $KANAL haandteres her" ;;
+            instagram) echo "Element med kanal instagram publiceres af workflowet 'Publicer planlagte Instagram-elementer', ikke herfra." >&2; exit 1 ;;
+            *) echo "Ukendt kanal: $KANAL. Motoren publicerer ikke noget, den ikke kender." >&2; exit 1 ;;
+          esac
+
       - name: Facebook
         if: steps.laas.outputs.kanal == 'facebook'
         # shell: bash giver 'bash -eo pipefail'. Uden pipefail er trinnets

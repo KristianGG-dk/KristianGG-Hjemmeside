@@ -1,4 +1,11 @@
-# Publiceringsmotor — kontrolplan i repoet
+# Publiceringsmotor — byggehistorik og sikkerhedsbeskrivelse
+
+> **Reglerne står i [PUBLICERING.md](PUBLICERING.md).**
+>
+> Denne fil er en beretning om, hvordan motoren blev bygget, og hvilke
+> sikkerhedsvalg der blev truffet undervejs. Den beskriver tilstanden på
+> byggetidspunktet og vedligeholdes ikke som regelsæt. Er der uenighed mellem
+> de to filer, gælder `PUBLICERING.md`.
 
 Alt her er **additivt**. Ingen eksisterende fil på sitet er ændret.
 

@@ -1,0 +1,100 @@
+# Publicerer godkendte Instagram-elementer, naar deres tidspunkt er naaet.
+#
+# HVORFOR DENNE KOERER AF SIG SELV
+# Facebook kan holde et opslag for os via scheduled_publish_time. Instagram kan
+# ikke: der er intet scheduled_publish_time, og en mediecontainer udloeber
+# efter 24 timer. Containere kan derfor ikke oprettes i forvejen, og nogen skal
+# vaere vaagen paa tidspunktet. Det er denne koersel.
+#
+# GODKENDELSEN LIGGER FOERST
+# Kristian godkender indholdet, det laases, og laasen kommer i repoet gennem
+# PR-gaten. Denne koersel udfoerer kun den tekniske handling paa det godkendte
+# tidspunkt - den traeffer ingen beslutning om indhold. Scriptet publicerer
+# udelukkende elementer hvis laas og teksthash holder.
+#
+# Delt i to jobs som de oevrige: publiceringen koerer uden skriveadgang til
+# repoet, og kun registreringen bagefter maa skrive.
+name: Publicer planlagte Instagram-elementer
+
+on:
+  schedule:
+    # Hver halve time. GitHub kan forsinke planlagte koersler under belastning,
+    # saa et opslag gaar ud paa eller kort efter det godkendte tidspunkt.
+    - cron: '0,30 * * * *'
+  workflow_dispatch:
+    inputs:
+      publicer:
+        description: 'Sæt til true for at publicere. Ellers tørløb.'
+        required: true
+        type: boolean
+        default: false
+
+permissions: {}
+
+jobs:
+  publicer:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    environment: publicering
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+
+      - name: Publicer forfaldne Instagram-elementer
+        shell: bash
+        env:
+          IG_USER_ID: ${{ secrets.IG_USER_ID }}
+          IG_ACCESS_TOKEN: ${{ secrets.IG_ACCESS_TOKEN }}
+          # Planlagt koersel publicerer for alvor. Manuel start er toerloeb,
+          # medmindre der udtrykkeligt saettes flueben.
+          PUBLICER: ${{ github.event_name == 'schedule' || inputs.publicer }}
+        run: |
+          ARGS=""; [ "$PUBLICER" = "true" ] && ARGS="--publicer"
+          # Ingen pipe: scriptet skriver selv resultat-instagram.json.
+          # Et 'tee' ville overskrive den JSON med den menneskelaeselige log.
+          node publicering/scripts/publicer-instagram.mjs $ARGS
+
+      - name: Gem resultatet til registrering
+        if: ${{ always() && (github.event_name == 'schedule' || inputs.publicer) }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: resultat-instagram
+          path: resultat-instagram.json
+          if-no-files-found: warn
+
+  registrer:
+    needs: publicer
+    if: ${{ always() && (github.event_name == 'schedule' || inputs.publicer) }}
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write    # eneste sted der skrives, og kun register.json
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - uses: actions/download-artifact@v4
+        with:
+          name: resultat-instagram
+        continue-on-error: true
+
+      - name: Skriv i registret
+        if: always()
+        continue-on-error: true
+        run: node publicering/scripts/publicer-instagram.mjs --skriv-register resultat-instagram.json
+
+      - name: Commit registret
+        if: always()
+        run: |
+          git config user.name "publiceringsmotor"
+          git config user.email "kontakt@kristiangg.dk"
+          git add publicering/register.json
+          git diff --staged --quiet || git commit -m "registrer: instagram"
+          git push
+
+      # Doemmer kun - skriver ikke. Ellers stod posterne i registret to gange.
+      - name: Fejl jobbet hvis noget ikke blev publiceret
+        run: node publicering/scripts/publicer-instagram.mjs --status-kun resultat-instagram.json
