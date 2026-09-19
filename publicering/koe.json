@@ -1,6 +1,6 @@
 [
   { "element": 1,  "kanal": "website",  "tidspunkt": "2026-09-14T07:00:00.000+02:00", "metode": "motor",  "laasefil": "publicering/laase/element-01.json", "url": "https://kristiangg.dk/blog/skovbad-walk-and-talk-naturterapi-forskellen/" },
-  { "element": 2,  "kanal": "linkedin", "tidspunkt": "2026-09-15T08:00:00.000+02:00", "metode": "manuel", "laasefil": null, "url": null },
+  { "element": 2,  "kanal": "linkedin", "tidspunkt": "2026-09-20T08:00:00.000+02:00", "metode": "manuel", "laasefil": null, "url": null },
   { "element": 3,  "kanal": "facebook", "tidspunkt": "2026-09-16T19:00:00.000+02:00", "metode": "motor",  "laasefil": "publicering/laase/element-03.json", "url": null },
   { "element": 4,  "kanal": "gbp",      "tidspunkt": "2026-09-24T09:00:00.000+02:00", "metode": "manuel", "laasefil": null, "url": null },
   { "element": 5,  "kanal": "linkedin", "tidspunkt": "2026-09-18T08:00:00.000+02:00", "metode": "manuel", "laasefil": null, "url": null },
