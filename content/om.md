@@ -37,6 +37,9 @@ fadp:
   heading: "Registreret under Foreningen af Danske Psykoterapeuter"
   logo: "/images/fadp-logo-96.png"
   link: "https://www.fadp.dk/"
+  badge_over: "Registreret psykoterapeut"
+  badge_navn: "Foreningen af Danske Psykoterapeuter"
+  badge_under: "FaDP's registreringsordning er godkendt af Styrelsen for Patientsikkerhed. Registreringen bekræfter uddannelse og etiske regler — den er ikke en offentlig autorisation."
   text: |
     Jeg er medlem af Foreningen af Danske Psykoterapeuter (FaDP) og arbejder frivilligt som politisk rådgiver i foreningen.
 

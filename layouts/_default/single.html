@@ -104,14 +104,25 @@
            class="inline-flex items-center min-h-[44px] mt-6 text-mos font-semibold hover:underline text-sm">Læs mere på fadp.dk →</a>
       </div>
       <div class="flex justify-center">
-        {{/* Logoet blev vist i 224 px fra en 96 px-fil. Nu et sæt i den
-             rigtige størrelse, og width/height matcher visningen, så der
-             ikke opstår layoutskift. */}}
-        <img src="/images/fadp-logo-192.png"
-             srcset="/images/fadp-logo-192.png 192w, /images/fadp-logo-384.png 384w"
-             sizes="192px"
-             alt="FaDP – Foreningen af Danske Psykoterapeuter"
-             class="w-48 h-48 object-contain" width="192" height="192" loading="lazy" decoding="async">
+        {{/* Indrammet, saa registreringen kan ses uden at laese afsnittet ved
+             siden af. Ordlyden staar i om.md, ikke her.
+
+             Der staar "registreret", ikke "godkendt af FaDP". FaDP godkender
+             ikke den enkelte psykoterapeut - foreningen registrerer dem, der
+             lever op til uddannelseskravene. Det er foreningens ORDNING, der
+             er godkendt af Styrelsen for Patientsikkerhed, og det staar paa
+             den nederste linje. Samme sondring som i broedteksten til
+             venstre, som blev rettet netop af den grund. */}}
+        <div class="bg-white border-2 border-mos rounded-2xl px-6 py-6 text-center max-w-xs shadow-sm">
+          {{- with .badge_over }}<p class="etikette">{{ . }}</p>{{ end }}
+          {{- with .badge_navn }}<p class="font-display text-lg font-semibold text-skovbund leading-snug mt-1">{{ . }}</p>{{ end }}
+          <img src="/images/fadp-logo-192.png"
+               srcset="/images/fadp-logo-192.png 192w, /images/fadp-logo-384.png 384w"
+               sizes="176px"
+               alt="FaDP – Foreningen af Danske Psykoterapeuter"
+               class="w-44 h-44 object-contain mx-auto mt-4" width="192" height="192" loading="lazy" decoding="async">
+          {{- with .badge_under }}<p class="text-xs text-tekst-daempet leading-relaxed mt-4 border-t border-lav/60 pt-4">{{ . }}</p>{{ end }}
+        </div>
       </div>
     </div>
   </div>
