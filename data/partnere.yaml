@@ -28,18 +28,25 @@ poster:
     logo: "/images/partnere/foreningen-mod-familiebelastning-192.png"
     logo_webp: "/images/partnere/foreningen-mod-familiebelastning-192.webp 1x, /images/partnere/foreningen-mod-familiebelastning-384.webp 2x"
     logo_alt: "Logo for Foreningen mod Familiebelastning"
+    logo_bredde: 192
+    logo_hoejde: 192
     sider:
       - "/om/"
 
-  # Logoet MANGLER. hypnoseskolen.dk kunne ikke naas fra udviklingsmiljoeet
-  # (egress blokeret), og et logo maa ikke rekonstrueres. Partialen udelader
-  # <img>, naar "logo" ikke er sat. Naar filen foreligger: laeg den i
-  # static/images/partnere/ og saet logo + logo_webp + logo_alt.
+  # Officielt logo leveret af Kristian 19-09-2026. Rene nedskaleringer
+  # (LANCZOS) af originalen paa 500x100 - intet beskaaret eller omfarvet.
+  # ALFAKANALEN ER BEVARET: logoet er moerkeblaat paa gennemsigtig bund, og en
+  # konvertering til RGB ville give sort baggrund.
   #
   # Skolen skriver selv sit navn i to ord, "Hypnose Skolen".
   - navn: "Hypnose Skolen"
     link: "https://hypnoseskolen.dk/"
     beskrivelse: "Uddannelsessted for hypnoterapi og NLP. Jeg tilbyder egenterapi til skolens studerende til reduceret pris."
     type: "fagligt-netvaerk"
+    logo: "/images/partnere/hypnose-skolen-200.png"
+    logo_webp: "/images/partnere/hypnose-skolen-200.webp 1x, /images/partnere/hypnose-skolen-400.webp 2x"
+    logo_alt: "Logo for Hypnose Skolen"
+    logo_bredde: 200
+    logo_hoejde: 40
     sider:
       - "/om/"
