@@ -41,7 +41,8 @@ faq:
   - q: "Skal jeg kunne noget med meditation eller mindfulness?"
     a: "Nej. Du skal ikke præstere noget som helst. Der er ingen øvelser, du kan gøre forkert, og det er helt i orden bare at gå og tale."
   - q: "Er naturterapi det samme som en samtale i klinikken?"
-    a: "Nej. Fagligheden bag er den samme, og jeg har den samme tavshedspligt og den samme registrering. Men fremgangsmåden er en anden. Naturen er ikke bare stedet, hvor samtalen tilfældigvis foregår — den er vores assistent. Vi bruger det, vi møder undervejs, når det er relevant for det, vi arbejder med: et væltet træ, en sti der deler sig, vind der tager til, en lyd der får dig til at stoppe op. Jeg er terapeuten. Naturen leverer noget af materialet."
+    a: "Nej. Fagligheden, tavshedspligten og registreringen er den samme, men fremgangsmåden er en anden: omgivelserne indgår aktivt i arbejdet frem for at være ramme om det. Et forløb varer timer frem for halvanden."
+    laes_mere: "/blog/skovbad-walk-and-talk-naturterapi-forskellen/"
   - q: "Hvor foregår det?"
     a: "På et mødested, vi finder sammen ud fra dine behov. Det kan for eksempel være en skov, en bålhytte på en naturgrund, en strand, en terapihave eller et andet egnet naturområde omkring Odense og på Fyn. Vi tilpasser altid både stedet og sessionen til dig, og du kan altid sige, hvis et sted føles forkert."
 

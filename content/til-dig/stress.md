@@ -24,12 +24,14 @@ helps_with:
 faq:
   - q: "Er stress en sygdom?"
     a: "Nej. Sundhedsstyrelsen beskriver stress som en tilstand, ikke en sygdom i sig selv — men langvarig stress er en risikofaktor for flere sygdomme, blandt andet forhøjet blodtryk, hjerte-kar-sygdom og depression. Derfor er det ikke noget, man bare skal vente ud."
+    laes_mere: "/blog/hvornaar-er-stress-noget-man-skal-goere-noget-ved/"
   - q: "Skal jeg til læge først?"
     a: "Har du fysiske symptomer — hjertebanken, trykken for brystet, mavebesvær, svimmelhed — så start hos din læge. Sundhedsstyrelsen anbefaler lægekontakt ved den slags, fordi de kan have andre årsager end stress. Jeg behandler ikke sygdom, og jeg stiller ikke diagnoser. Du er velkommen til at gøre begge dele."
   - q: "Hvor mange gange skal jeg komme?"
     a: "Hvor mange gange man kommer, er meget forskelligt. Nogle har brug for få samtaler, andre for et længere forløb. Du bestemmer selv, hvornår du er i mål."
   - q: "Kan vi arbejde udenfor?"
     a: "Ja. Nogle har lettere ved at tale, mens vi går. Det kan være almindelig psykoterapi, der bare foregår udenfor — eller naturterapi, som er en selvstændig arbejdsform med sin egen fremgangsmåde. Vi aftaler, hvad der passer."
+    laes_mere: "/blog/skovbad-walk-and-talk-naturterapi-forskellen/"
   - q: "Er det sygemelding og handlingsplan?"
     a: "Nej. Sygemelding hører hjemme hos din læge, og arbejdspladsens del hører hjemme dér. Jeg arbejder med det, der sker i dig — og med hvad du selv kan gøre ved det, du har indflydelse på."
 

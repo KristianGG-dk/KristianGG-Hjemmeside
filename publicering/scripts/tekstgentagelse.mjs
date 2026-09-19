@@ -19,7 +19,7 @@
 // kan afgoere, om gentagelsen baerer noget.
 import { readFileSync } from 'node:fs';
 
-const ord = (t) => t
+export const ord = (t) => t
   .replace(/^---[\s\S]*?^---$/m, '')          // front matter
   .replace(/\{\{<[^>]*>\}\}/g, '')            // shortcodes
   .replace(/\[([^\]]*)\]\([^)]*\)/g, '$1')    // links
@@ -28,13 +28,13 @@ const ord = (t) => t
   .toLowerCase().normalize('NFC')
   .split(/[^\wæøåÆØÅ-]+/).filter(Boolean);
 
-const ngram = (a, n) => {
+export const ngram = (a, n) => {
   const s = new Set();
   for (let i = 0; i + n <= a.length; i++) s.add(a.slice(i, i + n).join(' '));
   return s;
 };
 
-const N = 6;   // seks ord i traek = et saetningsled, ikke et fagudtryk
+export const N = 6;   // seks ord i traek = et saetningsled, ikke et fagudtryk
 const filer = process.argv.slice(2);
 const tekster = filer.map((f) => ({ navn: f.split('/').pop(), ord: ord(readFileSync(f, 'utf8')) }));
 
