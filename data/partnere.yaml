@@ -30,3 +30,18 @@ poster:
     logo_alt: "Logo for Foreningen mod Familiebelastning"
     sider:
       - "/om/"
+
+  # Logoet MANGLER. hypnoseskolen.dk kunne ikke naas fra udviklingsmiljoeet
+  # (egress blokeret), og et logo maa ikke rekonstrueres. Partialen udelader
+  # <img>, naar "logo" ikke er sat. Naar filen foreligger: laeg den i
+  # static/images/partnere/ og saet logo + logo_webp + logo_alt.
+  #
+  # Skolen skriver selv sit navn i to ord, "Hypnose Skolen". Beskrivelsen
+  # herunder er MIN formulering og skal bekraeftes af Kristian - jeg kender
+  # ikke samarbejdets praecise karakter.
+  - navn: "Hypnose Skolen"
+    link: "https://hypnoseskolen.dk/"
+    beskrivelse: "Uddannelsessted for hypnoterapi og NLP i København og Aarhus."
+    type: "fagligt-netvaerk"
+    sider:
+      - "/om/"
