@@ -8,6 +8,26 @@ hero_subtitle: "Samtaler i klinikken på Lumbyvej — eller online. Der hvor det
 service_name: "Psykoterapi i Odense"
 service_desc: "Registreret psykoterapeut (FaDP) i Odense. Samtaleterapi for voksne, i klinik og online."
 
+hjaelp_titel: "Går du med noget bestemt?"
+hjaelp_tekst: "Psykoterapien er den samme ramme. Siderne herunder beskriver, hvordan jeg arbejder med hver af dem — og hvornår du skal et andet sted hen først."
+hjaelp:
+  - titel: "Stress og overbelastning"
+    url: "/til-dig/stress/"
+    kort: "Når der har været for meget for længe. Hvad vi gør ved det, og hvornår lægen skal ind over først."
+    linktekst: "Læs om stress"
+  - titel: "Angst og uro"
+    url: "/til-dig/angst/"
+    kort: "Bekymringer der kører i ring, eller uro i kroppen. Og hvad jeg er — og ikke er."
+    linktekst: "Læs om angst"
+  - titel: "Søvn og tankemylder"
+    url: "/til-dig/soevnproblemer/"
+    kort: "Tankerne, der går i gang, når der endelig er stille. Og hvad der er bedre dokumenteret end det, jeg laver."
+    linktekst: "Læs om søvn"
+  - titel: "Nervesystemet og ro"
+    url: "/til-dig/nervesystemet/"
+    kort: "Vejrtrækning, opmærksomhed og tempo — når kroppen er en lettere indgang end sproget."
+    linktekst: "Læs om det kropslige"
+
 helps_with_heading: "Det, folk oftest kommer med"
 helps_with:
   - "Stress og udbrændthed"
