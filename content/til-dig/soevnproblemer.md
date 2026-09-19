@@ -28,8 +28,6 @@ faq:
     a: "Jeg arbejder med det, der fylder omkring sengetid, og med de øvelser der kan bruges om aftenen. For mange er søvnen ikke problemet i sig selv, men det sted hvor dagens uro bliver synlig. Er der noget under, arbejder vi med det."
   - q: "Hvornår skal jeg til læge?"
     a: "Har søvnbesværet stået på i måneder, eller er du træt på en måde, der ikke passer til, hvor meget du sover, så tal med din læge. Søvnproblemer kan have fysiske årsager, som skal udelukkes af en, der kan det. Jeg stiller ikke diagnoser."
-  - q: "Hvad er forskellen på det her og kurset Sov Bedre?"
-    a: "Kurset er et undervisningsforløb om søvn og tankemylder, som du kan tage uden at gå i terapi. Det her er individuelle samtaler om det, der fylder for dig. Nogle har kun brug for det ene."
   - q: "Hvor mange gange skal jeg komme?"
     a: "Hvor mange gange man kommer, er meget forskelligt. Nogle har brug for få samtaler, andre for et længere forløb. Du bestemmer selv, hvornår du er i mål."
 
@@ -82,8 +80,6 @@ Vi arbejder med vejrtrækningen, og særligt med udåndingen. Med noget konkret 
 
 Det er øvelser, man træner, ikke en behandling man modtager. Om det hjælper dig, kan jeg ikke sige på forhånd. [Mere om arbejdet med nervesystemet](/til-dig/nervesystemet/).
 
-## Udenfor, og kurset
+## Udenfor, hvis det er lettere
 
 Vi kan arbejde udendørs, hvis du har lettere ved at tale, mens vi går. Det kan være psykoterapi i naturen — almindelig psykoterapi, der bare foregår ude — eller [naturterapi](/til-dig/naturterapi/), som er en selvstændig arbejdsform med sin egen fremgangsmåde.
-
-Og så findes kurset [Sov Bedre](/kurser/sov-bedre/), som er undervisning om søvn og tankemylder. Det kan tages uden at gå i terapi, og for nogle er det nok.
