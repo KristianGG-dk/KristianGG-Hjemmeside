@@ -127,10 +127,14 @@
         {{- with .badge }}<div class="absolute -top-3 left-1/2 -translate-x-1/2 bg-mos text-white text-xs font-semibold px-3 py-1 rounded-full whitespace-nowrap">{{ . }}</div>{{- end }}
         <h2 class="font-semibold text-skovbund mb-2 text-base">{{ .title }}</h2>
         <div class="mb-1">
-          {{- if eq .price "Gratis" -}}
-          <span class="text-3xl font-semibold text-mos">Gratis</span>
-          {{- else -}}
+          {{- /* Er prisen et tal, saettes " kr" bagpaa. Er den ord - "Gratis",
+                 "Reduceret pris" - staar den alene og lidt mindre, saa den
+                 ikke braekker kortet. Foer var kun "Gratis" undtaget, som en
+                 hardkodet streng. */ -}}
+          {{- if findRE "^[0-9.]+$" .price -}}
           <span class="text-3xl font-semibold text-mos">{{ .price }}</span><span class="text-tekst-daempet text-sm"> kr</span>
+          {{- else -}}
+          <span class="text-2xl font-semibold text-mos">{{ .price }}</span>
           {{- end }}
         </div>
         <p class="text-tekst-daempet text-xs mb-4">{{ .duration }}</p>

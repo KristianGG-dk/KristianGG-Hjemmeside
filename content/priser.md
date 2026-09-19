@@ -32,6 +32,15 @@ prices:
       - Kombinerer terapi og motion
       - Individuel tilpasning
     highlighted: false
+  - title: Egenterapi for studerende
+    price: Reduceret pris
+    duration: 90 minutter · Klinik eller online
+    features:
+      - Egenterapi som del af psykoterapeutuddannelsen
+      - I samarbejde med Hypnose Skolen
+      - Samme ramme som en almindelig session
+      - Klinik på Lumbyvej eller online
+    note: Skriv, så aftaler vi det nærmere.
   - title: Naturterapi – 3 timer
     price: "1800"
     duration: 3 timer · Naturen på Fyn

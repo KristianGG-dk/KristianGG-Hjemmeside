@@ -36,12 +36,10 @@ poster:
   # <img>, naar "logo" ikke er sat. Naar filen foreligger: laeg den i
   # static/images/partnere/ og saet logo + logo_webp + logo_alt.
   #
-  # Skolen skriver selv sit navn i to ord, "Hypnose Skolen". Beskrivelsen
-  # herunder er MIN formulering og skal bekraeftes af Kristian - jeg kender
-  # ikke samarbejdets praecise karakter.
+  # Skolen skriver selv sit navn i to ord, "Hypnose Skolen".
   - navn: "Hypnose Skolen"
     link: "https://hypnoseskolen.dk/"
-    beskrivelse: "Uddannelsessted for hypnoterapi og NLP i København og Aarhus."
+    beskrivelse: "Uddannelsessted for hypnoterapi og NLP. Jeg tilbyder egenterapi til skolens studerende til reduceret pris."
     type: "fagligt-netvaerk"
     sider:
       - "/om/"
