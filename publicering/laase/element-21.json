@@ -1,0 +1,30 @@
+{
+  "element": 21,
+  "kanal": "instagram",
+  "titel": "CBT-I er bedre dokumenteret end det, jeg laver",
+  "meta_description": "Instagram-opslag der henviser videre til CBT-I ved kronisk soevnbesvaer.",
+  "slug": "element-21-cbt-i-instagram",
+  "slut_url": "(instagram-opslag, ingen URL foer publicering)",
+  "dato": "2026-10-09T19:00:00.000+02:00",
+  "kategorier": [
+    "psykoterapi"
+  ],
+  "billede": "gaatur",
+  "alt_tekst": "To personer på gåtur ad en sti i det fynske landskab",
+  "billede_url": "https://kristiangg.dk/images/natur/gaatur-640.jpg",
+  "links": [],
+  "cta": "Ingen. Henviser bevidst vaek",
+  "hashtags": [
+    "#psykoterapi",
+    "#psykoterapeut",
+    "#odense",
+    "#fyn"
+  ],
+  "tekst": "Har du haft søvnbesvær i månedsvis, findes der noget, som er bedre dokumenteret end det, jeg laver.\n\nDet hedder CBT-I — kognitiv adfærdsterapi mod insomni. Danske og internationale oversigter peger på det som førstevalg ved kronisk insomni, før sovemedicin. Jeg leverer det ikke.\n\nDet siger jeg, fordi du skal kunne vælge på et oplyst grundlag. Spørg din læge om netop det.\n\nDet betyder ikke, at der ikke er noget at komme efter hos mig. For en del mennesker er søvnen ikke problemet i sig selv. Den er stedet, hvor dagens uro bliver synlig — fordi der endelig er stille nok til, at den kan høres. Det arbejder jeg med.\n\nMen rækkefølgen skal være rigtig.\n\n#psykoterapi #psykoterapeut #odense #fyn",
+  "tekst_sha256": "e8fe621643622a8e626fca3e02a6d2c85e8436776309def49671aa888ed7495b",
+  "brodtekst_sha256": "e8fe621643622a8e626fca3e02a6d2c85e8436776309def49671aa888ed7495b",
+  "godkendt_af": "Kristian G. G. Dansted",
+  "godkendt_dato": "2026-09-19",
+  "godkendelsespakke": "Godkendelsespakke uge 39-42, godkendt i Claude Code 19-09-2026",
+  "versionslaas": "5e763aa3c8fc51d8"
+}

@@ -1,0 +1,31 @@
+{
+  "element": 17,
+  "kanal": "instagram",
+  "titel": "Nogle mennesker har det lettere med at gå",
+  "meta_description": "Instagram-opslag om hvorfor det er lettere at sige det svære, når man går side om side.",
+  "slug": "element-17-lettere-med-at-gaa-instagram",
+  "slut_url": "(instagram-opslag, ingen URL foer publicering)",
+  "dato": "2026-09-23T19:00:00.000+02:00",
+  "kategorier": [
+    "naturterapi"
+  ],
+  "billede": "solnedgang-kyst",
+  "alt_tekst": "Solnedgang over kysten med en gren i silhuet i forgrunden",
+  "billede_url": "https://kristiangg.dk/images/natur/solnedgang-kyst-960.jpg",
+  "links": [],
+  "cta": "Ingen haard. Oplysende opslag",
+  "hashtags": [
+    "#naturterapi",
+    "#psykoterapi",
+    "#psykoterapeut",
+    "#odense",
+    "#fyn"
+  ],
+  "tekst": "Nogle mennesker har det lettere med at gå.\n\nIkke fordi naturen gør noget særligt ved dem. Men fordi man ikke sidder over for hinanden.\n\nNår man går side om side, skal man ikke holde øjenkontakt. Man kan kigge på noget andet, mens man siger det svære. Og der er pauser, som ikke bliver akavede, fordi man har noget at lave imens — man går.\n\nDet lyder småt. For nogle er det forskellen på, om det bliver sagt.\n\nDet kan være almindelig psykoterapi, der bare foregår udenfor. Det kan også være naturterapi, som er en selvstændig arbejdsform med sin egen fremgangsmåde. Vi aftaler, hvad der passer.\n\nOdense og resten af Fyn.\n\n#naturterapi #psykoterapi #psykoterapeut #odense #fyn",
+  "tekst_sha256": "a5fb360a6ff8ceb85e9802036799a06b799fec27fe3041424e86931546e3a2b0",
+  "brodtekst_sha256": "a5fb360a6ff8ceb85e9802036799a06b799fec27fe3041424e86931546e3a2b0",
+  "godkendt_af": "Kristian G. G. Dansted",
+  "godkendt_dato": "2026-09-19",
+  "godkendelsespakke": "Godkendelsespakke uge 39-42, godkendt i Claude Code 19-09-2026",
+  "versionslaas": "ec1a12495f94e751"
+}
