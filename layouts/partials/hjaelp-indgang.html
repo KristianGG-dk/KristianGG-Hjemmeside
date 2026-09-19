@@ -18,7 +18,10 @@
     <h2 id="hjaelp" class="text-2xl sm:text-3xl font-semibold">{{ $p.hjaelp_titel | default "Hvad søger du hjælp til?" }}</h2>
     {{- with $p.hjaelp_tekst }}<p class="prosa mt-3">{{ . }}</p>{{ end }}
 
-    <ul class="grid gap-4 sm:grid-cols-3 mt-8 list-none p-0">
+    {{- /* Gitteret foelger antallet. Fire kort i tre kolonner efterlader det
+           fjerde alene paa sin egen raekke. */ -}}
+    {{- $kol := cond (eq (len .) 4) "sm:grid-cols-2 lg:grid-cols-4" "sm:grid-cols-3" -}}
+    <ul class="grid gap-4 {{ $kol }} mt-8 list-none p-0">
       {{- range . }}
       <li>
         <a href="{{ .url }}" class="card flex flex-col h-full p-5 hover:border-mos hover:shadow-md transition-all">

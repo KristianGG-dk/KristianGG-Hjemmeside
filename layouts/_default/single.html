@@ -43,6 +43,10 @@
 {{- end }}
 
 {{/* Body content (if any) */}}
+{{/* Undersider, naar en side er en indgang til flere. Partialen renderer
+     intet, naar siden ikke har en hjaelp-liste. */}}
+{{ partial "hjaelp-indgang.html" . }}
+
 {{- with .Content }}
 <section class="section-padding">
   <div class="container-width [&>*]:max-w-3xl px-4 sm:px-6 prose prose-gray prose-headings:text-skovbund prose-headings:font-semibold prose-a:text-mos prose-strong:text-skovbund">
