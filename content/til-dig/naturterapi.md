@@ -11,6 +11,26 @@ hero_alt: "To personer går ved siden af hinanden ad en sti langs en sø"
 detalje_billede: "kodriver"
 detalje_alt: "Kodrivere i blomst mellem visne blade på skovbunden"
 
+hjaelp_titel: "Hvad folk kommer med"
+hjaelp_tekst: "Rammen er den samme. Hvad vi gør, afhænger af, hvad du står med — siderne herunder beskriver hvert område for sig."
+hjaelp:
+  - titel: "Stress og overbelastning"
+    url: "/til-dig/stress/"
+    kort: "Når der har været for meget for længe. Mange har lettere ved at tale om det, mens vi går."
+    linktekst: "Læs om stress"
+  - titel: "Angst og uro"
+    url: "/til-dig/angst/"
+    kort: "Nogle har det bedre med at gå end at sidde over for en anden. Vi aftaler stedet på forhånd."
+    linktekst: "Læs om angst"
+  - titel: "Søvn og tankemylder"
+    url: "/til-dig/soevnproblemer/"
+    kort: "Tankerne, der går i gang, når der endelig er stille — og hvad der er bedre dokumenteret end mit."
+    linktekst: "Læs om søvn"
+  - titel: "Nervesystemet og ro"
+    url: "/til-dig/nervesystemet/"
+    kort: "Vejrtrækning, tempo og underlag er lettere at lægge mærke til, når man er i bevægelse."
+    linktekst: "Læs om det kropslige"
+
 faq:
   - q: "Skal jeg være i god form?"
     a: "Nej. Vi går i det tempo, der passer dig, og vi holder pause undervejs. Har du en skade, dårlige knæ eller andet, der gør det svært, siger du det, når vi aftaler tid, så finder vi en rute, der virker."
@@ -24,6 +44,15 @@ faq:
     a: "Nej. Fagligheden bag er den samme, og jeg har den samme tavshedspligt og den samme registrering. Men fremgangsmåden er en anden. Naturen er ikke bare stedet, hvor samtalen tilfældigvis foregår — den er vores assistent. Vi bruger det, vi møder undervejs, når det er relevant for det, vi arbejder med: et væltet træ, en sti der deler sig, vind der tager til, en lyd der får dig til at stoppe op. Jeg er terapeuten. Naturen leverer noget af materialet."
   - q: "Hvor foregår det?"
     a: "På et mødested, vi finder sammen ud fra dine behov. Det kan for eksempel være en skov, en bålhytte på en naturgrund, en strand, en terapihave eller et andet egnet naturområde omkring Odense og på Fyn. Vi tilpasser altid både stedet og sessionen til dig, og du kan altid sige, hvis et sted føles forkert."
+
+kilder_titel: "Kilder og fagligt grundlag"
+kilder:
+  - tekst: "Efficacy of nature-based therapy for individuals with stress-related illnesses: randomised controlled trial. British Journal of Psychiatry. 84 deltagere, Nacadia-naturterapi mod kognitiv adfærdsterapi, ingen forskel mellem de to, effekt fastholdt efter 12 måneder."
+    url: "https://www.cambridge.org/core/journals/the-british-journal-of-psychiatry/article/efficacy-of-naturebased-therapy-for-individuals-with-stressrelated-illnesses-randomised-controlled-trial/19122D34AB873ABA37091F602F26DE44"
+  - tekst: "Terapihaven Nacadia, Institut for Geovidenskab og Naturforvaltning, Københavns Universitet. Om forløbet og forskningen bag."
+    url: "https://ign.ku.dk/terapihaven-nacadia/"
+  - tekst: "The Effects of Nature Exposure Therapies on Stress, Depression, and Anxiety Levels: A Systematic Review (2024). Beskriver metodisk spredning og finder resultaterne uafklarede."
+    url: "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC10969128/"
 
 cta_heading: "Tag kontakt"
 cta_text: "Skriv, hvis du har lyst til at prøve. Vi kan sagtens starte med en enkelt tur og se, hvordan det føles."
@@ -56,6 +85,36 @@ Der er også de ture, hvor der bliver sagt meget lidt. At holde op med at fylde 
 ### Stedet
 
 Et sted i læ er ikke det samme som et sted i blæst. En sti, der lukker sig, er ikke det samme som en udsigt, der åbner sig. Vi vælger ikke tilfældigt, hvor vi går.
+
+## Hvad forskningen siger
+
+Naturbaseret terapi er undersøgt, også i Danmark. I terapihaven Nacadia under
+Københavns Universitet blev det afprøvet i et randomiseret, kontrolleret forsøg
+med 84 mennesker, der var sygemeldt med stress. Den ene gruppe fik naturbaseret
+terapi, den anden fik et etableret kognitivt adfærdsterapeutisk behandlings­forløb.
+
+Begge grupper fik det bedre — på psykisk velbefindende og på udbrændthed — og
+forbedringen holdt tolv måneder efter. Der var **ingen forskel** på de to
+behandlinger. Forsøget er offentliggjort i British Journal of Psychiatry.
+
+Det er et seriøst resultat, og det er værd at kende. Tre ting hører med:
+
+**Nacadias forløb er ikke mit.** Det er et manualiseret program på ti uger, med
+haveaktiviteter og samtaler i en have bygget til formålet. Mine forløb er tre
+til 24 timer i skovene og ved kysterne på Fyn. Man kan ikke overføre et resultat
+fra det ene til det andet.
+
+**Forsøget havde ingen ubehandlet kontrolgruppe.** Det viser, at naturbaseret
+terapi klarede sig på højde med en etableret behandling — ikke hvor meget hver
+af dem er bedre end ingenting.
+
+**Feltet som helhed er ikke afklaret.** Oversigtsartikler fra 2024 beskriver
+studier med meget forskellige metoder og udbredt brug af selvrapportering, og
+konkluderer, at der endnu ikke kan siges noget sikkert om effekten på stress,
+angst og depression.
+
+Jeg kan altså ikke love dig et resultat. Jeg kan sige, at det er undersøgt
+seriøst, og at der er noget at komme efter.
 
 ## Hvad du ikke skal
 
