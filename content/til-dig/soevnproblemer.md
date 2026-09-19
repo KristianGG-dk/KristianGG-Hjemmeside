@@ -1,6 +1,6 @@
 ---
 title: "Søvn og tankemylder – psykoterapeut i Odense"
-description: "Ligger du vågen med tankemylder? Sådan arbejder jeg med søvn og tankemylder som registreret psykoterapeut i Odense — og hvornår du hellere skal et andet sted hen."
+description: "Ligger du vågen med tankemylder? For mange er søvnen ikke problemet, men stedet hvor dagens uro bliver synlig. Sådan arbejder jeg med det som registreret psykoterapeut i Odense."
 hero_title: "Søvn og tankemylder"
 hero_subtitle: "Tankerne, der først går i gang, når der endelig er stille. Ja — det er et af de områder, folk oftest kommer med."
 
@@ -22,10 +22,10 @@ helps_with:
   - "Har prøvet det hele"
 
 faq:
+  - q: "Hvad arbejder du med, når det handler om søvn?"
+    a: "Med det, der fylder omkring sengetid. For mange er søvnen ikke problemet i sig selv, men det sted hvor dagens uro bliver synlig. Arbejdet er terapeutisk samtale og kan rumme kropslig opmærksomhed, vejrtrækning og anden regulering — og det, der ligger bag uroen, hvis der er noget."
   - q: "Tilbyder du CBT-I?"
-    a: "Nej. CBT-I er et bestemt, struktureret forløb mod kronisk insomni, og det er det, danske og internationale anbefalinger peger på som førstevalg — før sovemedicin. Jeg leverer ikke CBT-I, og jeg vil hellere sige det end lade som om. Har du haft søvnbesvær i månedsvis, så spørg din læge om netop det."
-  - q: "Hvad laver du så?"
-    a: "Jeg arbejder med det, der fylder omkring sengetid, og med de øvelser der kan bruges om aftenen. For mange er søvnen ikke problemet i sig selv, men det sted hvor dagens uro bliver synlig. Er der noget under, arbejder vi med det."
+    a: "Nej, det er et bestemt struktureret forløb, som jeg ikke leverer. Ved kronisk insomni peger danske og internationale anbefalinger på CBT-I som førstevalg, før sovemedicin, så har du haft søvnbesvær i månedsvis, så spørg din læge om det. Det udelukker ikke det, jeg laver — for en del er der begge dele at komme efter."
   - q: "Hvornår skal jeg til læge?"
     a: "Har søvnbesværet stået på i måneder, eller er du træt på en måde, der ikke passer til, hvor meget du sover, så tal med din læge. Søvnproblemer kan have fysiske årsager, som skal udelukkes af en, der kan det. Jeg stiller ikke diagnoser."
   - q: "Hvor mange gange skal jeg komme?"
@@ -44,14 +44,6 @@ cta_text: "Skriv en SMS eller en mail. Vi starter med en kort telefonsamtale ude
 
 Ja. Søvn og tankemylder er et af de områder, folk oftest kommer med.
 
-## Lad mig sige det vigtigste først
-
-Har du haft søvnbesvær i månedsvis, findes der en behandling, som er bedre dokumenteret end det, jeg laver. Den hedder CBT-I — kognitiv adfærdsterapi mod insomni — og den anbefales i både danske og internationale oversigter som **førstevalg ved kronisk insomni, før sovemedicin**.
-
-Jeg leverer ikke CBT-I. Det er et bestemt, struktureret forløb, og jeg vil hellere sige det ligeud end lade dig tro noget andet. Spørg din læge om det.
-
-Det betyder ikke, at der ikke er noget at komme efter hos mig. Det betyder, at du skal vide, hvad du vælger imellem.
-
 ## Hvad søvnbesvær ofte hænger sammen med
 
 For en del mennesker er søvnen ikke problemet i sig selv. Den er stedet, hvor det, der fylder i forvejen, bliver synligt — fordi der endelig er stille nok til, at det kan høres.
@@ -60,26 +52,28 @@ Man ligger og gennemgår dagen. Eller morgendagen. Eller en samtale fra sidste u
 
 Det er dér, jeg arbejder. Ikke med søvnen som teknisk problem, men med det der kører.
 
-## Hvornår du skal et andet sted hen først
-
-**Til lægen**, hvis søvnbesværet har stået på i måneder, hvis du er træt på en måde, der ikke passer til, hvor meget du sover, eller hvis du snorker kraftigt og holder pauser i vejrtrækningen. Søvnproblemer kan have fysiske årsager, og dem skal jeg ikke vurdere.
-
-**Til lægen også**, hvis du vil spørge til CBT-I. Det er det bedst dokumenterede sted at begynde ved kronisk insomni.
-
-Jeg stiller ikke diagnoser og behandler ikke sygdom. Du er velkommen til at gøre begge dele.
-
 ## Hvordan jeg arbejder med det
 
 Vi ser på, hvad der fylder omkring sengetid — hvad der bliver tænkt, hvornår det går i gang, og hvad du gør, når det sker. Ofte viser der sig et mønster, man ikke selv har fået øje på, fordi man har været for træt til at kigge.
 
-Er der noget under — stress, bekymringer, noget der ikke er landet — så arbejder vi med det. Søvnen er tit det første, der giver sig, når der har været for meget for længe. [Sådan foregår psykoterapi](/til-dig/psykoterapi/).
+Derfra kommer det an på dig.
 
-## Øvelser, der kan bruges om aftenen
+Arbejdet er terapeutisk samtale, og det kan rumme kropslig opmærksomhed, vejrtrækning og anden regulering af et nervesystem, der er blevet ved med at være tændt. Det kan for eksempel være at lægge mærke til, hvor lang udåndingen får lov at være. Eller at finde noget konkret, opmærksomheden kan lægge sig på, som ikke er tankerne. Eller at se på tempoet i aftenen — ikke hvor hurtigt du går i seng, men hvor hurtigt du skifter fra det ene til det andet, lige indtil du gør.
 
-Vi arbejder med vejrtrækningen, og særligt med udåndingen. Med noget konkret at lægge opmærksomheden på, som ikke er tankerne. Og med tempoet i aftenen — ikke hvor hurtigt du går i seng, men hvor hurtigt du skifter fra det ene til det andet, lige indtil du gør.
+Det er eksempler, ikke en rækkefølge. Om det hjælper dig, kan jeg ikke sige på forhånd. [Mere om arbejdet med nervesystemet](/til-dig/nervesystemet/).
 
-Det er øvelser, man træner, ikke en behandling man modtager. Om det hjælper dig, kan jeg ikke sige på forhånd. [Mere om arbejdet med nervesystemet](/til-dig/nervesystemet/).
+Er der noget bag uroen — stress, bekymringer, noget der ikke er landet — så arbejder vi med det. Søvnen er tit dér, man først lægger mærke til, at der har været for meget for længe. [Sådan foregår psykoterapi](/til-dig/psykoterapi/).
 
 ## Udenfor, hvis det er lettere
 
-Vi kan arbejde udendørs, hvis du har lettere ved at tale, mens vi går. Det kan være psykoterapi i naturen — almindelig psykoterapi, der bare foregår ude — eller [naturterapi](/til-dig/naturterapi/), som er en selvstændig arbejdsform med sin egen fremgangsmåde.
+Vi kan arbejde udendørs, hvis du har lettere ved at tale, mens vi går.
+
+Det kan være **walk & talk** — psykoterapi, der foregår gående, hvor landskabet er stedet, det foregår. Eller det kan være [**naturterapi**](/til-dig/naturterapi/), som er en selvstændig arbejdsform med sin egen fremgangsmåde, hvor naturen ikke bare er stedet, men indgår aktivt.
+
+## Hvornår du skal en tur omkring lægen
+
+Har søvnbesværet stået på i måneder, hvis du er træt på en måde, der ikke passer til, hvor meget du sover, eller hvis du snorker kraftigt og holder pauser i vejrtrækningen — så skal din læge ind over. Søvnproblemer kan have fysiske årsager, og dem skal jeg ikke vurdere.
+
+Ved kronisk insomni peger danske og internationale oversigter desuden på CBT-I — kognitiv adfærdsterapi mod insomni — som førstevalg, før sovemedicin. Det er et bestemt, struktureret forløb, og det er ikke det, jeg leverer. Spørg din læge om det.
+
+Det udelukker ikke det, jeg laver. Har du brug for begge dele, er rækkefølgen værd at tale om, inden vi går i gang.
