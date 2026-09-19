@@ -8,7 +8,7 @@ title = "Kristian GG"
   # Slået fra: fontene kan ikke selvhostes herfra, og previewet skal kunne
   # vurderes uden en Google Fonts-afhængighed. Reservestakken er Georgia til
   # overskrifter og system-ui til brødtekst.
-  webfonts = false
+  webfonts = true
   og_image = "/images/kristian-hero.png"
 
 [taxonomies]

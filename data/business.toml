@@ -15,7 +15,15 @@ phone_sms = "sms:+4531509789"      # SMS — ingen ?body=, da parameteren er
 
 # E-mail
 email = "kontakt@kristiangg.dk"
-email_link = "mailto:kontakt@kristiangg.dk"
+email_link = "mailto:kontakt@kristiangg.dk"   # Autoritativ adresse. Bevares som
+                                              # datakilde, men bruges ikke længere
+                                              # som href, jf. kontakt_url herunder.
+
+# Hver gang der står "Send en mail", eller mailadressen vises som link, peger
+# linket på kontaktformularen i stedet for at åbne et mailprogram. Adressen
+# bliver stående synlig, så den fortsat kan læses og kopieres.
+kontakt_url = "/kontakt/#skriv"
+kontakt_url_abs = "https://kristiangg.dk/kontakt/"
 
 # Skal svare til de faktiske priser på /priser/. Forsamtalen er gratis,
 # den dyreste ydelse er naturterapi over to dage til 9.000 kr.
@@ -31,7 +39,7 @@ trustpilot_score = "4,5"
 trustpilot_antal = "14"
 
 [address]
-street = "Lumbyvej 11, indgang B"
+street = "Lumbyvej 11B"
 city = "Odense"
 postal_code = "5000"
 region = "Syddanmark"

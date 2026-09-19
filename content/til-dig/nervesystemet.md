@@ -1,6 +1,6 @@
 ---
-title: "Stressbehandling og nervesystem i Odense"
-description: "Arbejde med stress, angst, søvnproblemer og tankemylder gennem kroppen — åndedrætsterapi, mindfulness og somatiske øvelser. Registreret psykoterapeut i Odense og på Fyn."
+title: "Nervesystemet og ro – kropsligt arbejde i Odense"
+description: "Åndedrætsterapi, mindfulness og somatiske øvelser som del af psykoterapi og naturterapi. Registreret psykoterapeut i Odense og på Fyn."
 hero_title: "Nervesystemet og ro"
 hero_subtitle: "Når stress, angst eller tankemylder fylder, mærkes det ofte i kroppen først. Her arbejder vi gennem kroppen frem for kun gennem tankerne."
 service_name: "Nervesystemsregulering og åndedrætsterapi"
@@ -39,7 +39,7 @@ faq:
   - q: "Kan det bruges ved søvnproblemer?"
     a: "Det er et af de områder, folk oftest kommer med. Vi ser på, hvad der fylder omkring sengetid, og hvilke øvelser der kan bruges om aftenen. Om det hjælper dig, kan jeg ikke sige på forhånd. Har du længerevarende søvnproblemer, er det en god idé også at tale med din læge."
   - q: "Hvor mange gange skal jeg komme?"
-    a: "Typisk 3–5 gange. Vi aftaler os frem undervejs, og du er aldrig bundet."
+    a: "Hvor mange gange man kommer, er meget forskelligt. Nogle har brug for få samtaler, andre for et længere forløb. Du bestemmer selv, hvornår du er i mål."
 
 cta_heading: "Klar til at komme i gang?"
 cta_text: "Skriv en SMS eller en mail. Vi starter med en kort telefonsamtale uden beregning."
@@ -48,6 +48,18 @@ cta_text: "Skriv en SMS eller en mail. Vi starter med en kort telefonsamtale ude
 Stress, angst, søvnproblemer og tankemylder viser sig ofte i kroppen, før man kan sætte ord på dem. Man sover dårligt, har ondt i maven, kan ikke sidde stille eller kan ikke komme i gang.
 
 Derfor begynder jeg tit med kroppen frem for med tankerne. Ikke fordi tankerne er ligegyldige, men fordi det for en del mennesker er en lettere indgang. Vi arbejder med vejrtrækning, bevægelse og opmærksomhed, og du får nogle enkle øvelser med, som du kan bruge mellem gangene.
+
+## Kom du her for noget bestemt?
+
+Er det et konkret problem, der fylder, så begynd hellere dér — siderne herunder
+beskriver, hvordan jeg arbejder med hver af dem, og hvornår du skal et andet
+sted hen først:
+
+- [Stress og overbelastning](/til-dig/stress/)
+- [Angst og uro](/til-dig/angst/)
+- [Søvn og tankemylder](/til-dig/soevnproblemer/)
+
+Resten af denne side handler om *hvordan* det kropslige arbejde foregår.
 
 ## Det er en del af arbejdet, ikke en selvstændig ydelse
 

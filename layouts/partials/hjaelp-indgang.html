@@ -1,0 +1,39 @@
+{{- /*
+  "Hvad søger du hjælp til?" — problemorienteret indgang.
+
+  Placeres FOER metodeafsnittet med vilje. Den besoegende skal kunne svare
+  "arbejder han med det, jeg staar med?" uden foerst at forstaa forskellen paa
+  psykoterapi, naturterapi og nervesystemsregulering.
+
+  Ingen billeder: tre valg skal kunne skannes paa én gang, og sektionen maa
+  ikke veje tungere end hero'en over den. Hele kortet er klikbart, saa
+  traefarealet er stort nok paa mobil.
+
+  Renderer intet, naar siden ikke har en hjaelp-liste.
+*/ -}}
+{{- $p := .Params -}}
+{{- with $p.hjaelp }}
+<section class="section-padding pb-0" aria-labelledby="hjaelp">
+  <div class="container-width">
+    <h2 id="hjaelp" class="text-2xl sm:text-3xl font-semibold">{{ $p.hjaelp_titel | default "Hvad søger du hjælp til?" }}</h2>
+    {{- with $p.hjaelp_tekst }}<p class="prosa mt-3">{{ . }}</p>{{ end }}
+
+    <ul class="grid gap-4 sm:grid-cols-3 mt-8 list-none p-0">
+      {{- range . }}
+      <li>
+        <a href="{{ .url }}" class="card flex flex-col h-full p-5 hover:border-mos hover:shadow-md transition-all">
+          <h3 class="text-lg font-semibold text-skovbund">{{ .titel }}</h3>
+          <p class="text-[0.95rem] leading-relaxed text-tekst-daempet mt-2 flex-1">{{ .kort }}</p>
+          <span class="mt-4 inline-flex items-center gap-1.5 font-semibold text-mos text-sm">
+            {{ .linktekst | default "Læs mere" }}
+            <svg aria-hidden="true" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </span>
+        </a>
+      </li>
+      {{- end }}
+    </ul>
+
+    {{- with $p.hjaelp_efter }}<p class="prosa mt-6 text-sm text-tekst-daempet">{{ . | markdownify }}</p>{{ end }}
+  </div>
+</section>
+{{- end }}

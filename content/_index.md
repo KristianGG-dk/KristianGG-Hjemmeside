@@ -11,6 +11,23 @@ hero_alt: "Kristian G. G. Dansted står udendørs på en græsplæne med træer 
 baand_billede: "kyst-baand"
 baand_alt: "Strandeng med små vandhuller, kystlinje og hav under klar himmel"
 
+hjaelp_titel: "Hvad søger du hjælp til?"
+hjaelp_tekst: "Du behøver ikke vide, hvad det hedder, eller hvilken slags terapi der passer. Start med det, du mærker."
+hjaelp:
+  - titel: "Stress og overbelastning"
+    url: "/til-dig/stress/"
+    kort: "Når der har været for meget for længe, og du ikke selv kan skrue ned igen."
+    linktekst: "Sådan arbejder jeg med stress"
+  - titel: "Angst og uro"
+    url: "/til-dig/angst/"
+    kort: "Uroen, der ikke vil lægge sig. Bekymringerne, der kører i ring."
+    linktekst: "Sådan arbejder jeg med angst"
+  - titel: "Søvn og tankemylder"
+    url: "/til-dig/soevnproblemer/"
+    kort: "Tankerne, der først går i gang, når der endelig er stille."
+    linktekst: "Sådan arbejder jeg med søvn"
+hjaelp_efter: "Står du med noget andet — sorg, lavt selvværd, en større forandring — så skriv alligevel. [Se hvad jeg ellers arbejder med](/til-dig/)."
+
 omraader_titel: "Tre områder"
 omraader_tekst: "Psykoterapien er det faglige fundament under det hele. Jeg er registreret psykoterapeut og har uddannelser i blandt andet hypnoterapi, NLP og kognitiv adfærdsterapi. Hypnose er ét redskab blandt flere — metoden skal passe til mennesket, ikke omvendt. Naturterapi og skovbad er selvstændige arbejdsformer med deres eget indhold og deres egen fremgangsmåde — ikke samtaler, der er flyttet udenfor."
 omraader:
@@ -44,7 +61,7 @@ forloeb:
 
 om_titel: "Kort om mig"
 om_tekst: |
-  Jeg er registreret psykoterapeut hos Foreningen af Danske Psykoterapeuter og naturterapeut, med praksis på Lumbyvej 11 i Odense. Jeg har uddannelser i blandt andet hypnoterapi, NLP, kognitiv adfærdsterapi og åndedrætsterapi, og en pædagogisk baggrund fra botilbud og asylcentre.
+  Jeg er registreret psykoterapeut hos Foreningen af Danske Psykoterapeuter og naturterapeut, med praksis på Lumbyvej 11B, 5000 Odense. Jeg har uddannelser i blandt andet hypnoterapi, NLP, kognitiv adfærdsterapi og åndedrætsterapi, og en pædagogisk baggrund fra botilbud og asylcentre.
 
   Jeg arbejder med voksne, der står i stress, angst, søvnproblemer, lavt selvværd, sorg eller en større forandring i livet — og med virksomheder og kommuner, der har brug for en fagperson udefra.
 om_billede: "kristian-portraet"

@@ -26,7 +26,7 @@ stats:
   - num: "2019"
     label: "Ildsjælepris for frivilligt socialt arbejde"
   - num: "FaDP"
-    label: "Registreret psykoterapeut, underlagt tilsyn fra Styrelsen for Patientsikkerhed"
+    label: "Registreret psykoterapeut, medlem af Foreningen af Danske Psykoterapeuter"
   - num: "Fyn"
     label: "Primær geografisk base, kører ud"
 ---

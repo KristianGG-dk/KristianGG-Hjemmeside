@@ -12,6 +12,10 @@
 */ -}}
 {{/* Nervesystemet ligger under Psykoterapi, ikke ved siden af. Det er en del
      af den faglige tilgang, ikke et fjerde hovedområde. */}}
+{{/* Kontakt er markeret "fremhaev": den er headerens ene handlingsknap.
+     Foer stod den baade som menupunkt og som en roed "Tag kontakt"-knap, og
+     knappen gik til sms: frem for kontaktsiden. To punkter om det samme,
+     hvoraf det ene ikke foerte hen, hvor det lovede. */}}
 {{- $menu := slice
     (dict "titel" "Psykoterapi" "url" "/til-dig/psykoterapi/" "under" (slice
        (dict "titel" "Nervesystemet og ro" "url" "/til-dig/nervesystemet/")))
@@ -19,7 +23,7 @@
     (dict "titel" "Skovbad"     "url" "/kurser/skovbad/")
     (dict "titel" "Om mig"      "url" "/om/")
     (dict "titel" "Priser"      "url" "/priser/")
-    (dict "titel" "Kontakt"     "url" "/kontakt/")
+    (dict "titel" "Kontakt"     "url" "/kontakt/" "fremhaev" true)
 -}}
 
 <header class="bg-taage/95 backdrop-blur border-b border-lav/40 sticky top-0 z-40">
@@ -52,11 +56,12 @@
             </div>
           </div>
         </div>
+        {{- else if .fremhaev }}
+        <a href="{{ .url }}" class="btn-primary ml-2 !px-5 text-sm"{{ if eq $sti .url }} aria-current="page"{{ end }}>{{ .titel }}</a>
         {{- else }}
         <a href="{{ .url }}" class="nav-link{{ if eq $sti .url }} nav-link-aktiv{{ end }}"{{ if eq $sti .url }} aria-current="page"{{ end }}>{{ .titel }}</a>
         {{- end }}
         {{- end }}
-        <a href="{{ $b.phone_sms | safeURL }}" class="btn-primary ml-2 !px-5 text-sm">Tag kontakt</a>
       </nav>
 
       {{/* Mobil — ren HTML, ingen JavaScript */}}
@@ -76,7 +81,7 @@
           {{- end }}
           <div class="border-t border-lav/40 my-2"></div>
           <a href="{{ $b.phone_sms | safeURL }}" class="mobile-link font-semibold text-hyben">Send en SMS</a>
-          <a href="{{ $b.email_link | safeURL }}" class="mobile-link font-semibold text-hyben">Send en mail</a>
+          <a href="{{ $b.kontakt_url | safeURL }}" class="mobile-link font-semibold text-hyben">Skriv til mig</a>
           <p class="px-3 py-2 text-xs text-tekst-daempet">{{ $b.phone_display }}</p>
         </nav>
       </details>

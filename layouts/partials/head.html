@@ -41,18 +41,16 @@
 {{- $taksonomi := in (slice "taxonomy" "term") .Kind -}}
 <meta name="robots" content="{{ if or .Params.noindex (eq .Kind "404") }}noindex, nofollow{{ else if $taksonomi }}noindex, follow{{ else }}index, follow{{ end }}" />
 
-{{/* Skrifttyper.
-     Slås til/fra med params.webfonts i hugo.toml.
+{{/* Skrifttyper serveres fra eget domæne, ikke fra Google.
+     @font-face-reglerne står i assets/css/main.css. Her forudindlæses kun de
+     to vægte, der bruges over folden — brødtekst og overskrift — så teksten
+     ikke når at blive tegnet to gange. De øvrige fire hentes efter behov.
 
-     TODO før production: hent Fraunces og Karla ned som WOFF2, beskåret til
-     dansk tegnsæt, og server dem fra /fonts/ på eget domæne. Det fjerner den
-     tredjepart, som tyske domstole har haft indvendinger mod under GDPR, og
-     sparer to DNS-opslag. Reservestakken (Georgia / system-ui) er valgt, så
-     siden er fuldt læsbar uden webfonts og ikke skifter layout mærkbart. */}}
+     Slås fra med params.webfonts = false i hugo.toml; siden falder da tilbage
+     på Georgia og system-ui uden mærkbart layoutskift. */}}
 {{- if site.Params.webfonts }}
-<link rel="preconnect" href="https://fonts.googleapis.com" />
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Karla:wght@400;500;700&display=swap" />
+<link rel="preload" as="font" type="font/woff2" href="/fonts/karla-400.woff2" crossorigin />
+<link rel="preload" as="font" type="font/woff2" href="/fonts/fraunces-600.woff2" crossorigin />
 {{- end }}
 
 {{/* CSS via Hugo Pipes + PostCSS */}}

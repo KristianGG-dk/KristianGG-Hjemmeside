@@ -14,9 +14,20 @@
     <ul class="grid gap-5 sm:grid-cols-2 lg:grid-cols-3 list-none p-0">
       {{- range $valgte }}
       <li class="card flex gap-4 items-start">
-        {{- with .logo }}<img src="{{ . }}" alt="" width="48" height="48" loading="lazy" class="w-12 h-12 object-contain flex-none">{{ end }}
+        {{- /* 80px, ikke 48. Et partnerlogo kan vaere et ordmaerke med flere
+               linjer tekst, og 48px goer det til en graa plet. object-contain
+               holder proportionerne, saa et kompakt maerke ogsaa ser rigtigt ud.
+               alt: tom som standard, fordi navnet staar som tekst lige ved
+               siden af — ellers laeser skaermlaeseren det samme to gange.
+               Saet logo_alt i data/partnere.yaml for at overskrive. */ -}}
+        {{- if .logo }}
+        <picture class="flex-none">
+          {{- with .logo_webp }}<source srcset="{{ . }}" type="image/webp">{{ end }}
+          <img src="{{ .logo }}" alt="{{ .logo_alt | default "" }}" width="80" height="80" loading="lazy" decoding="async" class="w-20 h-20 object-contain">
+        </picture>
+        {{- end }}
         <div>
-          <p class="font-semibold text-skovbund">{{ if .link }}<a href="{{ .link }}" rel="noopener" class="hover:text-mos">{{ .navn }}</a>{{ else }}{{ .navn }}{{ end }}</p>
+          <p class="font-semibold text-skovbund">{{ if .link }}<a href="{{ .link }}" rel="noopener" class="underline underline-offset-2 hover:text-mos">{{ .navn }}</a>{{ else }}{{ .navn }}{{ end }}</p>
           {{- with .beskrivelse }}<p class="text-sm text-tekst-daempet mt-1">{{ . }}</p>{{ end }}
         </div>
       </li>

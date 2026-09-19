@@ -17,4 +17,16 @@
 #   type        forening | leverandoer | kommune | virksomhed | fagligt-netvaerk
 #   sider       hvilke sider partneren vises på
 
-poster: []
+poster:
+  # Officielt logo leveret af Kristian 19-09-2026. Filerne er RENE
+  # nedskaleringer af originalen (LANCZOS) — intet er beskaaret, omfarvet
+  # eller gentegnet. 192 px daekker 1x, 384 px daekker 2x ved 80 px visning.
+  - navn: "Foreningen mod Familiebelastning"
+    link: "https://familiebelastning.dk/"
+    beskrivelse: "Jeg samarbejder med foreningen om familier under belastning."
+    type: "forening"
+    logo: "/images/partnere/foreningen-mod-familiebelastning-192.png"
+    logo_webp: "/images/partnere/foreningen-mod-familiebelastning-192.webp 1x, /images/partnere/foreningen-mod-familiebelastning-384.webp 2x"
+    logo_alt: "Logo for Foreningen mod Familiebelastning"
+    sider:
+      - "/om/"

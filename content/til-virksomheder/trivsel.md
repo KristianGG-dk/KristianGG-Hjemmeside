@@ -9,7 +9,7 @@ service_desc: "Individuelle og gruppebaserede trivselsprogrammer der styrker men
 formats:
   - icon: ""
     title: "Individuelle forløb"
-    desc: "Kortere terapeutiske forløb (4–8 sessioner) for medarbejdere under pres. Fortroligt, professionelt og resultatorienteret."
+    desc: "Terapeutiske forløb for medarbejdere under pres. Længden aftales fra sag til sag. Fortroligt og professionelt."
   - icon: ""
     title: "Gruppeforløb"
     desc: "Strukturerede gruppeforløb for teams eller afdelinger. Bygger fælles sprog om stress, trivsel og psykologisk tryghed."

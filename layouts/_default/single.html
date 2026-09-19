@@ -35,7 +35,7 @@
          class="w-14 h-14 object-contain flex-shrink-0" />
     <div>
       <p class="font-semibold text-skovbund text-sm">Registreret psykoterapeut og tilknyttet Foreningen af Danske Psykoterapeuter</p>
-      <p class="text-tekst-daempet text-xs mt-0.5">Politisk rådgiver med indsigt i fagets udvikling og standarder · Underlagt tilsyn fra Styrelsen for Patientsikkerhed</p>
+      <p class="text-tekst-daempet text-xs mt-0.5">Politisk rådgiver med indsigt i fagets udvikling og standarder</p>
     </div>
     <a href="/om/" class="sm:ml-auto text-xs text-mos font-semibold hover:underline whitespace-nowrap">Om Kristian →</a>
   </div>
@@ -326,6 +326,10 @@
   </div>
 </section>
 {{- end }}
+
+{{ partial "partnere.html" (dict "Page" . ) }}
+
+{{ partial "kilder.html" (dict "kilder" $p.kilder "titel" $p.kilder_titel) }}
 
 {{/* CTA */}}
 <section class="section-padding bg-skovbund text-taage">
