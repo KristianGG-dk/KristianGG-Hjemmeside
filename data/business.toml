@@ -39,7 +39,7 @@ trustpilot_score = "4,5"
 trustpilot_antal = "14"
 
 [address]
-street = "Lumbyvej 11, indgang B"
+street = "Lumbyvej 11B"
 city = "Odense"
 postal_code = "5000"
 region = "Syddanmark"

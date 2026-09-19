@@ -11,7 +11,7 @@ faq:
   - q: "Hvad sker der, når jeg har skrevet?"
     a: "Vi finder et tidspunkt til en kort telefonsamtale uden beregning. Der taler vi om, hvad du står i, og om jeg er den rigtige. Først derefter aftaler vi eventuelt en tid."
   - q: "Er der parkering ved klinikken?"
-    a: "Ja, der er parkering ved Lumbyvej 11. Indgang B."
+    a: "Ja, der er parkering ved Lumbyvej 11B."
   - q: "Hvad skal jeg tage med til første session?"
     a: "Ingenting. Skal vi ud i naturen, påklædning efter vejret."
   - q: "Kan jeg ringe i stedet?"
