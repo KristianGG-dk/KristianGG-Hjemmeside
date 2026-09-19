@@ -39,7 +39,7 @@ faq:
   - q: "Kan det bruges ved søvnproblemer?"
     a: "Det er et af de områder, folk oftest kommer med. Vi ser på, hvad der fylder omkring sengetid, og hvilke øvelser der kan bruges om aftenen. Om det hjælper dig, kan jeg ikke sige på forhånd. Har du længerevarende søvnproblemer, er det en god idé også at tale med din læge."
   - q: "Hvor mange gange skal jeg komme?"
-    a: "Typisk 3–5 gange. Vi aftaler os frem undervejs, og du er aldrig bundet."
+    a: "Hvor mange gange man kommer, er meget forskelligt. Nogle har brug for få samtaler, andre for et længere forløb. Du bestemmer selv, hvornår du er i mål."
 
 cta_heading: "Klar til at komme i gang?"
 cta_text: "Skriv en SMS eller en mail. Vi starter med en kort telefonsamtale uden beregning."

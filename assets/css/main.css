@@ -1,3 +1,57 @@
+/* ── Skrifttyper, serveret fra eget domæne ──────────────────────────────────
+   Fraunces og Karla ligger som WOFF2 i /static/fonts/ og hentes fra
+   kristiangg.dk. Der sendes derfor ingen besøgendes IP-adresse til Google,
+   som det sker ved brug af fonts.googleapis.com — netop dét blev kendt i strid
+   med GDPR ved Landgericht München I i januar 2022.
+
+   Kun latin-subsettet indlæses. Det dækker æ, ø og å (U+00E6, U+00F8, U+00E5).
+   font-display: swap gør siden læsbar med det samme i reserveskriften; de to
+   reservestakke er valgt tæt på i x-højde og bredde, så ombytningen ikke
+   flytter layoutet mærkbart.
+   ────────────────────────────────────────────────────────────────────────── */
+@font-face {
+  font-family: "Fraunces";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("/fonts/fraunces-400.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Fraunces";
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("/fonts/fraunces-600.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Fraunces";
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("/fonts/fraunces-700.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Karla";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("/fonts/karla-400.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Karla";
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("/fonts/karla-500.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Karla";
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("/fonts/karla-700.woff2") format("woff2");
+}
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;

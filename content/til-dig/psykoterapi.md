@@ -23,7 +23,7 @@ faq:
   - q: "Hvad sker der i den første samtale?"
     a: "Du fortæller, hvad der bringer dig. Jeg spørger ind, og vi finder sammen ud af, hvad du gerne vil have ud af at gå her. Du behøver ikke have det formuleret på forhånd — det er ofte selve arbejdet at finde ordene."
   - q: "Hvor mange gange skal jeg komme?"
-    a: "Det varierer meget. Nogle har brug for tre-fire samtaler om noget afgrænset. Andre går i et længere forløb. Vi aftaler os frem undervejs, og du er aldrig bundet."
+    a: "Hvor mange gange man kommer, er meget forskelligt. Nogle har brug for få samtaler, andre for et længere forløb. Du bestemmer selv, hvornår du er i mål."
   - q: "Hvad er forskellen på en psykolog og en psykoterapeut?"
     a: "Psykolog er en beskyttet titel. Den kræver en kandidatuddannelse i psykologi, og en autoriseret psykolog har desuden en autorisation fra Psykolognævnet, som er en offentlig myndighed. Psykoterapeut er derimod ikke en beskyttet titel i Danmark — den kan man i princippet kalde sig uden uddannelse. Jeg er registreret psykoterapeut hos Foreningen af Danske Psykoterapeuter (FaDP), som er en privat brancheforening. Registreringen betyder, at jeg lever op til foreningens uddannelseskrav og er underlagt dens etiske regler og etiske råd. Den er ikke i sig selv en offentlig autorisation. Har du brug for psykologfaglig udredning eller behandling, siger jeg det og henviser videre."
   - q: "Har du tavshedspligt?"
