@@ -4,6 +4,22 @@ description: "Privat psykoterapi, naturterapi og nervesystemsregulering i Odense
 hero_title: "Terapi til dig"
 hero_subtitle: "Psykoterapi, naturterapi og kropsbaseret arbejde med stress, angst, søvnproblemer og lavt selvværd — i klinikken på Lumbyvej, online eller ude i landskabet."
 
+hjaelp_titel: "Hvad søger du hjælp til?"
+hjaelp_tekst: "Du behøver ikke vide på forhånd, hvilken form for terapi der passer. Start med det, du mærker."
+hjaelp:
+  - titel: "Stress og overbelastning"
+    url: "/til-dig/stress/"
+    kort: "Når der har været for meget for længe, og du ikke selv kan skrue ned igen."
+    linktekst: "Sådan arbejder jeg med stress"
+  - titel: "Angst og uro"
+    url: "/til-dig/angst/"
+    kort: "Uroen, der ikke vil lægge sig. Bekymringerne, der kører i ring."
+    linktekst: "Sådan arbejder jeg med angst"
+  - titel: "Søvn og tankemylder"
+    url: "/til-dig/soevnproblemer/"
+    kort: "Tankerne, der først går i gang, når der endelig er stille."
+    linktekst: "Sådan arbejder jeg med søvn"
+
 services:
   - icon: ""
     title: "Nervesystemet & ro"

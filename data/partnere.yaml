@@ -17,4 +17,15 @@
 #   type        forening | leverandoer | kommune | virksomhed | fagligt-netvaerk
 #   sider       hvilke sider partneren vises på
 
-poster: []
+poster:
+  # Logoet mangler. Foreningens officielle logo er IKKE i repoet, og det maa
+  # ikke rekonstrueres eller erstattes af noget andet. Partialen udelader
+  # <img>, naar "logo" ikke er sat, saa posten vises korrekt uden.
+  # Naar det officielle logo foreligger: laeg det i static/images/partnere/ og
+  # saet logo: "/images/partnere/<filnavn>".
+  - navn: "Foreningen mod Familiebelastning"
+    link: "https://familiebelastning.dk/"
+    beskrivelse: "Jeg samarbejder med foreningen om familier under belastning."
+    type: "forening"
+    sider:
+      - "/om/"

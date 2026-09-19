@@ -327,6 +327,10 @@
 </section>
 {{- end }}
 
+{{ partial "partnere.html" (dict "Page" . ) }}
+
+{{ partial "kilder.html" (dict "kilder" $p.kilder "titel" $p.kilder_titel) }}
+
 {{/* CTA */}}
 <section class="section-padding bg-skovbund text-taage">
   <div class="container-width px-4 sm:px-6 text-center">

@@ -103,12 +103,12 @@
 
 [[redirects]]
   from = "/hypnose-stress-odense"
-  to = "/til-dig/nervesystemet/"
+  to = "/til-dig/stress/"
   status = 301
 
 [[redirects]]
   from = "/hypnose-stress-odense/"
-  to = "/til-dig/nervesystemet/"
+  to = "/til-dig/stress/"
   status = 301
 
 [[redirects]]
@@ -183,7 +183,7 @@
 
 [[redirects]]
   from = "/stress-coaching"
-  to = "/til-dig/nervesystemet/"
+  to = "/til-dig/stress/"
   status = 301
 
 [[redirects]]
@@ -223,12 +223,12 @@
 
 [[redirects]]
   from = "/angst"
-  to = "/til-dig/psykoterapi/"
+  to = "/til-dig/angst/"
   status = 301
 
 [[redirects]]
   from = "/angst/"
-  to = "/til-dig/psykoterapi/"
+  to = "/til-dig/angst/"
   status = 301
 
 [[redirects]]
@@ -314,12 +314,12 @@
 # Search Console: 7 eksponeringer, position 6,0 — siden hedder "Nervesystemet & ro – Åndedrætsterapi og stressregulering"
 [[redirects]]
   from = "/stress/"
-  to = "/til-dig/nervesystemet/"
+  to = "/til-dig/stress/"
   status = 301
 
 [[redirects]]
   from = "/stress"
-  to = "/til-dig/nervesystemet/"
+  to = "/til-dig/stress/"
   status = 301
 
 # Search Console: 404 crawlet 18. jun. 2026. Sidens emne findes som
