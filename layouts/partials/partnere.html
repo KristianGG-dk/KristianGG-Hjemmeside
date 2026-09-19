@@ -13,17 +13,30 @@
     <h2 id="partnere-titel" class="text-2xl font-semibold mb-6">{{ with .titel }}{{ . }}{{ else }}Samarbejdspartnere{{ end }}</h2>
     <ul class="grid gap-5 sm:grid-cols-2 lg:grid-cols-3 list-none p-0">
       {{- range $valgte }}
-      <li class="card flex gap-4 items-start">
-        {{- /* 80px, ikke 48. Et partnerlogo kan vaere et ordmaerke med flere
-               linjer tekst, og 48px goer det til en graa plet. object-contain
-               holder proportionerne, saa et kompakt maerke ogsaa ser rigtigt ud.
-               alt: tom som standard, fordi navnet staar som tekst lige ved
-               siden af — ellers laeser skaermlaeseren det samme to gange.
-               Saet logo_alt i data/partnere.yaml for at overskrive. */ -}}
+      <li class="card flex flex-col gap-4">
+        {{- /* Logoet staar paa sin egen linje over navnet, fordi partnerlogoer
+               har vidt forskellige formater. Et kvadratisk maerke og et bredt
+               ordmaerke kan ikke dele den samme firkantede boks: 5:1 i en
+               80x80-ramme bliver 80x16 og er ulaeseligt.
+
+               Derfor maksimummaal frem for faste maal. Hoejden begraenses til
+               80px og bredden til 200px, og object-contain finder selv den
+               stoerste stoerrelse der passer. Et kvadratisk logo bliver 80x80,
+               et 5:1-logo bliver 200x40. Begge fylder visuelt det samme.
+
+               width/height er filens faktiske pixelmaal, saa der ikke opstaar
+               layoutskift mens billedet hentes.
+
+               alt: tom som standard, fordi navnet staar som tekst lige under —
+               ellers laeser skaermlaeseren det samme to gange. Saet logo_alt i
+               data/partnere.yaml for at overskrive. */ -}}
         {{- if .logo }}
         <picture class="flex-none">
           {{- with .logo_webp }}<source srcset="{{ . }}" type="image/webp">{{ end }}
-          <img src="{{ .logo }}" alt="{{ .logo_alt | default "" }}" width="80" height="80" loading="lazy" decoding="async" class="w-20 h-20 object-contain">
+          <img src="{{ .logo }}" alt="{{ .logo_alt | default "" }}"
+               width="{{ .logo_bredde | default 80 }}" height="{{ .logo_hoejde | default 80 }}"
+               loading="lazy" decoding="async"
+               class="max-h-20 max-w-[200px] w-auto h-auto object-contain object-left">
         </picture>
         {{- end }}
         <div>
