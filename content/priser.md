@@ -34,12 +34,12 @@ prices:
     highlighted: false
   - title: Egenterapi for studerende
     price: Reduceret pris
-    duration: 90 minutter · Klinik eller online
+    duration: 90 minutter · Klinik eller naturen
     features:
       - Egenterapi som del af psykoterapeutuddannelsen
       - Åben for studerende fra alle uddannelsessteder
       - Samarbejde med Hypnose Skolen
-      - Klinik på Lumbyvej eller online
+      - Klinik på Lumbyvej eller ude i naturen
     note: Skriv, så aftaler vi det nærmere.
   - title: Naturterapi – 3 timer
     price: "1800"
