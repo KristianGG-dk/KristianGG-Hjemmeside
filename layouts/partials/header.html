@@ -11,14 +11,21 @@
   JavaScript, med tastaturbetjening og korrekt fokusrækkefølge fra browseren.
 */ -}}
 {{/* Nervesystemet ligger under Psykoterapi, ikke ved siden af. Det er en del
-     af den faglige tilgang, ikke et fjerde hovedområde. */}}
+     af den faglige tilgang, ikke et fjerde hovedområde.
+
+     De tre problemsider staar FOERST i undermenuen og metodesiden sidst.
+     Folk leder efter det, de staar med, ikke efter fagbegrebet - samme
+     raekkefoelge som "Hvad soeger du hjaelp til?" paa forsiden. */}}
 {{/* Kontakt er markeret "fremhaev": den er headerens ene handlingsknap.
      Foer stod den baade som menupunkt og som en roed "Tag kontakt"-knap, og
      knappen gik til sms: frem for kontaktsiden. To punkter om det samme,
      hvoraf det ene ikke foerte hen, hvor det lovede. */}}
 {{- $menu := slice
     (dict "titel" "Psykoterapi" "url" "/til-dig/psykoterapi/" "under" (slice
-       (dict "titel" "Nervesystemet og ro" "url" "/til-dig/nervesystemet/")))
+       (dict "titel" "Stress og overbelastning" "url" "/til-dig/stress/")
+       (dict "titel" "Angst og uro"             "url" "/til-dig/angst/")
+       (dict "titel" "Søvn og tankemylder"      "url" "/til-dig/soevnproblemer/")
+       (dict "titel" "Nervesystemet og ro"      "url" "/til-dig/nervesystemet/")))
     (dict "titel" "Naturterapi" "url" "/til-dig/naturterapi/")
     (dict "titel" "Skovbad"     "url" "/kurser/skovbad/")
     (dict "titel" "Om mig"      "url" "/om/")
