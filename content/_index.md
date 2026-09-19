@@ -44,7 +44,7 @@ forloeb:
 
 om_titel: "Kort om mig"
 om_tekst: |
-  Jeg er registreret psykoterapeut hos Foreningen af Danske Psykoterapeuter og naturterapeut, med praksis på Lumbyvej 11 i Odense. Jeg har uddannelser i blandt andet hypnoterapi, NLP, kognitiv adfærdsterapi og åndedrætsterapi, og en pædagogisk baggrund fra botilbud og asylcentre.
+  Jeg er registreret psykoterapeut hos Foreningen af Danske Psykoterapeuter og naturterapeut, med praksis på Lumbyvej 11B, 5000 Odense. Jeg har uddannelser i blandt andet hypnoterapi, NLP, kognitiv adfærdsterapi og åndedrætsterapi, og en pædagogisk baggrund fra botilbud og asylcentre.
 
   Jeg arbejder med voksne, der står i stress, angst, søvnproblemer, lavt selvværd, sorg eller en større forandring i livet — og med virksomheder og kommuner, der har brug for en fagperson udefra.
 om_billede: "kristian-portraet"

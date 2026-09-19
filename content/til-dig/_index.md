@@ -25,7 +25,7 @@ kurser_callout:
 delivery_formats:
   - icon: ""
     title: "I klinikken"
-    desc: "Lumbyvej 11, Odense"
+    desc: "Lumbyvej 11B, 5000 Odense"
   - icon: ""
     title: "Online"
     desc: "Video – overalt i Danmark"
