@@ -1,6 +1,6 @@
 ---
 title: Priser – psykoterapi, naturterapi og skovbad
-description: Priser på psykoterapi, naturterapi, skovbad og Walk & Talk hos Kristian GG i Odense. Første telefonsamtale er gratis. Ingen skjulte omkostninger.
+description: Priser på psykoterapi, naturterapi, skovbad og Walk & Talk hos Kristian GG i Odense. Egenterapi til studerende til reduceret pris. Første samtale gratis.
 hero_title: Priser
 hero_subtitle: Ingen skjulte omkostninger. Vi begynder altid med en kort telefonsamtale, som ikke koster noget.
 prices:
@@ -32,6 +32,15 @@ prices:
       - Kombinerer terapi og motion
       - Individuel tilpasning
     highlighted: false
+  - title: Egenterapi for studerende
+    price: Reduceret pris
+    duration: 90 minutter · Klinik eller online
+    features:
+      - Egenterapi som del af psykoterapeutuddannelsen
+      - Åben for studerende fra alle uddannelsessteder
+      - Samarbejde med Hypnose Skolen
+      - Klinik på Lumbyvej eller online
+    note: Skriv, så aftaler vi det nærmere.
   - title: Naturterapi – 3 timer
     price: "1800"
     duration: 3 timer · Naturen på Fyn
