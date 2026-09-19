@@ -25,6 +25,9 @@
       {{- /*
         Valgfrit "laes_mere": en sti til et blogindlaeg, der folder svaret ud.
 
+        FAQ-svaret skal staa selv. Linket er en frivillig uddybning, aldrig
+        stedet hvor svaret ligger - se dokumentation/redaktionelt-princip.md.
+
         Der slaas op i de sider, der FAKTISK er bygget. Et indlaeg med en dato
         i fremtiden bygges ikke i produktion, saa linket dukker foerst op den
         dag, indlaegget gaar i luften. Stien kan derfor skrives ind, saa snart
@@ -42,7 +45,7 @@
         {{- range first 1 (where site.RegularPages "RelPermalink" $sti) }}
       <p class="mt-3 mb-0">
         <a href="{{ .RelPermalink }}"
-           class="inline-flex items-center min-h-[44px] text-mos font-semibold hover:underline">{{ .Title }} &rarr;</a>
+           class="inline-flex items-center min-h-[44px] text-mos font-semibold hover:underline">Læs mere: {{ .Title }} &rarr;</a>
       </p>
         {{- end }}
       {{- end }}

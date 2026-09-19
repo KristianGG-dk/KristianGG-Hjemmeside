@@ -117,3 +117,78 @@ gerne gå igen.
 Ved første måling af søvnmaterialet delte blogindlægget og landingssiden en
 passage på 60 ord ordret plus hele CBT-I-afsnittet — 125 fælles sekvenser.
 Efter omskrivningen: 2.
+
+## FAQ → blog → SoMe
+
+Fastlagt af Kristian 19-09-2026.
+
+### Strukturen
+
+```
+spørgsmål → kort, brugbart FAQ-svar → frivillig uddybning i bloggen
+          → bloggen danner grundlag for flere forskellige SoMe-vinkler
+```
+
+**FAQ'en skal altid give et selvstændigt, kort og overordnet svar.** Den
+besøgende skal kunne få sit grundlæggende svar direkte i FAQ'en og må aldrig
+være tvunget til at åbne et blogindlæg for at få det.
+
+Findes der et relevant blogindlæg, tilføjes et naturligt link efter svaret:
+*«Læs mere: …»*. Blogindlægget er en **frivillig uddybning**, aldrig stedet
+hvor svaret ligger.
+
+### De to fejl, der trækker hver sin vej
+
+| | |
+| --- | --- |
+| **Tilbageholdt** | Svaret er for tyndt til at stå selv, så læseren tvinges til at klikke. En FAQ er ikke en teaser. |
+| **Gentaget** | Svaret er så fyldestgørende, at blogindlægget siger det samme igen. Så konkurrerer de to om samme søgning, og læseren får intet nyt ved at klikke. |
+
+### Hvad hver flade må
+
+| Flade | Opgave |
+| --- | --- |
+| **FAQ** | Det grundlæggende svar. Kort, brugbart, færdigt. |
+| **Blog** | Går videre: nuancer, eksempler, faglig forståelse, hvordan Kristian arbejder med problemstillingen, relevante forskelle og sammenhænge. |
+| **SoMe** | Henter *forskellige vinkler* fra emnet. Ikke en kopi af FAQ'en og ikke et forkortet blogindlæg. |
+
+Ét blogindlæg kan bære flere SoMe-opslag, netop fordi hvert opslag tager sin
+egen vinkel.
+
+### FAQ-banken er den redaktionelle pipeline
+
+FAQ-samlingen er samtidig emnebank. Et FAQ-emne, der viser sig at have mere i
+sig, bliver til et blogindlæg; de to kobles med intern linking; og indlægget
+danner derefter grundlag for flere SoMe-opslag.
+
+Feltet hedder `laes_mere` i FAQ-posten og tager blogindlæggets slut-URL.
+`layouts/partials/faq-accordion.html` viser først linket, når indlægget rent
+faktisk er bygget — så stien kan skrives ind, så snart indlægget er skrevet,
+uden at nogen møder et dødt link.
+
+### Kontrollen
+
+```
+node publicering/scripts/faq-kobling.mjs
+```
+
+Den gennemgår hver FAQ med et `laes_mere` og flager begge fejl: et svar under
+120 tegn står sjældent selv, et over 700 tegn efterlader bloggen uden noget at
+sige, og for mange fælles ordsekvenser mellem svar og indlæg betyder, at
+indlægget gentager svaret.
+
+Første kørsel 19-09-2026 fandt to:
+
+- `/til-dig/psykoterapi/` — *«Kan vi mødes udenfor i stedet?»* var 68 tegn og
+  sluttede med «Læs mere om naturterapi». En ren teaser.
+- `/til-dig/naturterapi/` — *«Er naturterapi det samme som en samtale i
+  klinikken?»* var 449 tegn og delte 35 ordsekvenser med indlægget. Bloggen
+  gentog svaret.
+
+Begge er rettet.
+
+### Det permanente princip gælder fortsat
+
+Indholdet tager primært udgangspunkt i, hvad Kristian arbejder med, hvordan
+han arbejder, og de spørgsmål mennesker faktisk stiller ham — ikke i, hvad han
+ikke tilbyder.

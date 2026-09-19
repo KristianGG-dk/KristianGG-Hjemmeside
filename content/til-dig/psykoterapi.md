@@ -49,7 +49,7 @@ faq:
   - q: "Har du tavshedspligt?"
     a: "Ja. Det, du fortæller, bliver i rummet. Der findes enkelte lovbestemte undtagelser — blandt andet underretningspligt, hvis jeg får viden om et barn, der mistrives, og pligten til at handle, hvis der er alvorlig og nærliggende fare for liv eller helbred. Bliver det aktuelt, siger jeg det til dig."
   - q: "Kan vi mødes udenfor i stedet?"
-    a: "Ja. Mange foretrækker at gå, mens vi taler. Læs mere om naturterapi."
+    a: "Ja. Det kan være walk & talk — den samme samtale, der bare foregår gående, hvor landskabet er stedet. Det kan også være naturterapi, som er en selvstændig arbejdsform med sin egen fremgangsmåde. Vi aftaler, hvad der passer, og stedet finder vi sammen."
     laes_mere: "/blog/skovbad-walk-and-talk-naturterapi-forskellen/"
 
 cta_heading: "Tag kontakt"
