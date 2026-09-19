@@ -49,7 +49,86 @@ beskriver. Har også reel søgevolumen lokalt.
 men det er også et af de spørgsmål, folk googler, før de vælger. Det fortjener
 at blive foldet ud — uden at der kommer et tal ud af det.
 
-## Krav til alle tre
+## Den bærende idé: spørgsmålene
+
+Kristian fortalte 19-09-2026, at klienter siger til ham: *«Når jeg kommer til
+en udfordring, spørger jeg mig selv, hvad Kristian ville have spurgt om.»*
+
+Det er den stærkeste ting, der er kommet frem. Det siger noget om arbejdet,
+som ingen markedsføringstekst kan sige: at målet ikke er, at folk bliver ved
+med at komme. Det er, at de får noget med sig.
+
+### Sådan skal det skrives — og sådan skal det ikke
+
+**Ikke som en anbefaling.** *«Mine klienter siger, at de får det bedre»* er en
+udtalelse om virkning fra patienter, og det er den type markedsføring, der er
+strammest reguleret på sundhedsområdet. Ingen citater, ingen genkendelige
+klienter, ingen historier om at det virkede for nogen.
+
+**Som Kristians egen observation om sin egen metode.** *«Det, jeg oftest
+hører, er, at folk begynder at stille sig selv spørgsmålene, når jeg ikke er
+der. Det er sådan, arbejdet er tænkt.»* Samme indhold, ingen påstand om
+resultat.
+
+### Formen: giv spørgsmålene væk
+
+Indlægget hedder noget i retning af **«Hvad ville Kristian have spurgt om?»** —
+og så svarer det faktisk på det. Ikke en beskrivelse af, at han stiller gode
+spørgsmål. De rigtige spørgsmål, skrevet ned, så en læser der aldrig har mødt
+ham kan bruge dem samme aften.
+
+Det viser metoden frem for at påstå den, det er den slags indhold folk gemmer,
+og det kan ikke kopieres: det er håndværket, ikke en tekst om håndværket.
+
+### Det er en søjle, ikke ét indlæg
+
+Ét indlæg samler spørgsmålene. Derefter kan hvert spørgsmål bære sit eget
+opslag på Instagram og LinkedIn — ét spørgsmål, én tanke, ikke mere. Det er
+tekst, der findes i forvejen, og det er den form, de to kanaler belønner.
+
+Næste godkendelsespakke bygges omkring den.
+
+### VENTER PÅ KRISTIAN
+
+Spørgsmålene kan ikke gættes. De fire nedenfor står allerede i hans eget
+materiale; resten skal han skrive ned, om så kun som stikord.
+
+- Hvad fylder der faktisk — ikke hvad der burde fylde?
+- Det, man siger når nogen spørger, er sjældent det samme som det, der holder
+  en vågen.
+- Hvornår går det i gang, og hvad gør du, når det sker?
+- Hvor hurtigt skifter du fra det ene til det andet?
+
+Foreslået dato: **fredag 6. november**. Kommer spørgsmålene før, rykkes den
+frem — den er vigtigere end FAQ-indlæggene nedenfor.
+
+## FAQ-indlæg
+
+Sitet har 45 FAQ-svar. De udsender FAQPage-strukturerede data og arbejder
+allerede for sig selv, så de fleste skal blive, hvor de er. Et 51 tegns svar
+om parkering bliver ikke bedre af at blive et blogindlæg.
+
+**Reglen, når en FAQ bliver til et indlæg:** FAQ-svaret skrumper til to linjer
+og linker videre. Ellers konkurrerer de to om samme søgning — præcis det, der
+blev målt og rettet i søvnmaterialet 19-09.
+
+Testen er, om indlægget kan sige væsentligt mere end svaret, og om nogen ville
+søge på det. Fem består:
+
+| FAQ | Side | Hvorfor |
+| --- | --- | --- |
+| Psykolog eller psykoterapeut? | psykoterapi | 677 tegn — sitets længste svar, og det er ved at sprænges. Høj søgevolumen. |
+| Hvad mener du med at regulere nervesystemet? | nervesystemet | Et begreb alle bruger og ingen forklarer. Siden modtager 14 omdirigeringer og har nul indlæg. |
+| Hvad er åndedrætsterapi? | nervesystemet | Kan eventuelt slås sammen med ovenstående. |
+| Bruger du kognitiv adfærdsterapi? + Skal jeg udsættes for det, jeg er bange for? | angst | To halve svar om eksponering. Angstsiden har nul indlæg. |
+| Har du tavshedspligt? | psykoterapi | Det rigtige svar er længere end 296 tegn: underretningspligt, journalføring. Læses af en, der tøver. |
+
+**Fundet undervejs:** *«Hvor mange gange skal jeg komme?»* står på fem sider
+med ordret det samme 151 tegns svar. Bliver det til et indlæg, kan alle fem
+linke til ét sted i stedet for at gentage hinanden. Det er derfor, det ligger
+som nr. 3 nedenfor.
+
+## Krav til alle indlæg
 
 De er skrevet ned, fordi to af dem blev lært den hårde vej 19-09-2026.
 
@@ -103,4 +182,8 @@ dække uge 42 og frem og bygges omkring de tre indlæg, så blog, LinkedIn,
 Facebook, Instagram og Google trækker samme vej.
 
 `/til-dig/nervesystemet/` og `/til-dig/angst/` står stadig uden ét eneste
-blogindlæg. De er de næste efter psykoterapisiden.
+blogindlæg. To af FAQ-indlæggene ovenfor dækker dem.
+
+Rækkefølgen derefter: spørgsmålssøjlen, så FAQ-indlæggene. Søjlen først, fordi
+den er det eneste indhold på listen, der kan deles videre — resten besvarer
+noget, folk søger på.
