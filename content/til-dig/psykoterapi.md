@@ -50,6 +50,7 @@ faq:
     a: "Ja. Det, du fortæller, bliver i rummet. Der findes enkelte lovbestemte undtagelser — blandt andet underretningspligt, hvis jeg får viden om et barn, der mistrives, og pligten til at handle, hvis der er alvorlig og nærliggende fare for liv eller helbred. Bliver det aktuelt, siger jeg det til dig."
   - q: "Kan vi mødes udenfor i stedet?"
     a: "Ja. Mange foretrækker at gå, mens vi taler. Læs mere om naturterapi."
+    laes_mere: "/blog/skovbad-walk-and-talk-naturterapi-forskellen/"
 
 cta_heading: "Tag kontakt"
 cta_text: "Skriv en SMS eller en mail, så finder vi ud af, om jeg er den rigtige for dig."

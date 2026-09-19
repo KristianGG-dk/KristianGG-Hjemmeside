@@ -32,6 +32,7 @@ faq:
     a: "Så går vi alligevel. Kun ved storm eller isslag rykker vi tidspunktet."
   - q: "Er det det samme som naturterapi?"
     a: "Nej. Skovbad er et ophold i skoven med sanserne, og vi arbejder ikke med det, du står i. Naturterapi er terapeutisk arbejde, hvor vi taler sammen om din situation, mens vi går. Læs mere om naturterapi, hvis det er dét, du søger."
+    laes_mere: "/blog/skovbad-walk-and-talk-naturterapi-forskellen/"
 
 cta_heading: "Tag kontakt"
 cta_text: "Skriv, hvis du vil prøve. Vi finder en skov og et tidspunkt."

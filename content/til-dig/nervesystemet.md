@@ -32,12 +32,14 @@ methods:
 faq:
   - q: "Hvad mener du med at regulere nervesystemet?"
     a: "Nervesystemet skifter mellem tilstande. Nogle gange er kroppen i beredskab — pulsen er oppe, muskler er spændte, tankerne kører. Andre gange er den i hvile. At regulere handler om at øve sig i at komme fra den ene tilstand til den anden med noget konkret: vejrtrækning, bevægelse, opmærksomhed. Det er en færdighed, man træner, ikke en behandling man modtager."
+    laes_mere: "/blog/2026-04-26-hvorfor-din-viljestyrke-svigter-5-overraskende-indsigter-fra-nervesystemets-verden/"
   - q: "Er det i stedet for samtaleterapi?"
     a: "Nej. Det er ikke en selvstændig ydelse, men en del af min tilgang, som kan indgå både i psykoterapi i klinikken og i naturterapi udendørs. Nogle har lettere ved at begynde med kroppen end med at fortælle. Vi kan sagtens gøre begge dele, og det gør vi tit."
   - q: "Hvad er åndedrætsterapi?"
     a: "Bevidst arbejde med vejrtrækningen — tempoet, dybden, forholdet mellem ind- og udånding. Vi prøver forskellige måder af og finder ud af, hvad der virker for dig. Du får nogle øvelser med hjem, som ikke kræver udstyr eller særlige omstændigheder."
   - q: "Kan det bruges ved søvnproblemer?"
     a: "Det er et af de områder, folk oftest kommer med. Vi ser på, hvad der fylder omkring sengetid, og hvilke øvelser der kan bruges om aftenen. Om det hjælper dig, kan jeg ikke sige på forhånd. Har du længerevarende søvnproblemer, er det en god idé også at tale med din læge."
+    laes_mere: "/blog/naar-soevnen-ikke-er-problemet/"
   - q: "Hvor mange gange skal jeg komme?"
     a: "Hvor mange gange man kommer, er meget forskelligt. Nogle har brug for få samtaler, andre for et længere forløb. Du bestemmer selv, hvornår du er i mål."
 
