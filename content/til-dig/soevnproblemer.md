@@ -4,8 +4,8 @@ description: "Ligger du vågen med tankemylder? Sådan arbejder jeg med søvn og
 hero_title: "Søvn og tankemylder"
 hero_subtitle: "Tankerne, der først går i gang, når der endelig er stille. Ja — det er et af de områder, folk oftest kommer med."
 
-hero_billede: "baad-morgen"
-hero_alt: "Rød robåd ved bredden af en spejlblank sø i daggry"
+hero_billede: "skovsoe"
+hero_alt: "Åbning i bøgeskoven med udsigt ned til en stille sø"
 
 service_name: "Psykoterapi ved søvnproblemer og tankemylder"
 service_desc: "Samtaleforløb om søvnbesvær og tankemylder hos registreret psykoterapeut i Odense. I klinik, online eller udendørs på Fyn."
