@@ -70,15 +70,24 @@ hører, er, at folk begynder at stille sig selv spørgsmålene, når jeg ikke er
 der. Det er sådan, arbejdet er tænkt.»* Samme indhold, ingen påstand om
 resultat.
 
-### Formen: giv spørgsmålene væk
+### Formen: to spørgsmål ad gangen
 
 Indlægget hedder noget i retning af **«Hvad ville Kristian have spurgt om?»** —
-og så svarer det faktisk på det. Ikke en beskrivelse af, at han stiller gode
-spørgsmål. De rigtige spørgsmål, skrevet ned, så en læser der aldrig har mødt
-ham kan bruge dem samme aften.
+og så svarer det faktisk på det.
 
-Det viser metoden frem for at påstå den, det er den slags indhold folk gemmer,
-og det kan ikke kopieres: det er håndværket, ikke en tekst om håndværket.
+Kristian leverede 19-09 tyve spørgsmål, **klienter stiller ham**. Det er ikke
+det samme som de spørgsmål, **han stiller dem**, og det er den forskel,
+indlægget lever af. Formen bliver derfor et par ad gangen:
+
+> **Du spørger:** *Hvordan stopper jeg med at overtænke alting?*
+> **Jeg ville spørge:** *Hvad sker der lige inden, det går i gang?*
+
+Det viser forskellen på at søge et svar og at blive stillet det rigtige
+spørgsmål — præcis den forskel, klienterne selv beskriver. Det viser metoden
+frem for at påstå den, og det kan ikke kopieres: det er håndværket, ikke en
+tekst om håndværket.
+
+Fem eller seks par er nok til ét indlæg.
 
 ### Det er en søjle, ikke ét indlæg
 
@@ -90,8 +99,10 @@ Næste godkendelsespakke bygges omkring den.
 
 ### VENTER PÅ KRISTIAN
 
-Spørgsmålene kan ikke gættes. De fire nedenfor står allerede i hans eget
-materiale; resten skal han skrive ned, om så kun som stikord.
+Klienternes tyve spørgsmål er leveret. **Hans egne mangler** — dem han stiller
+i rummet. De kan ikke gættes.
+
+Fire står allerede i hans eget materiale:
 
 - Hvad fylder der faktisk — ikke hvad der burde fylde?
 - Det, man siger når nogen spørger, er sjældent det samme som det, der holder
@@ -99,8 +110,92 @@ materiale; resten skal han skrive ned, om så kun som stikord.
 - Hvornår går det i gang, og hvad gør du, når det sker?
 - Hvor hurtigt skifter du fra det ene til det andet?
 
+Der mangler to til tre mere, og de skal parres med de af klientspørgsmålene,
+de svarer til.
+
 Foreslået dato: **fredag 6. november**. Kommer spørgsmålene før, rykkes den
 frem — den er vigtigere end FAQ-indlæggene nedenfor.
+
+## Klienternes tyve spørgsmål
+
+Leveret af Kristian 19-09-2026: det, klienter faktisk spørger om. De er
+ordret hans, ikke omskrevet. Ud over at føde søjlen er de et kort over,
+hvor sitet har indhold, og hvor det ikke har.
+
+### Stress og hvile → `/til-dig/stress/`
+
+1. Hvordan ved jeg, om det er stress, eller om jeg bare har for meget at lave?
+2. Hvorfor kan jeg ikke slappe af, selv når jeg har fri?
+
+Nr. 1 er emnet for element 22, fredag 2. oktober.
+
+### Krop og uro → `/til-dig/nervesystemet/`, `/til-dig/angst/`
+
+3. Hvordan får jeg ro på kroppen, når jeg hele tiden føler mig anspændt?
+4. Hvorfor bliver jeg så hurtigt irritabel eller overvældet?
+5. Kan angst mærkes fysisk i kroppen?
+6. Hvorfor reagerer min krop, selvom jeg godt ved, at der ikke er noget at
+   være bange for?
+
+Fire spørgsmål til to sider, der tilsammen har nul blogindlæg og modtager 18
+omdirigeringer. Nr. 5 og 6 hører sammen og kan være ét indlæg.
+
+### Tanker og tankemylder → `/til-dig/soevnproblemer/`
+
+7. Hvorfor begynder tankerne først rigtigt, når jeg skal sove?
+8. Hvordan stopper jeg med at overtænke alting?
+9. Hvorfor bliver jeg ved med at tænke på samtaler og situationer bagefter?
+
+Nr. 7 er emnet for element 23, fredag 9. oktober. Nr. 8 og 9 er ikke dækket
+noget sted.
+
+### Grænser og gamle mønstre → INGEN SIDE DÆKKER DET
+
+10. Hvordan lærer jeg at sige nej uden at få dårlig samvittighed?
+11. Hvorfor kan jeg mærke mine egne grænser, men alligevel ikke holde dem?
+12. Hvorfor bliver jeg ved med at reagere på noget, der skete for længe siden?
+
+**Det største hul på sitet.** Tre af tyve spørgsmål handler om det, og der
+findes hverken en side eller et blogindlæg. Nr. 11 er det stærkeste af dem
+alle: det beskriver et mønster, folk genkender, og som de ikke har et ord for.
+
+### Metoderne → `/til-dig/naturterapi/`, `/til-dig/psykoterapi/`
+
+13. Hvad er forskellen på psykoterapi og naturterapi?
+14. Er walk & talk bare almindelig terapi, mens man går?
+15. Hvad laver man egentlig i naturterapi?
+
+Alle tre er besvaret i blogindlægget fra 14. september og på naturterapisiden.
+De mangler ikke indhold — de mangler at blive fundet. Det retter
+`laes_mere`-henvisningerne i FAQ'erne.
+
+### Er det noget for mig → `/til-dig/psykoterapi/`, `/kontakt/`
+
+16. Skal jeg være god til at tale om følelser for at gå i terapi?
+17. Hvad sker der første gang, jeg kommer hos dig?
+18. Hvordan ved jeg, om du er den rigtige terapeut for mig?
+19. Skal jeg vide præcis, hvad mit problem er, inden jeg kontakter dig?
+20. Kan jeg gå i terapi, selvom jeg ikke er i krise?
+
+Nr. 17 er indlægget fredag 16. oktober. Nr. 20 er emnet for element 24 på
+Facebook tirsdag 6. oktober — Kristian nåede frem til det samme uafhængigt.
+
+Nr. 16, 18 og 19 er ikke dækket. De tre er de sidste tvivl, før nogen skriver,
+og de hører hjemme tæt på kontaktsiden.
+
+### Hvad kortet viser
+
+| Emne | Spørgsmål | Dækket |
+| --- | --- | --- |
+| Stress og hvile | 2 | 1 af 2 |
+| Krop og uro | 4 | 0 af 4 |
+| Tanker | 3 | 1 af 3 |
+| **Grænser** | **3** | **0 af 3 — ingen side** |
+| Metoderne | 3 | 3 af 3 |
+| Er det noget for mig | 5 | 2 af 5 |
+
+Syv af tyve er dækket, når de aftalte indlæg er ude. Grænser er det eneste
+emne uden så meget som en side.
 
 ## FAQ-indlæg
 
@@ -182,7 +277,13 @@ dække uge 42 og frem og bygges omkring de tre indlæg, så blog, LinkedIn,
 Facebook, Instagram og Google trækker samme vej.
 
 `/til-dig/nervesystemet/` og `/til-dig/angst/` står stadig uden ét eneste
-blogindlæg. To af FAQ-indlæggene ovenfor dækker dem.
+blogindlæg. To af FAQ-indlæggene ovenfor dækker dem, og fire af klienternes
+tyve spørgsmål hører til der.
+
+**Grænser mangler helt.** Hverken side eller indlæg. Tre af klienternes tyve
+spørgsmål handler om det. Det skal afgøres, om det bliver en emneside på linje
+med stress, angst og søvn — eller om det hører under psykoterapisiden. Det er
+en beslutning for Kristian, ikke et skriveforslag.
 
 Rækkefølgen derefter: spørgsmålssøjlen, så FAQ-indlæggene. Søjlen først, fordi
 den er det eneste indhold på listen, der kan deles videre — resten besvarer
