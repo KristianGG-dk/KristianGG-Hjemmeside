@@ -340,5 +340,23 @@
     "registreret_af": "manuel",
     "tidspunkt": "2026-09-19T18:40:00.000Z",
     "noter": "Ny versionslaas 4d9aae4770f35e04 afloeser 5e763aa3c8fc51d8. Omskrevet og godkendt af Kristian 19-09-2026 efter det redaktionelle princip."
+  },
+  {
+    "element": 24,
+    "kanal": "facebook",
+    "versionslaas": "b2bd4f09d7ae01f8",
+    "status": "PLANLAGT",
+    "post_id": "1510371861110416",
+    "planlagt_til": 1791306000,
+    "tidspunkt": "2026-09-19T19:13:30.948Z"
+  },
+  {
+    "element": 25,
+    "kanal": "facebook",
+    "versionslaas": "618c197c518a7642",
+    "status": "PLANLAGT",
+    "post_id": "1510371894443746",
+    "planlagt_til": 1791651600,
+    "tidspunkt": "2026-09-19T19:13:33.260Z"
   }
 ]
