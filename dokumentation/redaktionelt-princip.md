@@ -89,3 +89,31 @@ lovkrav, og det var ikke et valg — det var en vane, der havde sat sig.
 
 Kristian spurgte: *"hvorfor lave noget der viser væk fra mig"*. Det spørgsmål
 er anledningen til denne side.
+
+## Funktionsdeling mellem kanaler
+
+Fastlagt af Kristian samme dag. Elementer om samme emne må gerne bygge på den
+samme faglige position, men de skal have hver sin funktion:
+
+| | Funktion |
+| --- | --- |
+| **SoMe** | skaber interesse |
+| **Blog** | folder emnet ud |
+| **Landingsside** | forklarer arbejdet og giver en naturlig vej til kontakt |
+
+Gør de det samme, bliver tre tekster til den samme tekst tre steder — og
+Google ser tre sider, der konkurrerer om den samme søgning.
+
+`publicering/scripts/tekstgentagelse.mjs` måler det som fælles ordsekvenser:
+
+```
+node publicering/scripts/tekstgentagelse.mjs <fil> <fil> [<fil> ...]
+```
+
+Den viser de fælles passager frem for at give en karakter, så man selv kan
+afgøre, om gentagelsen bærer noget. Adresselinjer og enkelte fagudtryk må
+gerne gå igen.
+
+Ved første måling af søvnmaterialet delte blogindlægget og landingssiden en
+passage på 60 ord ordret plus hele CBT-I-afsnittet — 125 fælles sekvenser.
+Efter omskrivningen: 2.

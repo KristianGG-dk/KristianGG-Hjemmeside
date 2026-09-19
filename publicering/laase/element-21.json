@@ -1,9 +1,9 @@
 {
   "element": 21,
   "kanal": "instagram",
-  "titel": "CBT-I er bedre dokumenteret end det, jeg laver",
-  "meta_description": "Instagram-opslag der henviser videre til CBT-I ved kronisk soevnbesvaer.",
-  "slug": "element-21-cbt-i-instagram",
+  "titel": "Du er ikke dårlig til at sove",
+  "meta_description": "Instagram-opslag om at soevnbesvaer for en del ikke handler om soevnen, men om det dagen efterlod.",
+  "slug": "element-21-ikke-daarlig-til-at-sove-instagram",
   "slut_url": "(instagram-opslag, ingen URL foer publicering)",
   "dato": "2026-10-09T19:00:00.000+02:00",
   "kategorier": [
@@ -13,18 +13,25 @@
   "alt_tekst": "To personer på gåtur ad en sti i det fynske landskab",
   "billede_url": "https://kristiangg.dk/images/natur/gaatur-640.jpg",
   "links": [],
-  "cta": "Ingen. Henviser bevidst vaek",
+  "cta": "Bloed. Skaber interesse, forklarer ikke metoden",
   "hashtags": [
     "#psykoterapi",
     "#psykoterapeut",
     "#odense",
     "#fyn"
   ],
-  "tekst": "Har du haft søvnbesvær i månedsvis, findes der noget, som er bedre dokumenteret end det, jeg laver.\n\nDet hedder CBT-I — kognitiv adfærdsterapi mod insomni. Danske og internationale oversigter peger på det som førstevalg ved kronisk insomni, før sovemedicin. Jeg leverer det ikke.\n\nDet siger jeg, fordi du skal kunne vælge på et oplyst grundlag. Spørg din læge om netop det.\n\nDet betyder ikke, at der ikke er noget at komme efter hos mig. For en del mennesker er søvnen ikke problemet i sig selv. Den er stedet, hvor dagens uro bliver synlig — fordi der endelig er stille nok til, at den kan høres. Det arbejder jeg med.\n\nMen rækkefølgen skal være rigtig.\n\n#psykoterapi #psykoterapeut #odense #fyn",
-  "tekst_sha256": "e8fe621643622a8e626fca3e02a6d2c85e8436776309def49671aa888ed7495b",
-  "brodtekst_sha256": "e8fe621643622a8e626fca3e02a6d2c85e8436776309def49671aa888ed7495b",
+  "tekst": "Du er ikke dårlig til at sove.\n\nSådan kan det ellers føles, når man har ligget vågen længe nok. Som om der er noget ved en selv, der ikke fungerer, og som alle andre har styr på.\n\nFor en del handler det slet ikke om søvnen. Det handler om, at aftenen er dagens første tidspunkt uden noget at lave — og så bliver der plads til alt det, der har ventet.\n\nDet er dét, jeg arbejder med.\n\nI klinikken på Lumbyvej, eller ude i landskabet på Fyn.\n\n#psykoterapi #psykoterapeut #odense #fyn",
+  "tekst_sha256": "fd6c2fd4b8db0100c25b32d8ff01153abb521e63927ebd0594473850aeb6ce6a",
+  "brodtekst_sha256": "fd6c2fd4b8db0100c25b32d8ff01153abb521e63927ebd0594473850aeb6ce6a",
   "godkendt_af": "Kristian G. G. Dansted",
   "godkendt_dato": "2026-09-19",
   "godkendelsespakke": "Godkendelsespakke uge 39-42, godkendt i Claude Code 19-09-2026",
-  "versionslaas": "5e763aa3c8fc51d8"
+  "tidligere_laase": [
+    {
+      "laas": "5e763aa3c8fc51d8",
+      "godkendt_dato": "2026-09-19",
+      "afloest_fordi": "redaktionelt princip 19-09-2026: hovedvinklen skrives ud fra arbejdet, og opslaget faar sin egen funktion"
+    }
+  ],
+  "versionslaas": "4d9aae4770f35e04"
 }
