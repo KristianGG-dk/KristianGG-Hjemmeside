@@ -34,10 +34,6 @@ services:
     description: "Helhedsorienteret psykoterapi der kombinerer samtaleterapi, hypnoterapi, NLP, KAT og DAT. Tilpasset netop dig og din situation."
     href: "/til-dig/psykoterapi/"
 
-kurser_callout:
-  title: "Se alle kurser og forløb"
-  desc: "Praksisnære forløb i regulering, trivsel og livsretning – for dig som privatperson."
-
 delivery_formats:
   - icon: ""
     title: "I klinikken"

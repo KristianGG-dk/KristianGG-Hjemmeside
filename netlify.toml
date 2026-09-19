@@ -13,12 +13,12 @@
 
 [[redirects]]
   from = "/hypnose-soevnproblemer"
-  to = "/kurser/sov-bedre/"
+  to = "/til-dig/soevnproblemer/"
   status = 301
 
 [[redirects]]
   from = "/hypnose-soevnproblemer/"
-  to = "/kurser/sov-bedre/"
+  to = "/til-dig/soevnproblemer/"
   status = 301
 
 [[redirects]]
@@ -387,3 +387,200 @@
   [headers.values]
     Content-Type = "application/xml; charset=utf-8"
     Cache-Control = "public, max-age=86400"
+
+# ── Udfasede kursussider → naermeste relevante side (301 bevarer soegevaerdi) ──
+# Kurserne blev aldrig udbudt og havde ingen pris. Maalene er valgt efter
+# emne, ikke efter bekvemmelighed, saa den optjente vaerdi lander et sted,
+# der faktisk svarer paa det, brugeren soegte efter.
+
+# stop-stress: siden hed selv "Stressbehandling i Odense"
+[[redirects]]
+  from = "/kurser/stop-stress"
+  to = "/til-dig/stress/"
+  status = 301
+
+[[redirects]]
+  from = "/kurser/stop-stress/"
+  to = "/til-dig/stress/"
+  status = 301
+
+
+# mere-energi: praestationsstress
+[[redirects]]
+  from = "/kurser/mere-energi"
+  to = "/til-dig/stress/"
+  status = 301
+
+[[redirects]]
+  from = "/kurser/mere-energi/"
+  to = "/til-dig/stress/"
+  status = 301
+
+
+# sov-bedre: soevn og tankemylder, ordret samme emne
+[[redirects]]
+  from = "/kurser/sov-bedre"
+  to = "/til-dig/soevnproblemer/"
+  status = 301
+
+[[redirects]]
+  from = "/kurser/sov-bedre/"
+  to = "/til-dig/soevnproblemer/"
+  status = 301
+
+
+# eksamensangst: angstsiden lister eksamens- og praestationsangst
+[[redirects]]
+  from = "/kurser/eksamensangst"
+  to = "/til-dig/angst/"
+  status = 301
+
+[[redirects]]
+  from = "/kurser/eksamensangst/"
+  to = "/til-dig/angst/"
+  status = 301
+
+
+# bevar-roen: mental robusthed og regulering
+[[redirects]]
+  from = "/kurser/bevar-roen"
+  to = "/til-dig/nervesystemet/"
+  status = 301
+
+[[redirects]]
+  from = "/kurser/bevar-roen/"
+  to = "/til-dig/nervesystemet/"
+  status = 301
+
+
+# hypnotisk-ro: hypnoterapi staar som metode paa siden
+[[redirects]]
+  from = "/kurser/hypnotisk-ro"
+  to = "/til-dig/nervesystemet/"
+  status = 301
+
+[[redirects]]
+  from = "/kurser/hypnotisk-ro/"
+  to = "/til-dig/nervesystemet/"
+  status = 301
+
+
+# ro-i-nervesystemet: aandedraetsterapi, ordret samme emne
+[[redirects]]
+  from = "/kurser/ro-i-nervesystemet"
+  to = "/til-dig/nervesystemet/"
+  status = 301
+
+[[redirects]]
+  from = "/kurser/ro-i-nervesystemet/"
+  to = "/til-dig/nervesystemet/"
+  status = 301
+
+
+# genfind-dit-fokus: koncentration og mental afgraensning
+[[redirects]]
+  from = "/kurser/genfind-dit-fokus"
+  to = "/til-dig/nervesystemet/"
+  status = 301
+
+[[redirects]]
+  from = "/kurser/genfind-dit-fokus/"
+  to = "/til-dig/nervesystemet/"
+  status = 301
+
+
+# rolige-voksne-trygge-born: foraeldres nervesystem
+[[redirects]]
+  from = "/kurser/rolige-voksne-trygge-born"
+  to = "/til-dig/nervesystemet/"
+  status = 301
+
+[[redirects]]
+  from = "/kurser/rolige-voksne-trygge-born/"
+  to = "/til-dig/nervesystemet/"
+  status = 301
+
+
+# design-dit-liv: livsretning og struktur
+[[redirects]]
+  from = "/kurser/design-dit-liv"
+  to = "/til-dig/psykoterapi/"
+  status = 301
+
+[[redirects]]
+  from = "/kurser/design-dit-liv/"
+  to = "/til-dig/psykoterapi/"
+  status = 301
+
+
+# naar-livet-skifter-retning: psykoterapisiden lister "Store forandringer i livet"
+[[redirects]]
+  from = "/kurser/naar-livet-skifter-retning"
+  to = "/til-dig/psykoterapi/"
+  status = 301
+
+[[redirects]]
+  from = "/kurser/naar-livet-skifter-retning/"
+  to = "/til-dig/psykoterapi/"
+  status = 301
+
+
+# skab-struktur: struktur og overskud i hverdagen
+[[redirects]]
+  from = "/kurser/skab-struktur"
+  to = "/til-dig/psykoterapi/"
+  status = 301
+
+[[redirects]]
+  from = "/kurser/skab-struktur/"
+  to = "/til-dig/psykoterapi/"
+  status = 301
+
+
+# tal-saa-du-bliver-hoert: relationel kommunikation og konflikt
+[[redirects]]
+  from = "/kurser/tal-saa-du-bliver-hoert"
+  to = "/til-dig/psykoterapi/"
+  status = 301
+
+[[redirects]]
+  from = "/kurser/tal-saa-du-bliver-hoert/"
+  to = "/til-dig/psykoterapi/"
+  status = 301
+
+
+# kvinder-ingen-adgang: mental stabilitet og selvledelse
+[[redirects]]
+  from = "/kurser/kvinder-ingen-adgang"
+  to = "/til-dig/psykoterapi/"
+  status = 301
+
+[[redirects]]
+  from = "/kurser/kvinder-ingen-adgang/"
+  to = "/til-dig/psykoterapi/"
+  status = 301
+
+
+# madterapi-og-sankning: naervaer og natur
+[[redirects]]
+  from = "/kurser/madterapi-og-sankning"
+  to = "/til-dig/naturterapi/"
+  status = 301
+
+[[redirects]]
+  from = "/kurser/madterapi-og-sankning/"
+  to = "/til-dig/naturterapi/"
+  status = 301
+
+
+# mental-styrke: arbejdsliv og praestationspres - B2B, ikke privat
+[[redirects]]
+  from = "/kurser/mental-styrke"
+  to = "/til-virksomheder/trivsel/"
+  status = 301
+
+[[redirects]]
+  from = "/kurser/mental-styrke/"
+  to = "/til-virksomheder/trivsel/"
+  status = 301
+
