@@ -29,6 +29,18 @@ const OPBRUGT = 'opbrugt';
 // intetsigende "authorization code not found".
 const PLADSHOLDERE = new Set([OPBRUGT, 'venter', 'afventer', 'todo', 'x', '-']);
 
+// Hoenen og aegget: destinationen skal vaere fastlaast, FOER der publiceres,
+// men Kristians person-URN kan foerst kendes, naar han har autoriseret.
+//
+// SENTINEL er den vaerdi, LI_TILLADT_URN saettes til, indtil URN'en kendes.
+// Kun naar den staar der praecis, maa "bootstrap" fastlaase destinationen ud
+// fra den autorisation, Kristian netop har gennemfoert i sin egen browser og
+// godkendt i GitHub. Derefter er den laast, og bootstrap virker ikke mere.
+//
+// Alternativet var at bruge to koder: én til at faa URN'en at vide, og én
+// til den rigtige fornyelse. Det er ikke sikrere - det er bare besvaerligere.
+const SENTINEL = 'urn:li:person:AFVENTER';
+
 const env = process.env;
 const noedvendig = (navn) => {
   const v = (env[navn] ?? '').trim();
@@ -207,8 +219,10 @@ async function kontroller() {
   if (fejl) process.exit(1);
 }
 
-async function forny() {
-  console.log('\nFornyelse af LinkedIn-token. Der publiceres ikke noget.\n');
+async function forny(bootstrap = false) {
+  console.log(bootstrap
+    ? '\nFOERSTE AUTORISATION. Destinationen fastlaases. Der publiceres ikke noget.\n'
+    : '\nFornyelse af LinkedIn-token. Der publiceres ikke noget.\n');
 
   const svar = await byt();
   const fakta = beskrivSvar(svar);
@@ -229,13 +243,51 @@ async function forny() {
       'Kun urn:li:person: accepteres. En organisationsside maa aldrig vaere maal.'
     );
   }
-  const ejer = await bevisEjer(svar.access_token, tilladt);
-  console.log(`\n── IDENTITET BEKRAEFTET ──\n  ${ejer.urn}${ejer.navn ? ` (${ejer.navn})` : ''}`);
+
+  const foerstegang = tilladt === SENTINEL;
+  if (foerstegang && !bootstrap) {
+    throw new DestinationAfvist(
+      `LI_TILLADT_URN staar paa ${SENTINEL} og er dermed ikke fastlaast. ` +
+      'Koer handlingen "bootstrap" for at fastlaase destinationen ud fra denne autorisation.'
+    );
+  }
+  if (bootstrap && !foerstegang) {
+    throw new DestinationAfvist(
+      `Destinationen er allerede fastlaast til ${tilladt}. Bootstrap afvises. ` +
+      'Skal den laves om, saettes LI_TILLADT_URN manuelt tilbage til sentinelvaerdien foerst.'
+    );
+  }
+
+  let ejer;
+  if (foerstegang) {
+    // Vi kender ikke URN'en endnu, saa der er intet at sammenligne med.
+    // Den kommer fra LinkedIns eget svar paa det token, Kristian netop har
+    // udstedt i sin egen browser og godkendt i GitHub.
+    const r = await fetch('https://api.linkedin.com/v2/userinfo', {
+      headers: { Authorization: `Bearer ${svar.access_token}` },
+    });
+    const hvem = await r.json().catch(() => ({}));
+    if (!r.ok || !hvem?.sub) {
+      throw new DestinationAfvist(
+        `Kunne ikke aflaese identiteten (${r.status}). Uden den fastlaases ingen destination.`
+      );
+    }
+    ejer = { urn: `urn:li:person:${hvem.sub}`, navn: hvem.name ?? null };
+    console.log(`\n── DESTINATION FASTLAASES ──`);
+    console.log(`  ${ejer.urn}${ejer.navn ? ` (${ejer.navn})` : ''}`);
+    console.log('  Kontrollér, at navnet er Kristians eget — ikke en side og ikke');
+    console.log('  Foreningen mod Familiebelastning. Passer det ikke, saa slet');
+    console.log('  hemmelighederne og start forfra.');
+  } else {
+    ejer = await bevisEjer(svar.access_token, tilladt);
+    console.log(`\n── IDENTITET BEKRAEFTET ──\n  ${ejer.urn}${ejer.navn ? ` (${ejer.navn})` : ''}`);
+  }
 
   // ── Foerst nu gemmes noget ──
   console.log('\n── GEMMER ──');
   await skrivHemmelighed('LI_ACCESS_TOKEN', svar.access_token);
   await skrivHemmelighed('LI_PERSON_URN', ejer.urn);
+  if (foerstegang) await skrivHemmelighed('LI_TILLADT_URN', ejer.urn);
   if (svar.refresh_token) await skrivHemmelighed('LI_REFRESH_TOKEN', svar.refresh_token);
   await skrivHemmelighed('LI_AUTH_CODE', OPBRUGT);
 
@@ -253,7 +305,7 @@ async function forny() {
 
 if (import.meta.url === `file://${process.argv[1]}`) {
   const handling = (env.HANDLING ?? 'kontroller').toLowerCase();
-  const veje = { kontroller, forny };
+  const veje = { kontroller, forny: () => forny(false), bootstrap: () => forny(true) };
   if (!veje[handling]) {
     console.error(`Ukendt handling: "${handling}". Brug kontroller eller forny.`);
     process.exit(1);
