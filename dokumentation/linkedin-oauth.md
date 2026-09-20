@@ -109,11 +109,8 @@ fordi det er API'ets eget.
 
 ## Destinationskontrol og fail closed
 
-`publicer-linkedin.mjs` har i dag **ingen destinationskontrol**. Den bruger
-den URN, der står i miljøet. Det er verificeret i koden 20-09-2026, og det
-skal lukkes, før den tages i brug.
-
-Den aftalte adfærd, som endnu **ikke er implementeret**:
+**Implementeret 20-09-2026** i `publicer-linkedin.mjs`. Før da brugte den
+blindt den URN, der stod i miljøet.
 
 1. `LI_TILLADT_URN` skal findes. Mangler den → **stop**.
 2. `LI_PERSON_URN` skal være identisk med `LI_TILLADT_URN` → ellers **stop**.
@@ -129,15 +126,49 @@ Punkt 4 er det vigtigste. De øvrige kontrollerer, hvad der står i vores egen
 konfiguration; punkt 4 spørger LinkedIn, hvem tokenet **faktisk** tilhører.
 Det er den eneste kontrol, der ikke kan snydes ved at rette en hemmelighed.
 
+I tørløb springes punkt 4 over, hvis der ikke er et token — men findes der ét,
+køres kontrollen også i tørløb, så prøven er en rigtig prøve.
+
+### Afprøvet
+
+```
+node publicering/test/linkedin-destination.test.mjs
+```
+
+Fjorten prøver, hvoraf tolv er ting, der **skal afvises**: manglende tilladt
+URN, tom URN, ændret destination, foreningens side som mål, en organisation
+smuglet ind i begge felter, et token der tilhører en anden, `userinfo` der
+svarer 401, et svar uden `sub`, og et netværk der svigter. Alle fjorten består.
+
+End-to-end mod et prøveelement, der aldrig publiceres:
+
+| Opsætning | Resultat |
+| --- | --- |
+| ingen destination | `LI_TILLADT_URN mangler. Uden en eksplicit tilladt destination publiceres der ikke.` |
+| foreningens side som mål | `Destinationen er ikke en personprofil […] En organisationsside må aldrig være mål.` |
+| destination ændret efter godkendelsen | `LI_PERSON_URN svarer ikke til LI_TILLADT_URN.` |
+| korrekt destination | tørløb, intet sendt |
+
+### Adgangskontrol
+
+```
+node publicering/scripts/kontroller-linkedin-adgang.mjs
+```
+
+Udelukkende GET. Svarer på, om der er et token, hvem det tilhører, om det
+stemmer med den tilladte destination, hvilke rettigheder det bærer, og hvornår
+det udløber. Advarer, når der er 14 dage eller mindre tilbage.
+
 ## Status
 
 | | |
 | --- | --- |
 | Callback bygget og afprøvet | ✓ |
 | OAuth-script skrevet | ✓ |
-| Redirect-URL registreret hos LinkedIn | **afventer Kristian** |
+| Redirect-URL registreret hos LinkedIn | ✓ 20-09-2026 |
 | Token udstedt | nej — og må ikke, før URL'en er registreret |
-| Destinationskontrol i publisher | **ikke bygget** |
+| Destinationskontrol i publisher | ✓ fail closed, 14 prøver |
+| Adgangskontrol (kun læsning) | ✓ |
 | Billedunderstøttelse i publisher | ikke bygget |
 | Planlagt kørsel for LinkedIn | ikke bygget |
 | Låsefiler til LinkedIn-elementer | ikke bygget |
