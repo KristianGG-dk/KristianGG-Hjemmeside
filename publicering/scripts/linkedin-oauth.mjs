@@ -6,9 +6,16 @@
 //   node publicering/scripts/linkedin-oauth.mjs start
 //   node publicering/scripts/linkedin-oauth.mjs byt
 //
-// Kraever i miljoeet (ikke i repoet, ikke i GitHub Secrets):
-//   LI_CLIENT_ID       fra LinkedIn Developer > Auth
-//   LI_CLIENT_SECRET   samme sted. Skrives aldrig ud.
+// Client ID og secret hentes fra LinkedIn Developer > Auth.
+//
+// SECRET'EN SKRIVES IKKE I KOMMANDOLINJEN.
+// Scriptet spoerger om den, og terminalen ekkoer ikke, mens den tastes. Saa
+// staar den hverken i shellens historik, i procestabellen eller paa skaermen.
+// En "export LI_CLIENT_SECRET=..." ville ligge i ~/.bash_history bagefter.
+//
+// Client ID er ikke hemmeligt og maa gerne staa i miljoeet:
+//   LI_CLIENT_ID       valgfrit. Spoerges der om, hvis den mangler.
+//   LI_CLIENT_SECRET   valgfrit, men frarådes. Spoerges der om, hvis den mangler.
 //
 // HVORFOR TO TRIN
 // Callbacken paa kristiangg.dk er en statisk side uden server. Den viser
@@ -36,8 +43,69 @@ const TOKEN = 'https://www.linkedin.com/oauth/v2/accessToken';
 const USERINFO = 'https://api.linkedin.com/v2/userinfo';
 const STATE_FIL = new URL('./.li-state', import.meta.url);
 
-const CLIENT_ID = process.env.LI_CLIENT_ID;
-const CLIENT_SECRET = process.env.LI_CLIENT_SECRET;
+let CLIENT_ID = process.env.LI_CLIENT_ID;
+let CLIENT_SECRET = process.env.LI_CLIENT_SECRET;
+
+/**
+ * Laeser en linje uden at ekkoe den. Terminalen sattes i raa tilstand, saa
+ * hvert tastetryk kommer hertil frem for til skaermen.
+ *
+ * Uden en terminal (rør, CI, editor-konsol) kastes der frem for at falde
+ * tilbage til synlig indtastning — en secret maa ikke slippe ud, fordi
+ * omgivelserne var anderledes end ventet.
+ */
+function laesSkjult(spoergsmaal) {
+  return new Promise((resolve, reject) => {
+    if (!stdin.isTTY) {
+      return reject(new Error(
+        'Ingen terminal. Secret\'en kan ikke tastes skjult her — koer scriptet ' +
+        'i et rigtigt terminalvindue.'
+      ));
+    }
+    stdout.write(spoergsmaal);
+    stdin.setRawMode(true);
+    stdin.resume();
+    stdin.setEncoding('utf8');
+    let buffer = '';
+    const slut = (fn, arg) => {
+      stdin.setRawMode(false);
+      stdin.pause();
+      stdin.removeListener('data', paaData);
+      stdout.write('\n');
+      fn(arg);
+    };
+    const paaData = (stykke) => {
+      for (const tegn of stykke) {
+        if (tegn === '\r' || tegn === '\n' || tegn === '\u0004') return slut(resolve, buffer);
+        if (tegn === '\u0003') return slut(() => process.exit(130));   // ctrl-c
+        if (tegn === '\u007f' || tegn === '\b') { buffer = buffer.slice(0, -1); continue; }
+        if (tegn < ' ') continue;                                      // styretegn ignoreres
+        buffer += tegn;
+      }
+    };
+    stdin.on('data', paaData);
+  });
+}
+
+/** Client ID er ikke hemmeligt. Den maa gerne ses, mens den tastes. */
+async function sikrClientId() {
+  if (CLIENT_ID) return;
+  const rl = createInterface({ input: stdin, output: stdout });
+  CLIENT_ID = (await rl.question('Client ID:     ')).trim();
+  rl.close();
+  if (!CLIENT_ID) throw new Error('Client ID er tom.');
+}
+
+async function sikrClientSecret() {
+  if (CLIENT_SECRET) {
+    console.log('  (bruger LI_CLIENT_SECRET fra miljøet — husk at den står i din historik,');
+    console.log('   hvis du satte den med export)');
+    return;
+  }
+  CLIENT_SECRET = (await laesSkjult('Client Secret: ')).trim();
+  if (!CLIENT_SECRET) throw new Error('Client Secret er tom.');
+  console.log('  (modtaget — vises ikke)');
+}
 
 /** Fjerner alt, der ligner en hemmelighed, foer noget logges. */
 function skrub(s) {
@@ -51,7 +119,7 @@ function skrub(s) {
 const maske = (t) => `${t.slice(0, 6)}…${t.slice(-4)}  (${t.length} tegn)`;
 
 async function start() {
-  if (!CLIENT_ID) throw new Error('LI_CLIENT_ID mangler i miljoeet.');
+  await sikrClientId();
   const { writeFileSync } = await import('node:fs');
   const state = randomBytes(24).toString('base64url');
   writeFileSync(STATE_FIL, state, { mode: 0o600 });
@@ -71,15 +139,22 @@ async function start() {
 }
 
 async function byt() {
-  if (!CLIENT_ID || !CLIENT_SECRET) throw new Error('LI_CLIENT_ID og LI_CLIENT_SECRET skal staa i miljoeet.');
+  // Hele forloebet er samtale med et menneske. Uden en terminal loeb
+  // readline toer og processen sluttede med kode 0 uden en eneste linje —
+  // en tavs succes, hvor intet var sket. Derfor stoppes der her i stedet.
+  if (!stdin.isTTY) {
+    throw new Error('Ingen terminal. Koer kommandoen i et rigtigt terminalvindue, ikke gennem et roer.');
+  }
   const { readFileSync, unlinkSync, existsSync } = await import('node:fs');
   if (!existsSync(STATE_FIL)) throw new Error('Ingen gemt state. Koer "start" foerst.');
   const forventet = readFileSync(STATE_FIL, 'utf8').trim();
 
   const rl = createInterface({ input: stdin, output: stdout });
-  const code = (await rl.question('code:  ')).trim();
-  const state = (await rl.question('state: ')).trim();
+  const code = (await rl.question('code:          ')).trim();
+  const state = (await rl.question('state:         ')).trim();
   rl.close();
+  await sikrClientId();
+  await sikrClientSecret();
 
   if (state !== forventet) {
     throw new Error('State stemmer ikke med den udstedte. Forloebet afvises. Start forfra.');
