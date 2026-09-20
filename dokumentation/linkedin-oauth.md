@@ -65,6 +65,33 @@ Google i at hente siden og dermed i at læse noindex.
 `w_organization_social` bruges **ikke**. Det er til organisationssider og
 kræver godkendelse.
 
+## Sådan indtastes client ID og secret
+
+**Secret'en skrives ikke i kommandolinjen.** Scriptet spørger om den, og
+terminalen ekkoer ikke, mens den tastes. Så står den hverken i shellens
+historik, i procestabellen eller på skærmen.
+
+```
+$ node publicering/scripts/linkedin-oauth.mjs byt
+code:          AQTb…
+state:         2MI3…
+Client ID:     78abcdef123456
+Client Secret:
+  (modtaget — vises ikke)
+```
+
+Client ID er ikke hemmeligt og må gerne stå i miljøet som `LI_CLIENT_ID`.
+Secret'en bør ikke: `export LI_CLIENT_SECRET=…` ender i `~/.bash_history`.
+Står den alligevel i miljøet, bruger scriptet den og siger det højt.
+
+**Uden en terminal stopper scriptet.** Det falder ikke tilbage til synlig
+indtastning, fordi en secret ikke må slippe ud, blot fordi omgivelserne var
+anderledes end ventet. Tidligere sluttede `byt` i den situation med kode 0 og
+ingen besked — en tavs succes, hvor intet var sket. Det er lukket.
+
+`state` er en engangsværdi. Den slettes, så snart den er brugt — også hvis
+selve byttet derefter fejler. Så kør `start` igen.
+
 ## Hemmeligheder
 
 | Navn | Hvor | Hvorfor |
