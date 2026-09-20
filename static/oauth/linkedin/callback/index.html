@@ -78,7 +78,7 @@
 
   <div class="advarsel">
     <p style="margin:0 0 .6rem"><strong>Koden herover er en engangsnøgle.</strong> Den udløber inden for få minutter og kan kun bruges én gang. Del den ikke, og send den ikke i en besked.</p>
-    <p style="margin:0"><strong>Siden bytter den ikke til et token.</strong> Det kræver app-hemmeligheden, og den hører ikke hjemme på et offentligt websted. Byttet sker på din egen maskine.</p>
+    <p style="margin:0"><strong>Siden bytter den ikke til et token.</strong> Det kræver app-hemmeligheden, og den hører ikke hjemme på et offentligt websted. Byttet sker inde i GitHub Actions, hvor hemmeligheden ligger.</p>
   </div>
 </main>
 
@@ -100,7 +100,7 @@
     ud.innerHTML = '<div class="kort fejl"><p class="etikette">LinkedIn afviste</p>'
       + '<p style="margin:0 0 .75rem"><strong>' + fejl.replace(/[<&]/g, '') + '</strong></p>'
       + '<p style="margin:0;color:var(--daempet)">' + (p.get('error_description') || 'Ingen yderligere forklaring.').replace(/[<&]/g, '') + '</p>'
-      + '<p style="margin:1rem 0 0;color:var(--daempet)">Intet er sket. Prøv forløbet igen fra terminalen.</p></div>';
+      + '<p style="margin:1rem 0 0;color:var(--daempet)">Intet er sket. Start forfra på <a href="/oauth/linkedin/">/oauth/linkedin/</a>.</p></div>';
     return;
   }
 
@@ -108,19 +108,42 @@
   if (!kode) {
     ud.innerHTML = '<div class="kort"><p class="etikette">Ingen autorisation i adressen</p>'
       + '<p style="margin:0;color:var(--daempet)">Siden er åbnet direkte frem for via LinkedIn. '
-      + 'Start forløbet i terminalen med <code>node publicering/scripts/linkedin-oauth.mjs start</code>.</p></div>';
+      + 'Start forløbet på <a href="/oauth/linkedin/">/oauth/linkedin/</a>.</p></div>';
     return;
   }
 
+  // State sammenlignes med den, startsiden udstedte i denne browser.
+  // Stemmer den ikke, er forloebet ikke startet her, og saa vises koden ikke.
+  var forventet = null;
+  try { forventet = sessionStorage.getItem('kgg_li_state'); } catch (e) {}
+  var modtaget = p.get('state');
+
+  if (forventet && modtaget !== forventet) {
+    ud.innerHTML = '<div class="kort fejl"><p class="etikette">State stemmer ikke</p>'
+      + '<p style="margin:0 0 .75rem">Forløbet blev ikke startet i denne browser, eller adressen er ændret undervejs.</p>'
+      + '<p style="margin:0;color:var(--daempet)">Koden vises ikke. Start forfra på '
+      + '<a href="/oauth/linkedin/">/oauth/linkedin/</a>.</p></div>';
+    return;
+  }
+  try { sessionStorage.removeItem('kgg_li_state'); } catch (e) {}
+
   ud.innerHTML = '<div class="kort klar">'
     + '<p class="etikette">Autorisation modtaget</p>'
-    + '<p style="margin:0 0 1.25rem">Indsæt de to værdier i terminalen. Scriptet kontrollerer selv, at <code>state</code> er den, det udstedte.</p>'
+    + (forventet
+        ? '<p style="margin:0 0 1.25rem">State bekræftet. Kopiér koden og læg den i GitHub.</p>'
+        : '<p style="margin:0 0 1.25rem">Kopiér koden og læg den i GitHub. '
+          + '<em>State kunne ikke sammenlignes — denne browser har ingen gemt. '
+          + 'Startede du forløbet et andet sted, så start forfra.</em></p>')
     + felt('code', kode, true)
-    + felt('state', p.get('state') || '(ingen state — afvis dette forløb og start forfra)', true)
-    + '<p class="etikette" style="margin-top:1.25rem">Næste skridt</p>'
-    + '<ol style="margin:0"><li>Gå tilbage til terminalen</li>'
-    + '<li>Kør <code>node publicering/scripts/linkedin-oauth.mjs byt</code></li>'
-    + '<li>Indsæt <code>code</code> og <code>state</code>, når du bliver bedt om det</li></ol>'
+    + '<p class="etikette" style="margin-top:1.25rem">Næste skridt — alt sammen i browseren</p>'
+    + '<ol style="margin:0">'
+    + '<li>GitHub → Settings → Secrets and variables → Actions</li>'
+    + '<li>Åbn <code>LI_AUTH_CODE</code> → indsæt koden → Save</li>'
+    + '<li>GitHub → Actions → <strong>Forny LinkedIn-token</strong> → Run workflow</li>'
+    + '</ol>'
+    + '<p style="margin:1rem 0 0;color:var(--daempet);font-size:.88rem">'
+    + 'Workflowet bytter koden til et token, kontrollerer at det tilhører dig, '
+    + 'og gemmer det. Du kopierer aldrig et token.</p>'
     + '</div>';
 
   ud.addEventListener('click', function (e) {

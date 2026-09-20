@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="da">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Forny LinkedIn-adgang — Kristian GG</title>
+<!--
+  Startside for LinkedIn OAuth. Statisk, uden server.
+
+  Siden genererer en state-nonce, gemmer den i sessionStorage og sender
+  Kristian til LinkedIn. Callbacken sammenligner bagefter.
+
+  DER ER INGEN HEMMELIGHED PAA DENNE SIDE.
+  Client ID er offentligt - det staar i autorisations-URL'en i forvejen og
+  kan laeses af enhver, der klikker "godkend". Client Secret findes kun i
+  GitHub Actions Secrets og roerer aldrig en browser.
+
+  state er ikke en hemmelighed, men en engangsnonce mod CSRF. Den hoerer
+  hjemme netop her, hos den browser der starter forloebet.
+-->
+<style>
+  :root{
+    --taage:#F4F6F1; --birk:#E8E6DC; --hvid:#fff;
+    --skovbund:#2C3A2E; --daempet:#5A6857; --mos:#4A6240; --hyben:#9C3E29;
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0; background:var(--taage); color:var(--skovbund);
+    font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+    font-size:16px; line-height:1.6; padding:16px;
+  }
+  main{max-width:38rem; margin:2.5rem auto 4rem}
+  h1{font-size:1.6rem; line-height:1.2; margin:0 0 .4rem}
+  .under{color:var(--daempet); margin:0 0 2rem}
+  .kort{
+    background:var(--hvid); border:1px solid rgba(168,183,154,.55);
+    border-radius:.75rem; padding:1.25rem; margin-bottom:1rem;
+  }
+  label{display:block; font-size:.68rem; font-weight:700; letter-spacing:.09em;
+    text-transform:uppercase; color:var(--daempet); margin-bottom:.4rem}
+  input{
+    width:100%; font:inherit; font-family:ui-monospace,Menlo,monospace;
+    font-size:.9rem; padding:.7rem .8rem; border:1px solid rgba(168,183,154,.8);
+    border-radius:.4rem; background:var(--birk); color:inherit; min-height:48px;
+  }
+  .hjaelp{font-size:.8rem; color:var(--daempet); margin:.5rem 0 0}
+  a.knap, button{
+    display:inline-flex; align-items:center; justify-content:center;
+    font:inherit; font-weight:700; background:var(--mos); color:#fff;
+    border:0; border-radius:.4rem; padding:.8rem 1.4rem; min-height:48px;
+    cursor:pointer; text-decoration:none; margin-top:1.25rem;
+  }
+  a.knap[aria-disabled="true"]{background:var(--daempet); opacity:.5; pointer-events:none}
+  ol{padding-left:1.2rem; margin:.5rem 0 0} li{margin-bottom:.5rem}
+  .advarsel{background:var(--birk); border-radius:.5rem; padding:.9rem 1rem;
+    font-size:.86rem; color:var(--daempet); margin-top:1.5rem}
+  code{font-family:ui-monospace,Menlo,monospace; font-size:.85rem}
+</style>
+</head>
+<body>
+<main>
+  <h1>Forny LinkedIn-adgang</h1>
+  <p class="under">Start her, når tokenet er ved at udløbe. Virker i enhver browser på enhver enhed.</p>
+
+  <div class="kort">
+    <label for="cid">Client ID</label>
+    <input id="cid" inputmode="latin" autocomplete="off" spellcheck="false"
+           placeholder="fra LinkedIn Developer → Auth">
+    <p class="hjaelp">Ikke en hemmelighed — den står i autorisationsadressen i forvejen. Husket i denne browser, så du kun taster den én gang per enhed. Vil du undgå det helt, så gem denne side som bogmærke med <code>?client_id=…</code> i adressen.</p>
+    <a class="knap" id="gaa" href="#" aria-disabled="true">Godkend hos LinkedIn</a>
+  </div>
+
+  <div class="kort">
+    <label>Bagefter</label>
+    <ol>
+      <li>Du lander på callbacken, som viser en <code>code</code></li>
+      <li>GitHub → Settings → Secrets and variables → Actions → <code>LI_AUTH_CODE</code> → indsæt → Save</li>
+      <li>GitHub → Actions → <strong>Forny LinkedIn-token</strong> → Run workflow</li>
+    </ol>
+    <p class="hjaelp">Workflowet bytter koden til et token, kontrollerer at det tilhører dig, og gemmer det. Du kopierer aldrig et token.</p>
+  </div>
+
+  <div class="advarsel">
+    <p style="margin:0"><strong>Der er ingen hemmelighed på denne side.</strong> Client Secret findes kun i GitHub Actions Secrets og rører aldrig en browser. Tokenet gør heller ikke.</p>
+  </div>
+</main>
+
+<script>
+(function () {
+  var NOEGLE = 'kgg_li_client_id';
+  var felt = document.getElementById('cid');
+  var knap = document.getElementById('gaa');
+
+  var fraUrl = new URLSearchParams(location.search).get('client_id');
+  var gemt = null;
+  try { gemt = localStorage.getItem(NOEGLE); } catch (e) {}
+  felt.value = (fraUrl || gemt || '').trim();
+
+  function nonce() {
+    var a = new Uint8Array(24);
+    crypto.getRandomValues(a);
+    return btoa(String.fromCharCode.apply(null, a))
+      .replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+  }
+
+  function opdater() {
+    var id = felt.value.trim();
+    if (!id) { knap.setAttribute('aria-disabled', 'true'); knap.href = '#'; return; }
+    try { localStorage.setItem(NOEGLE, id); } catch (e) {}
+    var state = nonce();
+    try { sessionStorage.setItem('kgg_li_state', state); } catch (e) {}
+    var u = new URL('https://www.linkedin.com/oauth/v2/authorization');
+    u.searchParams.set('response_type', 'code');
+    u.searchParams.set('client_id', id);
+    u.searchParams.set('redirect_uri', 'https://kristiangg.dk/oauth/linkedin/callback/');
+    u.searchParams.set('state', state);
+    u.searchParams.set('scope', 'w_member_social openid profile');
+    knap.href = u.toString();
+    knap.setAttribute('aria-disabled', 'false');
+  }
+
+  felt.addEventListener('input', opdater);
+  opdater();
+})();
+</script>
+</body>
+</html>
