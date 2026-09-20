@@ -8,8 +8,11 @@ import { byt, beskrivSvar } from '../scripts/forny-linkedin-token.mjs';
 
 let bestaaet = 0, fejlet = 0;
 
+// En kode i realistisk laengde. LinkedIns er langt over 40 tegn.
+const RIGTIG_KODE = 'AQT' + 'b'.repeat(60);
+
 const miljoe = (ekstra = {}) => Object.assign(process.env, {
-  LI_AUTH_CODE: 'AQTb_kode', LI_CLIENT_ID: 'id', LI_CLIENT_SECRET: 'hemmelig',
+  LI_AUTH_CODE: RIGTIG_KODE, LI_CLIENT_ID: 'id', LI_CLIENT_SECRET: 'hemmelig',
   LI_TILLADT_URN: 'urn:li:person:AbC123', GITHUB_REPOSITORY: 'x/y',
 }, ekstra);
 
@@ -38,7 +41,13 @@ function paastand(navn, faktisk, forventet) {
 console.log('\nFornyelsen afviser\n');
 
 miljoe({ LI_AUTH_CODE: 'opbrugt' });
-await afvises('en allerede brugt kode', () => byt(svarer(200, {})), 'allerede brugt');
+await afvises('en allerede brugt kode', () => byt(svarer(200, {})), 'pladsholderen');
+
+miljoe({ LI_AUTH_CODE: 'venter' });
+await afvises('pladsholderen "venter"', () => byt(svarer(200, {})), 'pladsholderen');
+
+miljoe({ LI_AUTH_CODE: 'AQTb_kun_en_stump' });
+await afvises('en halvt kopieret kode', () => byt(svarer(200, {})), 'kun 17 tegn');
 
 miljoe({ LI_AUTH_CODE: '' });
 await afvises('en tom kode', () => byt(svarer(200, {})), 'LI_AUTH_CODE mangler');
@@ -49,6 +58,11 @@ await afvises('manglende client secret', () => byt(svarer(200, {})), 'LI_CLIENT_
 miljoe();
 await afvises('LinkedIn der svarer 400',
   () => byt(svarer(400, { error: 'invalid_grant' })), 'LinkedIn afviste byttet');
+
+miljoe();
+await afvises('LinkedIns intetsigende "code not found" forklares',
+  () => byt(svarer(401, { error_description: 'Unable to retrieve access token: authorization code not found' })),
+  'allerede brugt, udloebet');
 
 miljoe();
 await afvises('et svar uden access_token',
