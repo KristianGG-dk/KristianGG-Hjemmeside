@@ -20,17 +20,73 @@ GG*. **Den tilknytning gør ikke siden til publiceringsdestination.** LinkedIn
 kræver, at en app er knyttet til en side; det er en administrativ binding, ikke
 et mål. Målet er medlemsprofilen, og scopet er `w_member_social`.
 
-## Flowet
+## Flowet — browser og GitHub, ingen terminal
+
+Fastlagt 20-09-2026. Motoren skal kunne administreres fra flere enheder;
+Kristian må ikke være afhængig af én bestemt computer.
 
 ```
-1.  node linkedin-oauth.mjs start      lokalt. Genererer state, udskriver URL
-2.  Kristian godkender i browseren     som sig selv, ikke som en side
-3.  LinkedIn → callbacken              ?code=…&state=…
-4.  Callbacken viser code + state      statisk side. Bytter intet. Sender intet.
-5.  node linkedin-oauth.mjs byt        lokalt. State kontrolleres, kode byttes
-6.  /v2/userinfo                       hvem tilhører tokenet? URN udledes
-7.  Kristian lægger i GitHub Secrets   token + URN + tilladt URN
+1.  kristiangg.dk/oauth/linkedin/   statisk startside. Genererer state,
+                                    sender til LinkedIn
+2.  LinkedIn                        Kristian godkender som sig selv
+3.  callbacken                      sammenligner state, viser code
+4.  GitHub → Secrets                Kristian indsætter koden i LI_AUTH_CODE
+5.  GitHub → Actions                "Forny LinkedIn-token" → Run workflow
+6.  workflowen                      bytter code→token SERVER-SIDE,
+                                    bekræfter identitet, gemmer tokenet,
+                                    rydder LI_AUTH_CODE
 ```
+
+Trin 4 og 5 foregår på github.com og virker på en telefon. **Kristian
+kopierer aldrig et token** — kun en kortlivet autorisationskode.
+
+### Hvorfor GitHub og ikke en Netlify-funktion
+
+En offentlig funktion skulle selv kunne godtgøre, at det er Kristian, og
+ville dermed kræve sit eget login, sin egen session og sin egen
+adgangskontrol — en administrationskonsol nummer to.
+
+GitHub er allerede en autentificeret, 2FA-beskyttet, revisionslogget konsol,
+der virker i enhver browser. Løsningen tilføjer derfor **ingen ny offentlig
+endpoint**, intet token-udstedende API og ingen anden hemmelighedsbutik.
+
+### Hvorfor koden går gennem en hemmelighed
+
+Repoet er **offentligt**. Et `workflow_dispatch`-input står i kørslens
+metadata, synligt for alle. En hemmelighed gør det ikke. Derfor indsættes
+koden i `LI_AUTH_CODE` frem for i et felt.
+
+### Hvorfor en PAT — og hvordan den er begrænset
+
+`GITHUB_TOKEN` har **ingen `secrets`-rettighed**. Dens tilladelser dækker
+actions, contents, issues, pull-requests og en håndfuld til, men ikke
+hemmeligheder. Der findes ingen mindre privilegeret indbygget mekanisme til
+at skrive en Actions-hemmelighed fra en workflow. Alternativet er en GitHub
+App, som kræver en privat nøgle i en hemmelighed — samme rækkevidde, flere
+bevægelige dele.
+
+`GH_SECRETS_PAT` er derfor en **fine-grained PAT**, afgrænset til dette ene
+repo, med den ene rettighed *Secrets: read and write*.
+
+Den ligger i miljøet **`linkedin-oauth`** med Kristian som **påkrævet
+godkender**. To ting følger af det: jobbet kan ikke køre, uden at han trykker
+godkend, og PAT'en er utilgængelig for alle andre workflows i repoet.
+
+### State og CSRF
+
+Startsiden genererer en nonce, gemmer den i `sessionStorage` og sender den
+med. Callbacken sammenligner. Stemmer den ikke, **vises koden ikke**.
+
+Det afgørende lag ligger dog server-side: workflowen sammenligner tokenets
+egen `sub` med `LI_TILLADT_URN`. Lokkes Kristian til at bruge en fremmed kode,
+hører det resulterende token til **den anden**, identiteten matcher ikke, og
+der gemmes ingenting.
+
+### Den lokale vej er en reserveløsning
+
+`publicering/scripts/linkedin-oauth.mjs` virker stadig og kan bruges den dag,
+GitHub er nede, eller noget skal fejlsøges udenom. **Den er ikke den normale
+driftsvej.**
 
 ### Callback-URL
 
@@ -96,11 +152,14 @@ selve byttet derefter fejler. Så kør `start` igen.
 
 | Navn | Hvor | Hvorfor |
 | --- | --- | --- |
-| `LI_CLIENT_ID` | kun lokalt miljø | bruges i OAuth-forløbet |
-| `LI_CLIENT_SECRET` | kun lokalt miljø | **må aldrig i repoet eller i GitHub Secrets.** Motoren har ikke brug for den — kun tokenudstedelsen har. |
-| `LI_ACCESS_TOKEN` | GitHub Secrets | motorens adgang |
-| `LI_PERSON_URN` | GitHub Secrets | den URN, der publiceres til |
-| `LI_TILLADT_URN` | GitHub Secrets | den URN, der **må** publiceres til |
+| `LI_CLIENT_ID` | GitHub Secrets | offentlig værdi, men holdes samlet med resten |
+| `LI_CLIENT_SECRET` | GitHub Secrets | **rører aldrig en browser eller en privat maskine** |
+| `LI_TILLADT_URN` | GitHub Secrets | den ENESTE identitet der accepteres. Sættes af Kristian |
+| `LI_AUTH_CODE` | GitHub Secrets | kortlivet. Indsættes af Kristian, ryddes af workflowen |
+| `GH_SECRETS_PAT` | miljøet `linkedin-oauth` | fine-grained, dette repo, kun Secrets: write |
+| `LI_ACCESS_TOKEN` | GitHub Secrets | **skrives af workflowen.** Kristian rører den aldrig |
+| `LI_PERSON_URN` | GitHub Secrets | skrives af workflowen ud fra tokenets egen identitet |
+| `LI_REFRESH_TOKEN` | GitHub Secrets | skrives kun, hvis LinkedIn faktisk returnerer ét |
 
 `LI_PERSON_URN` og `LI_TILLADT_URN` får samme værdi, men læses hver for sig.
 En ændring af den ene ændrer ikke den anden — og en uoverensstemmelse stopper
@@ -128,8 +187,27 @@ enten et `refresh_token` eller ikke. Scriptet skriver begge udfald ud i klar
 tekst:
 
 - **Med refresh token** → motoren kan forny selv, og der bygges en fornyelse.
-- **Uden** → Kristian godkender på ny inden udløb, og vagthunden skal varsle i
-  god tid. Det er en administrativ opgave hver anden måned, ikke en blokering.
+- **Uden** → Kristian godkender på ny inden udløb. Tre browserskridt hver
+  anden måned, ikke en blokering.
+
+**Der er ikke bygget automatisk fornyelse.** Den ville hvile på en antagelse
+om, hvad LinkedIn returnerer, og det afgøres først af den første rigtige
+udveksling.
+
+### Vagthunden varsler
+
+`publicering/linkedin-token.json` bærer ingen hemmelighed — kun udløbsdatoen,
+hvem tokenet tilhører, og om der er et refresh token. Vagthunden læser den:
+
+| Tilbage | |
+| --- | --- |
+| over 14 dage | i orden |
+| 14 dage eller mindre | advarsel |
+| 3 dage eller mindre | **fejl** |
+| udløbet | **fejl** — kanalen kan ikke publicere |
+
+Hver besked bærer linket til startsiden. Findes filen ikke, er der aldrig
+fornyet, og der varsles ikke.
 
 Det er et definitivt svar for netop denne app — stærkere end dokumentationen,
 fordi det er API'ets eget.
@@ -193,7 +271,10 @@ det udløber. Advarer, når der er 14 dage eller mindre tilbage.
 | Callback bygget og afprøvet | ✓ |
 | OAuth-script skrevet | ✓ |
 | Redirect-URL registreret hos LinkedIn | ✓ 20-09-2026 |
-| Token udstedt | nej — og må ikke, før URL'en er registreret |
+| Central browser/GitHub-administration | ✓ |
+| Vagthund varsler om udløb | ✓ 14 / 3 / udløbet |
+| Token udstedt | **nej — venter på Kristian** |
+| Automatisk fornyelse | bevidst ikke bygget, se ovenfor |
 | Destinationskontrol i publisher | ✓ fail closed, 14 prøver |
 | Adgangskontrol (kun læsning) | ✓ |
 | Billedunderstøttelse i publisher | ikke bygget |
