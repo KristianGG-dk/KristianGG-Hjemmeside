@@ -113,6 +113,35 @@ Pladsholdere — `venter`, `afventer`, `opbrugt`, `todo` — og enhver kode unde
 *"code not found"* oversættes til de tre ting, det kan dække over: brugt,
 udløbet, eller forkert redirect_uri.
 
+### Bootstrap — hønen og ægget
+
+Destinationen skal være **fastlåst, før** der publiceres. Men Kristians
+person-URN kan først kendes, **efter** han har autoriseret. To krav, der
+peger hver sin vej.
+
+Løsningen er en sentinelværdi og tre værn:
+
+```
+LI_TILLADT_URN = urn:li:person:AFVENTER   ← endnu ikke fastlåst
+```
+
+| Handling | Sentinel står | Destination låst |
+| --- | --- | --- |
+| `bootstrap` | **fastlåser** ud fra tokenets egen identitet | **afvises** |
+| `forny` | **afvises** | sammenligner og fortslætter |
+
+Så destinationen kan fastlåses **én gang**, af den autorisation Kristian
+selv gennemførte i sin egen browser og godkendte i GitHub — og derefter
+aldrig ændres utilsigtet. Skal den laves om, skal sentinelværdien sættes
+manuelt tilbage først.
+
+URN'en kommer fra **LinkedIns eget svar**, ikke fra vores konfiguration.
+Svarer `/v2/userinfo` uden `sub`, fastlåses ingenting.
+
+**Alternativet var to koder** — én til at få URN'en at vide, og én til den
+rigtige fornyelse. Det er ikke sikrere. Det er bare besværligere, og en kode
+kan kun bruges én gang.
+
 ### State og CSRF
 
 Startsiden genererer en nonce, gemmer den i `sessionStorage` og sender den
@@ -195,7 +224,7 @@ selve byttet derefter fejler. Så kør `start` igen.
 | --- | --- | --- |
 | `LI_CLIENT_ID` | GitHub Secrets | offentlig værdi, men holdes samlet med resten |
 | `LI_CLIENT_SECRET` | GitHub Secrets | **rører aldrig en browser eller en privat maskine** |
-| `LI_TILLADT_URN` | GitHub Secrets | den ENESTE identitet der accepteres. Sættes af Kristian |
+| `LI_TILLADT_URN` | GitHub Secrets | den ENESTE identitet der accepteres. Sættes til sentinel af Kristian, fastlåses af `bootstrap` |
 | `LI_AUTH_CODE` | GitHub Secrets | kortlivet. Indsættes af Kristian, ryddes af workflowen |
 | `GH_SECRET_MANAGER_TOKEN` | miljøet `linkedin-oauth` | fine-grained, dette repo, kun Secrets: write |
 | `LI_ACCESS_TOKEN` | GitHub Secrets | **skrives af workflowen.** Kristian rører den aldrig |
