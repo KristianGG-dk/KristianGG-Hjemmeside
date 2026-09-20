@@ -65,12 +65,53 @@ at skrive en Actions-hemmelighed fra en workflow. Alternativet er en GitHub
 App, som kræver en privat nøgle i en hemmelighed — samme rækkevidde, flere
 bevægelige dele.
 
-`GH_SECRETS_PAT` er derfor en **fine-grained PAT**, afgrænset til dette ene
+`GH_SECRET_MANAGER_TOKEN` er derfor en **fine-grained PAT**, afgrænset til dette ene
 repo, med den ene rettighed *Secrets: read and write*.
 
 Den ligger i miljøet **`linkedin-oauth`** med Kristian som **påkrævet
 godkender**. To ting følger af det: jobbet kan ikke køre, uden at han trykker
 godkend, og PAT'en er utilgængelig for alle andre workflows i repoet.
+
+### Første kørsel fejlede — hvad den lærte os
+
+Kørsel 1 den 20-09-2026 nåede frem til udvekslingen og fejlede der. Loggen
+viste to ting:
+
+```
+GH_SECRETS_PAT:                     ← tom
+FEJL: LinkedIn afviste byttet: 401
+  "authorization code not found"
+```
+
+**Navnet var forkert.** Hemmeligheden hedder `GH_SECRET_MANAGER_TOKEN`.
+
+**Koden var en pladsholder.** `LI_AUTH_CODE` stod på `venter` — den værdi,
+hemmeligheden blev oprettet med.
+
+**Review virkede.** Kørslen ventede 2 minutter og 25 sekunder på godkendelse
+og fortsatte derefter. Der er intet self-review-problem, og den påkrævede
+godkender bliver stående: en autorisationskode lever **tredive minutter**, så
+ventetiden er ufarlig.
+
+### Kontroltilstand
+
+Workflowet har to handlinger, og **`kontroller` er standard**:
+
+| | |
+| --- | --- |
+| `kontroller` | Beviser at rørføringen er på plads. Kalder **ikke** LinkedIn, bruger **ikke** koden, gemmer intet. Læser repoets krypteringsnøgle og hemmelighedernes **navne** via PAT'en. |
+| `forny` | Den rigtige udveksling. |
+
+Den findes, fordi en kode er en knap ressource: én gang, tredive minutter.
+Fejler opsætningen først bagefter, er koden spildt, og hele browserforløbet
+skal gås om.
+
+Kontrollen viser **længder og navne, aldrig værdier**.
+
+Pladsholdere — `venter`, `afventer`, `opbrugt`, `todo` — og enhver kode under
+40 tegn afvises, **før** LinkedIn kaldes. LinkedIns eget intetsigende
+*"code not found"* oversættes til de tre ting, det kan dække over: brugt,
+udløbet, eller forkert redirect_uri.
 
 ### State og CSRF
 
@@ -156,7 +197,7 @@ selve byttet derefter fejler. Så kør `start` igen.
 | `LI_CLIENT_SECRET` | GitHub Secrets | **rører aldrig en browser eller en privat maskine** |
 | `LI_TILLADT_URN` | GitHub Secrets | den ENESTE identitet der accepteres. Sættes af Kristian |
 | `LI_AUTH_CODE` | GitHub Secrets | kortlivet. Indsættes af Kristian, ryddes af workflowen |
-| `GH_SECRETS_PAT` | miljøet `linkedin-oauth` | fine-grained, dette repo, kun Secrets: write |
+| `GH_SECRET_MANAGER_TOKEN` | miljøet `linkedin-oauth` | fine-grained, dette repo, kun Secrets: write |
 | `LI_ACCESS_TOKEN` | GitHub Secrets | **skrives af workflowen.** Kristian rører den aldrig |
 | `LI_PERSON_URN` | GitHub Secrets | skrives af workflowen ud fra tokenets egen identitet |
 | `LI_REFRESH_TOKEN` | GitHub Secrets | skrives kun, hvis LinkedIn faktisk returnerer ét |
@@ -283,3 +324,65 @@ det udløber. Advarer, når der er 14 dage eller mindre tilbage.
 
 **Tørløb er fortsat standard i `publicer-linkedin.mjs`.** Der er ikke
 publiceret noget, og ingen planlagte opslag er ændret.
+
+## Det, der mangler for automatisk publicering med billeder
+
+Naar tokenet er paa plads, er LinkedIn-kanalen stadig ikke automatisk. Fire
+ting mangler, og de er uafhaengige af OAuth.
+
+### 1. Billedunderstoettelse i publisheren
+
+`publicer-linkedin.mjs` kan i dag **tekst og et artikel-link**. Alle Kristians
+LinkedIn-elementer har et billede.
+
+Et billede kraever tre kald frem for ét:
+
+```
+POST /rest/images?action=initializeUpload   → uploadUrl + urn:li:image:…
+PUT  <uploadUrl>                            → selve billedfilen
+POST /rest/posts                            → content.media.id = urn'en
+```
+
+**Uafklaret:** om `w_member_social` alene daekker billedtrinnet, eller om der
+skal et scope mere til. Den officielle dokumentation kunne ikke naas
+(`learn.microsoft.com` afvises af miljoeets netvaerkspolitik). Svaret kommer
+ved foerste forsoeg — og det forsoeg maa vente paa, at der er et token.
+
+Billederne ligger allerede offentligt paa kristiangg.dk, saa de kan hentes
+uden videre.
+
+### 2. Laasefiler til LinkedIn-elementerne
+
+De syv LinkedIn-elementer — 2, 5, 7, 11, 14, 26, 27 — har **ingen laasefil**.
+Det er korrekt i dag: naar et menneske publicerer, er der intet for motoren
+at kvittere for.
+
+Bliver kanalen automatisk, vender det. Hvert element skal have en laas, saa
+gaten kan verificere, hvad der sendes. Teksterne findes allerede i
+godkendelsespakkerne.
+
+### 3. Gaten skal fange aendret social tekst
+
+I dag kontrollerer `verificer.mjs` kun broedteksten **dybt for
+website-elementer**. For sociale elementer kontrolleres felterne og laasen,
+men `tekst` er ikke et laast felt.
+
+En aendret social tekst fanges derfor foerst af publiceringsscriptet og
+vagthunden — ikke af gaten. Med to kanaler mere i drift er det ikke godt nok.
+
+**Dette punkt er ikke til forhandling**, og det skal laves foer den foerste
+automatiske LinkedIn-publicering.
+
+### 4. Planlagt koersel
+
+Instagram har `publicer-instagram-planlagt.yml` med cron. LinkedIn har kun
+den manuelt startede workflow. Moenstret findes og skal kopieres.
+
+### Raekkefoelgen
+
+```
+token  →  gaten skaerpes (3)  →  laasefiler (2)  →  billeder (1)  →  cron (4)
+```
+
+Intet af det kraever ny godkendelse fra Kristian ud over den foerste rigtige
+publicering, som **skal godkendes saerskilt**.
