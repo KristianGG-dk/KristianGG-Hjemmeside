@@ -1,24 +1,31 @@
 # Fornyer LinkedIn-adgangen fra browseren. Startes manuelt, aldrig af sig selv.
 #
-# Kristian goer tre ting, alle i en browser paa en hvilken som helst enhed:
+# TO HANDLINGER
+#   kontroller  (standard)  beviser at roerfoeringen er paa plads. Kalder
+#                           IKKE LinkedIn og bruger IKKE koden. Intet gemmes.
+#   forny                   bytter koden til et token og gemmer det.
+#
+# Kontroltilstanden findes, fordi en autorisationskode er en knap ressource:
+# den kan bruges én gang og lever tredive minutter. Fejler opsaetningen
+# foerst bagefter, er koden spildt, og hele browserforloebet skal gaas om.
+#
+# SAADAN GOER KRISTIAN
 #   1. kristiangg.dk/oauth/linkedin/  -> godkender -> faar en kode
 #   2. Settings > Secrets > LI_AUTH_CODE -> indsaetter koden
-#   3. Actions > denne workflow > Run workflow
+#   3. Actions > denne workflow > Run workflow -> handling: forny
 #
 # HVORFOR KODEN IKKE ER ET INPUT HER
 # Repoet er offentligt. Et workflow_dispatch-input staar i koerslens metadata,
-# synligt for alle. En hemmelighed goer det ikke. Derfor gaar koden gennem
-# LI_AUTH_CODE frem for gennem et felt.
+# synligt for alle. En hemmelighed goer det ikke.
 #
 # HVORFOR EN PAT
 # GITHUB_TOKEN har ingen "secrets"-rettighed og kan ikke skrive en hemmelighed.
-# Der findes ingen mindre privilegeret indbygget mekanisme til det.
-# GH_SECRETS_PAT er derfor en fine-grained PAT, afgraenset til dette ene repo
-# med den ene rettighed Secrets: read and write.
+# GH_SECRET_MANAGER_TOKEN er en fine-grained PAT, afgraenset til dette ene
+# repo med den ene rettighed Secrets: read and write. Den ligger i miljoeet
+# "linkedin-oauth" med Kristian som paakraevet godkender, saa jobbet ikke kan
+# koere uden hans tryk, og PAT'en er utilgaengelig for alle andre workflows.
 #
-# Den ligger i miljoeet "linkedin-oauth" med Kristian som paakraevet
-# godkender. Selv med skriveadgang til repoet kan ingen koere jobbet uden at
-# han trykker godkend, og PAT'en er utilgaengelig for alle andre workflows.
+# Godkendelsesventetiden er ufarlig: koden lever tredive minutter.
 #
 # DER PUBLICERES INTET HERFRA. Ingen koe, ingen laase, ingen opslag.
 
@@ -27,27 +34,24 @@ name: Forny LinkedIn-token
 on:
   workflow_dispatch:
     inputs:
-      bekraeft:
-        description: 'Skriv FORNY for at bekræfte'
+      handling:
+        description: 'Hvad skal der ske?'
         required: true
-        type: string
+        default: kontroller
+        type: choice
+        options:
+          - kontroller
+          - forny
 
 permissions: {}
 
 jobs:
-  forny:
-    # Miljoeet baerer PAT'en og kraever Kristians godkendelse.
+  koer:
     environment: linkedin-oauth
     runs-on: ubuntu-latest
     permissions:
       contents: write        # kun for at gemme udloebsdatoen
     steps:
-      - name: Bekraeftelse
-        if: ${{ inputs.bekraeft != 'FORNY' }}
-        run: |
-          echo "Bekraeftelsen manglede. Skriv FORNY for at fortsaette."
-          exit 1
-
       - uses: actions/checkout@v4
 
       - uses: actions/setup-node@v4
@@ -56,16 +60,18 @@ jobs:
 
       - run: npm install --no-save libsodium-wrappers@0.7.15
 
-      - name: Byt kode til token og gem
+      - name: ${{ inputs.handling == 'forny' && 'Byt kode til token og gem' || 'Kontrollér opsætningen' }}
         env:
+          HANDLING: ${{ inputs.handling }}
           LI_AUTH_CODE: ${{ secrets.LI_AUTH_CODE }}
           LI_CLIENT_ID: ${{ secrets.LI_CLIENT_ID }}
           LI_CLIENT_SECRET: ${{ secrets.LI_CLIENT_SECRET }}
           LI_TILLADT_URN: ${{ secrets.LI_TILLADT_URN }}
-          GH_SECRETS_PAT: ${{ secrets.GH_SECRETS_PAT }}
+          GH_SECRET_MANAGER_TOKEN: ${{ secrets.GH_SECRET_MANAGER_TOKEN }}
         run: node publicering/scripts/forny-linkedin-token.mjs
 
       - name: Gem udloebsdatoen i repoet
+        if: ${{ inputs.handling == 'forny' }}
         run: |
           if [ -n "$(git status --porcelain publicering/linkedin-token.json)" ]; then
             git config user.name "kristiangg-motor"

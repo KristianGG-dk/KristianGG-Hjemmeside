@@ -15,7 +15,7 @@
 //   LI_CLIENT_ID      offentlig
 //   LI_CLIENT_SECRET  hemmelig, kun her
 //   LI_TILLADT_URN    den ENESTE identitet der accepteres
-//   GH_SECRETS_PAT    fine-grained PAT, dette ene repo, kun Secrets: write
+//   GH_SECRET_MANAGER_TOKEN    fine-grained PAT, dette ene repo, kun Secrets: write
 //   GITHUB_REPOSITORY saettes af Actions
 
 import { bevisEjer, DestinationAfvist } from './publicer-linkedin.mjs';
@@ -24,6 +24,10 @@ const TOKEN_ENDEPUNKT = 'https://www.linkedin.com/oauth/v2/accessToken';
 const REDIRECT_URI = 'https://kristiangg.dk/oauth/linkedin/callback/';
 const GH = 'https://api.github.com';
 const OPBRUGT = 'opbrugt';
+// Vaerdier der tydeligvis ikke er en rigtig kode. Fanges foer LinkedIn
+// kaldes, saa fejlbeskeden siger, hvad der er galt, frem for LinkedIns
+// intetsigende "authorization code not found".
+const PLADSHOLDERE = new Set([OPBRUGT, 'venter', 'afventer', 'todo', 'x', '-']);
 
 const env = process.env;
 const noedvendig = (navn) => {
@@ -38,7 +42,7 @@ const maskér = (v) => { if (v) console.log(`::add-mask::${v}`); return v; };
 /** Fjerner hemmeligheder fra en tekst, foer den logges. */
 function skrub(s) {
   let t = String(s);
-  for (const h of [env.LI_CLIENT_SECRET, env.GH_SECRETS_PAT, env.LI_AUTH_CODE].filter(Boolean)) {
+  for (const h of [env.LI_CLIENT_SECRET, env.GH_SECRET_MANAGER_TOKEN, env.LI_AUTH_CODE].filter(Boolean)) {
     t = t.split(h).join('«udeladt»');
   }
   return t.replace(/("(?:access|refresh)_token"\s*:\s*")[^"]+/g, '$1«udeladt»');
@@ -52,7 +56,7 @@ async function ghKald(sti, valg = {}) {
   const r = await fetch(`${GH}/repos/${noedvendig('GITHUB_REPOSITORY')}${sti}`, {
     ...valg,
     headers: {
-      Authorization: `Bearer ${noedvendig('GH_SECRETS_PAT')}`,
+      Authorization: `Bearer ${noedvendig('GH_SECRET_MANAGER_TOKEN')}`,
       Accept: 'application/vnd.github+json',
       'X-GitHub-Api-Version': '2022-11-28',
       ...(valg.body ? { 'Content-Type': 'application/json' } : {}),
@@ -84,10 +88,17 @@ async function skrivHemmelighed(navn, vaerdi) {
 
 export async function byt(hent = fetch) {
   const kode = noedvendig('LI_AUTH_CODE');
-  if (kode === OPBRUGT) {
+  if (PLADSHOLDERE.has(kode.toLowerCase())) {
     throw new Error(
-      'LI_AUTH_CODE er allerede brugt. Hent en ny kode paa ' +
-      'https://kristiangg.dk/oauth/linkedin/ og indsaet den foerst.'
+      `LI_AUTH_CODE indeholder pladsholderen "${kode}", ikke en rigtig kode. ` +
+      'Hent en paa https://kristiangg.dk/oauth/linkedin/ og indsaet den i ' +
+      'Settings > Secrets > LI_AUTH_CODE foerst.'
+    );
+  }
+  if (kode.length < 40) {
+    throw new Error(
+      `LI_AUTH_CODE er kun ${kode.length} tegn. En LinkedIn-kode er betydeligt laengere. ` +
+      'Blev kun en del af den kopieret?'
     );
   }
   maskér(kode);
@@ -104,7 +115,16 @@ export async function byt(hent = fetch) {
     }),
   });
   const svar = await r.json().catch(() => ({}));
-  if (!r.ok) throw new Error(`LinkedIn afviste byttet: ${r.status} ${skrub(JSON.stringify(svar))}`);
+  if (!r.ok) {
+    // "authorization code not found" daekker over tre forskellige ting, og
+    // LinkedIn siger ikke hvilken. Derfor staar de alle tre her.
+    const ekstra = /code not found|invalid_grant/i.test(JSON.stringify(svar))
+      ? '\n  Koden er enten allerede brugt, udloebet (30 minutter), eller fra et ' +
+        'andet redirect_uri.\n  Hent en frisk paa https://kristiangg.dk/oauth/linkedin/ ' +
+        'og koer igen med det samme.'
+      : '';
+    throw new Error(`LinkedIn afviste byttet: ${r.status} ${skrub(JSON.stringify(svar))}${ekstra}`);
+  }
   if (!svar.access_token) throw new Error(`Intet access_token i svaret: ${skrub(JSON.stringify(svar))}`);
 
   maskér(svar.access_token);
@@ -125,7 +145,69 @@ export function beskrivSvar(svar) {
   };
 }
 
-async function main() {
+/**
+ * Kontroltilstand. Beviser, at hele roerfoeringen er paa plads, UDEN at
+ * kalde LinkedIn og UDEN at bruge autorisationskoden.
+ *
+ * Den findes, fordi en rigtig kode er en knap ressource: den kan bruges én
+ * gang og lever tredive minutter. Fejler opsaetningen foerst bagefter, er
+ * koden spildt, og Kristian skal hele browserforloebet igennem igen.
+ */
+async function kontroller() {
+  console.log('\nKONTROL. LinkedIn kaldes ikke. Koden bruges ikke. Intet gemmes.\n');
+  let fejl = 0;
+  const ok = (m) => console.log(`  OK    ${m}`);
+  const nej = (m) => { console.log(`  FEJL  ${m}`); fejl++; };
+
+  // Hemmelighederne. Kun laengder og form vises, aldrig vaerdier.
+  for (const navn of ['LI_CLIENT_ID', 'LI_CLIENT_SECRET', 'LI_TILLADT_URN', 'GH_SECRET_MANAGER_TOKEN']) {
+    const v = (env[navn] ?? '').trim();
+    v ? ok(`${navn} til stede (${v.length} tegn)`) : nej(`${navn} mangler eller er tom`);
+  }
+
+  const urn = (env.LI_TILLADT_URN ?? '').trim();
+  if (urn && !urn.startsWith('urn:li:person:')) {
+    nej(`LI_TILLADT_URN er ikke en personprofil: "${urn}". Kun urn:li:person: accepteres.`);
+  } else if (urn === 'urn:li:person:AFVENTER') {
+    console.log('  ·     LI_TILLADT_URN staar paa AFVENTER. Foerste rigtige fornyelse');
+    console.log('        vil afvise og skrive din rigtige URN i loggen.');
+  } else if (urn) {
+    ok('LI_TILLADT_URN er en personprofil');
+  }
+
+  const kode = (env.LI_AUTH_CODE ?? '').trim();
+  if (!kode) nej('LI_AUTH_CODE mangler');
+  else if (PLADSHOLDERE.has(kode.toLowerCase())) {
+    console.log(`  ·     LI_AUTH_CODE staar paa "${kode}" — en pladsholder, ikke en kode.`);
+    console.log('        Det er i orden nu. Hent en rigtig kode foer fornyelsen.');
+  } else if (kode.length < 40) {
+    nej(`LI_AUTH_CODE er kun ${kode.length} tegn. Er kun en del kopieret?`);
+  } else ok(`LI_AUTH_CODE ligner en rigtig kode (${kode.length} tegn)`);
+
+  // Kan PAT'en faktisk skrive hemmeligheder? Kun GET — intet aendres.
+  if (env.GH_SECRET_MANAGER_TOKEN) {
+    try {
+      const n = await ghKald('/actions/secrets/public-key');
+      n.key_id ? ok(`PAT'en kan laese repoets krypteringsnoegle (key_id ${n.key_id})`)
+               : nej('krypteringsnoeglen kom uden key_id');
+      const liste = await ghKald('/actions/secrets?per_page=100');
+      const navne = (liste.secrets ?? []).map((x) => x.name);
+      ok(`PAT'en kan se ${navne.length} hemmeligheder`);
+      for (const n2 of ['LI_ACCESS_TOKEN', 'LI_PERSON_URN']) {
+        console.log(`  ·     ${n2}: ${navne.includes(n2) ? 'findes allerede' : 'oprettes ved foerste fornyelse'}`);
+      }
+    } catch (e) {
+      nej(`PAT'en duer ikke: ${skrub(e.message)}`);
+    }
+  }
+
+  console.log(fejl === 0
+    ? '\nKONTROL: ALT PAA PLADS. Naeste skridt er en rigtig kode.'
+    : `\nKONTROL: ${fejl} FEJL. Ret dem, foer du bruger en kode.`);
+  if (fejl) process.exit(1);
+}
+
+async function forny() {
   console.log('\nFornyelse af LinkedIn-token. Der publiceres ikke noget.\n');
 
   const svar = await byt();
@@ -170,5 +252,11 @@ async function main() {
 }
 
 if (import.meta.url === `file://${process.argv[1]}`) {
-  main().catch((e) => { console.error('FEJL:', skrub(e.message)); process.exit(1); });
+  const handling = (env.HANDLING ?? 'kontroller').toLowerCase();
+  const veje = { kontroller, forny };
+  if (!veje[handling]) {
+    console.error(`Ukendt handling: "${handling}". Brug kontroller eller forny.`);
+    process.exit(1);
+  }
+  veje[handling]().catch((e) => { console.error('FEJL:', skrub(e.message)); process.exit(1); });
 }
