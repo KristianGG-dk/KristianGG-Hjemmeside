@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="da">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>LinkedIn-autorisation — Kristian GG</title>
+<!--
+  OAuth 2.0 callback for LinkedIn (Authorization Code Flow, 3-legged).
+
+  Siden er bevidst STATISK og uden server. LinkedIn sender Kristian herhen med
+  ?code=...&state=... i adressen. Siden laeser dem, viser dem, og stopper.
+
+  DEN BYTTER IKKE KODEN TIL ET TOKEN.
+  Byttet kraever client secret, og en secret hoerer ikke hjemme paa et
+  offentligt websted. Byttet sker lokalt paa Kristians maskine med
+  publicering/scripts/linkedin-oauth.mjs, hvor secret'en i forvejen ligger.
+
+  Derfor sender siden heller ikke koden nogen steder: ingen fetch, ingen
+  analytics, ingen tredjepart, intet netvaerkskald overhovedet. Alt sker i
+  browseren, og koden forlader kun maskinen, naar Kristian selv indsaetter den
+  i sit eget terminalvindue.
+-->
+<style>
+  :root{
+    --taage:#F4F6F1; --birk:#E8E6DC; --hvid:#fff;
+    --skovbund:#2C3A2E; --daempet:#5A6857;
+    --mos:#4A6240; --lav:#A8B79A; --hyben:#9C3E29;
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0; background:var(--taage); color:var(--skovbund);
+    font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+    font-size:16px; line-height:1.6; padding:16px;
+  }
+  main{max-width:38rem; margin:2.5rem auto 4rem}
+  h1{font-size:1.6rem; line-height:1.2; margin:0 0 .4rem}
+  .under{color:var(--daempet); margin:0 0 2rem}
+  .kort{
+    background:var(--hvid); border:1px solid rgba(168,183,154,.55);
+    border-radius:.75rem; padding:1.25rem; margin-bottom:1rem;
+  }
+  .kort.fejl{border-left:4px solid var(--hyben)}
+  .kort.klar{border-left:4px solid var(--mos)}
+  .etikette{
+    font-size:.68rem; font-weight:700; letter-spacing:.09em;
+    text-transform:uppercase; color:var(--daempet); margin:0 0 .5rem;
+  }
+  code, .vaerdi{
+    font-family:ui-monospace,SFMono-Regular,Menlo,monospace; font-size:.85rem;
+    word-break:break-all;
+  }
+  .vaerdi{
+    display:block; background:var(--birk); padding:.7rem .8rem;
+    border-radius:.4rem; margin:0 0 .75rem;
+  }
+  button{
+    font:inherit; font-size:.85rem; font-weight:700;
+    background:var(--mos); color:#fff; border:0; border-radius:.35rem;
+    padding:.5rem .9rem; min-height:40px; cursor:pointer;
+  }
+  button:hover{background:var(--skovbund)}
+  button:focus-visible{outline:3px solid var(--skovbund); outline-offset:2px}
+  ol{padding-left:1.2rem} li{margin-bottom:.5rem}
+  .advarsel{
+    background:var(--birk); border-radius:.5rem; padding:.9rem 1rem;
+    font-size:.88rem; color:var(--daempet); margin-top:1.5rem;
+  }
+  .advarsel strong{color:var(--skovbund)}
+</style>
+</head>
+<body>
+<main>
+  <h1>LinkedIn-autorisation</h1>
+  <p class="under">Callback for KristianGG Publiceringsmotor. Denne side er ikke en del af hjemmesiden og skal ikke deles.</p>
+
+  <div id="ud"></div>
+
+  <div class="advarsel">
+    <p style="margin:0 0 .6rem"><strong>Koden herover er en engangsnøgle.</strong> Den udløber inden for få minutter og kan kun bruges én gang. Del den ikke, og send den ikke i en besked.</p>
+    <p style="margin:0"><strong>Siden bytter den ikke til et token.</strong> Det kræver app-hemmeligheden, og den hører ikke hjemme på et offentligt websted. Byttet sker på din egen maskine.</p>
+  </div>
+</main>
+
+<script>
+(function () {
+  var p = new URLSearchParams(window.location.search);
+  var ud = document.getElementById('ud');
+
+  function felt(etiket, vaerdi, medKnap) {
+    var id = 'v' + Math.random().toString(36).slice(2, 8);
+    return '<p class="etikette">' + etiket + '</p>'
+      + '<code class="vaerdi" id="' + id + '">' + vaerdi.replace(/[<&]/g, function (c) {
+          return c === '<' ? '&lt;' : '&amp;'; }) + '</code>'
+      + (medKnap ? '<button type="button" data-maal="' + id + '">Kopiér</button>' : '');
+  }
+
+  var fejl = p.get('error');
+  if (fejl) {
+    ud.innerHTML = '<div class="kort fejl"><p class="etikette">LinkedIn afviste</p>'
+      + '<p style="margin:0 0 .75rem"><strong>' + fejl.replace(/[<&]/g, '') + '</strong></p>'
+      + '<p style="margin:0;color:var(--daempet)">' + (p.get('error_description') || 'Ingen yderligere forklaring.').replace(/[<&]/g, '') + '</p>'
+      + '<p style="margin:1rem 0 0;color:var(--daempet)">Intet er sket. Prøv forløbet igen fra terminalen.</p></div>';
+    return;
+  }
+
+  var kode = p.get('code');
+  if (!kode) {
+    ud.innerHTML = '<div class="kort"><p class="etikette">Ingen autorisation i adressen</p>'
+      + '<p style="margin:0;color:var(--daempet)">Siden er åbnet direkte frem for via LinkedIn. '
+      + 'Start forløbet i terminalen med <code>node publicering/scripts/linkedin-oauth.mjs start</code>.</p></div>';
+    return;
+  }
+
+  ud.innerHTML = '<div class="kort klar">'
+    + '<p class="etikette">Autorisation modtaget</p>'
+    + '<p style="margin:0 0 1.25rem">Indsæt de to værdier i terminalen. Scriptet kontrollerer selv, at <code>state</code> er den, det udstedte.</p>'
+    + felt('code', kode, true)
+    + felt('state', p.get('state') || '(ingen state — afvis dette forløb og start forfra)', true)
+    + '<p class="etikette" style="margin-top:1.25rem">Næste skridt</p>'
+    + '<ol style="margin:0"><li>Gå tilbage til terminalen</li>'
+    + '<li>Kør <code>node publicering/scripts/linkedin-oauth.mjs byt</code></li>'
+    + '<li>Indsæt <code>code</code> og <code>state</code>, når du bliver bedt om det</li></ol>'
+    + '</div>';
+
+  ud.addEventListener('click', function (e) {
+    var k = e.target.closest('button[data-maal]');
+    if (!k) return;
+    var t = document.getElementById(k.dataset.maal).textContent;
+    var faerdig = function (ok) {
+      k.textContent = ok ? 'Kopieret' : 'Markér selv';
+      setTimeout(function () { k.textContent = 'Kopiér'; }, 2000);
+    };
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(t).then(function () { faerdig(true); }, function () { faerdig(false); });
+    } else { faerdig(false); }
+  });
+})();
+</script>
+</body>
+</html>
