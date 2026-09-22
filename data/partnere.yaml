@@ -60,16 +60,18 @@ poster:
   # ved 384 px. WebP vejer 9 og 20 kB ved samme kvalitet, og JPEG er reserven
   # for de faa browsere uden WebP.
   #
-  # LINKET PEGER PAA EN EPISODE, ikke paa showets forside. Det var det link,
-  # Kristian gav. En showside ville vaere mere holdbar, hvis episoden en dag
-  # fjernes - men episoden er der, hvor samarbejdet faktisk kan hoeres.
+  # BESKRIVELSEN STOD FOERST SOM "Jeg medvirker i en episode". DET VAR
+  # FORKERT - Kristian rettede det 22-09-2026: han medvirker ikke i en
+  # episode endnu, de samarbejder om et andet projekt. Sætningen herunder
+  # siger kun det, han selv har sagt. Naar projektet kan navngives, skal den
+  # skrives om til noget, en laeser faktisk kan bruge.
   #
-  # BESKRIVELSEN SKAL BEKRAEFTES AF KRISTIAN. Jeg ved, at Bettinas Verden er
-  # en podcast, og at han kalder den en samarbejdspartner og henviser til en
-  # bestemt episode. Resten ville vaere gaet.
+  # LINKET PEGER PAA EN EPISODE, ikke paa showets forside. Det var det link,
+  # Kristian gav - men nu hvor han ikke medvirker i den, giver en showside
+  # bedre mening. Afventer hans adresse.
   - navn: "Bettinas Verden"
     link: "https://open.spotify.com/episode/3P4HpDwdcWzCGxPupd5tkf"
-    beskrivelse: "Podcast. Jeg medvirker i en episode."
+    beskrivelse: "Podcast. Vi samarbejder om et fælles projekt."
     type: "fagligt-netvaerk"
     logo: "/images/partnere/bettinas-verden-192.jpg"
     logo_webp: "/images/partnere/bettinas-verden-192.webp 1x, /images/partnere/bettinas-verden-384.webp 2x"
