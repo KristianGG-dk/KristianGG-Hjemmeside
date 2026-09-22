@@ -50,3 +50,31 @@ poster:
     logo_hoejde: 40
     sider:
       - "/om/"
+
+  # Cover leveret af Kristian 22-09-2026. Rene nedskaleringer (LANCZOS) af
+  # originalen paa 540x540 - intet beskaaret, omfarvet eller gentegnet.
+  #
+  # ANDET FILFORMAT END DE OEVRIGE TO, og det er med vilje. De andre logoer er
+  # flade maerker, hvor PNG er baade lille og skarp. Dette er et fotografisk
+  # podcastcover med farveforloeb: PNG ville veje 46 kB ved 192 px og 146 kB
+  # ved 384 px. WebP vejer 9 og 20 kB ved samme kvalitet, og JPEG er reserven
+  # for de faa browsere uden WebP.
+  #
+  # LINKET PEGER PAA EN EPISODE, ikke paa showets forside. Det var det link,
+  # Kristian gav. En showside ville vaere mere holdbar, hvis episoden en dag
+  # fjernes - men episoden er der, hvor samarbejdet faktisk kan hoeres.
+  #
+  # BESKRIVELSEN SKAL BEKRAEFTES AF KRISTIAN. Jeg ved, at Bettinas Verden er
+  # en podcast, og at han kalder den en samarbejdspartner og henviser til en
+  # bestemt episode. Resten ville vaere gaet.
+  - navn: "Bettinas Verden"
+    link: "https://open.spotify.com/episode/3P4HpDwdcWzCGxPupd5tkf"
+    beskrivelse: "Podcast. Jeg medvirker i en episode."
+    type: "fagligt-netvaerk"
+    logo: "/images/partnere/bettinas-verden-192.jpg"
+    logo_webp: "/images/partnere/bettinas-verden-192.webp 1x, /images/partnere/bettinas-verden-384.webp 2x"
+    logo_alt: "Cover for podcasten Bettinas Verden"
+    logo_bredde: 192
+    logo_hoejde: 192
+    sider:
+      - "/om/"
