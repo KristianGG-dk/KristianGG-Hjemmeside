@@ -76,11 +76,12 @@ poster:
   # Naar den bliver til noget, skal den have sin egen side - ikke en linje i
   # et partnerkort.
   #
-  # LINKET PEGER PAA EN EPISODE, ikke paa showets forside. Det var det link,
-  # Kristian gav - men nu hvor han ikke medvirker i den, giver en showside
-  # bedre mening. Afventer hans adresse.
+  # LINKET PEGER PAA SHOWETS FORSIDE, ikke paa en enkelt episode. Det foerste
+  # link Kristian gav var til en episode, han ikke selv medvirker i; en
+  # showside bliver ved med at passe, uanset hvilke episoder der kommer og
+  # gaar. Adressen er hans egen, leveret 22-09-2026.
   - navn: "Bettinas Verden"
-    link: "https://open.spotify.com/episode/3P4HpDwdcWzCGxPupd5tkf"
+    link: "https://open.spotify.com/show/03DoORI9J0rsAcbA2vt46X"
     beskrivelse: "Podcast. Vi deler den overbevisning, at ro i nervesystemet betyder noget for alle — og planlægger en temadag om emnet."
     type: "fagligt-netvaerk"
     logo: "/images/partnere/bettinas-verden-192.jpg"
