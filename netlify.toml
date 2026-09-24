@@ -382,6 +382,17 @@
     Referrer-Policy = "strict-origin-when-cross-origin"
     Permissions-Policy = "camera=(), microphone=(), geolocation=()"
 
+# OAuth-callbacken er et vaerktoej, ikke en side. Den maa ikke indekseres.
+# robots.txt blokerer den bevidst IKKE: en blokering der ville forhindre
+# Google i at hente siden og dermed i at laese noindex - samme raesonnement
+# som for /tak/.
+[[headers]]
+  for = "/oauth/*"
+  [headers.values]
+    X-Robots-Tag = "noindex, nofollow, noarchive"
+    Cache-Control = "no-store"
+    Referrer-Policy = "no-referrer"
+
 [[headers]]
   for = "/sitemap.xml"
   [headers.values]

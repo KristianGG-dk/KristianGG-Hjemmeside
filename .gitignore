@@ -13,3 +13,6 @@ kristiangg-preview.zip
 # Resultatfiler fra publicerings- og planlaegningskoersler. Kun CI-artefakter.
 resultat.json
 resultat-planlaegning.json
+
+# OAuth-state fra LinkedIn-forloebet. Lokal, kortvarig, aldrig i repoet.
+publicering/scripts/.li-state

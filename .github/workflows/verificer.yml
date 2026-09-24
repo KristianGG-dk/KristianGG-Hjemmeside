@@ -40,3 +40,11 @@ jobs:
 
       - name: Versionslås og publiceringsfelter
         run: node publicering/scripts/verificer.mjs
+
+      # Indholdskontrollen: titler, effektpaastande, priser, moms, forskning
+      # uden kilde, genbrug, sporbarhed og kontrolstempel. FAIL og uafklaret
+      # REVIEW stopper merge. Se publicering/regler/indholdsregler.json.
+      - name: Indholdskontrol af alle kanaler
+        run: |
+          node publicering/test/kontroller-indhold.test.mjs
+          node publicering/scripts/kontroller-indhold.mjs

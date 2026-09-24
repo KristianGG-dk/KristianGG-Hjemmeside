@@ -50,3 +50,44 @@ poster:
     logo_hoejde: 40
     sider:
       - "/om/"
+
+  # Cover leveret af Kristian 22-09-2026. Rene nedskaleringer (LANCZOS) af
+  # originalen paa 540x540 - intet beskaaret, omfarvet eller gentegnet.
+  #
+  # ANDET FILFORMAT END DE OEVRIGE TO, og det er med vilje. De andre logoer er
+  # flade maerker, hvor PNG er baade lille og skarp. Dette er et fotografisk
+  # podcastcover med farveforloeb: PNG ville veje 46 kB ved 192 px og 146 kB
+  # ved 384 px. WebP vejer 9 og 20 kB ved samme kvalitet, og JPEG er reserven
+  # for de faa browsere uden WebP.
+  #
+  # SAMARBEJDET, med Kristians egne ord 22-09-2026: de deler den opfattelse,
+  # at ro i nervesystemet betyder noget for alle mennesker, og de vil lave en
+  # temadag om det.
+  #
+  # TO TING ER BEVIDST DAEMPET I FORHOLD TIL HANS ORDLYD.
+  #
+  # "det vigtigste for alle mennesker" staar som en faelles overbevisning,
+  # ikke som en konstatering. Paa et site, der markedsfoerer sundhedsydelser,
+  # skal en saadan paastand kunne dokumenteres - en overbevisning skal bare
+  # vaere aerligt gengivet.
+  #
+  # "planlaegger" frem for "holder". Temadagen har hverken dato eller sted
+  # endnu, og en side maa ikke laegge op til en begivenhed, der ikke findes.
+  # Naar den bliver til noget, skal den have sin egen side - ikke en linje i
+  # et partnerkort.
+  #
+  # LINKET PEGER PAA SHOWETS FORSIDE, ikke paa en enkelt episode. Det foerste
+  # link Kristian gav var til en episode, han ikke selv medvirker i; en
+  # showside bliver ved med at passe, uanset hvilke episoder der kommer og
+  # gaar. Adressen er hans egen, leveret 22-09-2026.
+  - navn: "Bettinas Verden"
+    link: "https://open.spotify.com/show/03DoORI9J0rsAcbA2vt46X"
+    beskrivelse: "Podcast. Vi deler den overbevisning, at ro i nervesystemet betyder noget for alle — og planlægger en temadag om emnet."
+    type: "fagligt-netvaerk"
+    logo: "/images/partnere/bettinas-verden-192.jpg"
+    logo_webp: "/images/partnere/bettinas-verden-192.webp 1x, /images/partnere/bettinas-verden-384.webp 2x"
+    logo_alt: "Cover for podcasten Bettinas Verden"
+    logo_bredde: 192
+    logo_hoejde: 192
+    sider:
+      - "/om/"

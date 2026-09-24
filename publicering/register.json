@@ -367,5 +367,14 @@
     "registreret_af": "manuel",
     "tidspunkt": "2026-09-19T19:45:00.000Z",
     "noter": "RETTELSE. Raekken 2026-09-18T15:50:28.541Z satte element 2 til PUBLICERET, verificeret paa platformen. Det var forkert: opslaget laa planlagt i LinkedIns egen planlaegger og var ikke gaaet ud. Kristian saa det i planlaeggeren 19-09-2026 og oplyste, at det gaar ud foerste gang 20-09-2026 kl. 08:00. Koeens tidspunkt er rettet fra 15-09 til 20-09, saa vagthunden maaler mod den rigtige dato. Teksten er uaendret."
+  },
+  {
+    "element": 17,
+    "kanal": "instagram",
+    "versionslaas": "ec1a12495f94e751",
+    "status": "PUBLICERET",
+    "post_id": "18177414715431755",
+    "container_id": "18019269065936780",
+    "tidspunkt": "2026-09-23T19:44:39.824Z"
   }
 ]

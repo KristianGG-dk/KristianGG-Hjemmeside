@@ -38,6 +38,10 @@ const info = [];
 const FEJL = (n, m) => fejl.push(`element ${String(n).padStart(2)}  ${m}`);
 const ADVAR = (n, m) => advarsler.push(`element ${String(n).padStart(2)}  ${m}`);
 const INFO = (n, m) => info.push(`element ${String(n).padStart(2)}  ${m}`);
+// Kanalniveau: gaelder hele kanalen, ikke et enkelt element.
+const K_FEJL = (k, m) => fejl.push(`${k.padEnd(10)}  ${m}`);
+const K_ADVAR = (k, m) => advarsler.push(`${k.padEnd(10)}  ${m}`);
+const K_INFO = (k, m) => info.push(`${k.padEnd(10)}  ${m}`);
 
 /** Statusser der betyder "elementet er afsendt eller undervejs". */
 const AFSENDT = ['PUBLICERET', 'PLANLAGT', 'PLANLAGT MANUELT', 'AFVENTER DATO'];
@@ -163,6 +167,36 @@ async function main() {
 
     const hvor = e.metode === 'motor' ? 'hos Meta' : 'i platformens brugerflade';
     ADVAR(e.element, `${e.kanal}: planlagt ${hvor} til ${dk(forfald)} — passeret for ${dageSiden} dag(e) siden. Bekraeft selv at opslaget er gaaet ud.`);
+  }
+
+  // ── LinkedIn-tokenets udloeb ────────────────────────────────────────────
+  // Tokenet lever omkring 60 dage. Loeber det ud, stopper LinkedIn-kanalen
+  // uden at noget andet fejler - derfor varsles der i god tid.
+  //
+  // Filen baerer ingen hemmelighed, kun datoen og hvem tokenet tilhoerer.
+  // Findes den ikke, er der aldrig fornyet, og saa er der intet at varsle om.
+  try {
+    const { existsSync, readFileSync } = await import('node:fs');
+    const STI = 'publicering/linkedin-token.json';
+    if (existsSync(STI)) {
+      const t = JSON.parse(readFileSync(STI, 'utf8'));
+      const tilbage = dage(new Date(t.udloeber) - NU);
+      const hvor = 'Forny paa https://kristiangg.dk/oauth/linkedin/';
+      if (tilbage <= 0) {
+        K_FEJL('LinkedIn', `tokenet udloeb ${dk(new Date(t.udloeber))}. Kanalen kan ikke publicere. ${hvor}`);
+      } else if (tilbage <= 3) {
+        K_FEJL('LinkedIn', `tokenet udloeber om ${tilbage} dag(e). ${hvor}`);
+      } else if (tilbage <= 14) {
+        K_ADVAR('LinkedIn', `tokenet udloeber om ${tilbage} dage. ${hvor}`);
+      } else {
+        K_INFO('LinkedIn', `token gyldigt ${tilbage} dage endnu (${t.urn})`);
+      }
+      if (t.har_refresh_token === false) {
+        K_INFO('LinkedIn', 'appen har ingen programmatisk fornyelse — fornyelsen er manuel');
+      }
+    }
+  } catch (err) {
+    K_FEJL('LinkedIn', `kunne ikke laese tokenets udloeb: ${err.message}`);
   }
 
   const skriv = (titel, liste) => {
