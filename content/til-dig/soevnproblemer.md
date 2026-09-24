@@ -24,6 +24,7 @@ helps_with:
 faq:
   - q: "Hvad arbejder du med, når det handler om søvn?"
     a: "Med det, der fylder omkring sengetid. For mange er søvnen ikke problemet i sig selv, men det sted hvor dagens uro bliver synlig. Arbejdet er terapeutisk samtale og kan rumme kropslig opmærksomhed, vejrtrækning og anden regulering — og det, der ligger bag uroen, hvis der er noget."
+    laes_mere: "/blog/naar-soevnen-ikke-er-problemet/"
   - q: "Tilbyder du CBT-I?"
     a: "Nej, det er et bestemt struktureret forløb, som jeg ikke leverer. Ved kronisk insomni peger danske og internationale anbefalinger på CBT-I som førstevalg, før sovemedicin, så har du haft søvnbesvær i månedsvis, så spørg din læge om det. Det udelukker ikke det, jeg laver — for en del er der begge dele at komme efter."
   - q: "Hvornår skal jeg til læge?"
