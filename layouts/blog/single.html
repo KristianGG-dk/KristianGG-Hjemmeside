@@ -60,6 +60,7 @@
           <p class="text-tekst-daempet text-sm mb-2">{{ $p.author_credentials | default "Registreret psykoterapeut og naturterapeut (FaDP)" }}</p>
           {{- with $p.personal_experience }}<p class="text-tekst-daempet text-sm leading-relaxed">{{ . }}</p>{{- end }}
           {{- if not $p.personal_experience }}<p class="text-tekst-daempet text-sm leading-relaxed">Registreret psykoterapeut hos Foreningen af Danske Psykoterapeuter, naturterapeut og åndedrætsterapeut med praksis på Lumbyvej i Odense.</p>{{- end }}
+          <p class="text-tekst-daempet text-xs leading-relaxed mt-3">Teksterne på bloggen bliver til med hjælp fra AI til research, udkast og korrektur. Jeg læser, retter og godkender hver tekst, før den bliver offentliggjort. De faglige vurderinger og ansvaret er mine.</p>
         </div>
       </div>
     </div>
