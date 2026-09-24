@@ -171,3 +171,60 @@ obligatoriske felter, godkendelse og versionslås. For `website` kontrolleres
 desuden byggeoutputtet. Gaten bygger med `--buildFuture`, så fremtidsdaterede
 indlæg også kan verificeres; produktionsbygget hos Netlify gør det ikke, og det
 er netop dét, der gør planlægningen mulig.
+
+## Indholdskontrollen
+
+`verificer.mjs` passer paa, at det publicerede er det godkendte.
+`kontroller-indhold.mjs` passer paa, at det godkendte kan taale at blive
+publiceret. Begge koerer i `verificer.yml` paa hver PR.
+
+Regelgrundlaget staar i `publicering/regler/indholdsregler.json`. Hver regel er
+maerket **LOV**, **PLATFORM** eller **INTERN**, og en intern regel maa aldrig
+fremstilles som lov.
+
+| Niveau | Hvad sker der |
+| --- | --- |
+| `FAIL` | Merge stopper. Kan ikke tilsidesaettes, heller ikke af en direkte ordre |
+| `REVIEW` | Merge stopper, indtil Kristians stillingtagen staar i laasefilen |
+| `ADVARSEL` | Vises kun. Bruges alene for elementer godkendt foer 25-09-2026 |
+
+FAIL: forbudte titler og betegnelser (ogsaa i schema og paa /om/), en pris der
+ikke staar paa /priser/, "ekskl. moms" paa en forbrugerpris, forskning uden en
+`evidens`-post, en koepost uden laasefil, en koedato der afviger fra den
+godkendte dato, en pakke der ikke ligger i `publicering/pakker/`, og et
+kontrolstempel der ikke passer.
+
+REVIEW: effektord, kvantorer og procenttal uden kilde, og samme tekst paa to
+kanaler.
+
+### Foer godkendelse
+
+```
+node publicering/scripts/kontroller-indhold.mjs --stempel publicering/laase/element-NN.json
+```
+
+viser alle fund og udskriver det `kontrol`-objekt, der skal ind i laasefilen.
+Et REVIEW-fund afklares i laasefilen saadan:
+
+```json
+"kontrol_stillingtagen": [
+  { "omraade": "effekt", "match": "virker", "beslutning": "godkendt",
+    "af": "Kristian G. G. Dansted", "dato": "2026-10-01",
+    "begrundelse": "Handler om pauser i hverdagen, ikke om min ydelse" }
+]
+```
+
+Stemplet binder godkendelsen til praecis det kontrolresultat, Kristian saa.
+Aendres tekst, regelsaet eller stillingtagen bagefter, afviger stemplet, og
+gaten stopper.
+
+### Manuelle kanaler
+
+LinkedIn og Google Business Profile laases paa samme maade som Instagram:
+laasefil med `tekst`, og `brodtekst_sha256` = sha256 af teksten. Det, der
+kopieres ud paa platformen, er `tekst` — ordret.
+
+### Graensen for maskinen
+
+Kontrollen fanger kendte ord og moenstre. Den kan ikke afgoere, om et opslag
+som helhed skaber et forkert indtryk. Det skoen er Kristians.
