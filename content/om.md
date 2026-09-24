@@ -15,7 +15,7 @@ credentials:
   - title: "Naturterapeut"
     body: "Terapeutisk arbejde i naturen — vandresamtaler, ophold og skovbad."
   - title: "Øvrige uddannelser"
-    body: "Master Neuro Hypnoterapeut, Master NLP Practitioner, åndedrætsterapeut og mindfulness-instruktør."
+    body: "Master Neuro Hypnoterapeut, Master NLP Practitioner, åndedrætsterapeut, mindfulness-instruktør og uddannelse i kognitiv adfærdsterapi (KAT)."
   - title: "Pædagogisk baggrund"
     body: "Mange års arbejde på botilbud og asylcentre. Erfaring med mennesker i komplekse og pressede situationer, og med at samarbejde med kommuner og andre fagpersoner om et forløb."
 
