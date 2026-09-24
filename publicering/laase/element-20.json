@@ -1,0 +1,31 @@
+{
+  "element": 20,
+  "kanal": "instagram",
+  "titel": "Der er ingen kalender, du skal igennem",
+  "meta_description": "Instagram-opslag om hvorfor der ikke er onlinebooking, og hvordan man i stedet kommer i gang.",
+  "slug": "element-20-ingen-kalender-instagram",
+  "slut_url": "(instagram-opslag, ingen URL foer publicering)",
+  "dato": "2026-10-05T19:00:00.000+02:00",
+  "kategorier": [
+    "psykoterapi"
+  ],
+  "billede": "baad-morgen",
+  "alt_tekst": "Rød robåd ved bredden af en spejlblank sø i daggry",
+  "billede_url": "https://kristiangg.dk/images/natur/baad-morgen-960.jpg",
+  "links": [],
+  "cta": "Bloed. Vejen ind er handlingsinformationen",
+  "hashtags": [
+    "#psykoterapi",
+    "#psykoterapeut",
+    "#naturterapi",
+    "#odense",
+    "#fyn"
+  ],
+  "tekst": "Der er ingen kalender, du skal igennem.\n\nJeg bruger ikke onlinebooking. Ikke af princip, men fordi den første tid ikke skal være et tidspunkt, du har klikket dig frem til klokken elleve om aftenen.\n\nSådan foregår det i stedet. Du skriver en SMS eller en besked. Vi tager en kort telefonsamtale uden beregning, hvor du fortæller, hvad du står i, og hvor du hører, hvordan jeg arbejder. Først derefter aftaler vi eventuelt en tid.\n\nNogle gange ender den samtale med, at jeg henviser videre. Det er også et resultat.\n\nDu behøver ikke have formuleret det ordentligt, før du skriver. Det er tit selve arbejdet at finde ordene.\n\n#psykoterapi #psykoterapeut #naturterapi #odense #fyn",
+  "tekst_sha256": "35641ad451a6116419d926918687135fd01764fc684a016313d785889d4ca05b",
+  "brodtekst_sha256": "35641ad451a6116419d926918687135fd01764fc684a016313d785889d4ca05b",
+  "godkendt_af": "Kristian G. G. Dansted",
+  "godkendt_dato": "2026-09-19",
+  "godkendelsespakke": "Godkendelsespakke uge 39-42, godkendt i Claude Code 19-09-2026",
+  "versionslaas": "99c4c2dfbd4aeb43"
+}

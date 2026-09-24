@@ -1,0 +1,25 @@
+{
+  "element": 24,
+  "kanal": "facebook",
+  "titel": "Du behøver ikke være i krise for at komme",
+  "meta_description": "Facebook-opslag om at terapi ikke kraever en god nok grund.",
+  "slug": "element-24-ikke-i-krise",
+  "slut_url": "(facebook-opslag, ingen URL foer publicering)",
+  "dato": "2026-10-06T19:00:00.000+02:00",
+  "kategorier": [
+    "psykoterapi"
+  ],
+  "billede": "kyst-baand",
+  "alt_tekst": "Strandeng med små vandhuller, kystlinje og hav under klar himmel",
+  "billede_url": "https://kristiangg.dk/images/natur/kyst-baand-1350.jpg",
+  "links": [],
+  "cta": "Ingen. Oplysende opslag",
+  "hashtags": [],
+  "tekst": "Du behøver ikke være i krise for at komme.\n\nDer findes en forestilling om, at terapi er noget, man går til, når det er gået galt nok. Sådan er det for nogle. For andre er det noget helt andet — en ting, der har stået på så længe, at man er holdt op med at regne den for et problem.\n\nEn søvn, der aldrig rigtig har været god. En uro, man har haft med sig så længe, at man tror, den er en del af ens personlighed. En måde at reagere på, som man godt selv kan se ikke passer til situationen, men som man ikke kan lade være med.\n\nDet er ikke mindre gyldigt, fordi det ikke er akut. Og det bliver ikke nødvendigvis lettere at tage fat i, fordi man venter.\n\nJeg lover ikke, at det går væk. Jeg siger bare, at man ikke skal have en god nok grund, før man må spørge.",
+  "tekst_sha256": "ef7280e74ae01e64c030b9cfee62eb200454c54171f14156b1b73b4b24da86a5",
+  "brodtekst_sha256": "ef7280e74ae01e64c030b9cfee62eb200454c54171f14156b1b73b4b24da86a5",
+  "godkendt_af": "Kristian G. G. Dansted",
+  "godkendt_dato": "2026-09-19",
+  "godkendelsespakke": "Godkendelsespakke uge 39-42, godkendt i Claude Code 19-09-2026",
+  "versionslaas": "b2bd4f09d7ae01f8"
+}

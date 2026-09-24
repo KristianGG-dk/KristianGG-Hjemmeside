@@ -30,6 +30,7 @@ faq:
     a: "Jeg har uddannelse i kognitiv adfærdsterapi og trækker på den, hvor det giver mening. Det er ikke det samme som et manualiseret KAT-forløb i psykiatrien, og det skal du vide, når du sammenligner. Metoden vælges efter mennesket, ikke omvendt."
   - q: "Skal jeg udsættes for det, jeg er bange for?"
     a: "Ikke på min foranledning, og ikke uden at du selv vil. Vi arbejder i det tempo, du kan være i. Du kan stoppe når som helst, og du bestemmer, hvad vi går tæt på."
+    laes_mere: "/blog/kan-man-gaa-i-terapi-udenfor-hvis-man-har-angst/"
   - q: "Hvor mange gange skal jeg komme?"
     a: "Hvor mange gange man kommer, er meget forskelligt. Nogle har brug for få samtaler, andre for et længere forløb. Du bestemmer selv, hvornår du er i mål."
 

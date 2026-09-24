@@ -1,0 +1,82 @@
+{
+  "version": "1.0.0",
+  "indfoert": "2026-09-25",
+  "note": "Regelgrundlaget for kontroller-indhold.mjs. Hver regel er maerket LOV, PLATFORM eller INTERN, saa en intern regel aldrig fremstilles som lov. Maskinen fanger ord og moenstre; den afgoer ikke lovlighed. Et REVIEW-fund kraever Kristians skriftlige stillingtagen i laasefilen. Et FAIL-fund kan ikke tilsidesaettes.",
+
+  "titler": {
+    "type": "LOV",
+    "kilde": "Markedsfoeringsloven § 5 (vildledende handlinger); lov om markedsfoering af sundhedsydelser § 2 (saglighed). Tilladte betegnelser: Kristians beslutninger 10-09-2026 og 14-09-2026",
+    "kilde_url": "https://www.retsinformation.dk/eli/lta/2003/326",
+    "forbudte": [
+      { "moenster": "\\bRAB\\b", "grund": "Kristian er ikke RAB-registreret. RAB og Reg. Psykoterapeut maa aldrig sammenblandes" },
+      { "moenster": "\\bgrunduddannelse i (kognitiv|dialektisk)", "grund": "Der er intet uddannelsesbevis, der dokumenterer en grunduddannelse i KAT eller DAT" },
+      { "moenster": "\\bnordic breath\\b", "grund": "Betegnelsen er udgaaet. Brug 'Ro paa Nervesystemet'" },
+      { "moenster": "\\bsanse\\s*&\\s*natur", "grund": "Eneste korrekte betegnelse er 'Sanse og naturbads instruktoer'" },
+      { "moenster": "\\bjeg er (en )?(autoriseret )?psykolog\\b", "grund": "Psykolog er en beskyttet titel" },
+      { "moenster": "\\bjeg er (en )?autoriseret\\b", "grund": "Kristian har ingen offentlig autorisation" },
+      { "moenster": "\\b(RAB|statsautoriseret)[- ]registreret\\b", "grund": "Ikke dokumenteret" }
+    ]
+  },
+
+  "effekt": {
+    "type": "LOV",
+    "kilde": "Lov om markedsfoering af sundhedsydelser § 2; markedsfoeringsloven § 5. Skaerpet af intern regel D27-D29 (13.-14. september 2026): beskriv arbejdet, lov ikke resultatet",
+    "kilde_url": "https://www.retsinformation.dk/eli/lta/2003/326",
+    "moenstre": [
+      { "moenster": "\\bhelbred(e|er|es|else|et)\\b", "grund": "Kan laeses som et loefte om helbredelse. (Ordet helbred alene er ikke et fund)" },
+      { "moenster": "\\bkurer", "grund": "Kan laeses som et loefte om helbredelse" },
+      { "moenster": "\\bgaranter|\\bgaranti\\b", "grund": "Garanti for resultat" },
+      { "moenster": "\\bmange oplever\\b|\\bde fleste (oplever|faar|får|maerker|mærker)\\b", "grund": "Klientoplevelse som genvej til en effektpaastand (D28)" },
+      { "moenster": "\\ballerede efter\\b", "grund": "Hastighed for effekt (D28)" },
+      { "moenster": "\\b\\d+\\s*(sessioner|samtaler|gange)\\b", "grund": "Antal sessioner maa aldrig angives (D28)" },
+      { "moenster": "\\b(reducerer|mindsker|fjerner|daemper|dæmper)\\b[^.]{0,40}\\b(stress|angst|uro|smerte|symptom)", "grund": "Effekt paa stress, angst eller symptomer" },
+      { "moenster": "\\b(giver|skaber) (dig )?(ro|balance|lindring)\\b", "grund": "En metode maa ikke loves at skabe ro (D27)" },
+      { "moenster": "\\bregulerer (dit |dit eget )?nervesystem", "grund": "Regulering som resultat (D27)" },
+      { "moenster": "\\b(virker|effektiv|dokumenteret effekt)\\b", "grund": "Effektord. Se om det handler om Kristians ydelse" },
+      { "moenster": "\\b(slippe|slipper|komme) (af|fri|ud af) (med )?(din |dit )?(stress|angst)", "grund": "Loefte om at blive fri af en tilstand" }
+    ]
+  },
+
+  "faktaudsagn": {
+    "type": "INTERN",
+    "kilde": "Kristians regel 14-09-2026: dokumentationskravet gaelder ALLE faktiske oplysninger. Lovgrundlag for saglighed: lov om markedsfoering af sundhedsydelser § 2",
+    "moenstre": [
+      { "moenster": "\\b(mange|de fleste|flere og flere|hver (anden|tredje|fjerde|femte))\\b", "grund": "Kvantor uden kilde" },
+      { "moenster": "\\d+([,.]\\d+)?\\s*(%|procent)", "grund": "Procenttal uden kilde" }
+    ]
+  },
+
+  "forskning": {
+    "type": "LOV",
+    "kilde": "Lov om markedsfoering af sundhedsydelser § 2 (saglighed, ikke urimeligt mangelfuld). Intern regel: forskning dokumenterer aldrig automatisk Kristians ydelser",
+    "moenster": "\\b(randomiseret|studie[t]?|forsoeg(et)?|forsøg(et)?|metaanalyse|oversigt over feltet|forskning(en)? (viser|har vist|peger)|publiceret i|British Journal)\\b",
+    "kraev": "Laasefilen skal have feltet 'evidens' med mindst én post {id, url, dokumenterer_ikke}"
+  },
+
+  "moms": {
+    "type": "LOV",
+    "kilde": "Prismaerkningsreglerne: over for forbrugere skal den samlede pris inkl. afgifter oplyses. Ydelserne er momsfri, saa beloebet ER den endelige pris",
+    "moenster": "(ekskl\\.?|eksklusiv|excl\\.?|\\+)\\s*moms"
+  },
+
+  "pris": {
+    "type": "LOV",
+    "kilde": "Markedsfoeringsloven § 5: en pris i markedsfoering skal vaere den rigtige. Sandhedskilden er content/priser.md",
+    "priskilde": "content/priser.md"
+  },
+
+  "genbrug": {
+    "type": "INTERN",
+    "kilde": "Kristians regel: samme budskab maa ikke gentages paa flere platforme uden reel kanaltilpasning",
+    "ngram": 6,
+    "graense": 20
+  },
+
+  "sitefiler": [
+    "content",
+    "layouts/partials/jsonld",
+    "layouts/partials/header.html",
+    "layouts/blog/single.html",
+    "data/business.toml"
+  ]
+}

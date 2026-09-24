@@ -1,0 +1,31 @@
+{
+  "element": 19,
+  "kanal": "instagram",
+  "titel": "Psykoterapeut er ikke en beskyttet titel",
+  "meta_description": "Instagram-opslag om at psykoterapeut ikke er en beskyttet titel, og hvad FaDP-registreringen betyder.",
+  "slug": "element-19-ikke-beskyttet-titel-instagram",
+  "slut_url": "(instagram-opslag, ingen URL foer publicering)",
+  "dato": "2026-10-01T19:00:00.000+02:00",
+  "kategorier": [
+    "psykoterapi"
+  ],
+  "billede": "kristian-portraet",
+  "alt_tekst": "Kristian G. G. Dansted udendørs med et stykke træ i hånden",
+  "billede_url": "https://kristiangg.dk/images/natur/kristian-portraet-640.jpg",
+  "links": [],
+  "cta": "Ingen. Trovaerdighedsopslag",
+  "hashtags": [
+    "#psykoterapi",
+    "#psykoterapeut",
+    "#naturterapi",
+    "#odense",
+    "#fyn"
+  ],
+  "tekst": "Psykoterapeut er ikke en beskyttet titel i Danmark.\n\nDet betyder, at man i princippet kan kalde sig det uden uddannelse. Jeg synes, man skal vide det, når man vælger.\n\nJeg er registreret psykoterapeut hos Foreningen af Danske Psykoterapeuter. Registreringen betyder, at jeg lever op til foreningens uddannelseskrav og er underlagt dens etiske regler og etiske råd. Foreningen er godkendt af Styrelsen for Patientsikkerhed til at registrere behandlere — det er ordningen, styrelsen har godkendt, ikke den enkelte af os.\n\nDet er ikke en offentlig autorisation. Jeg er ikke psykolog, og jeg er ikke læge. Jeg stiller ikke diagnoser, og jeg behandler ikke sygdom.\n\nHar du brug for noget andet end det, jeg kan, siger jeg det — også selvom du sidder over for mig.\n\n#psykoterapi #psykoterapeut #naturterapi #odense #fyn",
+  "tekst_sha256": "5487df30e0c9463745589958264ddcf3b24ea00309a59dc29b5596fe46d4e1b0",
+  "brodtekst_sha256": "5487df30e0c9463745589958264ddcf3b24ea00309a59dc29b5596fe46d4e1b0",
+  "godkendt_af": "Kristian G. G. Dansted",
+  "godkendt_dato": "2026-09-19",
+  "godkendelsespakke": "Godkendelsespakke uge 39-42, godkendt i Claude Code 19-09-2026",
+  "versionslaas": "96b1cba6517e1b73"
+}
