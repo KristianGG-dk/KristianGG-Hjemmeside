@@ -20,6 +20,20 @@
   "brodtekst_sha256": "0ff4d570399655c4ffb65c5b918973de0ee15910e80d47d6eaa83b22bdb3871f",
   "godkendt_af": "Kristian G. G. Dansted",
   "godkendt_dato": "2026-10-01",
-  "godkendelsespakke": "Etos-pakken oktober 2026 — godkendt i chat 01-10-2026",
-  "versionslaas": "a9838f57bb00e385"
+  "godkendelsespakke": "2026-10-etos.md",
+  "versionslaas": "a9838f57bb00e385",
+  "kontrol_stillingtagen": [
+    {
+      "omraade": "genbrug",
+      "match": "27 faelles 6-ordssekvenser",
+      "beslutning": "godkendt",
+      "af": "Kristian G. G. Dansted",
+      "dato": "2026-10-01",
+      "begrundelse": "Samme messefakta paa hver kanal (element 34 (facebook) × element 29 (website)). Godkendt af Kristian i chat 01-10-2026; skrevet ind af Claude paa hans udtrykkelige anmodning."
+    }
+  ],
+  "kontrol": {
+    "version": "1.0.0",
+    "resultat_sha256": "a802ce184628d307"
+  }
 }
