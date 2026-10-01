@@ -1,0 +1,25 @@
+{
+  "element": 34,
+  "kanal": "facebook",
+  "titel": "Skovbad er ikke badning",
+  "meta_description": "Facebook-opslag om hvad skovbad er og ikke er, og at jeg står ved stand 31 på messen.",
+  "slug": "element-34-skovbad-ikke-badning-facebook",
+  "slut_url": "(facebook-opslag, ingen URL foer publicering)",
+  "dato": "2026-10-16T19:00:00.000+02:00",
+  "kategorier": [
+    "skovbad"
+  ],
+  "billede": "skovbad-gruppe",
+  "alt_tekst": "En gruppe mennesker sidder spredt på skovbunden mellem bøgetræer",
+  "billede_url": "https://kristiangg.dk/images/natur/skovbad-gruppe-640.jpg",
+  "links": [],
+  "cta": "Blød. Ingen pris og ingen rabat naevnt; tilbuddet ses paa standen",
+  "hashtags": [],
+  "tekst": "Skovbad er ikke badning. Der er intet vand involveret.\n\nOrdet er en oversættelse af det japanske shinrin-yoku, og bad betyder her at være omgivet af noget — ligesom når vi siger solbad.\n\nVi opholder os i skoven i længere tid, end man plejer, i et langsomt tempo. Vi går kort. Vi stopper undervejs. Du skal ikke fortælle mig noget om dig selv, og der er ingen præsentationsrunde.\n\nDet er ikke terapi, ikke træning og ikke en vandretur. Det er et ophold.\n\nVil du høre mere, står jeg ved stand 31 på Etos Helsemesser lørdag og søndag. Odin Mødecenter, Lumbyvej 17F i Odense, begge dage kl. 10 til 16.30.",
+  "tekst_sha256": "0ff4d570399655c4ffb65c5b918973de0ee15910e80d47d6eaa83b22bdb3871f",
+  "brodtekst_sha256": "0ff4d570399655c4ffb65c5b918973de0ee15910e80d47d6eaa83b22bdb3871f",
+  "godkendt_af": "Kristian G. G. Dansted",
+  "godkendt_dato": "2026-10-01",
+  "godkendelsespakke": "Etos-pakken oktober 2026 — godkendt i chat 01-10-2026",
+  "versionslaas": "a9838f57bb00e385"
+}

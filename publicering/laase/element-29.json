@@ -1,0 +1,27 @@
+{
+  "element": 29,
+  "kanal": "website",
+  "kildefil": "content/blog/2026-10-01-skovbad-odense-etos-helsemesser.md",
+  "titel": "Hvad skovbad er — og hvor du kan møde mig i oktober",
+  "meta_description": "Skovbad er et langsomt ophold i skoven — ikke badning og ikke terapi. Her er hvad det er, og hvor du kan møde mig på Etos Helsemesser i Odense 17.-18. oktober.",
+  "slug": "skovbad-odense-etos-helsemesser",
+  "slut_url": "/blog/skovbad-odense-etos-helsemesser/",
+  "dato": "2026-10-01T16:00:00.000+02:00",
+  "kategorier": [
+    "skovbad"
+  ],
+  "billede": "skovbad-gruppe",
+  "alt_tekst": "En gruppe mennesker sidder spredt på skovbunden mellem bøgetræer",
+  "og_image": "/images/natur/skovbad-gruppe-640.jpg",
+  "links": [
+    "https://kristiangg.dk/kontakt/"
+  ],
+  "cta": "Gratis telefonsamtale via kontaktsiden. Skovbad forklares, men tilbydes ikke, da det mangler pris paa /priser/",
+  "hashtags": [],
+  "brodtekst_sha256": "66e82ac4ee24658a27d0b6e65b3abde7f06c6c0d01019072d77b69a5d823baaa",
+  "godkendt_af": "Kristian G. G. Dansted",
+  "godkendt_dato": "2026-10-01",
+  "godkendelsespakke": "Etos-pakken oktober 2026 — godkendt i chat",
+  "bemaerkning_pris": "Hverken skovbadspris eller messerabat naevnes. Priserne staar ikke paa /priser/, og en koebsopfordring til en ydelse uden pris giver FAIL jf. lovlighedsnotatet 24-09-2026.",
+  "versionslaas": "235f517217442083"
+}

@@ -1,0 +1,29 @@
+{
+  "element": 30,
+  "kanal": "instagram",
+  "titel": "To oplæg på Etos Helsemesser",
+  "meta_description": "Instagram-opslag om foredraget lørdag og workshoppen søndag på Etos Helsemesser i Odense.",
+  "slug": "element-30-to-oplaeg-etos-instagram",
+  "slut_url": "(instagram-opslag, ingen URL foer publicering)",
+  "dato": "2026-10-12T19:00:00.000+02:00",
+  "kategorier": [
+    "åndedræt"
+  ],
+  "billede": "vintersol-skov",
+  "alt_tekst": "Lav vintersol gennem stammerne i en fynsk skov",
+  "billede_url": "https://kristiangg.dk/images/natur/vintersol-skov-640.jpg",
+  "links": [],
+  "cta": "Blød. Oplysning om to gratis oplæg",
+  "hashtags": [
+    "#åndedræt",
+    "#nervesystem",
+    "#odense"
+  ],
+  "tekst": "Jeg holder to oplæg på Etos Helsemesser i weekenden.\n\nLørdag kl. 15: \"Trækker du egentlig vejret — eller overlever du bare?\" Et foredrag om, hvad der sker med vejrtrækningen, når der har været pres på i lang tid.\n\nSøndag kl. 11: \"Åndedrættet — din glemte superkraft.\" En workshop, hvor vi også laver øvelser. Der er plads til 40.\n\nBegge dele er gratis, når entréen til messen er betalt.\n\nOdin Mødecenter, Lumbyvej 17F i Odense. Jeg står også ved stand 31 begge dage.",
+  "tekst_sha256": "d3a96445d022da925bfeb76d3c3132e07106e25d1a13dd8ab4468826271bdc1a",
+  "brodtekst_sha256": "d3a96445d022da925bfeb76d3c3132e07106e25d1a13dd8ab4468826271bdc1a",
+  "godkendt_af": "Kristian G. G. Dansted",
+  "godkendt_dato": "2026-10-01",
+  "godkendelsespakke": "Etos-pakken oktober 2026 — godkendt i chat 01-10-2026",
+  "versionslaas": "b23991bea651cd48"
+}
