@@ -462,5 +462,16 @@
     "tidspunkt": "2026-10-01T09:45:00.000Z",
     "registreret_af": "manuel",
     "noter": "Etos-pakken. Godkendt i chat 01-10-2026. Manuel kanal uden laasefil."
+  },
+  {
+    "element": 33,
+    "kanal": "facebook",
+    "versionslaas": "26569b9a86fbbf81",
+    "status": "AFVENTER DATO",
+    "post_id": null,
+    "godkendt_tidspunkt": "2026-10-15T19:00:00.000+02:00",
+    "tidspunkt": "2026-10-01T11:25:00.000Z",
+    "registreret_af": "manuel",
+    "noter": "Ny versionslaas 26569b9a86fbbf81 afloeser 5b5438e0f6003631. Entrepriserne er taget ud efter indholdskontrollen (PR #77); godkendt af Kristian i chat 01-10-2026."
   }
 ]
