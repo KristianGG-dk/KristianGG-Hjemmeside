@@ -473,5 +473,14 @@
     "tidspunkt": "2026-10-01T11:25:00.000Z",
     "registreret_af": "manuel",
     "noter": "Ny versionslaas 26569b9a86fbbf81 afloeser 5b5438e0f6003631. Entrepriserne er taget ud efter indholdskontrollen (PR #77); godkendt af Kristian i chat 01-10-2026."
+  },
+  {
+    "element": 19,
+    "kanal": "instagram",
+    "versionslaas": "96b1cba6517e1b73",
+    "status": "PUBLICERET",
+    "post_id": "18129345790795530",
+    "container_id": "18020420954936780",
+    "tidspunkt": "2026-10-01T19:15:48.660Z"
   }
 ]
