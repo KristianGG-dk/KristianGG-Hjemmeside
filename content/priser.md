@@ -77,4 +77,13 @@ prices:
       - Overnatning i naturen
       - Inkl. transport på Fyn
     highlighted: false
+  - title: Skovbad i gruppe
+    price: "329"
+    duration: Pr. person · Grupper på 4–12 · Op til 2,5 time
+    features:
+      - Guidet skovbad i lille gruppe
+      - Vi går sammen, men taler kun lidt undervejs
+      - Ingen præsentationsrunde
+      - På Fyn — eller i Fredericia-, Vejle- og Koldingområdet, hvis I selv samler gruppen
+    note: Skovbad er et ophold i skoven med sanserne. Det er ikke terapi.
 ---
