@@ -15,13 +15,12 @@
   "links": [],
   "cta": "Blød. Ingen pris og ingen rabat naevnt; tilbuddet ses paa standen",
   "hashtags": [],
-  "tekst": "Skovbad er ikke badning. Der er intet vand involveret.\n\nOrdet er en oversættelse af det japanske shinrin-yoku, og bad betyder her at være omgivet af noget — ligesom når vi siger solbad.\n\nVi opholder os i skoven i længere tid, end man plejer, i et langsomt tempo. Vi går kort. Vi stopper undervejs. Du skal ikke fortælle mig noget om dig selv, og der er ingen præsentationsrunde.\n\nDet er ikke terapi, ikke træning og ikke en vandretur. Det er et ophold.\n\nVil du høre mere, står jeg ved stand 31 på Etos Helsemesser lørdag og søndag. Odin Mødecenter, Lumbyvej 17F i Odense, begge dage kl. 10 til 16.30.",
-  "tekst_sha256": "0ff4d570399655c4ffb65c5b918973de0ee15910e80d47d6eaa83b22bdb3871f",
-  "brodtekst_sha256": "0ff4d570399655c4ffb65c5b918973de0ee15910e80d47d6eaa83b22bdb3871f",
+  "tekst": "Skovbad er ikke badning. Der er intet vand involveret.\n\nOrdet er en oversættelse af det japanske shinrin-yoku, og bad betyder her at være omgivet af noget — ligesom når vi siger solbad.\n\nVi opholder os i skoven i længere tid, end man plejer, i et langsomt tempo. Vi går kort. Vi stopper undervejs. Du skal ikke fortælle mig noget om dig selv, og der er ingen præsentationsrunde.\n\nDet er ikke terapi, ikke træning og ikke en vandretur. Det er et ophold.\n\nVil du høre mere, står jeg ved stand 31 på Etos Helsemesser lørdag og søndag. Odin Mødecenter – Odin Havnepark, Lumbyvej 17F, 5000 Odense C, begge dage kl. 10 til 16.30.",
+  "tekst_sha256": "7f560dc85fb98200041d6b08b33cef83fde3f2b59e949e135f1157c29f3fa4b2",
+  "brodtekst_sha256": "7f560dc85fb98200041d6b08b33cef83fde3f2b59e949e135f1157c29f3fa4b2",
   "godkendt_af": "Kristian G. G. Dansted",
-  "godkendt_dato": "2026-10-01",
+  "godkendt_dato": "2026-10-04",
   "godkendelsespakke": "2026-10-etos.md",
-  "versionslaas": "a9838f57bb00e385",
   "kontrol_stillingtagen": [
     {
       "omraade": "genbrug",
@@ -34,6 +33,14 @@
   ],
   "kontrol": {
     "version": "1.0.0",
-    "resultat_sha256": "a802ce184628d307"
-  }
+    "resultat_sha256": "9626e889b9965ab7"
+  },
+  "versionslaas": "2fbcc5d96aafdd06",
+  "tidligere_laase": [
+    {
+      "laas": "a9838f57bb00e385",
+      "godkendt_dato": "2026-10-01",
+      "afloest_fordi": "adresse som arrangoeren skriver den"
+    }
+  ]
 }
