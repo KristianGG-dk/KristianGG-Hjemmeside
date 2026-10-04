@@ -33,11 +33,19 @@
       "af": "Kristian G. G. Dansted",
       "dato": "2026-10-01",
       "begrundelse": "Samme messefakta paa hver kanal (element 30 (instagram) × element 29 (website)). Godkendt af Kristian i chat 01-10-2026; skrevet ind af Claude paa hans udtrykkelige anmodning."
+    },
+    {
+      "omraade": "genbrug",
+      "match": "22 faelles 6-ordssekvenser",
+      "beslutning": "godkendt",
+      "af": "Kristian G. G. Dansted",
+      "dato": "2026-10-04",
+      "begrundelse": "Samme messedeltagelse og samme adresse, som skal vaere faktuelt ens paa Facebook og Instagram (element 30 (instagram) × element 33 (facebook)). Den faelles tekst er tilsigtet. Godkendt af Kristian i chat 04-10-2026; skrevet ind af Claude paa hans udtrykkelige anmodning."
     }
   ],
   "kontrol": {
     "version": "1.0.0",
-    "resultat_sha256": "7b268f1891eef8e7"
+    "resultat_sha256": "e084be4381d01ca1"
   },
   "versionslaas": "d84dfdb7989e06ee",
   "tidligere_laase": [
