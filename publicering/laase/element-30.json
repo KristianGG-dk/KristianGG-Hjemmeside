@@ -19,13 +19,12 @@
     "#nervesystem",
     "#odense"
   ],
-  "tekst": "Jeg holder to oplæg på Etos Helsemesser i weekenden.\n\nLørdag kl. 15: \"Trækker du egentlig vejret — eller overlever du bare?\" Et foredrag om, hvad der sker med vejrtrækningen, når der har været pres på i lang tid.\n\nSøndag kl. 11: \"Åndedrættet — din glemte superkraft.\" En workshop, hvor vi også laver øvelser. Der er plads til 40.\n\nBegge dele er gratis, når entréen til messen er betalt.\n\nOdin Mødecenter, Lumbyvej 17F i Odense. Jeg står også ved stand 31 begge dage.",
-  "tekst_sha256": "d3a96445d022da925bfeb76d3c3132e07106e25d1a13dd8ab4468826271bdc1a",
-  "brodtekst_sha256": "d3a96445d022da925bfeb76d3c3132e07106e25d1a13dd8ab4468826271bdc1a",
+  "tekst": "Jeg holder to oplæg på Etos Helsemesser i weekenden.\n\nLørdag kl. 15: \"Trækker du egentlig vejret — eller overlever du bare?\" Et foredrag om, hvad der sker med vejrtrækningen, når der har været pres på i lang tid.\n\nSøndag kl. 11: \"Åndedrættet — din glemte superkraft.\" En workshop, hvor vi også laver øvelser. Der er plads til 40.\n\nBegge dele er gratis, når entréen til messen er betalt.\n\nOdin Mødecenter – Odin Havnepark, Lumbyvej 17F, 5000 Odense C. Jeg står også ved stand 31 begge dage.",
+  "tekst_sha256": "85622f51435cdd664f9961785e615c89bdc0d376eb644211de3c4d787322d89c",
+  "brodtekst_sha256": "85622f51435cdd664f9961785e615c89bdc0d376eb644211de3c4d787322d89c",
   "godkendt_af": "Kristian G. G. Dansted",
-  "godkendt_dato": "2026-10-01",
+  "godkendt_dato": "2026-10-04",
   "godkendelsespakke": "2026-10-etos.md",
-  "versionslaas": "b23991bea651cd48",
   "kontrol_stillingtagen": [
     {
       "omraade": "genbrug",
@@ -39,5 +38,13 @@
   "kontrol": {
     "version": "1.0.0",
     "resultat_sha256": "7b268f1891eef8e7"
-  }
+  },
+  "versionslaas": "d84dfdb7989e06ee",
+  "tidligere_laase": [
+    {
+      "laas": "b23991bea651cd48",
+      "godkendt_dato": "2026-10-01",
+      "afloest_fordi": "adresse som arrangoeren skriver den"
+    }
+  ]
 }

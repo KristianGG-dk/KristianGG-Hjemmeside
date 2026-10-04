@@ -15,13 +15,12 @@
   "links": [],
   "cta": "Mød op. Ingen pris paa egne ydelser naevnt",
   "hashtags": [],
-  "tekst": "Jeg er på Etos Helsemesser i weekenden — stand 31, begge dage.\n\nOg jeg holder to oplæg:\n\nLørdag kl. 15.00–15.45: \"Trækker du egentlig vejret — eller overlever du bare?\" Vi trækker vejret omkring 20.000 gange i døgnet uden at tænke over det. Men når der har været pres på i lang tid, ændrer vejrtrækningen sig — og det er sjældent noget, man selv opdager.\n\nSøndag kl. 11.00–11.45: \"Åndedrættet — din glemte superkraft.\" Samme emne, men som workshop, hvor vi også laver øvelser. Der er plads til 40.\n\nBegge dele er gratis, når du har betalt entré.\n\nOdin Mødecenter, Lumbyvej 17F i Odense. Åbent lørdag og søndag kl. 10 til 16.30. Entré betales ved indgangen eller online.\n\nKan du ikke nå oplæggene, står jeg ved stand 31. Du må spørge om hvad som helst — også hvis du aldrig har været i terapi før.",
-  "tekst_sha256": "d0c4f0cb3faa0677d24d5c5fc15ae3b662e067df28352da224b3105fd09e24cb",
-  "brodtekst_sha256": "d0c4f0cb3faa0677d24d5c5fc15ae3b662e067df28352da224b3105fd09e24cb",
+  "tekst": "Jeg er på Etos Helsemesser i weekenden — stand 31, begge dage.\n\nOg jeg holder to oplæg:\n\nLørdag kl. 15.00–15.45: \"Trækker du egentlig vejret — eller overlever du bare?\" Vi trækker vejret omkring 20.000 gange i døgnet uden at tænke over det. Men når der har været pres på i lang tid, ændrer vejrtrækningen sig — og det er sjældent noget, man selv opdager.\n\nSøndag kl. 11.00–11.45: \"Åndedrættet — din glemte superkraft.\" Samme emne, men som workshop, hvor vi også laver øvelser. Der er plads til 40.\n\nBegge dele er gratis, når du har betalt entré.\n\nOdin Mødecenter – Odin Havnepark, Lumbyvej 17F, 5000 Odense C. Det er døren med Asgaard og Midgaard skrevet over. Åbent lørdag og søndag kl. 10 til 16.30. Entré betales ved indgangen eller online.\n\nKan du ikke nå oplæggene, står jeg ved stand 31. Du må spørge om hvad som helst — også hvis du aldrig har været i terapi før.",
+  "tekst_sha256": "f7202e240974f61e39db3f32c1402771734fe0533603f356b2db6b9d9ddc2a03",
+  "brodtekst_sha256": "f7202e240974f61e39db3f32c1402771734fe0533603f356b2db6b9d9ddc2a03",
   "godkendt_af": "Kristian G. G. Dansted",
-  "godkendt_dato": "2026-10-01",
+  "godkendt_dato": "2026-10-04",
   "godkendelsespakke": "2026-10-etos.md",
-  "versionslaas": "26569b9a86fbbf81",
   "kontrol_stillingtagen": [
     {
       "omraade": "effekt",
@@ -43,5 +42,13 @@
   "kontrol": {
     "version": "1.0.0",
     "resultat_sha256": "2465f5e97d18a944"
-  }
+  },
+  "versionslaas": "db8c5cf88b2e24f3",
+  "tidligere_laase": [
+    {
+      "laas": "26569b9a86fbbf81",
+      "godkendt_dato": "2026-10-01",
+      "afloest_fordi": "adresse som arrangoeren skriver den, plus vejvisning til doeren med Asgaard og Midgaard"
+    }
+  ]
 }
