@@ -402,6 +402,10 @@ vagthunden — ikke af gaten. Med to kanaler mere i drift er det ikke godt nok.
 **Dette punkt er ikke til forhandling**, og det skal laves foer den foerste
 automatiske LinkedIn-publicering.
 
+> **Lukket 04-10-2026.** `verificer.mjs` kontrollerer nu for alle ikke-website-
+> kanaler, at `tekst` svarer til `tekst_sha256`, og at `brodtekst_sha256` er
+> teksthashen. Se `dokumentation/google-business-profile.md`.
+
 ### 4. Planlagt koersel
 
 Instagram har `publicer-instagram-planlagt.yml` med cron. LinkedIn har kun

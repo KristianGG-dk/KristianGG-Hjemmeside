@@ -1,0 +1,32 @@
+# Kontrollerer at Google Business Profile-adgangen virker. Publicerer ALDRIG.
+#
+# Mod Business Profile sendes udelukkende GET. Det eneste POST er
+# tokenfornyelsen hos Google OAuth, som ikke aendrer noget. Der findes ingen
+# sti gennem dette workflow, der kan skrive et opslag.
+name: Kontroller Google-adgang
+
+on:
+  workflow_dispatch:
+
+permissions: {}
+
+jobs:
+  kontroller:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    environment: publicering
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+
+      - name: Kontroller Google-adgang
+        env:
+          GBP_CLIENT_ID: ${{ secrets.GBP_CLIENT_ID }}
+          GBP_CLIENT_SECRET: ${{ secrets.GBP_CLIENT_SECRET }}
+          GBP_REFRESH_TOKEN: ${{ secrets.GBP_REFRESH_TOKEN }}
+          GBP_TILLADT_LOKATION: ${{ secrets.GBP_TILLADT_LOKATION }}
+          GBP_LOKATION: ${{ secrets.GBP_LOKATION }}
+        run: node publicering/scripts/kontroller-google-adgang.mjs

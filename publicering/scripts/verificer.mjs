@@ -2,7 +2,8 @@
 // Exit 0 = grønt. Exit 1 = stop, ingen merge, ingen publicering.
 import { readFileSync, existsSync, readdirSync } from 'node:fs';
 import { join } from 'node:path';
-import { beregnLaas, brodtekstHash, PAAKRAEVEDE_FELTER } from './laas.mjs';
+import { beregnLaas, brodtekstHash, sha256, PAAKRAEVEDE_FELTER } from './laas.mjs';
+import { kontrollerOpslag } from './google-business.mjs';
 
 const LAASE = 'publicering/laase';
 const BYG = 'public';
@@ -29,6 +30,24 @@ function verificerElement(sti) {
     laas === e.versionslaas ? ok(`versionslås ${laas}`)
       : nej(`versionslås afviger — filen siger ${e.versionslaas}, felterne giver ${laas}`);
   } catch (err) { nej(err.message); }
+
+  // 4a. Sociale og manuelle kanaler: teksten, der sendes eller kopieres ud,
+  // er den godkendte. tekst er ikke selv et låst felt, men brodtekst_sha256
+  // er, og den skal være teksthashen. Så kan teksten ikke ændres efter
+  // godkendelsen, uden at gaten ser det.
+  if (e.kanal !== 'website') {
+    if (typeof e.tekst !== 'string') nej('ingen tekst i låsefilen');
+    else if (sha256(e.tekst) !== e.tekst_sha256) nej('tekst ÆNDRET — svarer ikke til tekst_sha256');
+    else if (e.brodtekst_sha256 !== e.tekst_sha256) nej('brodtekst_sha256 er ikke teksthashen — teksten er ikke låst');
+    else ok('tekst uændret siden godkendelsen');
+  }
+
+  // 4b. Google Business Profile: platformens krav. Et opslag, der ikke kan
+  // sendes ordret, skal stoppes her og ikke først på publiceringsdagen.
+  if (e.kanal === 'gbp') {
+    try { kontrollerOpslag(e); ok('opfylder Googles krav til et opslag'); }
+    catch (err) { nej(`Google-krav: ${err.message}`); }
+  }
 
   // 4. Brødteksten er den godkendte
   if (e.kanal === 'website') {

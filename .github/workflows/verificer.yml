@@ -41,6 +41,20 @@ jobs:
       - name: Versionslås og publiceringsfelter
         run: node publicering/scripts/verificer.mjs
 
+      # Repoet er offentligt. En hemmelighed, der naar main, er laekket.
+      - name: Ingen hemmeligheder i repoet
+        run: node publicering/scripts/hemmelighedsscan.mjs
+
+      # Motorens proever: destinationskontrol, fornyelse og fail closed for
+      # LinkedIn og Google. Intet netvaerk, intet token - kun attrapper.
+      - name: Motorens prøver
+        run: |
+          set -e
+          for t in publicering/test/linkedin-*.test.mjs publicering/test/google-*.test.mjs; do
+            echo "── $t"
+            node "$t"
+          done
+
       # Indholdskontrollen: titler, effektpaastande, priser, moms, forskning
       # uden kilde, genbrug, sporbarhed og kontrolstempel. FAIL og uafklaret
       # REVIEW stopper merge. Se publicering/regler/indholdsregler.json.

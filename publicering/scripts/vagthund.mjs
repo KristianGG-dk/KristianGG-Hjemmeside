@@ -152,15 +152,18 @@ async function main() {
     // Der er ingen scheduled_publish_time, saa motoren publicerer selv paa
     // tidspunktet. Staar et forfaldent Instagram-element uden resultat, ligger
     // det altsaa ingen steder og venter — den planlagte koersel har svigtet.
-    if (e.kanal === 'instagram') {
+    //
+    // Google Business Profile med metode "motor" er samme tilfaelde: API'et
+    // holder ikke et opslag, saa motoren publicerer selv paa tidspunktet.
+    if (e.kanal === 'instagram' || (e.kanal === 'gbp' && e.metode === 'motor')) {
       // Her kan vi faktisk bevise noget. Havde koerslen gjort sit arbejde,
       // stod der en raekke i registret. Den planlagte koersel gaar hver halve
       // time, saa vi giver en times naade for forsinkelse hos GitHub.
       const NAADE_MS = 60 * 60 * 1000;
       if (NU - forfald > NAADE_MS) {
-        FEJL(e.element, `instagram: forfaldt ${dk(forfald)} og er hverken publiceret eller fejlregistreret. Den planlagte koersel har ikke gjort sit arbejde.`);
+        FEJL(e.element, `${e.kanal}: forfaldt ${dk(forfald)} og er hverken publiceret eller fejlregistreret. Den planlagte koersel har ikke gjort sit arbejde.`);
       } else {
-        ADVAR(e.element, `instagram: forfaldt ${dk(forfald)} for nylig — den planlagte koersel har endnu ikke meldt tilbage. Se efter igen om lidt.`);
+        ADVAR(e.element, `${e.kanal}: forfaldt ${dk(forfald)} for nylig — den planlagte koersel har endnu ikke meldt tilbage. Se efter igen om lidt.`);
       }
       continue;
     }
@@ -197,6 +200,32 @@ async function main() {
     }
   } catch (err) {
     K_FEJL('LinkedIn', `kunne ikke laese tokenets udloeb: ${err.message}`);
+  }
+
+  // ── Google-adgangen ─────────────────────────────────────────────────────
+  // Refresh tokenet har normalt ingen udloebsdato. Staar appen i "Testing",
+  // udloeber det efter 7 dage, og saa siger Google det ved udstedelsen.
+  // Filen baerer ingen hemmelighed og intet fuldt id.
+  try {
+    const STI = 'publicering/google-token.json';
+    const hvor = 'Se dokumentation/google-business-profile.md, afsnittet om fornyelse.';
+    const motorGbp = koe.filter((e) => e.kanal === 'gbp' && e.metode === 'motor' && new Date(e.tidspunkt) > NU);
+    if (!existsSync(STI)) {
+      if (motorGbp.length) K_ADVAR('Google', `${motorGbp.length} kommende element(er) skal publiceres af motoren, men adgangen er aldrig autoriseret. ${hvor}`);
+    } else {
+      const t = JSON.parse(readFileSync(STI, 'utf8'));
+      if (t.refresh_tidsbegraenset && t.refresh_udloeber) {
+        const tilbage = dage(new Date(t.refresh_udloeber) - NU);
+        const m = `adgangen er tidsbegraenset (appen staar formentlig i "Testing")`;
+        if (tilbage <= 0) K_FEJL('Google', `${m} og udloeb ${dk(new Date(t.refresh_udloeber))}. Kanalen kan ikke publicere. ${hvor}`);
+        else if (tilbage <= 3) K_FEJL('Google', `${m} og udloeber om ${tilbage} dag(e). ${hvor}`);
+        else K_ADVAR('Google', `${m} og udloeber om ${tilbage} dage. ${hvor}`);
+      } else {
+        K_INFO('Google', `adgang autoriseret ${String(t.fornyet).slice(0, 10)}, uden udloebsdato (${t.titel ?? t.lokation})`);
+      }
+    }
+  } catch (err) {
+    K_FEJL('Google', `kunne ikke laese adgangens metadata: ${err.message}`);
   }
 
   const skriv = (titel, liste) => {

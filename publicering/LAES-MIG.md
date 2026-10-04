@@ -120,3 +120,24 @@ secrets udleveret.
 Beskyt det: repoet → *Settings* → *Environments* → `publicering` →
 *Deployment branches* → begræns til `main`. Så udleveres secrets kun til kode,
 der allerede er merget gennem PR-gaten.
+
+---
+
+## Google Business Profile 04-10-2026
+
+Google-kanalen er bygget som en rigtig publiceringskanal i motoren. Den
+genbruger LinkedIn-mønstret til første autorisation (statisk callback, byttet
+i GitHub Actions, PAT'en i miljøet `linkedin-oauth`) og Instagram-mønstret til
+publicering (planlagt kørsel, to jobs, kun registreringen må skrive).
+
+Forskellen fra LinkedIn: kun refresh tokenet gemmes, og access tokens hentes
+frisk ved hver kørsel. Der er derfor ingen manuel fornyelse i drift.
+Destinationen er en fastlåst lokation, som Google skal bekræfte før hver
+afsendelse.
+
+Samtidig blev gaten skærpet for alle sociale kanaler: `tekst` skal svare til
+`tekst_sha256`, og `brodtekst_sha256` skal være teksthashen. Det lukker punkt 3
+i `dokumentation/linkedin-oauth.md`. Gaten kører desuden motorens prøver og en
+hemmelighedsscanning.
+
+Detaljer: [`dokumentation/google-business-profile.md`](../dokumentation/google-business-profile.md).

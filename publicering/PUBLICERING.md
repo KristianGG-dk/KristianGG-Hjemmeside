@@ -23,11 +23,16 @@ Motoren udfører den tekniske handling. Den træffer ingen beslutning om indhold
 | `facebook` | Meta Graph API | Kristian trykker | **Meta holder opslaget** via `scheduled_publish_time` |
 | `instagram` | Meta Graph API | automatisk på tidspunktet | **motoren holder det selv** — se nedenfor |
 | `linkedin` | manuelt i LinkedIns brugerflade | Kristian | manuelt |
-| `gbp` | manuelt i Google Business Profile | Kristian | manuelt |
+| `gbp`, `metode: motor` | Google Business Profile API | automatisk på tidspunktet | **motoren holder det selv** — se nedenfor |
+| `gbp`, `metode: manuel` | manuelt i Google Business Profile | Kristian | manuelt |
 
-`linkedin` og `gbp` har ingen API-integration og får ingen. De planlægges i
-platformenes egne brugerflader og **registreres** i motoren, så kø, register og
-vagthund dækker dem på lige fod.
+`linkedin` har ingen aktiv API-integration. Den planlægges i platformens egen
+brugerflade og **registreres** i motoren, så kø, register og vagthund dækker
+den på lige fod. Det samme gælder `gbp`-elementer med `metode: manuel`.
+
+`gbp` med `metode: motor` publiceres af motoren gennem Business Profile API'et
+(fra 04-10-2026). Det er køens `metode`, der afgør det, ikke låsefilen: et
+element, der står som manuelt i køen, røres aldrig af motoren.
 
 ## Godkendelse på tværs af kanaler
 
@@ -87,6 +92,29 @@ containeren, `GET /{container-id}?fields=status_code` venter til `FINISHED`, og
 Kilde: [Meta — Publish Content using the Instagram
 Platform](https://developers.facebook.com/docs/instagram-platform/content-publishing/).
 
+## Google Business Profile-planlægning
+
+Business Profile API'et kan ikke holde et opslag til et senere tidspunkt.
+Reglen er derfor den samme som for Instagram:
+
+```
+Kristians godkendelse
+  → låst gbp-version + køpost med metode motor
+  → motorens planlagte kørsel vågner på tidspunktet (hver halve time, :05 og :35)
+  → opslaget sendes i SAMME kørsel
+```
+
+Motoren publicerer kun, når låsefil og køpost passer sammen (samme fil, samme
+tidspunkt), og højst et døgn efter det godkendte tidspunkt. Er det længere
+siden, kræver det et menneske. Et for sent opslag kan være forkert nu.
+
+Destinationen er fastlåst til én lokation, og Google skal bekræfte den før
+hver afsendelse. Adgangen fornyes automatisk ved hver kørsel ud fra et gemt
+refresh token. Kristian logger ikke ind ved hver publicering.
+
+Opsætning, destinationslås, tilbagekaldelse og fejlsøgning:
+[`dokumentation/google-business-profile.md`](../dokumentation/google-business-profile.md).
+
 ## Fejl
 
 Fejler en publicering:
@@ -127,8 +155,9 @@ Statusser:
 | `PUBLICERING FEJLET` | forsøgt, mislykkedes |
 | `PLANLAEGNING FEJLET` | planlægning hos Meta mislykkedes |
 
-Instagram bruger `AFVENTER DATO` → `PUBLICERET` eller `PUBLICERING FEJLET`.
-`PLANLAGT` bruges ikke, fordi Meta ikke holder et Instagram-opslag.
+Instagram og `gbp` med `metode: motor` bruger `AFVENTER DATO` → `PUBLICERET`
+eller `PUBLICERING FEJLET`. `PLANLAGT` bruges ikke, fordi platformen ikke holder
+opslaget.
 
 ## Vagthunden
 
@@ -142,10 +171,14 @@ Den skelner mellem tre ting:
 - **i orden** — forventet tilstand
 
 For kanaler, hvor platformen selv holder opslaget, kan vagthunden ikke se ind og
-kan derfor kun påminde. **Instagram er en undtagelse:** da motoren selv
-publicerer, ville en kørsel have efterladt en post i registret. Et forfaldent
-Instagram-element uden resultat er derfor en **FEJL** — efter en times nåde for
-forsinkelse hos GitHub.
+kan derfor kun påminde. **Instagram og `gbp` med `metode: motor` er
+undtagelser:** da motoren selv publicerer, ville en kørsel have efterladt en
+post i registret. Et forfaldent element uden resultat er derfor en **FEJL** —
+efter en times nåde for forsinkelse hos GitHub.
+
+Vagthunden varsler også, hvis Google-adgangen er tidsbegrænset (appen står i
+"Testing"), og hvis der ligger motorelementer til Google, men adgangen aldrig
+er autoriseret.
 
 ## Secrets
 
@@ -158,17 +191,30 @@ Alle credentials hentes fra GitHub Environment `publicering`, begrænset til
 | `FB_APP_ID`, `FB_APP_SECRET` | adgangskontrol, granulære scopes |
 | `IG_USER_ID`, `IG_ACCESS_TOKEN` | Instagram-publicering |
 | `LI_ACCESS_TOKEN`, `LI_PERSON_URN` | LinkedIn-klienten, ikke i brug |
+| `GBP_CLIENT_ID`, `GBP_CLIENT_SECRET` | Google OAuth-klienten |
+| `GBP_REFRESH_TOKEN` | Google-publicering. Skrives af workflowen, aldrig af et menneske |
+| `GBP_TILLADT_LOKATION`, `GBP_LOKATION` | den ene fastlåste Business Profile-lokation |
+| `GBP_AUTH_CODE` | kortlivet autorisationskode ved første autorisation |
 | `NETLIFY_BUILD_HOOK` | daglig genopbygning af sitet |
 
 Ingen tokenværdi må committes, logges, skrives i registret, gemmes i artefakter
 eller optræde i en fejlbesked. Alle scripts, der rører et token, skrubber det
 af både URL'er og fejltekster, før noget logges.
 
+LinkedIn- og Google-hemmelighederne skrives af fornyelses-workflowene som
+repo-hemmeligheder med PAT'en i miljøet `linkedin-oauth`. Gaten kører
+`hemmelighedsscan.mjs`, som stopper en PR, der indeholder et Google- eller
+GitHub-token, en `client_secret` eller en privat nøgle.
+
 ## Gaten
 
 `verificer.yml` kører på hver PR mod `main` og kontrollerer alle låsefiler:
 obligatoriske felter, godkendelse og versionslås. For `website` kontrolleres
-desuden byggeoutputtet. Gaten bygger med `--buildFuture`, så fremtidsdaterede
+desuden byggeoutputtet. For alle andre kanaler kontrolleres, at `tekst` svarer
+til `tekst_sha256`, og at `brodtekst_sha256` (et låst felt) er teksthashen. Så
+kan en social tekst ikke ændres efter godkendelsen, uden at gaten ser det. For
+`gbp` kontrolleres desuden Googles platformkrav. Gaten kører også motorens
+prøver og hemmelighedsscanningen. Gaten bygger med `--buildFuture`, så fremtidsdaterede
 indlæg også kan verificeres; produktionsbygget hos Netlify gør det ikke, og det
 er netop dét, der gør planlægningen mulig.
 

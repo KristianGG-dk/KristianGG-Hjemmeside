@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="da">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Google Business Profile-adgang — Kristian GG</title>
+<!--
+  Startside for Google OAuth (Business Profile). Statisk, uden server.
+
+  Siden genererer en state-nonce, gemmer den i sessionStorage og sender
+  Kristian til Google. Callbacken sammenligner bagefter.
+
+  DER ER INGEN HEMMELIGHED PAA DENNE SIDE.
+  Client ID er offentligt - det staar i autorisations-URL'en i forvejen og
+  kan laeses af enhver, der klikker "godkend". Client Secret findes kun i
+  GitHub Actions Secrets og roerer aldrig en browser.
+
+  state er ikke en hemmelighed, men en engangsnonce mod CSRF. Den hoerer
+  hjemme netop her, hos den browser der starter forloebet.
+-->
+<style>
+  :root{
+    --taage:#F4F6F1; --birk:#E8E6DC; --hvid:#fff;
+    --skovbund:#2C3A2E; --daempet:#5A6857; --mos:#4A6240; --hyben:#9C3E29;
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0; background:var(--taage); color:var(--skovbund);
+    font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+    font-size:16px; line-height:1.6; padding:16px;
+  }
+  main{max-width:38rem; margin:2.5rem auto 4rem}
+  h1{font-size:1.6rem; line-height:1.2; margin:0 0 .4rem}
+  .under{color:var(--daempet); margin:0 0 2rem}
+  .kort{
+    background:var(--hvid); border:1px solid rgba(168,183,154,.55);
+    border-radius:.75rem; padding:1.25rem; margin-bottom:1rem;
+  }
+  label{display:block; font-size:.68rem; font-weight:700; letter-spacing:.09em;
+    text-transform:uppercase; color:var(--daempet); margin-bottom:.4rem}
+  input{
+    width:100%; font:inherit; font-family:ui-monospace,Menlo,monospace;
+    font-size:.9rem; padding:.7rem .8rem; border:1px solid rgba(168,183,154,.8);
+    border-radius:.4rem; background:var(--birk); color:inherit; min-height:48px;
+  }
+  .hjaelp{font-size:.8rem; color:var(--daempet); margin:.5rem 0 0}
+  a.knap, button{
+    display:inline-flex; align-items:center; justify-content:center;
+    font:inherit; font-weight:700; background:var(--mos); color:#fff;
+    border:0; border-radius:.4rem; padding:.8rem 1.4rem; min-height:48px;
+    cursor:pointer; text-decoration:none; margin-top:1.25rem;
+  }
+  a.knap[aria-disabled="true"]{background:var(--daempet); opacity:.5; pointer-events:none}
+  ol{padding-left:1.2rem; margin:.5rem 0 0} li{margin-bottom:.5rem}
+  .advarsel{background:var(--birk); border-radius:.5rem; padding:.9rem 1rem;
+    font-size:.86rem; color:var(--daempet); margin-top:1.5rem}
+  code{font-family:ui-monospace,Menlo,monospace; font-size:.85rem}
+</style>
+</head>
+<body>
+<main>
+  <h1>Google Business Profile-adgang</h1>
+  <p class="under">Start her første gang, og hvis adgangen er tilbagekaldt eller udløbet. I daglig drift skal du ikke herind. Virker i enhver browser på enhver enhed.</p>
+
+  <div class="kort">
+    <label for="cid">Client ID</label>
+    <input id="cid" inputmode="latin" autocomplete="off" spellcheck="false"
+           placeholder="…apps.googleusercontent.com (Google Cloud → Clients)">
+    <p class="hjaelp">Ikke en hemmelighed — den står i autorisationsadressen i forvejen. Husket i denne browser, så du kun taster den én gang per enhed. Vil du undgå det helt, så gem denne side som bogmærke med <code>?client_id=…</code> i adressen.</p>
+    <a class="knap" id="gaa" href="#" aria-disabled="true">Godkend hos Google</a>
+  </div>
+
+  <div class="kort">
+    <label>Bagefter</label>
+    <ol>
+      <li>Du lander på callbacken, som viser en <code>code</code></li>
+      <li>Log ind som <strong>kontakt@kristiangg.dk</strong>, og sæt flueben ved adgangen til Business Profile</li>
+      <li>GitHub → Settings → Secrets and variables → Actions → <code>GBP_AUTH_CODE</code> → indsæt → Save</li>
+      <li>GitHub → Actions → <strong>Forny Google-adgang</strong> → Run workflow → <code>bootstrap</code> første gang, ellers <code>forny</code></li>
+    </ol>
+    <p class="hjaelp">Workflowet bytter koden til et refresh token, får Google til at bekræfte lokationen, og gemmer det. Du kopierer aldrig et token. Koden lever kun få minutter, så gør det med det samme.</p>
+  </div>
+
+  <div class="advarsel">
+    <p style="margin:0"><strong>Der er ingen hemmelighed på denne side.</strong> Client Secret findes kun i GitHub Actions Secrets og rører aldrig en browser. Tokenet gør heller ikke.</p>
+  </div>
+</main>
+
+<script>
+(function () {
+  var NOEGLE = 'kgg_gbp_client_id';
+  var felt = document.getElementById('cid');
+  var knap = document.getElementById('gaa');
+
+  var fraUrl = new URLSearchParams(location.search).get('client_id');
+  var gemt = null;
+  try { gemt = localStorage.getItem(NOEGLE); } catch (e) {}
+  felt.value = (fraUrl || gemt || '').trim();
+
+  function nonce() {
+    var a = new Uint8Array(24);
+    crypto.getRandomValues(a);
+    return btoa(String.fromCharCode.apply(null, a))
+      .replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+  }
+
+  function opdater() {
+    var id = felt.value.trim();
+    // Et Google client ID ender altid paa .apps.googleusercontent.com.
+    if (!/^[\w-]+\.apps\.googleusercontent\.com$/.test(id)) {
+      knap.setAttribute('aria-disabled', 'true'); knap.href = '#'; return;
+    }
+    try { localStorage.setItem(NOEGLE, id); } catch (e) {}
+    var state = nonce();
+    try { sessionStorage.setItem('kgg_gbp_state', state); } catch (e) {}
+    var u = new URL('https://accounts.google.com/o/oauth2/v2/auth');
+    u.searchParams.set('response_type', 'code');
+    u.searchParams.set('client_id', id);
+    u.searchParams.set('redirect_uri', 'https://kristiangg.dk/oauth/google/callback/');
+    u.searchParams.set('state', state);
+    // Kun Business Profile. Destinationen bevises af Google selv i
+    // workflowen ud fra lokationen, ikke ud fra en e-mailadresse.
+    u.searchParams.set('scope', 'https://www.googleapis.com/auth/business.manage');
+    // offline + consent: saa giver Google et refresh token, og motoren kan
+    // derefter koere uden login.
+    u.searchParams.set('access_type', 'offline');
+    u.searchParams.set('prompt', 'consent');
+    u.searchParams.set('login_hint', 'kontakt@kristiangg.dk');
+    knap.href = u.toString();
+    knap.setAttribute('aria-disabled', 'false');
+  }
+
+  felt.addEventListener('input', opdater);
+  opdater();
+})();
+</script>
+</body>
+</html>
