@@ -3,7 +3,7 @@
 // Svarer paa fire spoergsmaal uden at skrive noget paa profilen:
 //   1. Er hemmelighederne paa plads, og er destinationen fastlaast?
 //   2. Kan refresh tokenet stadig give et access token?
-//   3. Hvilke lokationer kan tokenet se?
+//   3. Hvor mange lokationer kan tokenet se? (kun antallet logges)
 //   4. Bekraefter Google den fastlaaste lokation under den fastlaaste konto?
 //
 // Mod Business Profile sendes udelukkende GET. Det eneste POST er
@@ -45,9 +45,10 @@ export async function kontroller(env = process.env, hent = fetch) {
 
   if (token) {
     try {
+      // Kun antallet. Loggen er offentlig, og andre profiler, kontoen tilfaeldigvis
+      // kan se, er ikke motorens sag. Kun den fastlaaste lokation navngives.
       const alle = await findLokationer(token, hent);
-      info(`tokenet kan se ${alle.length} lokation(er):`);
-      for (const l of alle) info(`  ${maskId(l.navn)}  «${l.titel ?? 'uden titel'}»  ${l.website ?? ''}`);
+      info(`tokenet kan se ${alle.length} lokation(er)`);
     } catch (e) {
       nej(`lokationerne kunne ikke listes: ${skrub(e.message)}`);
     }

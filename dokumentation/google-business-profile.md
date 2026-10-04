@@ -184,6 +184,8 @@ begrænset til `main`.
 - Access tokens markeres med `::add-mask::` og gemmes ingen steder
 - `skrub()` fjerner kendte værdier og Googles tokenformer (`ya29.`, `1//`,
   `GOCSPX-`, `4/…`, `Bearer …`) fra enhver fejlbesked, før den logges
+- Adgangskontrollen logger kun **antallet** af profiler, kontoen kan se. Kun den
+  fastlåste profil navngives
 - Lokations- og konto-id'er afkortes i loggen (`44…66`), fordi repoet er offentligt.
   Eneste undtagelse: når bootstrap stopper ved flere kandidater, vises de fulde
   navne, så Kristian kan vælge. Et lokations-id er ikke en adgangsnøgle
