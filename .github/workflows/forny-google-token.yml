@@ -1,0 +1,84 @@
+# Autoriserer og fornyer Google Business Profile-adgangen fra browseren.
+# Startes manuelt, aldrig af sig selv.
+#
+# TRE HANDLINGER
+#   kontroller  (standard)  beviser at roerfoeringen er paa plads. Kalder
+#                           IKKE Google og bruger IKKE koden. Intet gemmes.
+#   bootstrap               FOERSTE gang. Bytter koden til et refresh token OG
+#                           fastlaaser lokationen ud fra Googles eget svar.
+#                           Virker kun mens GBP_TILLADT_LOKATION staar paa
+#                           AFVENTER. Derefter afvises den.
+#   forny                   senere, hvis adgangen er tilbagekaldt eller
+#                           udloebet. Kraever at lokationen er fastlaast, og
+#                           afviser et token, der ikke kan se netop den.
+#
+# I DRIFT KOERES DENNE IKKE. Refresh tokenet bliver liggende, og
+# publiceringen henter selv et frisk access token ved hver koersel.
+#
+# SAADAN GOER KRISTIAN
+#   1. kristiangg.dk/oauth/google/  -> godkender -> faar en kode
+#   2. Settings > Secrets > GBP_AUTH_CODE -> indsaetter koden
+#   3. Actions > denne workflow > Run workflow -> handling: bootstrap
+#
+# HVORFOR KODEN IKKE ER ET INPUT
+# Repoet er offentligt. Et workflow_dispatch-input staar i koerslens metadata,
+# synligt for alle. En hemmelighed goer det ikke.
+#
+# HVORFOR MILJOEET HEDDER linkedin-oauth
+# Det er dér, den eneste PAT med Secrets: write ligger, med Kristian som
+# paakraevet godkender. Google genbruger den frem for at faa en kopi nummer to.
+#
+# DER PUBLICERES INTET HERFRA. Ingen koe, ingen laase, ingen opslag.
+
+name: Forny Google-adgang
+
+on:
+  workflow_dispatch:
+    inputs:
+      handling:
+        description: 'Hvad skal der ske?'
+        required: true
+        default: kontroller
+        type: choice
+        options:
+          - kontroller
+          - bootstrap
+          - forny
+
+permissions: {}
+
+jobs:
+  koer:
+    environment: linkedin-oauth
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write        # kun for at gemme metadata uden hemmeligheder
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+
+      - run: npm install --no-save libsodium-wrappers@0.7.15
+
+      - name: ${{ inputs.handling == 'kontroller' && 'Kontrollér opsætningen' || 'Byt kode til refresh token og gem' }}
+        env:
+          HANDLING: ${{ inputs.handling }}
+          GBP_AUTH_CODE: ${{ secrets.GBP_AUTH_CODE }}
+          GBP_CLIENT_ID: ${{ secrets.GBP_CLIENT_ID }}
+          GBP_CLIENT_SECRET: ${{ secrets.GBP_CLIENT_SECRET }}
+          GBP_TILLADT_LOKATION: ${{ secrets.GBP_TILLADT_LOKATION }}
+          GH_SECRET_MANAGER_TOKEN: ${{ secrets.GH_SECRET_MANAGER_TOKEN }}
+        run: node publicering/scripts/forny-google-token.mjs
+
+      - name: Gem metadata i repoet
+        if: ${{ inputs.handling != 'kontroller' }}
+        run: |
+          if [ -n "$(git status --porcelain publicering/google-token.json)" ]; then
+            git config user.name "kristiangg-motor"
+            git config user.email "kontakt@kristiangg.dk"
+            git add publicering/google-token.json
+            git commit -m "google: adgang fornyet"
+            git push
+          fi

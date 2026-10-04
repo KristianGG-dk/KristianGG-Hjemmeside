@@ -1,0 +1,110 @@
+# Publicerer godkendte Google Business Profile-elementer, naar deres
+# tidspunkt er naaet.
+#
+# HVORFOR DENNE KOERER AF SIG SELV
+# Business Profile API'et kan ikke holde et opslag til et senere tidspunkt.
+# Som ved Instagram skal nogen vaere vaagen paa tidspunktet. Det er denne.
+#
+# GODKENDELSEN LIGGER FOERST
+# Kristian godkender indholdet, det laases, og laasen kommer i repoet gennem
+# PR-gaten. Kun elementer, som koeen angiver med metode "motor", roeres.
+# Denne koersel traeffer ingen beslutning om indhold.
+#
+# INGEN LOGIN VED HVER KOERSEL
+# Scriptet bytter det gemte refresh token til et access token, der lever en
+# time og ikke gemmes. Mangler eller svigter adgangen, sendes intet, og
+# jobbet fejler, saa GitHub sender mail.
+#
+# Delt i to jobs som de oevrige: publiceringen koerer uden skriveadgang til
+# repoet, og kun registreringen bagefter maa skrive.
+name: Publicer planlagte Google-elementer
+
+on:
+  schedule:
+    # Forskudt fra Instagram (0,30), saa de to ikke skubber til hinanden.
+    - cron: '5,35 * * * *'
+  workflow_dispatch:
+    inputs:
+      publicer:
+        description: 'Sæt til true for at publicere. Ellers tørløb.'
+        required: true
+        type: boolean
+        default: false
+
+permissions: {}
+
+concurrency:
+  group: publicer-google
+  cancel-in-progress: false
+
+jobs:
+  publicer:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    environment: publicering
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+
+      - name: Publicer forfaldne Google-elementer
+        shell: bash
+        env:
+          GBP_CLIENT_ID: ${{ secrets.GBP_CLIENT_ID }}
+          GBP_CLIENT_SECRET: ${{ secrets.GBP_CLIENT_SECRET }}
+          GBP_REFRESH_TOKEN: ${{ secrets.GBP_REFRESH_TOKEN }}
+          GBP_TILLADT_LOKATION: ${{ secrets.GBP_TILLADT_LOKATION }}
+          GBP_LOKATION: ${{ secrets.GBP_LOKATION }}
+          PUBLICER: ${{ github.event_name == 'schedule' || inputs.publicer }}
+        run: |
+          ARGS=""; [ "$PUBLICER" = "true" ] && ARGS="--publicer"
+          node publicering/scripts/publicer-google.mjs $ARGS
+
+      - name: Gem resultatet til registrering
+        if: ${{ always() && (github.event_name == 'schedule' || inputs.publicer) }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: resultat-google
+          path: resultat-google.json
+          if-no-files-found: ignore
+
+  registrer:
+    needs: publicer
+    if: ${{ always() && (github.event_name == 'schedule' || inputs.publicer) }}
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write    # eneste sted der skrives, og kun register.json
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - uses: actions/download-artifact@v4
+        with:
+          name: resultat-google
+        continue-on-error: true
+
+      - name: Skriv i registret
+        if: always()
+        continue-on-error: true
+        run: |
+          [ -f resultat-google.json ] || { echo "Ingen resultatfil — intet at registrere."; exit 0; }
+          node publicering/scripts/publicer-google.mjs --skriv-register resultat-google.json
+
+      - name: Commit registret
+        if: always()
+        run: |
+          git config user.name "publiceringsmotor"
+          git config user.email "kontakt@kristiangg.dk"
+          git add publicering/register.json
+          git diff --staged --quiet || git commit -m "registrer: google"
+          git push
+
+      # Doemmer kun - skriver ikke. Manglede adgangen, har publiceringsjobbet
+      # selv fejlet; her fanges de elementer, der blev forsoegt.
+      - name: Fejl jobbet hvis noget ikke blev publiceret
+        run: |
+          [ -f resultat-google.json ] || exit 0
+          node publicering/scripts/publicer-google.mjs --status-kun resultat-google.json

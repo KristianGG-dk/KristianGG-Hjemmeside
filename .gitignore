@@ -16,3 +16,10 @@ resultat-planlaegning.json
 
 # OAuth-state fra LinkedIn-forloebet. Lokal, kortvarig, aldrig i repoet.
 publicering/scripts/.li-state
+
+# Google OAuth. Den JSON-fil, Google Cloud tilbyder at hente, indeholder
+# client secret og maa aldrig i repoet. Resultatfilen er et CI-artefakt.
+client_secret*.json
+publicering/scripts/.gbp-state
+resultat-google.json
+resultat-instagram.json
