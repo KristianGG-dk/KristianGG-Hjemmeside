@@ -2,13 +2,7 @@
 title: "Skovbad i Svanninge Bakker"
 description: "Guidet skovbad i Svanninge Bakker søndag 1. november 2026 kl. 10–12.30. 2,5 timer i roligt tempo med sanser og nærvær. Max 12 deltagere, 329 kr."
 hero_subtitle: "2,5 timer med ro og nærvær. Vi sænker tempoet, bevæger os stille gennem skoven og giver sanserne plads."
-draft: true
-
-# ── MÅ IKKE PUBLICERES ENDNU ─────────────────────────────────────────────────
-# EasyMe-linket er på plads. Tilbage står tilladelsen til erhvervsmæssig
-# aktivitet i Svanninge Bakker, jf. opgavens eget forbehold. Er den afklaret,
-# sættes draft til false — i /admin/ ved at slå "Kladde" fra.
-# ─────────────────────────────────────────────────────────────────────────────
+draft: false
 
 start: 2026-11-01T10:00:00+01:00
 slut: 2026-11-01T12:30:00+01:00
