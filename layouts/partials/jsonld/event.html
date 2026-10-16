@@ -34,7 +34,26 @@
   {{- end }}
   "url": "{{ $.Permalink }}",
   "inLanguage": "da-DK",
+  {{- /* Arrangoer. Staar en samarbejdspartner som arrangoer, er det DEM, der
+         skal staa foerst — og Kristian med som medarrangoer. At saette sig
+         selv som eneste organizer paa et arrangement, en anden holder,
+         ville vaere en urigtig angivelse.
+
+         Uden en navngiven partner er Kristian selv arrangoeren. */ -}}
+  {{- if $p.arrangoer }}
+  "organizer": [
+    {
+      "@type": "Organization",
+      "name": {{ $p.arrangoer | jsonify | safeJS }}
+      {{- with $p.arrangoer_url }},
+      "url": {{ . | jsonify | safeJS }}{{ end }}
+    },
+    { "@id": "{{ site.BaseURL }}" }
+  ],
+  {{- else }}
   "organizer": { "@id": "{{ site.BaseURL }}" },
+  {{- end }}
+  {{/* Kristian staar som performer uanset hvad — han leder indholdet. */}}
   "performer": { "@id": "{{ site.BaseURL }}#kristian" },
   {{- with $p.sted }}
   "location": {

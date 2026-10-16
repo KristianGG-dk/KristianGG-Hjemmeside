@@ -486,7 +486,12 @@ collections:
       - {label: Note til prisen, name: pris_note, widget: string, required: false}
       - {label: Antal pladser, name: pladser, widget: string, required: false}
       - {label: Medbring, name: medbring, widget: string, required: false}
-      - {label: Arrangør, name: arrangoer, widget: string, required: false, hint: "Udfyldes, når en samarbejdspartner står for arrangementet"}
+      # Udfyldes KUN, naar en samarbejdspartner er arrangoer. Sker det, staar
+      # de som arrangoer og Kristian GG automatisk som medarrangoer — baade
+      # paa siden og i markup til Google. Er feltet tomt, er Kristian selv
+      # arrangoer, og der staar ingenting.
+      - {label: Arrangør (samarbejdspartner), name: arrangoer, widget: string, required: false, hint: "Kun når en anden står for arrangementet. Du tilføjes selv som medarrangør."}
+      - {label: Arrangørens hjemmeside, name: arrangoer_url, widget: string, required: false}
 
       - {label: Billetlink, name: billet_url, widget: string, required: false, hint: "Sælges billetterne et andet sted, peger tilmeldingsknappen derhen. Lad feltet stå tomt, så går knappen til kontaktformularen."}
       - {label: Tekst på billetknappen, name: billet_tekst, widget: string, required: false, default: "Køb billet"}

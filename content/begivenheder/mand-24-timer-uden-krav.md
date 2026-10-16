@@ -17,7 +17,8 @@ pris: "1200"
 pris_note: "Introduktionspris pr. person. Inkluderer vegetarisk forplejning, alle aktiviteter og overnatning. Hertil kommer billetgebyr på 29 kr. og 3 kr. i administrationsgebyr pr. ordre."
 pladser: "Max 12 deltagere. Gennemføres ved minimum 6."
 medbring: "Varm sovepose, tøj og fodtøj til vejret, og en hængekøje hvis du vil sove i en. Der er et begrænset antal soveposer og hængekøjer til rådighed — soveposerne er ikke vintersoveposer."
-arrangoer: "Molsness × Kristian GG"
+arrangoer: "Molsness"
+arrangoer_url: "https://www.molsness.dk/"
 
 billet_url: "https://www.molsness.dk/arrangementer/?ytroute=/arrangementer/62198/mand-24-timer-uden-krav-et-doegn-med-naturen-stilheden-og-faellesskabet/"
 billet_tekst: "Se og køb billet hos Molsness"
@@ -46,7 +47,7 @@ Hvornår har du sidst givet dig selv et helt døgn, hvor du ikke skulle præster
 tage ansvar eller leve op til andres forventninger? Et døgn, hvor du bare kunne
 være dig selv.
 
-Molsness og jeg inviterer til et døgn for mænd i naturen på Mols. Vi bevæger os
+Molsness inviterer sammen med mig til et døgn for mænd i naturen på Mols. Vi bevæger os
 mellem skov og hav. Vi går i stilhed langs kysten, oplever skovbad, arbejder med
 åndedrættet og samles omkring bålet. Vi tilbereder vegetarisk mad sammen og
 skaber plads til samtaler, refleksion og fællesskab.
@@ -99,11 +100,12 @@ livshistorie. Du skal ikke præstere noget. Du skal bare være med.
 
 ## Hvem står bag
 
-Døgnet holder vi sammen. Jeg er registreret psykoterapeut hos Foreningen af
-Danske Psykoterapeuter og naturterapeut, og står for naturterapien, skovbadet,
-åndedrættet og gruppesamtalerne. [Læs mere om mig](/om/).
+**Molsness** er arrangør, og jeg er med som medarrangør. Jeg står for
+naturterapien, skovbadet, åndedrættet og gruppesamtalerne. Jeg er registreret
+psykoterapeut hos Foreningen af Danske Psykoterapeuter og naturterapeut.
+[Læs mere om mig](/om/).
 
-**Molsness** ligger på Mols og drives af Morten Hofmeister, som bor på stedet
+Molsness ligger på Mols og drives af Morten Hofmeister, som bor på stedet
 med Pernille. Morten er uddannet sanse- og naturbadsinstruktør fra Human
 Education Group og er i gang med naturvejlederuddannelsen på Københavns
 Universitet med særligt fokus på natur, trivsel og sundhed. Molsness arbejder

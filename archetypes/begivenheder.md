@@ -24,7 +24,10 @@ pris: ""        # tal giver " kr" og en offers-blok i structured data.
 pris_note: ""
 pladser: ""
 medbring: ""
-arrangoer: ""   # naevnes, naar en samarbejdspartner staar for arrangementet
+# Udfyldes kun, naar en samarbejdspartner er arrangoer. Saa staar de som
+# arrangoer, og Kristian GG saettes automatisk som medarrangoer.
+arrangoer: ""
+arrangoer_url: ""
 
 # Eksternt billetlink. Er det sat, peger tilmeldingsknappen derhen i stedet
 # for paa kontaktformularen.
