@@ -85,6 +85,48 @@
 // Den gamle accordion-kode er fjernet: den skjulte svarene med
 // class="hidden", saa de var utilgaengelige uden JavaScript.
 
+// Forudfyld kontaktformularen, naar man kommer fra en begivenhed.
+// Linket er /kontakt/?begivenhed=<titel og dato>#skriv.
+//
+// Emnet saettes kun til en vaerdi, der FAKTISK findes i feltet. Et ukendt
+// emne ville efterlade select'en tom, og et tomt "subject" betyder, at
+// Netlify slet ikke sender notifikationsmailen — samme fejl som den, der
+// kostede rigtige henvendelser. Derfor opslaget i options frem for en
+// direkte tildeling.
+//
+// Teksten saettes med .value, ikke innerHTML: en vaerdi fra adresselinjen
+// bliver da aldrig fortolket som markup.
+(function () {
+  var form = document.querySelector('form[name="kontakt"]');
+  if (!form) return;
+
+  var navn;
+  try {
+    navn = new URLSearchParams(window.location.search).get('begivenhed');
+  } catch (e) {
+    return;
+  }
+  if (!navn) return;
+  navn = navn.slice(0, 200).trim();
+  if (!navn) return;
+
+  var emne = form.querySelector('[name="subject"]');
+  if (emne) {
+    var oensket = 'Tilmelding til begivenhed';
+    for (var i = 0; i < emne.options.length; i++) {
+      if (emne.options[i].value === oensket) {
+        emne.value = oensket;
+        break;
+      }
+    }
+  }
+
+  var besked = form.querySelector('[name="message"]');
+  if (besked && !besked.value.trim()) {
+    besked.value = 'Jeg vil gerne tilmelde mig: ' + navn + '\n\n';
+  }
+})();
+
 // ContactForm — AJAX submission for Netlify forms
 (function () {
   var form = document.querySelector('[data-netlify-ajax]');

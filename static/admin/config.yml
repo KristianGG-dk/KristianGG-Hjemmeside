@@ -439,3 +439,67 @@ collections:
         required: false
         field: {label: URL, name: url, widget: string}
       - {label: Indhold, name: body, widget: markdown}
+
+  # ── Begivenheder ───────────────────────────────────────────────────────────
+  # Begivenhedens tidspunkt ligger i "start", ikke i "date". Hugo udelader
+  # fremtidsdaterede sider fra bygningen, saa en kommende begivenhed i "date"
+  # ville foerst blive synlig, naar den var overstaaet.
+  - name: begivenheder
+    label: Begivenheder
+    label_singular: Begivenhed
+    folder: content/begivenheder
+    create: true
+    slug: "{{slug}}"
+    summary: "{{start | date('DD-MM-YYYY')}} — {{title}}"
+    sortable_fields: [start, title]
+    view_filters:
+      - {label: Aflyste, field: aflyst, pattern: true}
+    fields:
+      # Kladdefeltet SKAL staa her. Decap skriver filen ud fra de felter,
+      # kollektionen kender; var draft ikke med, kunne en kladde blive
+      # offentliggjort ved et gem, uden at nogen havde bedt om det.
+      - {label: Kladde — vises ikke på hjemmesiden, name: draft, widget: boolean, default: false}
+      - {label: Titel, name: title, widget: string}
+      - {label: Meta-beskrivelse (til Google), name: description, widget: text}
+      - {label: Underrubrik, name: hero_subtitle, widget: text, required: false}
+      # Feltet hedder "kategori", ikke "type": "type" er reserveret af Hugo og
+      # ville overstyre, hvilken skabelon siden bruger.
+      - label: Type
+        name: kategori
+        widget: select
+        default: skovbad
+        options:
+          - {label: Skovbad, value: skovbad}
+          - {label: Kursus med holdstart, value: kursus}
+          - {label: Foredrag eller workshop, value: foredrag}
+
+      - {label: Starter, name: start, widget: datetime, format: "YYYY-MM-DDTHH:mm:ssZ", picker_utc: false}
+      - {label: Slutter, name: slut, widget: datetime, format: "YYYY-MM-DDTHH:mm:ssZ", picker_utc: false, required: false}
+
+      - {label: Sted, name: sted, widget: string, hint: "Fx Hesbjerg Skov eller Klinikken på Lumbyvej"}
+      - {label: Adresse, name: adresse, widget: string, required: false}
+      - {label: Postnummer, name: postnr, widget: string, required: false}
+      - {label: By, name: by, widget: string, required: false}
+
+      - {label: Pris, name: pris, widget: string, required: false, hint: "Skriv kun et tal, fx 350. Skriver du ord i stedet, vises de som de står — men så sendes der ingen pris til Google."}
+      - {label: Note til prisen, name: pris_note, widget: string, required: false}
+      - {label: Antal pladser, name: pladser, widget: string, required: false}
+      - {label: Medbring, name: medbring, widget: string, required: false}
+      - {label: Arrangør, name: arrangoer, widget: string, required: false, hint: "Udfyldes, når en samarbejdspartner står for arrangementet"}
+
+      - {label: Billetlink, name: billet_url, widget: string, required: false, hint: "Sælges billetterne et andet sted, peger tilmeldingsknappen derhen. Lad feltet stå tomt, så går knappen til kontaktformularen."}
+      - {label: Tekst på billetknappen, name: billet_tekst, widget: string, required: false, default: "Køb billet"}
+
+      - {label: Fuldt booket, name: tilmelding_lukket, widget: boolean, default: false}
+      - {label: Aflyst, name: aflyst, widget: boolean, default: false}
+      - {label: Grund til aflysning, name: aflyst_grund, widget: string, required: false}
+
+      - label: Ofte stillede spørgsmål
+        name: faq
+        widget: list
+        required: false
+        fields:
+          - {label: Spørgsmål, name: q, widget: string}
+          - {label: Svar, name: a, widget: text}
+
+      - {label: Beskrivelse, name: body, widget: markdown}

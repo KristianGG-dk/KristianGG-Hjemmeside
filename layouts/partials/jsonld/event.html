@@ -1,0 +1,70 @@
+{{- /*
+  Event. Udsendes kun, naar begivenheden har en starttid — uden startDate er
+  blokken ugyldig, og Google afviser den.
+
+  organizer peger paa LocalBusiness'ens @id og performer paa personens, i
+  stedet for at gentage navn og adresse. Samme princip som service.html.
+
+  offers udsendes KUN, naar prisen er et tal. Staar der "Skriv for pris" eller
+  lignende, udelades blokken helt — en offers-blok uden en reel pris er en
+  urigtig angivelse, jf. markedsfoeringslovens krav om saglighed.
+
+  eventStatus skifter til EventCancelled, naar aflyst: true. Google beholder
+  da resultatet, men markerer det som aflyst — bedre end at fjerne siden,
+  fordi folk der allerede har set den, stadig skal kunne finde beskeden.
+*/ -}}
+{{- $b := site.Data.business -}}
+{{- with .Params.start -}}
+{{- $s := time.AsTime . -}}
+{{- $p := $.Params -}}
+{{- $iso := "2006-01-02T15:04:05-07:00" -}}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Event",
+  "name": {{ $.Title | jsonify | safeJS }},
+  "startDate": {{ ($s.Format $iso) | jsonify | safeJS }},
+  {{- with $p.slut }}
+  "endDate": {{ ((time.AsTime .).Format $iso) | jsonify | safeJS }},
+  {{- end }}
+  "eventStatus": "https://schema.org/{{ if $p.aflyst }}EventCancelled{{ else }}EventScheduled{{ end }}",
+  "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
+  {{- with ($p.description | default $p.hero_subtitle) }}
+  "description": {{ . | jsonify | safeJS }},
+  {{- end }}
+  "url": "{{ $.Permalink }}",
+  "inLanguage": "da-DK",
+  "organizer": { "@id": "{{ site.BaseURL }}" },
+  "performer": { "@id": "{{ site.BaseURL }}#kristian" },
+  {{- with $p.sted }}
+  "location": {
+    "@type": "Place",
+    "name": {{ . | jsonify | safeJS }}
+    {{- if or $p.adresse $p.by }},
+    "address": {
+      "@type": "PostalAddress"
+      {{- with $p.adresse }},
+      "streetAddress": {{ . | jsonify | safeJS }}{{ end }}
+      {{- with $p.postnr }},
+      "postalCode": {{ . | jsonify | safeJS }}{{ end }}
+      {{- with $p.by }},
+      "addressLocality": {{ . | jsonify | safeJS }}{{ end }},
+      "addressCountry": "DK"
+    }
+    {{- end }}
+  },
+  {{- end }}
+  {{- if and $p.pris (findRE "^[0-9]+([.,][0-9]+)?$" (printf "%v" $p.pris)) }}
+  "offers": {
+    "@type": "Offer",
+    "price": {{ (replace (printf "%v" $p.pris) "," ".") | jsonify | safeJS }},
+    "priceCurrency": {{ ($p.valuta | default "DKK") | jsonify | safeJS }},
+    "availability": "https://schema.org/{{ if $p.tilmelding_lukket }}SoldOut{{ else }}InStock{{ end }}",
+    "url": "{{ $.Permalink }}",
+    "validFrom": {{ ((time.AsTime $.Date).Format $iso) | jsonify | safeJS }}
+  },
+  {{- end }}
+  "image": "{{ (site.Params.og_image) | absURL }}"
+}
+</script>
+{{- end -}}
