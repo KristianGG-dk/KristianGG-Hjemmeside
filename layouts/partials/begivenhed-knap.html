@@ -1,0 +1,36 @@
+{{- /*
+  Tilmeldingsknappen til en begivenhed. Ét sted, saa knappen i hero'en og
+  knappen i bunden ikke kan komme ud af trit — hverken i adresse, ordlyd
+  eller skaermlaeser-tekst.
+
+  Kaldes med en dict:
+    "side"   siden (obligatorisk)
+    "lys"    true paa moerk flade (bundens CTA), saa reserveknappen kan ses
+
+  Renderer intet, naar begivenheden er aflyst, overstaaet eller fuldt booket.
+  I de tilfaelde staar der allerede en besked paa siden, og en knap, der
+  lover en tilmelding, man ikke kan gennemfoere, ville modsige den.
+*/ -}}
+{{- $side := .side -}}
+{{- $p := $side.Params -}}
+{{- $s := cond (ne $p.start nil) (time.AsTime (or $p.start "2000-01-01")) nil -}}
+{{- $fortid := and $s (lt $s now) -}}
+{{- if not (or $p.aflyst $fortid $p.tilmelding_lukket) -}}
+{{- $easyme := and $p.billet_url (strings.Contains (printf "%v" $p.billet_url) "ezme.io") -}}
+{{- if $p.billet_url -}}
+<a href="{{ $p.billet_url }}" target="_blank" rel="noopener"
+   class="btn-primary inline-flex items-center justify-center min-h-[48px] px-7 font-semibold">
+  {{ $p.billet_tekst | default "Køb billet" }}
+  {{- if not $easyme }}
+  <svg aria-hidden="true" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="ml-2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><path d="M15 3h6v6"/><path d="M10 14 21 3"/></svg>
+  <span class="sr-only"> (åbner hos arrangøren i et nyt faneblad)</span>
+  {{- else }}
+  <span class="sr-only"> (åbner bookingen på siden — eller i et nyt faneblad, hvis bookingvinduet ikke kan indlæses)</span>
+  {{- end }}
+</a>
+{{- else -}}
+{{- $navn := cond (ne $s nil) (printf "%s – %s" $side.Title (partial "dato-dk.html" (dict "t" (or $s now) "stil" "kort"))) $side.Title -}}
+<a href="/kontakt/?begivenhed={{ $navn | urlquery }}#skriv"
+   class="btn-primary inline-flex items-center justify-center min-h-[48px] px-7 font-semibold">Skriv for at tilmelde dig</a>
+{{- end -}}
+{{- end -}}
