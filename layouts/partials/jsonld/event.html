@@ -1,0 +1,97 @@
+{{- /*
+  Event. Udsendes kun, naar begivenheden har en starttid — uden startDate er
+  blokken ugyldig, og Google afviser den.
+
+  organizer peger paa LocalBusiness'ens @id og performer paa personens, i
+  stedet for at gentage navn og adresse. Samme princip som service.html.
+
+  offers udsendes KUN, naar prisen er et tal. Staar der "Skriv for pris" eller
+  lignende, udelades blokken helt — en offers-blok uden en reel pris er en
+  urigtig angivelse, jf. markedsfoeringslovens krav om saglighed.
+
+  eventStatus skifter til EventCancelled, naar aflyst: true. Google beholder
+  da resultatet, men markerer det som aflyst — bedre end at fjerne siden,
+  fordi folk der allerede har set den, stadig skal kunne finde beskeden.
+*/ -}}
+{{- $b := site.Data.business -}}
+{{- with .Params.start -}}
+{{- $s := time.AsTime . -}}
+{{- $p := $.Params -}}
+{{- $iso := "2006-01-02T15:04:05-07:00" -}}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Event",
+  "name": {{ $.Title | jsonify | safeJS }},
+  "startDate": {{ ($s.Format $iso) | jsonify | safeJS }},
+  {{- with $p.slut }}
+  "endDate": {{ ((time.AsTime .).Format $iso) | jsonify | safeJS }},
+  {{- end }}
+  "eventStatus": "https://schema.org/{{ if $p.aflyst }}EventCancelled{{ else }}EventScheduled{{ end }}",
+  "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
+  {{- with ($p.description | default $p.hero_subtitle) }}
+  "description": {{ . | jsonify | safeJS }},
+  {{- end }}
+  "url": "{{ $.Permalink }}",
+  "inLanguage": "da-DK",
+  {{- /* Arrangoer. Staar en samarbejdspartner som arrangoer, er det DEM, der
+         skal staa foerst — og Kristian med som medarrangoer. At saette sig
+         selv som eneste organizer paa et arrangement, en anden holder,
+         ville vaere en urigtig angivelse.
+
+         Uden en navngiven partner er Kristian selv arrangoeren. */ -}}
+  {{- if $p.arrangoer }}
+  "organizer": [
+    {
+      "@type": "Organization",
+      "name": {{ $p.arrangoer | jsonify | safeJS }}
+      {{- with $p.arrangoer_url }},
+      "url": {{ . | jsonify | safeJS }}{{ end }}
+    },
+    { "@id": "{{ site.BaseURL }}" }
+  ],
+  {{- else }}
+  "organizer": { "@id": "{{ site.BaseURL }}" },
+  {{- end }}
+  {{/* Kristian staar som performer uanset hvad — han leder indholdet. */}}
+  "performer": { "@id": "{{ site.BaseURL }}#kristian" },
+  {{- with $p.sted }}
+  "location": {
+    "@type": "Place",
+    "name": {{ . | jsonify | safeJS }}
+    {{- if or $p.adresse $p.by }},
+    "address": {
+      "@type": "PostalAddress"
+      {{- with $p.adresse }},
+      "streetAddress": {{ . | jsonify | safeJS }}{{ end }}
+      {{- with $p.postnr }},
+      "postalCode": {{ . | jsonify | safeJS }}{{ end }}
+      {{- with $p.by }},
+      "addressLocality": {{ . | jsonify | safeJS }}{{ end }},
+      "addressCountry": "DK"
+    }
+    {{- end }}
+  },
+  {{- end }}
+  {{- if and $p.pris (findRE "^[0-9]+([.,][0-9]+)?$" (printf "%v" $p.pris)) }}
+  "offers": {
+    "@type": "Offer",
+    "price": {{ (replace (printf "%v" $p.pris) "," ".") | jsonify | safeJS }},
+    "priceCurrency": {{ ($p.valuta | default "DKK") | jsonify | safeJS }},
+    "availability": "https://schema.org/{{ if $p.tilmelding_lukket }}SoldOut{{ else }}InStock{{ end }}",
+    {{- /* Saelges billetten hos en samarbejdspartner, skal offers.url pege paa
+           billetsiden. Et tilbud, der peger paa en side uden koebsmulighed,
+           er et forkert signal — og det er dér, brugeren skal hen. */}}
+    "url": "{{ $p.billet_url | default $.Permalink }}"
+    {{- /* validFrom udsendes kun, naar siden har en rigtig dato. Uden "date" i
+           front matter er .Date nulvaerdien, og "0001-01-01" er en ugyldig
+           angivelse — bedre at udelade feltet end at sende noget forkert. */ -}}
+    {{- if not $.Date.IsZero }},
+    "validFrom": {{ ($.Date.Format $iso) | jsonify | safeJS }}
+    {{- end }}
+  },
+  {{- end }}
+  "image": "{{ (site.Params.og_image) | absURL }}"
+}
+</script>
+{{- end -}}

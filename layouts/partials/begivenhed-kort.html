@@ -1,0 +1,83 @@
+{{- /*
+  Kort til én begivenhed i oversigten.
+
+  Datoen staar som et selvstaendigt felt til venstre, saa raekken kan skannes
+  paa dag og maaned uden at laese titlen. Hele kortet er ét link — ikke et
+  kort med et lille "Laes mere" nede i hjoernet, som kraever praecis sigte paa
+  mobil.
+*/ -}}
+{{- $p := .Params -}}
+{{- $s := time.AsTime $p.start -}}
+{{- $fortid := lt $s now -}}
+{{- $typer := dict
+    "skovbad" "Skovbad"
+    "kursus"  "Kursus"
+    "foredrag" "Foredrag og workshop"
+    "retreat" "Retreat" -}}
+<a href="{{ .RelPermalink }}"
+   class="flex gap-5 bg-white rounded-xl p-5 sm:p-6 shadow-sm border border-lav/40 group hover:border-mos hover:shadow-md transition-all{{ if $fortid }} opacity-75{{ end }}">
+
+  {{/* Datoblok */}}
+  <div class="flex-none w-16 text-center" aria-hidden="true">
+    <div class="rounded-lg border border-lav/40 overflow-hidden">
+      <div class="bg-skovbund text-taage text-[0.65rem] font-semibold uppercase tracking-wide py-1">
+        {{ partial "dato-dk.html" (dict "t" $s "stil" "maaned-kort") }}
+      </div>
+      <div class="py-1.5">
+        <span class="block text-2xl font-semibold text-skovbund leading-none">{{ $s.Format "2" }}</span>
+        <span class="block text-[0.65rem] text-tekst-daempet mt-0.5">{{ $s.Format "2006" }}</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="min-w-0 flex-1">
+    <div class="flex flex-wrap items-center gap-2 mb-1.5">
+      {{- with index $typer ($p.kategori | default "") }}
+      <span class="etikette text-mos">{{ . }}</span>
+      {{- end }}
+      {{- if $p.aflyst }}
+      <span class="text-[0.7rem] font-semibold uppercase tracking-wide text-hyben border border-hyben/40 rounded-full px-2 py-0.5">Aflyst</span>
+      {{- else if $p.tilmelding_lukket }}
+      <span class="text-[0.7rem] font-semibold uppercase tracking-wide text-tekst-daempet border border-lav rounded-full px-2 py-0.5">Fuldt booket</span>
+      {{- end }}
+    </div>
+
+    <h3 class="text-lg font-semibold text-skovbund leading-snug group-hover:text-mos transition-colors{{ if $p.aflyst }} line-through decoration-hyben/60{{ end }}">{{ .Title }}</h3>
+
+    <p class="sr-only">{{ partial "dato-dk.html" (dict "t" $s) }}</p>
+
+    <dl class="mt-2.5 space-y-1 text-sm text-tekst-daempet">
+      <div class="flex gap-2">
+        <dt class="sr-only">Tidspunkt</dt>
+        {{- /* Et forloeb over flere dage maa ikke staa som "16.00-16.00".
+               Slutter det en anden dag, skrives slutdagen med. */ -}}
+        {{- $slut := cond (ne $p.slut nil) (time.AsTime (or $p.slut $p.start)) nil -}}
+        {{- $flerdages := and $slut (ne ($s.Format "2006-01-02") ($slut.Format "2006-01-02")) -}}
+        <dd>
+          {{- if $flerdages -}}
+          {{ partial "dato-dk.html" (dict "t" $s) }} kl. {{ $s.Format "15.04" }}
+          → {{ partial "dato-dk.html" (dict "t" $slut "stil" "dag") }} kl. {{ $slut.Format "15.04" }}
+          {{- else -}}
+          {{ partial "dato-dk.html" (dict "t" $s) }} kl. {{ $s.Format "15.04" }}{{ with $slut }}–{{ .Format "15.04" }}{{ end }}
+          {{- end -}}
+        </dd>
+      </div>
+      {{- with $p.sted }}
+      <div class="flex gap-2">
+        <dt class="sr-only">Sted</dt>
+        <dd>{{ . }}{{ with $p.by }}, {{ . }}{{ end }}</dd>
+      </div>
+      {{- end }}
+      {{- with $p.pris }}
+      <div class="flex gap-2">
+        <dt class="sr-only">Pris</dt>
+        <dd>{{ if findRE "^[0-9]+([.,][0-9]+)?$" (printf "%v" .) }}{{ . }} kr{{ else }}{{ . }}{{ end }}</dd>
+      </div>
+      {{- end }}
+    </dl>
+
+    {{- if not $fortid }}
+    <span class="inline-block mt-3 text-mos text-sm font-semibold group-hover:underline">Se detaljer →</span>
+    {{- end }}
+  </div>
+</a>

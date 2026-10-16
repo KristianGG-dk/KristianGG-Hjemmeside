@@ -1,0 +1,198 @@
+{{ define "schema" }}
+  {{ partial "jsonld/event.html" . }}
+  {{ partial "jsonld/faqpage.html" . }}
+{{ end }}
+
+{{ define "main" }}
+{{- $p := .Params -}}
+{{- $b := .Site.Data.business -}}
+{{/* $s er nil, naar begivenheden mangler en starttid. Hele siden skal stadig
+     kunne rendere — en manglende dato maa ikke vaelte bygningen for sitet. */}}
+{{- $s := cond (ne $p.start nil) (time.AsTime (or $p.start "2000-01-01")) nil -}}
+{{- $slut := cond (ne $p.slut nil) (time.AsTime (or $p.slut "2000-01-01")) $s -}}
+{{- $fortid := and $s (lt $s now) -}}
+{{- $typer := dict "skovbad" "Skovbad" "kursus" "Kursus" "foredrag" "Foredrag og workshop" "retreat" "Retreat" -}}
+
+{{/* Hero */}}
+<section class="bg-gradient-to-b from-mos-lys to-taage py-14 sm:py-16 px-4 sm:px-6">
+  <div class="container-width">
+    <div class="max-w-3xl">
+      <p class="mb-3">
+        <a href="/begivenheder/" class="text-mos text-sm font-semibold hover:underline">← Alle begivenheder</a>
+      </p>
+      {{- with index $typer ($p.kategori | default "") }}
+      <p class="etikette text-mos mb-2">{{ . }}</p>
+      {{- end }}
+      <h1 class="text-[2rem] sm:text-4xl md:text-5xl font-semibold text-skovbund leading-tight mb-4">{{ .Title }}</h1>
+      {{- with $p.hero_subtitle }}<p class="text-lg md:text-xl text-tekst-daempet leading-relaxed max-w-2xl">{{ . }}</p>{{- end }}
+    </div>
+  </div>
+</section>
+
+{{/* Status: aflyst eller overstaaet. Staar oeverst, foer alt andet — den
+     besoegende skal ikke laese hele siden for at opdage det. */}}
+{{- if $p.aflyst }}
+<div class="px-4 sm:px-6 pt-8">
+  <div class="container-width">
+    <div class="max-w-3xl bg-hyben/10 border-2 border-hyben/40 rounded-xl p-5" role="alert">
+      <p class="font-semibold text-skovbund">Denne begivenhed er aflyst.</p>
+      {{- with $p.aflyst_grund }}<p class="text-tekst-daempet text-sm mt-1 leading-relaxed">{{ . }}</p>{{ end }}
+      <p class="text-tekst-daempet text-sm mt-2">Skriv endelig, hvis du vil høre, hvornår den ligger igen.</p>
+    </div>
+  </div>
+</div>
+{{- else if $fortid }}
+<div class="px-4 sm:px-6 pt-8">
+  <div class="container-width">
+    <div class="max-w-3xl bg-birk border border-lav/40 rounded-xl p-5">
+      <p class="font-semibold text-skovbund">Denne begivenhed er afholdt.</p>
+      <p class="text-tekst-daempet text-sm mt-1">Se <a href="/begivenheder/" class="text-mos font-semibold hover:underline">kommende begivenheder</a>, eller skriv, hvis du vil skrives op til næste gang.</p>
+    </div>
+  </div>
+</div>
+{{- end }}
+
+{{/* Praktisk */}}
+<section class="section-padding">
+  <div class="container-width px-4 sm:px-6">
+    <div class="max-w-3xl">
+      <h2 class="text-2xl font-semibold text-skovbund mb-6">Praktisk</h2>
+      <dl class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+
+        {{- with $s }}
+        <div class="flex flex-col md:flex-row gap-1 md:gap-3 p-4 bg-white rounded-lg border border-lav/40 min-w-0">
+          <dt class="text-mos font-semibold text-sm md:w-28 md:flex-shrink-0">Hvornår</dt>
+          <dd class="text-tekst-daempet text-sm min-w-0">
+            <time datetime="{{ $s.Format "2006-01-02T15:04:05-07:00" }}">{{ partial "dato-dk.html" (dict "t" $s) }}</time><br />
+            {{- if and $p.slut (ne ($s.Format "2006-01-02") ($slut.Format "2006-01-02")) }}
+            kl. {{ $s.Format "15.04" }}<br />
+            <span class="text-xs">til {{ partial "dato-dk.html" (dict "t" $slut) }} kl. {{ $slut.Format "15.04" }}</span>
+            {{- else }}
+            kl. {{ $s.Format "15.04" }}{{ with $p.slut }}–{{ (time.AsTime .).Format "15.04" }}{{ end }}
+            {{- end }}
+          </dd>
+        </div>
+        {{- end }}
+
+        {{- with $p.sted }}
+        <div class="flex flex-col md:flex-row gap-1 md:gap-3 p-4 bg-white rounded-lg border border-lav/40 min-w-0">
+          <dt class="text-mos font-semibold text-sm md:w-28 md:flex-shrink-0">Hvor</dt>
+          <dd class="text-tekst-daempet text-sm min-w-0">
+            {{ . }}
+            {{- with $p.adresse }}<br />{{ . }}{{ end }}
+            {{- if or $p.postnr $p.by }}<br />{{ $p.postnr }} {{ $p.by }}{{ end }}
+          </dd>
+        </div>
+        {{- end }}
+
+        {{- with $p.pris }}
+        <div class="flex flex-col md:flex-row gap-1 md:gap-3 p-4 bg-white rounded-lg border border-lav/40 min-w-0">
+          <dt class="text-mos font-semibold text-sm md:w-28 md:flex-shrink-0">Pris</dt>
+          <dd class="text-tekst-daempet text-sm min-w-0">{{ if findRE "^[0-9]+([.,][0-9]+)?$" (printf "%v" .) }}{{ . }} kr{{ else }}{{ . }}{{ end }}{{ with $p.pris_note }}<br /><span class="text-xs">{{ . }}</span>{{ end }}</dd>
+        </div>
+        {{- end }}
+
+        {{- with $p.pladser }}
+        <div class="flex flex-col md:flex-row gap-1 md:gap-3 p-4 bg-white rounded-lg border border-lav/40 min-w-0">
+          <dt class="text-mos font-semibold text-sm md:w-28 md:flex-shrink-0">Antal pladser</dt>
+          <dd class="text-tekst-daempet text-sm min-w-0">{{ . }}</dd>
+        </div>
+        {{- end }}
+
+        {{- with $p.medbring }}
+        <div class="flex flex-col md:flex-row gap-1 md:gap-3 p-4 bg-white rounded-lg border border-lav/40 min-w-0 sm:col-span-2">
+          <dt class="text-mos font-semibold text-sm md:w-28 md:flex-shrink-0">Medbring</dt>
+          <dd class="text-tekst-daempet text-sm min-w-0">{{ . }}</dd>
+        </div>
+        {{- end }}
+
+        {{- /* Er en samarbejdspartner arrangoer, staar de som arrangoer og
+               Kristian som medarrangoer. Navnet hentes fra business.toml, saa
+               det ikke skrives ind to steder. */ -}}
+        {{- with $p.arrangoer }}
+        <div class="flex flex-col md:flex-row gap-1 md:gap-3 p-4 bg-white rounded-lg border border-lav/40 min-w-0">
+          <dt class="text-mos font-semibold text-sm md:w-28 md:flex-shrink-0">Arrangør</dt>
+          <dd class="text-tekst-daempet text-sm min-w-0">
+            {{- with $p.arrangoer_url }}<a href="{{ . }}" target="_blank" rel="noopener" class="text-mos hover:underline">{{ $p.arrangoer }}</a>
+            {{- else }}{{ . }}{{ end }}
+          </dd>
+        </div>
+        <div class="flex flex-col md:flex-row gap-1 md:gap-3 p-4 bg-white rounded-lg border border-lav/40 min-w-0">
+          <dt class="text-mos font-semibold text-sm md:w-28 md:flex-shrink-0">Medarrangør</dt>
+          <dd class="text-tekst-daempet text-sm min-w-0">{{ $b.name }}</dd>
+        </div>
+        {{- end }}
+      </dl>
+    </div>
+  </div>
+</section>
+
+{{/* Brødtekst */}}
+{{- with .Content }}
+<section class="pb-4 px-4 sm:px-6">
+  <div class="container-width [&>*]:max-w-3xl prose prose-gray prose-headings:text-skovbund prose-headings:font-semibold prose-a:text-mos prose-strong:text-skovbund">{{ . }}</div>
+</section>
+{{- end }}
+
+{{- with .Params.faq }}
+<section class="section-padding">
+  <div class="container-width [&>*]:max-w-3xl px-4 sm:px-6">
+    <h2 class="text-2xl font-semibold text-skovbund mb-6">Ofte stillede spørgsmål</h2>
+    {{ partial "faq-accordion.html" . }}
+  </div>
+</section>
+{{- end }}
+
+{{/* Tilmelding. Et eksternt billetlink vinder over kontaktformularen, naar
+     det er sat — billetsalget ligger da hos en samarbejdspartner, og det skal
+     staa tydeligt, at man forlader sitet. Er der intet link, gaar knappen til
+     kontaktformularen med begivenheden forudfyldt. */}}
+{{- if not (or $p.aflyst $fortid) }}
+<section class="section-padding bg-skovbund text-taage">
+  <div class="container-width px-4 sm:px-6 text-center">
+    {{- if $p.tilmelding_lukket }}
+    <h2 class="text-2xl md:text-3xl font-semibold text-white mb-4">Fuldt booket</h2>
+    <p class="text-mos-lys text-lg mb-8 max-w-2xl mx-auto">Der er ikke flere pladser. Skriv, hvis du vil stå på venteliste eller høre om næste gang.</p>
+    {{ partial "kontakt-knapper.html" (dict "business" $b "variant" "lys" "klasse" "flex flex-col items-center") }}
+
+    {{- else if $p.billet_url }}
+    <h2 class="text-2xl md:text-3xl font-semibold text-white mb-4">{{ $p.cta_heading | default "Tilmelding" }}</h2>
+    <p class="text-mos-lys text-lg mb-6 max-w-2xl mx-auto">
+      {{ $p.cta_text | default "Billetsalget står hos arrangøren. Du bliver sendt videre til deres side." }}
+    </p>
+    <a href="{{ $p.billet_url }}" target="_blank" rel="noopener"
+       class="btn-primary inline-flex items-center justify-center min-h-[48px] px-7 font-semibold">
+      {{ $p.billet_tekst | default "Køb billet" }}
+      <svg aria-hidden="true" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="ml-2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><path d="M15 3h6v6"/><path d="M10 14 21 3"/></svg>
+      <span class="sr-only"> (åbner hos arrangøren i et nyt faneblad)</span>
+    </a>
+    <p class="text-mos-lys/80 text-sm mt-6">Spørgsmål om indholdet? <a href="{{ $b.kontakt_url | safeURL }}" class="underline font-semibold">Skriv til mig</a>.</p>
+
+    {{- else }}
+    <h2 class="text-2xl md:text-3xl font-semibold text-white mb-4">{{ $p.cta_heading | default "Tilmeld dig" }}</h2>
+    <p class="text-mos-lys text-lg mb-8 max-w-2xl mx-auto">{{ $p.cta_text | default "Skriv til mig, så får du besked om, hvad der skal ske. Der er ingen betaling, før vi har talt sammen." }}</p>
+    <a href="/kontakt/?begivenhed={{ (cond (ne $s nil) (printf "%s – %s" .Title (partial "dato-dk.html" (dict "t" (or $s now) "stil" "kort"))) .Title) | urlquery }}#skriv"
+       class="btn-primary inline-flex items-center justify-center min-h-[48px] px-7 font-semibold">Skriv for at tilmelde dig</a>
+    <p class="text-mos-lys/80 text-sm mt-6">Eller ring / send en SMS på {{ $b.phone_display }}.</p>
+    {{- end }}
+  </div>
+</section>
+{{- end }}
+
+{{/* Andre begivenheder */}}
+{{- $andre := where (where .Parent.Pages "Params.start" "!=" nil) "Permalink" "!=" .Permalink -}}
+{{- $kommende := slice -}}
+{{- range $andre }}{{ if ge (time.AsTime .Params.start) now }}{{ $kommende = $kommende | append . }}{{ end }}{{ end -}}
+{{- with $kommende }}
+<section class="section-padding">
+  <div class="container-width px-4 sm:px-6">
+    <h2 class="text-2xl font-semibold text-skovbund mb-6">Andre kommende begivenheder</h2>
+    <div class="space-y-4 max-w-3xl">
+      {{- range first 3 (sort . "Params.start" "asc") }}
+      {{ partial "begivenhed-kort.html" . }}
+      {{- end }}
+    </div>
+  </div>
+</section>
+{{- end }}
+{{ end }}

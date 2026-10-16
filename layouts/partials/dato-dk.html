@@ -1,0 +1,34 @@
+{{- /*
+  Dansk datoformat. Hugos .Format giver engelske navne, og CLDR-opslag via
+  lang.FormatDate afhaenger af, at sproget er pakket med. Her staar navnene
+  eksplicit, saa formatet er det samme uanset Hugo-version.
+
+  Kaldes med en dict:
+    "t"     time.Time (obligatorisk)
+    "stil"  "lang"  -> "loerdag 8. november 2026"   (standard)
+            "kort"  -> "8. nov 2026"
+            "dag"   -> "8. november"
+            "maaned-kort" -> "nov"
+            "maaned" -> "november 2026"
+*/ -}}
+{{- $t := .t -}}
+{{- $stil := .stil | default "lang" -}}
+{{- $uge := dict
+    "Monday" "mandag" "Tuesday" "tirsdag" "Wednesday" "onsdag" "Thursday" "torsdag"
+    "Friday" "fredag" "Saturday" "lørdag" "Sunday" "søndag" -}}
+{{- $maa := dict
+    "January" "januar" "February" "februar" "March" "marts" "April" "april"
+    "May" "maj" "June" "juni" "July" "juli" "August" "august"
+    "September" "september" "October" "oktober" "November" "november" "December" "december" -}}
+{{- $m := index $maa ($t.Format "January") -}}
+{{- if eq $stil "maaned" -}}
+{{- printf "%s %s" $m ($t.Format "2006") -}}
+{{- else if eq $stil "maaned-kort" -}}
+{{- substr $m 0 3 -}}
+{{- else if eq $stil "kort" -}}
+{{- printf "%s. %s %s" ($t.Format "2") (substr $m 0 3) ($t.Format "2006") -}}
+{{- else if eq $stil "dag" -}}
+{{- printf "%s. %s" ($t.Format "2") $m -}}
+{{- else -}}
+{{- printf "%s %s. %s %s" (index $uge ($t.Format "Monday")) ($t.Format "2") $m ($t.Format "2006") -}}
+{{- end -}}
