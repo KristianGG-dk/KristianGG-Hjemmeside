@@ -1,0 +1,76 @@
+{{ define "main" }}
+{{- $p := .Params -}}
+{{- $b := .Site.Data.business -}}
+
+{{/* Kvitteringsside efter koeb gennem EasyMe.
+
+     Siden viser ingen oplysninger om koebet. Kvitteringen sendes af EasyMe,
+     og der skal derfor hverken staa navn, beloeb eller ordrenummer her. Det
+     er ogsaa derfor, siden hverken laeser parametre fra adressen eller kalder
+     noget udefra: der er intet at vise, og intet at laekke.
+
+     noindex staar i indholdsfilen. Sitemappet udelader den af sig selv. */}}
+
+<section class="bg-gradient-to-b from-mos-lys to-taage py-20 sm:py-24 px-4 sm:px-6">
+  <div class="container-width">
+    <div class="max-w-2xl mx-auto text-center">
+      <h1 class="text-[2rem] sm:text-4xl md:text-5xl font-semibold text-skovbund leading-tight mb-4">{{ $p.hero_titel }}</h1>
+      {{- with $p.hero_tekst }}<p class="text-lg md:text-xl text-tekst-daempet leading-relaxed">{{ . }}</p>{{- end }}
+    </div>
+  </div>
+</section>
+
+{{- with $p.billede }}
+<section class="px-4 sm:px-6 -mt-8 sm:-mt-10 relative">
+  <div class="container-width">
+    <div class="max-w-2xl mx-auto">
+      {{ partial "billede.html" (dict "navn" . "alt" $p.billede_alt "forhold" 2
+         "bredder" (slice 420 640 860) "sizes" "(min-width: 768px) 42rem, 92vw"
+         "prioritet" true "klasse" "rounded-2xl shadow-sm") }}
+    </div>
+  </div>
+</section>
+{{- end }}
+
+<section class="section-padding">
+  <div class="container-width px-0 sm:px-6">
+    <div class="max-w-2xl mx-auto">
+
+      {{- with $p.brodtekst }}
+      <p class="text-lg text-tekst-daempet leading-relaxed text-center">{{ . }}</p>
+      {{- end }}
+
+      {{- if $p.naeste_titel }}
+      <div class="mt-12 bg-birk rounded-xl border border-lav/40 p-6 sm:p-8">
+        <h2 class="text-xl font-semibold text-skovbund mb-3">{{ $p.naeste_titel }}</h2>
+        <p class="text-tekst-daempet leading-relaxed">{{ $p.naeste_tekst }}</p>
+      </div>
+      {{- end }}
+
+      {{- if $p.spoergsmaal_titel }}
+      <div class="mt-8">
+        <h2 class="text-xl font-semibold text-skovbund mb-3">{{ $p.spoergsmaal_titel }}</h2>
+        {{/* Mailadressen staar synlig, men linket peger paa kontaktformularen
+             frem for at aabne et mailprogram. Det er sitets gennemgaaende
+             regel, fastlagt i data/business.toml. */}}
+        <p class="text-tekst-daempet leading-relaxed">
+          Du er altid velkommen til at <a href="{{ $b.kontakt_url | safeURL }}" class="text-mos font-semibold hover:underline">skrive til mig</a> —
+          eller sende en mail til {{ $b.email }}.
+        </p>
+      </div>
+      {{- end }}
+
+      <div class="mt-10 pt-8 border-t border-lav/40 text-center">
+        {{- with $p.hilsen }}<p class="text-tekst-daempet">{{ . }}</p>{{- end }}
+        {{- with $p.afsender }}<p class="font-display text-xl font-semibold text-skovbund mt-1">{{ . }}</p>{{- end }}
+        {{- with $p.afsender_titel }}<p class="text-tekst-daempet text-sm mt-0.5">{{ . }}</p>{{- end }}
+      </div>
+
+      <div class="mt-10 text-center">
+        <a href="/" class="btn-primary inline-flex items-center justify-center min-h-[48px] px-7 font-semibold">Tilbage til forsiden</a>
+      </div>
+
+    </div>
+  </div>
+</section>
+{{ end }}
