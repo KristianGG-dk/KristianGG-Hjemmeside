@@ -1,0 +1,35 @@
+{{- /*
+  EasyMe Connect v3.
+
+  Hvad der er dokumenteret, og hvad der derfor er bygget:
+
+  EasyMe Connect indlejrer kontoens JavaScript-klient paa sitet. Et saakaldt
+  "Magic"-link — hentet fra Links-fanen paa et produkt i EasyMe — aabner saa
+  bookingen som et lag oven paa sidens eget design i stedet for at sende
+  brugeren videre. Kilde: EasyMes egen beskrivelse af Connect-integrationen
+  (WordPress-plugin'et "EasyMe Connect", som goer praecis det samme).
+
+  Der er IKKE opfundet parametre, klasser eller funktionskald. Linket staar
+  som et almindeligt <a href>, og klienten om noget overtager det selv.
+  Goer den ikke det — fordi scriptet er blokeret, fejler, eller fordi linket
+  ikke er et Magic-link — virker linket videre som et ganske almindeligt
+  link til bookingsiden. Det er den reserve, opgaven selv peger paa.
+
+  Kodestumpen er EasyMes egen, uaendret. Den har sin egen spaerre mod dobbelt
+  indlaesning: den slaar op paa scriptets id og vender tomhaendet tilbage, hvis
+  elementet allerede findes. Partialen kaldes desuden kun én gang pr. side og
+  kun paa sider, der rent faktisk har et EasyMe-link.
+
+  Kontoens Connect-id staar i hugo.toml. Det er en offentlig indlejrings-
+  identifikator — den staar i sidens kildekode i kraft af sit formaal — ikke
+  en hemmelighed.
+*/ -}}
+{{- with site.Params.easyme_connect_id }}
+<script type="text/javascript">
+    (function(e,m) {
+    if(e.getElementById(m))return;var s=document.createElement('script');s.id=m;
+    s.src='https://secure.easyme.biz/connect/v3/client.js';s.async=true;
+    var el = document.getElementsByTagName('script')[0];el.parentNode.insertBefore(s,el);
+    })(document, '{{ . }}');
+</script>
+{{- end }}

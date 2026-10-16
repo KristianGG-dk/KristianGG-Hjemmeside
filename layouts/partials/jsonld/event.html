@@ -91,7 +91,9 @@
     {{- end }}
   },
   {{- end }}
-  "image": "{{ (site.Params.og_image) | absURL }}"
+  {{- /* Sidens eget billede, naar der er et — ellers sitets standardbillede.
+         Et Event uden et retvisende billede giver et daarligere resultat. */ -}}
+  "image": "{{ ($p.og_image | default site.Params.og_image) | absURL }}"
 }
 </script>
 {{- end -}}

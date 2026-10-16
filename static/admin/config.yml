@@ -500,6 +500,13 @@ collections:
       - {label: Aflyst, name: aflyst, widget: boolean, default: false}
       - {label: Grund til aflysning, name: aflyst_grund, widget: string, required: false}
 
+      # Billedet skal findes i forvejen som responsivt saet under
+      # /static/images/natur/ (fx skovbad-gruppe-420/640/860 i avif+webp og
+      # 640 i jpg). Skriv kun grundnavnet uden bredde og endelse.
+      - {label: Billede (grundnavn), name: hero_billede, widget: string, required: false, hint: "Fx skovbad-gruppe. Billedet skal findes i forvejen under /images/natur/."}
+      - {label: Alt-tekst til billedet, name: hero_alt, widget: string, required: false, hint: "Beskriv hvad man ser. Gentag ikke titlen."}
+      - {label: Delebillede (OG), name: og_image, widget: string, required: false, hint: "Fx /images/natur/skovbad-gruppe-640.jpg"}
+
       - label: Ofte stillede spørgsmål
         name: faq
         widget: list

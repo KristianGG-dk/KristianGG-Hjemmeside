@@ -11,6 +11,12 @@ title = "Kristian GG"
   webfonts = true
   og_image = "/images/kristian-hero.png"
 
+  # EasyMe Connect v3. Indlaeses kun paa begivenhedssider, hvis billetlink
+  # peger paa ezme.io — ikke paa resten af sitet. Offentlig indlejrings-id,
+  # ikke en hemmelighed. Tom vaerdi slaar integrationen fra, og billetlinket
+  # virker da som et almindeligt link.
+  easyme_connect_id = "easyme-connect-tCqYM74QJ6VW6jnlQfVr"
+
 [taxonomies]
   category = "categories"
   tag = "tags"

@@ -16,15 +16,24 @@
 {{/* Hero */}}
 <section class="bg-gradient-to-b from-mos-lys to-taage py-14 sm:py-16 px-4 sm:px-6">
   <div class="container-width">
-    <div class="max-w-3xl">
-      <p class="mb-3">
-        <a href="/begivenheder/" class="text-mos text-sm font-semibold hover:underline">← Alle begivenheder</a>
-      </p>
-      {{- with index $typer ($p.kategori | default "") }}
-      <p class="etikette text-mos mb-2">{{ . }}</p>
+    {{/* Billedet staar ved siden af teksten paa brede skaerme og under den paa
+         smalle — samme opbygning som de oevrige undersider. Uden billede
+         fylder teksten som foer. */}}
+    <div class="grid {{ if $p.hero_billede }}lg:grid-cols-2 gap-10 lg:gap-14 items-center{{ end }}">
+      <div class="{{ if not $p.hero_billede }}max-w-3xl{{ end }}">
+        <p class="mb-3">
+          <a href="/begivenheder/" class="text-mos text-sm font-semibold hover:underline">← Alle begivenheder</a>
+        </p>
+        {{- with index $typer ($p.kategori | default "") }}
+        <p class="etikette text-mos mb-2">{{ . }}</p>
+        {{- end }}
+        <h1 class="text-[2rem] sm:text-4xl md:text-5xl font-semibold text-skovbund leading-tight mb-4">{{ .Title }}</h1>
+        {{- with $p.hero_subtitle }}<p class="text-lg md:text-xl text-tekst-daempet leading-relaxed max-w-2xl">{{ . }}</p>{{- end }}
+      </div>
+      {{- with $p.hero_billede }}
+      <div>{{ partial "billede.html" (dict "navn" . "alt" $p.hero_alt "forhold" (or $p.hero_forhold 1.5)
+        "bredder" (or $p.hero_bredder (slice 420 640 860)) "sizes" "(min-width: 1024px) 46vw, 92vw" "prioritet" true) }}</div>
       {{- end }}
-      <h1 class="text-[2rem] sm:text-4xl md:text-5xl font-semibold text-skovbund leading-tight mb-4">{{ .Title }}</h1>
-      {{- with $p.hero_subtitle }}<p class="text-lg md:text-xl text-tekst-daempet leading-relaxed max-w-2xl">{{ . }}</p>{{- end }}
     </div>
   </div>
 </section>
@@ -156,17 +165,32 @@
     {{ partial "kontakt-knapper.html" (dict "business" $b "variant" "lys" "klasse" "flex flex-col items-center") }}
 
     {{- else if $p.billet_url }}
+    {{- /* Et EasyMe-link aabner bookingen som et lag paa siden selv, naar
+           Connect-klienten er indlaest. Derfor hverken loeftet om at blive
+           "sendt videre til arrangoerens side" eller ikonet for et eksternt
+           link — begge dele ville vaere forkerte her. target="_blank" staar
+           tilbage som reserve, hvis klienten ikke naar at overtage linket. */ -}}
+    {{- $easyme := and $p.billet_url (strings.Contains $p.billet_url "ezme.io") -}}
     <h2 class="text-2xl md:text-3xl font-semibold text-white mb-4">{{ $p.cta_heading | default "Tilmelding" }}</h2>
     <p class="text-mos-lys text-lg mb-6 max-w-2xl mx-auto">
-      {{ $p.cta_text | default "Billetsalget står hos arrangøren. Du bliver sendt videre til deres side." }}
+      {{- if $p.cta_text }}{{ $p.cta_text }}
+      {{- else if $easyme }}Bookingen åbner her på siden. Du vælger antal pladser og betaler i ét forløb.
+      {{- else if $p.arrangoer }}Billetsalget står hos arrangøren. Du bliver sendt videre til deres side.
+      {{- else }}Du bliver sendt videre til billetsiden.
+      {{- end }}
     </p>
     <a href="{{ $p.billet_url }}" target="_blank" rel="noopener"
        class="btn-primary inline-flex items-center justify-center min-h-[48px] px-7 font-semibold">
       {{ $p.billet_tekst | default "Køb billet" }}
+      {{- if not $easyme }}
       <svg aria-hidden="true" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="ml-2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><path d="M15 3h6v6"/><path d="M10 14 21 3"/></svg>
       <span class="sr-only"> (åbner hos arrangøren i et nyt faneblad)</span>
+      {{- else }}
+      <span class="sr-only"> (åbner bookingen på siden — eller i et nyt faneblad, hvis bookingvinduet ikke kan indlæses)</span>
+      {{- end }}
     </a>
     <p class="text-mos-lys/80 text-sm mt-6">Spørgsmål om indholdet? <a href="{{ $b.kontakt_url | safeURL }}" class="underline font-semibold">Skriv til mig</a>.</p>
+    {{- if $easyme }}{{ partial "easyme-connect.html" . }}{{ end }}
 
     {{- else }}
     <h2 class="text-2xl md:text-3xl font-semibold text-white mb-4">{{ $p.cta_heading | default "Tilmeld dig" }}</h2>
