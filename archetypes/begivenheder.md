@@ -12,7 +12,7 @@ slut: ""    # valgfri
 # Kategorien hedder "kategori", IKKE "type". "type" er reserveret af Hugo og
 # styrer, hvilken skabelon siden bruger — "type: skovbad" ville faa Hugo til at
 # lede efter layouts/skovbad/ og falde tilbage til standardskabelonen.
-kategori: "skovbad"   # skovbad | kursus | foredrag
+kategori: "skovbad"   # skovbad | kursus | foredrag | retreat
 
 sted: ""
 adresse: ""

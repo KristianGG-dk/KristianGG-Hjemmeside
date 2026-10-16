@@ -60,8 +60,16 @@
     "price": {{ (replace (printf "%v" $p.pris) "," ".") | jsonify | safeJS }},
     "priceCurrency": {{ ($p.valuta | default "DKK") | jsonify | safeJS }},
     "availability": "https://schema.org/{{ if $p.tilmelding_lukket }}SoldOut{{ else }}InStock{{ end }}",
-    "url": "{{ $.Permalink }}",
-    "validFrom": {{ ((time.AsTime $.Date).Format $iso) | jsonify | safeJS }}
+    {{- /* Saelges billetten hos en samarbejdspartner, skal offers.url pege paa
+           billetsiden. Et tilbud, der peger paa en side uden koebsmulighed,
+           er et forkert signal — og det er dér, brugeren skal hen. */}}
+    "url": "{{ $p.billet_url | default $.Permalink }}"
+    {{- /* validFrom udsendes kun, naar siden har en rigtig dato. Uden "date" i
+           front matter er .Date nulvaerdien, og "0001-01-01" er en ugyldig
+           angivelse — bedre at udelade feltet end at sende noget forkert. */ -}}
+    {{- if not $.Date.IsZero }},
+    "validFrom": {{ ($.Date.Format $iso) | jsonify | safeJS }}
+    {{- end }}
   },
   {{- end }}
   "image": "{{ (site.Params.og_image) | absURL }}"

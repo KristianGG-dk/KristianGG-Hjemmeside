@@ -472,6 +472,7 @@ collections:
           - {label: Skovbad, value: skovbad}
           - {label: Kursus med holdstart, value: kursus}
           - {label: Foredrag eller workshop, value: foredrag}
+          - {label: Retreat, value: retreat}
 
       - {label: Starter, name: start, widget: datetime, format: "YYYY-MM-DDTHH:mm:ssZ", picker_utc: false}
       - {label: Slutter, name: slut, widget: datetime, format: "YYYY-MM-DDTHH:mm:ssZ", picker_utc: false, required: false}

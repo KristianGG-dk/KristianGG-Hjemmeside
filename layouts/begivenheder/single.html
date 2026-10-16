@@ -11,7 +11,7 @@
 {{- $s := cond (ne $p.start nil) (time.AsTime (or $p.start "2000-01-01")) nil -}}
 {{- $slut := cond (ne $p.slut nil) (time.AsTime (or $p.slut "2000-01-01")) $s -}}
 {{- $fortid := and $s (lt $s now) -}}
-{{- $typer := dict "skovbad" "Skovbad" "kursus" "Kursus" "foredrag" "Foredrag og workshop" -}}
+{{- $typer := dict "skovbad" "Skovbad" "kursus" "Kursus" "foredrag" "Foredrag og workshop" "retreat" "Retreat" -}}
 
 {{/* Hero */}}
 <section class="bg-gradient-to-b from-mos-lys to-taage py-14 sm:py-16 px-4 sm:px-6">
