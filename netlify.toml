@@ -595,3 +595,17 @@
   to = "/til-virksomheder/trivsel/"
   status = 301
 
+
+# ── Fjernet begivenhed → foreningens arrangement ──
+# Skovbad 1. november 2026 afholdes af Foreningen mod Familiebelastning med
+# billetsalg i Unioo. Begivenheden er fjernet her; delte links sendes videre.
+# 302, fordi det er midlertidigt — fjern reglerne, når arrangementet er forbi.
+[[redirects]]
+  from = "/begivenheder/skovbad-svanninge-bakker"
+  to = "https://familiebelastning.dk/det-goer-vi/familier-i-naturen/"
+  status = 302
+
+[[redirects]]
+  from = "/begivenheder/skovbad-svanninge-bakker/"
+  to = "https://familiebelastning.dk/det-goer-vi/familier-i-naturen/"
+  status = 302
