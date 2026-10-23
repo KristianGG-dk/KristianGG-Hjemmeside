@@ -28,6 +28,16 @@
         <p class="etikette text-mos mb-2">{{ . }}</p>
         {{- end }}
         <h1 class="text-[2rem] sm:text-4xl md:text-5xl font-semibold text-skovbund leading-tight mb-4">{{ .Title }}</h1>
+        {{- /* Holder en samarbejdspartner arrangementet, skal det kunne ses med
+               det samme — ikke foerst nede i den praktiske information. Ellers
+               tror en besoegende, at tilmeldingen sker her. */ -}}
+        {{- with $p.arrangoer }}
+        <p class="mb-4 inline-block rounded-lg bg-white border border-lav/40 px-4 py-2 text-sm text-skovbund">
+          <span class="font-semibold">Arrangør:</span> {{ . }}
+          <span aria-hidden="true" class="mx-1">·</span>
+          <span class="font-semibold">{{ $p.kristian_rolle | default "Medarrangør" }}:</span> {{ $b.name }}
+        </p>
+        {{- end }}
         {{- with $p.hero_subtitle }}<p class="text-lg md:text-xl text-tekst-daempet leading-relaxed max-w-2xl">{{ . }}</p>{{- end }}
         {{/* Tilmeldingsknappen staar ogsaa her, saa den kan ses uden at rulle
              ned forbi hele den praktiske information. Samme partial som
@@ -134,7 +144,7 @@
           </dd>
         </div>
         <div class="flex flex-col md:flex-row gap-1 md:gap-3 p-4 bg-white rounded-lg border border-lav/40 min-w-0">
-          <dt class="text-mos font-semibold text-sm md:w-28 md:flex-shrink-0">Medarrangør</dt>
+          <dt class="text-mos font-semibold text-sm md:w-28 md:flex-shrink-0">{{ $p.kristian_rolle | default "Medarrangør" }}</dt>
           <dd class="text-tekst-daempet text-sm min-w-0">{{ $b.name }}</dd>
         </div>
         {{- end }}

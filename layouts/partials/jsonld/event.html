@@ -47,8 +47,11 @@
       "name": {{ $p.arrangoer | jsonify | safeJS }}
       {{- with $p.arrangoer_url }},
       "url": {{ . | jsonify | safeJS }}{{ end }}
-    },
-    { "@id": "{{ site.BaseURL }}" }
+    }
+    {{- /* Med en kristian_rolle (fx "Guide") er Kristian ikke medarrangoer,
+           kun den, der leder indholdet — og staar derfor kun som performer. */ -}}
+    {{- if not $p.kristian_rolle }},
+    { "@id": "{{ site.BaseURL }}" }{{ end }}
   ],
   {{- else }}
   "organizer": { "@id": "{{ site.BaseURL }}" },
