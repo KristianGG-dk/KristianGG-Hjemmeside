@@ -17,7 +17,7 @@ arrangoer_url: "https://familiebelastning.dk/"
 # Kristian guider, foreningen arrangerer. Erstatter "Medarrangør" på siden.
 kristian_rolle: "Guide"
 
-billet_url: "https://familiebelastning.dk/det-goer-vi/familier-i-naturen/"
+billet_url: "https://familiebelastning.dk/arrangementer/skovbad-2026-11-01/"
 billet_tekst: "Se og tilmeld dig hos foreningen"
 
 hero_billede: "skovbad-forening"
