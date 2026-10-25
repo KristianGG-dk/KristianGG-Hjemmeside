@@ -9,7 +9,7 @@ service_desc: "Kvalificeret faglig vikardækning til sociale institutioner og bo
 competencies:
   - icon: ""
     title: "Terapeutisk baggrund"
-    desc: "Reg. psykoterapeut (FaDP) med uddannelse i bl.a. KAT, DAT, NLP og åndedrætsterapi."
+    desc: "Reg. psykoterapeut (FaDP) med uddannelse i bl.a. KAT, NLP og åndedrætsterapi."
   - icon: ""
     title: "Pædagogisk erfaring"
     desc: "Praktisk erfaring fra botilbud og asylcenter med udsatte borgere og komplekse situationer."

@@ -10,6 +10,7 @@
     "forbudte": [
       { "moenster": "\\bRAB\\b", "grund": "Kristian er ikke RAB-registreret. RAB og Reg. Psykoterapeut maa aldrig sammenblandes" },
       { "moenster": "\\bgrunduddannelse i (kognitiv|dialektisk)", "grund": "Der er intet uddannelsesbevis, der dokumenterer en grunduddannelse i KAT eller DAT" },
+      { "moenster": "\\bDAT\\b|dialektisk adf(ae|æ)rdsterapi", "grund": "Kristians beslutning 04-10-2026: DAT maa ikke optraede som kvalifikation eller metode i markedsfoeringen. Der foreligger ingen dokumentation for den. KAT er uberoert" },
       { "moenster": "\\bnordic breath\\b", "grund": "Betegnelsen er udgaaet. Brug 'Ro paa Nervesystemet'" },
       { "moenster": "\\bsanse\\s*&\\s*natur", "grund": "Eneste korrekte betegnelse er 'Sanse og naturbads instruktoer'" },
       { "moenster": "\\bjeg er (en )?(autoriseret )?psykolog\\b", "grund": "Psykolog er en beskyttet titel" },
@@ -61,8 +62,16 @@
 
   "pris": {
     "type": "LOV",
-    "kilde": "Markedsfoeringsloven § 5: en pris i markedsfoering skal vaere den rigtige. Sandhedskilden er content/priser.md",
-    "priskilde": "content/priser.md"
+    "kilde": "Markedsfoeringsloven § 5: en pris i markedsfoering skal vaere den rigtige. Sandhedskilden for Kristians EGNE ydelser er content/priser.md",
+    "priskilde": "content/priser.md",
+    "note": "Reglen handler om, at en pris skal vaere rigtig - ikke om at ingen andres pris maa naevnes. Indtil 04-10-2026 fejlede enhver pris, der ikke stod paa /priser/, ogsaa naar beloebet var en tredjeparts. Det ramte entreen til Etos' egen messe i element 33. Reglen er derfor delt i to: egne priser skal staa paa /priser/, andres priser skal tilskrives og dokumenteres.",
+    "tredjepart": {
+      "felt": "tredjepartspriser",
+      "kraev": "Et beloeb, der ikke staar paa priskilden, skal have en post i laasefilens felt 'tredjepartspriser' med {beloeb, hvem, kilde}. 'hvem' er den, prisen tilhoerer. 'kilde' er en url til ejerens egen offentliggoerelse af prisen.",
+      "tilskrivning": "Navnet i 'hvem' skal staa i teksten senest 160 tegn foer beloebet, saa laeseren ikke kan tage det for Kristians egen pris.",
+      "tilskrivning_tegn": 160,
+      "grund": "En andens pris er ikke et tilbud fra Kristian. Uden tilskrivning kan den laeses som hans, og saa er den en forkert pris i hans markedsfoering."
+    }
   },
 
   "genbrug": {
