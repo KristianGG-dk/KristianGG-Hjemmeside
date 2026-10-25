@@ -176,6 +176,34 @@ undtagelser:** da motoren selv publicerer, ville en kørsel have efterladt en
 post i registret. Et forfaldent element uden resultat er derfor en **FEJL** —
 efter en times nåde for forsinkelse hos GitHub.
 
+### Metoden afgør alarmen, ikke kanalen
+
+Alarmen om en svigtet automatisk kørsel gælder kun `metode: motor`. Et
+Instagram-element med `metode: manuel` har ingen låsefil, og
+Instagram-motoren udvælger netop fra låsefiler — den kan slet ikke se
+elementet.
+
+Element 36 (18-10-2026) beviste det. Vagthunden meldte FEJL på en kørsel,
+der aldrig skulle have været der, og den fejl stod i vejen for de to rigtige
+fund i samme kørsel.
+
+### Status afgør ordlyden
+
+| Seneste status | Hvad vagthunden siger |
+| --- | --- |
+| `AFVENTER DATO` | *intet er afleveret til platformen. Manuel publicering eller bekræftelse mangler* |
+| `PLANLAGT` | *planlagt hos Meta — bekræft selv* |
+| `PLANLAGT MANUELT` | *planlagt i platformens brugerflade — bekræft selv* |
+
+`AFVENTER DATO` betyder, at elementet kun ligger i køen. Skrev vagthunden
+«planlagt i platformens brugerflade» om det, påstod den en handling, ingen
+havde foretaget — og et element, der var faldet på gulvet, så ud som et
+element, der lå og ventede hos Meta. Element 33, 34 og 35 stod netop sådan
+efter messen.
+
+Regressionsprøven ligger i `publicering/test/vagthund.test.mjs`. Den kører
+scriptet som en sort boks mod midlertidige kø- og registerfiler.
+
 Vagthunden varsler også, hvis Google-adgangen er tidsbegrænset (appen står i
 "Testing"), og hvis der ligger motorelementer til Google, men adgangen aldrig
 er autoriseret.
