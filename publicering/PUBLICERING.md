@@ -159,6 +159,28 @@ Instagram og `gbp` med `metode: motor` bruger `AFVENTER DATO` → `PUBLICERET`
 eller `PUBLICERING FEJLET`. `PLANLAGT` bruges ikke, fordi platformen ikke holder
 opslaget.
 
+### `PUBLICERET` på bevis eller på bekræftelse
+
+En post bliver `PUBLICERET` på to måder, og de er ikke lige stærke:
+
+| | Grundlag | Felt |
+| --- | --- | --- |
+| Maskinelt | platformen svarede motoren, eller siden blev hentet | `"verifikation": "maskinel_http"`, eller intet felt når `post_id` bærer beviset |
+| Bekræftelse | Kristian har set opslaget og sagt det | `"verifikation": "kristians_bekraeftelse"` |
+
+En bekræftelse dækker **at opslaget er gået ud**. Den er ikke en godkendelse af
+indholdet, og den erstatter ikke en låsefil.
+
+Element 2 er grunden til, at forskellen står i filen. Den blev sat til
+`PUBLICERET` 18-09 på en bekræftelse, der viste sig at være forkert — opslaget
+lå stadig i LinkedIns planlægger — og blev rettet tilbage 19-09. Vagthunden
+skriver derfor bekræftede poster ud med teksten *"ikke maskinelt verificeret"*,
+så de aldrig ser ud som bevis.
+
+Hvor en maskinel vej findes men ikke er bygget, skal `noter` sige det. For
+Facebook findes `post_id`, og en skrivebeskyttet kontrol af `is_published` via
+Graph API er mulig i environment `publicering`. Den er ikke bygget.
+
 ## Vagthunden
 
 Vagthunden sammenholder køen med registret to gange dagligt. Den **læser kun** —
@@ -270,6 +292,50 @@ kontrolstempel der ikke passer.
 
 REVIEW: effektord, kvantorer og procenttal uden kilde, og samme tekst paa to
 kanaler.
+
+### Priser: egne og andres
+
+Reglen er, at **en pris skal være den rigtige** — ikke at ingen andens pris må
+nævnes. Indtil 04-10-2026 fejlede alle beløb, der ikke stod på `/priser/`.
+Det fjernede Etos' egne entrépriser fra element 33, selv om de var rigtige og
+ikke Kristians. Reglen er derfor delt i to:
+
+| Prisen er | Krav |
+| --- | --- |
+| Kristians egen | beløbet skal stå på `content/priser.md` |
+| en tredjeparts | **dokumentation** og **tilskrivning** — begge dele |
+
+Dokumentationen er en post i låsefilens `tredjepartspriser`:
+
+```json
+"tredjepartspriser": [
+  { "beloeb": 100, "hvem": "Foreningen mod Familiebelastning",
+    "kilde": "https://kristiangg.dk/begivenheder/skovbad-svanninge-bakker/" }
+]
+```
+
+Tilskrivningen er, at navnet i `hvem` står i teksten **senest 160 tegn før
+beløbet**. Står det efter beløbet, eller længere væk, er det ikke tilskrevet.
+
+Ingen af delene er nok alene. Dokumentation uden tilskrivning betyder, at
+læseren læser prisen som Kristians. Tilskrivning uden dokumentation betyder,
+at ingen har kontrolleret tallet mod ejerens egen offentliggørelse.
+
+`tredjepartspriser` indgår ikke i `LAASTE_FELTER`, men feltet er alligevel
+dækket: tilføjer nogen en post efter godkendelsen, forsvinder et FAIL fra
+kontrolresultatet, og så afviger kontrolstemplet, og gaten stopper.
+
+### DAT
+
+`DAT` og `dialektisk adfaerdsterapi` er på listen over forbudte betegnelser
+siden 04-10-2026. Der foreligger ingen dokumentation for kvalifikationen.
+Betegnelsen er fjernet fra `content/til-dig/_index.md` og
+`content/til-kommuner/vikardaekning.md`, og den findes ikke længere i det
+byggede site. `KAT` er uberørt og dokumenteret.
+
+To forekomster er **bevidst bevaret**, fordi de er selve spærren og ikke en
+påstand: mønsteret i `indholdsregler.json` og prøven i
+`publicering/test/kontroller-indhold.test.mjs`.
 
 ### Foer godkendelse
 
