@@ -32,7 +32,6 @@ import { beregnLaas, sha256 } from './laas.mjs';
 const API = 'https://api.linkedin.com/rest/posts';
 const USERINFO = 'https://api.linkedin.com/v2/userinfo';
 const BILLEDER = 'https://api.linkedin.com/rest/images?action=initializeUpload';
-const MIG = 'https://api.linkedin.com/rest/me';
 const PERSON_PRAEFIKS = 'urn:li:person:';
 
 // ── API-VERSIONEN ───────────────────────────────────────────────────────────
@@ -54,9 +53,15 @@ const PERSON_PRAEFIKS = 'urn:li:person:';
 //      (se proevVersion) og kaldet gentages én gang. En 426 er utvetydig:
 //      den handler om versionen, ikke om indholdet eller adgangen.
 //
-// Versionen maales med GET /rest/me. Det kald OPRETTER INTET. Og vi behoever
-// ikke adgang til endepunktet: versionskontrollen sker foer alt andet, saa en
-// 403 betyder «versionen er god, men scope mangler» — ogsaa et ja.
+// Versionen maales paa initializeUpload — netop det kald, der skal virke.
+// Det er med vilje: et andet endepunkt kunne svare 404 for ALLE versioner,
+// hvis det ikke findes i det versionerede API, og saa ville maalingen intet
+// laere og blot udpege den nyeste kandidat. Maaler vi paa kaldet selv, er et
+// ja et rigtigt ja.
+//
+// En initializeUpload, der lykkes, giver en engangsadresse, vi kan bruge med
+// det samme. Lykkes den under maalingen, bruges netop det svar. Der oprettes
+// INTET OPSLAG — hverken under maalingen eller under billedproeven.
 const STANDARD_VERSION = process.env.LI_API_VERSION?.trim() || '202610';
 
 /** Kandidater, nyeste foerst: denne maaned og de fjorten foregaaende. */
@@ -69,25 +74,24 @@ export function kandidatVersioner(nu = new Date()) {
   return ud;
 }
 
-/** Er versionen aktiv? 426 = nej. Alt andet = ja. Opretter intet. */
-export async function erVersionAktiv(token, version, hent = fetch) {
-  const r = await hent(MIG, {
-    headers: {
-      Authorization: `Bearer ${token}`,
-      'LinkedIn-Version': version,
-      'X-Restli-Protocol-Version': '2.0.0',
-    },
+/**
+ * Ét forsoeg paa initializeUpload med én version.
+ * Returnerer { aktiv, r, svar } — «aktiv» er falsk KUN ved en versionsfejl.
+ */
+async function initializeUpload(token, ejerUrn, version, hent) {
+  const r = await hent(BILLEDER, {
+    method: 'POST',
+    headers: headere(token, version, { 'Content-Type': 'application/json' }),
+    body: JSON.stringify({ initializeUploadRequest: { owner: ejerUrn } }),
   });
-  return r.status !== 426;
+  let svar = {};
+  try { svar = await r.json(); } catch { /* tomt eller ikke-JSON svar */ }
+  return { aktiv: !erVersionsfejl(r.status, svar), r, svar };
 }
 
-/** Nyeste aktive version. Kaster, hvis ingen kandidat er aktiv. */
-export async function proevVersion(token, { hent = fetch, nu = new Date(), log = () => {} } = {}) {
-  for (const v of kandidatVersioner(nu)) {
-    if (await erVersionAktiv(token, v, hent)) { log(`  aktiv API-version fundet: ${v}`); return v; }
-    log(`  ${v}: ikke aktiv (426)`);
-  }
-  throw new Error('Ingen af de femten senest mulige API-versioner er aktive. Se LinkedIns versioneringsside.');
+/** Er versionen aktiv? 426 = nej. Alt andet = ja. Opretter intet opslag. */
+export async function erVersionAktiv(token, version, hent = fetch, ejerUrn = 'urn:li:person:ukendt') {
+  return (await initializeUpload(token, ejerUrn, version, hent)).aktiv;
 }
 
 /** Headere til et versioneret kald. Samme sted for alle kald. */
@@ -220,38 +224,34 @@ export async function hentGodkendtBillede(url, hent = fetch) {
  * dem der virkede, skrives i loggen, saa det kan laases naar det er set.
  * Virker ingen af dem, kastes der — og saa publiceres der intet.
  */
-/**
- * Den version, denne koersel bruger til ALLE versionerede kald.
- * Afgoeres én gang, saa initializeUpload og opslaget ikke kan komme til at
- * bruge hver sin.
- */
-export async function aktivVersion(token, { hent = fetch, nu = new Date(), log = () => {} } = {}) {
-  if (await erVersionAktiv(token, STANDARD_VERSION, hent)) return STANDARD_VERSION;
-  log(`  API-version ${STANDARD_VERSION} er ikke aktiv laengere. Maaler den aktive.`);
-  const v = await proevVersion(token, { hent, nu, log });
-  log(`  BEMAERK: saet LI_API_VERSION=${v} i miljoeet «publicering», eller ret`);
-  log('  STANDARD_VERSION i publicer-linkedin.mjs, saa maalingen ikke gentages.');
-  return v;
-}
-
-export async function uploadBillede(token, ejerUrn, billede, hent = fetch, version = STANDARD_VERSION) {
-  let r, svar;
+export async function uploadBillede(token, ejerUrn, billede, hent = fetch, version = STANDARD_VERSION,
+                                    { nu = new Date(), log = (l) => console.log(l) } = {}) {
+  // Foerst den version, vi regner med. Er den staaet af, maales de andre —
+  // nyeste foerst — paa samme kald. Der gaettes ikke.
+  let forsoegt = [version], brugtVersion = version, r, svar;
   try {
-    r = await hent(BILLEDER, {
-      method: 'POST',
-      headers: headere(token, version, { 'Content-Type': 'application/json' }),
-      body: JSON.stringify({ initializeUploadRequest: { owner: ejerUrn } }),
-    });
-    svar = await r.json();
+    ({ r, svar } = await initializeUpload(token, ejerUrn, version, hent));
+    if (erVersionsfejl(r.status, svar)) {
+      log(`  API-version ${version} er ikke aktiv (${svar?.code ?? r.status}). Maaler den aktive.`);
+      let fundet = false;
+      for (const v of kandidatVersioner(nu)) {
+        if (v === version) continue;
+        forsoegt.push(v);
+        ({ r, svar } = await initializeUpload(token, ejerUrn, v, hent));
+        if (!erVersionsfejl(r.status, svar)) { brugtVersion = v; fundet = true; log(`  aktiv API-version: ${v}`); break; }
+        log(`  ${v}: ikke aktiv`);
+      }
+      if (!fundet) {
+        throw new BilledeAfvist(
+          `Ingen af de proevede API-versioner er aktive (${forsoegt.join(', ')}). ` +
+          'Se LinkedIns versioneringsside og saet LI_API_VERSION i miljoeet «publicering».'
+        );
+      }
+      log(`  SAET LI_API_VERSION=${brugtVersion} i miljoeet «publicering», saa maalingen ikke gentages.`);
+    }
   } catch (err) {
+    if (err instanceof BilledeAfvist) throw err;
     throw new BilledeAfvist(`initializeUpload fejlede: ${err.message}`);
-  }
-  if (erVersionsfejl(r.status, svar)) {
-    throw new BilledeAfvist(
-      `initializeUpload svarede ${r.status} ${svar?.code ?? ''}: ${svar?.message ?? ''}. ` +
-      `API-versionen «${version}» er ikke aktiv. Koer billedproeven igen — den maaler den aktive version — ` +
-      'eller saet LI_API_VERSION i miljoeet «publicering».'
-    );
   }
   if (!r.ok) throw new BilledeAfvist(`initializeUpload svarede ${r.status}: ${JSON.stringify(svar).slice(0, 300)}`);
 
@@ -281,7 +281,7 @@ export async function uploadBillede(token, ejerUrn, billede, hent = fetch, versi
   if (!brugt) throw new BilledeAfvist(`billedet kunne ikke lægges op (${sidsteSvar}).`);
 
   console.log(`  billede lagt op med ${brugt}: ${urn}`);
-  return { urn, metode: brugt };
+  return { urn, metode: brugt, version: brugtVersion };
 }
 
 export function byggPayload(e, personUrn, billedUrn = null) {
@@ -344,13 +344,10 @@ export async function publicer(e, { dryRun = true } = {}) {
     );
   }
 
-  // API-versionen afgoeres ÉN gang og bruges til alle versionerede kald i
-  // denne koersel. Uden token (toerloeb) kan den ikke maales, og saa bruges
-  // standarden — der sendes alligevel intet.
-  const version = token
-    ? await aktivVersion(token, { log: (l) => console.log(l) })
-    : STANDARD_VERSION;
-  console.log(`  API-version: ${version}`);
+  // ALLE versionerede kald i denne koersel bruger samme version. Lykkes
+  // billedoplaegningen paa en anden version end standarden, foelger opslaget
+  // med over paa den — ellers kunne de to komme til at bruge hver sin.
+  let version = STANDARD_VERSION;
 
   let billedUrn = null;
   if (e.billede_url) {
@@ -359,9 +356,12 @@ export async function publicer(e, { dryRun = true } = {}) {
     const billede = await hentGodkendtBillede(e.billede_url);
     console.log(`  billede hentet: ${billede.url} (${billede.type}, ${billede.bytes.length} byte)`);
     if (!dryRun) {
-      billedUrn = (await uploadBillede(token, urn, billede, fetch, version)).urn;
+      const lagtOp = await uploadBillede(token, urn, billede, fetch, version);
+      billedUrn = lagtOp.urn;
+      version = lagtOp.version;
     }
   }
+  console.log(`  API-version: ${version}`);
 
   const payload = byggPayload(e, urn, billedUrn);
   if (dryRun) {
@@ -373,11 +373,25 @@ export async function publicer(e, { dryRun = true } = {}) {
     console.log(JSON.stringify(payload, null, 2));
     return { dryRun: true, payload };
   }
-  const r = await fetch(API, {
+  let r = await fetch(API, {
     method: 'POST',
     headers: headere(token, version, { 'Content-Type': 'application/json' }),
     body: JSON.stringify(payload),
   });
+  // Et opslag UDEN billede har ikke vaeret gennem versionsmaalingen i
+  // uploadBillede. Faar det en 426, maales der ogsaa her — samme regel.
+  if (r.status === 426 && !billedUrn) {
+    console.log(`  API-version ${version} er ikke aktiv. Maaler den aktive.`);
+    for (const v of kandidatVersioner()) {
+      if (v === version) continue;
+      r = await fetch(API, {
+        method: 'POST',
+        headers: headere(token, v, { 'Content-Type': 'application/json' }),
+        body: JSON.stringify(payload),
+      });
+      if (r.status !== 426) { console.log(`  aktiv API-version: ${v}. SAET LI_API_VERSION=${v}.`); break; }
+    }
+  }
   if (!r.ok) throw new Error(`LinkedIn afviste: ${r.status} ${await r.text()}`);
   return { post_id: r.headers.get('x-restli-id') };
 }
@@ -401,15 +415,11 @@ async function billedproeve(e) {
   console.log(`  destination bekræftet: ${ejer.urn}${ejer.navn ? ` (${ejer.navn})` : ''}`);
   if (!e.billede_url) throw new Error(`Element ${e.element} har ingen billede_url.`);
 
-  // Versionen maales foerst, og maalingen opretter intet: GET /rest/me.
-  // Det var netop den, der faldt 01-11-2026 med 426 NONEXISTENT_VERSION.
-  console.log('  maaler API-versionen (GET /rest/me — opretter intet)');
-  const version = await aktivVersion(token, { log: (l) => console.log(l) });
-  console.log(`  API-version: ${version}`);
-
   const billede = await hentGodkendtBillede(e.billede_url);
   console.log(`  billede hentet: ${billede.url} (${billede.type}, ${billede.bytes.length} byte)`);
-  const { urn: billedUrn, metode } = await uploadBillede(token, urn, billede, fetch, version);
+  // uploadBillede maaler selv versionen paa initializeUpload, hvis standarden
+  // er staaet af. Det var netop det kald, der faldt 01-11-2026 med 426.
+  const { urn: billedUrn, metode, version } = await uploadBillede(token, urn, billede, fetch, STANDARD_VERSION);
 
   console.log('');
   console.log(`BILLEDPROEVE BESTAAET. API-version ${version}, upload-adressen tog imod ${metode}.`);
