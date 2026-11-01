@@ -197,11 +197,19 @@ L.push('_Afsnittet er maskinskrevet af `publicering/research/vurder.mjs` og inds
 
 const ud = L.join('\n');
 if (process.argv.includes('--skriv')) {
-  // Pakkeafsnittet er AFLEDT output og hoerer ikke i fund/. Dér ligger kun
-  // raadata som AAAA-UU.json, og vagten afviser med rette alt andet dér.
-  const m = path.join(HER, 'pakkeafsnit');
+  // Afsnittet skrives ind i den etablerede udkastmappe, ikke i en fjerde
+  // mappe som ingen laeser.
+  //
+  // Det maa IKKE skrives i publicering/pakker/. En pakke dér er en haendelse
+  // — noget Kristian har godkendt — og den aendres aldrig bagefter. Motoren
+  // leverer et udkast; godkendelsen goer det til en pakke.
+  //
+  // publicering/udkast/ er bygget til netop dette: intet i motoren laeser
+  // mappen, Hugo bygger den ikke, og et merge af en gren med udkast
+  // publicerer derfor ingenting.
+  const m = path.resolve(HER, '..', 'udkast');
   fs.mkdirSync(m, { recursive: true });
-  const f = path.join(m, `${valgt}.md`);
+  const f = path.join(m, `research-${valgt}.md`);
   fs.writeFileSync(f, ud); process.stderr.write(`skrevet: ${f}\n`);
 }
 console.log(ud);

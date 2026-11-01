@@ -60,8 +60,8 @@ jobs:
           name: research-ugens-fund
           path: |
             publicering/research/fund/
-            publicering/research/pakkeafsnit/
             publicering/research/tilstand.json
+            publicering/udkast/research-*.md
           retention-days: 90
 
   arkiver:
@@ -106,15 +106,18 @@ jobs:
           set -euo pipefail
           mkdir -p publicering/research/fund
           cp indkommet/fund/*.json publicering/research/fund/ 2>/dev/null || true
-          mkdir -p publicering/research/pakkeafsnit
-          cp indkommet/pakkeafsnit/*.md publicering/research/pakkeafsnit/ 2>/dev/null || true
+          mkdir -p publicering/udkast
+          cp indkommet/udkast/research-*.md publicering/udkast/ 2>/dev/null || true
           cp indkommet/tilstand.json publicering/research/ 2>/dev/null || true
           rm -rf indkommet
 
           # Sidste spaerre: intet uden for research-mappen maa vaere aendret.
           git add -A
           AENDRET=$(git diff --cached --name-only)
-          UDENFOR=$(echo "$AENDRET" | grep -v '^publicering/research/' || true)
+          # Kun researchmappen og ugens researchudkast. Alt andet — laase,
+          # koe, register, pakker, indhold — er uden for det, dette job maa
+          # roere, uanset at rettigheden er repo-daekkende.
+          UDENFOR=$(echo "$AENDRET" | grep -vE '^publicering/research/|^publicering/udkast/research-[0-9]{4}-[0-9]{2}\.md$' || true)
           if [ -n "$UDENFOR" ]; then
             echo "Diffen roerer noget uden for publicering/research/:"
             echo "$UDENFOR"
