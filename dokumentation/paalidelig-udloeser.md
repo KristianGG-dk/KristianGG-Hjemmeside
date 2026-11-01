@@ -2,9 +2,11 @@
 
 ## Problemet
 
-Kristian har besluttet, at LinkedIn og Instagram højst må publicere 60
-minutter efter det godkendte tidspunkt (issue #90, krav 2). Ellers standses
-opslaget og markeres til manuel vurdering.
+**Opdateret 1. november 2026:** grænsen er nu 24 timer, ikke 60 minutter. Se
+`tidsvinduet.md`. Det mindsker risikoen for, at godkendte opslag bortfalder,
+men det fjerner ikke behovet for en pålidelig udløser: Kristian ønsker
+fortsat, at opslag forsøges publiceret tæt på deres godkendte tidspunkt.
+Afsnittene nedenfor står som de blev målt.
 
 **GitHubs cron kan ikke overholde det.** Den er «best effort»: planlagte
 kørsler stilles i kø sammen med alle andres, og køen er lang på de runde
@@ -72,10 +74,11 @@ hemmeligheder. Det er den, jeg vil anbefale: ét sted mindre at holde øje med.
 
 ### Hvor ofte
 
-Hvert kvarter er rigeligt. Grænsen er 60 minutter, og et kvarters
-opløsning giver fire chancer inden for den. Oftere koster kørsler uden at
-gøre noget godt: udvælgelsen springer alt over, hvis tidspunktet ikke er
-nået.
+Hvert kvarter er rigeligt, og formålet er ikke længere at nå inden for en
+grænse — det er at ramme tæt på det godkendte tidspunkt. Et kvarters
+opløsning betyder, at et opslag godkendt til kl. 08.00 går ud mellem 08.00 og
+08.15. Oftere koster kørsler uden at gøre noget godt: udvælgelsen springer alt
+over, hvis tidspunktet ikke er nået.
 
 ## Indtil da
 
@@ -83,6 +86,8 @@ Cron-linjerne står stadig i workflowene og er ikke fjernet. De virker som
 før — upålideligt. Så længe de er den eneste udløser, må du regne med, at
 opslag bliver stoppet, og at vagthunden melder det.
 
-Hvis du hellere vil have sene opslag end stoppede opslag, er det grænsen,
-der skal flyttes, ikke udløseren. Grænsen står ét sted:
-`MAKS_FORSINKELSE_S` i `publicering/scripts/krav.mjs`.
+Grænsen står ét sted: `MAKS_FORSINKELSE_S` i
+`publicering/scripts/krav.mjs`. Den er nu 24 timer, og med den er risikoen
+for bortfald lille selv på cron alene. Men et opslag, der er godkendt til
+torsdag kl. 08, går så ud engang torsdag — ikke torsdag kl. 08. Det er
+forskellen, en pålidelig udløser køber.

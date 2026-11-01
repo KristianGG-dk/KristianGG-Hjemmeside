@@ -22,6 +22,7 @@
 //   --nu <iso>    lad som om klokken er noget andet (til test)
 import { readFileSync, existsSync } from 'node:fs';
 import { beregnLaas, sha256 } from './laas.mjs';
+import { MAKS_FORSINKELSE_S, varighed } from './krav.mjs';
 
 const KOE = 'publicering/koe.json';
 const REGISTER = 'publicering/register.json';
@@ -185,9 +186,15 @@ async function main() {
     // vaeret der.
     if ((e.kanal === 'instagram' || e.kanal === 'gbp') && e.metode === 'motor') {
       // Her kan vi faktisk bevise noget. Havde koerslen gjort sit arbejde,
-      // stod der en raekke i registret. Den planlagte koersel gaar hver halve
-      // time, saa vi giver en times naade for forsinkelse hos GitHub.
-      const NAADE_MS = 60 * 60 * 1000;
+      // stod der en raekke i registret.
+      //
+      // Naadetiden FOELGER motorens eget publiceringsvindue. Den var en time,
+      // mens graensen var en time. Med Kristians beslutning 01-11-2026 maa
+      // motoren publicere i op til et doegn efter det godkendte tidspunkt, og
+      // en times naade ville derfor melde FEJL paa et element, motoren stadig
+      // agter at publicere helt lovligt. Vagthunden skal raabe op, naar noget
+      // er galt — ikke naar motoren arbejder som aftalt.
+      const NAADE_MS = MAKS_FORSINKELSE_S * 1000;
       if (NU - forfald > NAADE_MS) {
         FEJL(e.element, `${e.kanal}: forfaldt ${dk(forfald)} og er hverken publiceret eller fejlregistreret. Den planlagte koersel har ikke gjort sit arbejde.`);
       } else {
