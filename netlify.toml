@@ -2,6 +2,14 @@
   command = "npm install && hugo --minify"
   publish = "public"
 
+# Planlagte funktioner. Kun én ligger her: udloes-publicering, som starter
+# publiceringsworkflowene paa deres tidsplan, fordi GitHubs cron ikke holder.
+# Den publicerer intet selv og roerer ikke sitets sider. Uden
+# GITHUB_DISPATCH_TOKEN i Netlifys miljoevariabler goer den ingenting.
+# Se dokumentation/paalidelig-udloeser.md.
+[functions]
+  directory = "netlify/functions"
+
 [build.environment]
   HUGO_VERSION = "0.147.0"
   NODE_VERSION = "24"
