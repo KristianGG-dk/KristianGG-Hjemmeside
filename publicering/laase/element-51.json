@@ -1,0 +1,67 @@
+{
+  "element": 51,
+  "kanal": "linkedin",
+  "titel": "Et døgn for mænd i naturen — 12.–13. december",
+  "alt_tekst": "Kaffe over bål under et naturterapiforløb",
+  "billede": "kaffe-i-skoven",
+  "cta": "Billetter hos Molsness. Skriv til mig, hvis du vil vide mere om indholdet",
+  "hashtags": [],
+  "dato": "2026-11-19T08:00:00+01:00",
+  "godkendt_af": "Kristian G. G. Dansted",
+  "godkendt_dato": "2026-11-01",
+  "godkendelsespakke": "2026-rettelser-45-51-52.md",
+  "meta_description": "linkedin-opslag: Et døgn for mænd i naturen — 12.–13. december",
+  "slug": "element-51-li",
+  "slut_url": "(linkedin-opslag, ingen URL foer publicering)",
+  "kategorier": [],
+  "billede_url": "https://kristiangg.dk/images/natur/kaffe-i-skoven-640.jpg",
+  "links": [],
+  "tekst": "Den 12.–13. december holder jeg og Molsness et døgn for mænd i naturen på Mols.\n\nJeg skriver om det her, fordi jeg tror, formen er mere interessant end emnet.\n\nDet er 24 timer, hvor der ikke skal præsteres noget. Vi går i stilhed langs kysten, laver skovbad, arbejder med åndedrættet og laver mad over bål. Der er gruppesamtaler undervejs, og det er frivilligt at dele noget. Man behøver ikke fortælle sin livshistorie, og man behøver ikke have et problem, der skal løses.\n\nDet er bevidst ikke et terapeutisk forløb. Jeg er registreret psykoterapeut (FaDP) og naturterapeut, og jeg står for naturterapi, skovbad og åndedrætsarbejdet — men rammen er et døgn i naturen, ikke en behandling. Den forskel er værd at holde fast i, også når man markedsfører den slags.\n\nHvorfor mænd. Fordi en del mænd, jeg møder, har lettere ved at sige noget, mens de laver noget andet — går, bærer brænde, passer et bål. Det kræver ikke en særlig forklaring, det er bare sådan, det er for nogle, og så kan man lige så godt lave en ramme, der tager højde for det.\n\nMolsness er arrangør, og jeg er medarrangør. Molsness holder til på Asylvej 19 i Knebel, og det er dem, der sælger billetterne. Molsness' pris er 1.200 kr. pr. person i introduktionspris, med forplejning, aktiviteter og overnatning. Oven i den lægger Molsness et billetgebyr på 29 kr. pr. billet og et administrationsgebyr på 3 kr. pr. ordre. Køber du én billet, betaler du 1.232 kr. Der er plads til 12, og det gennemføres ved mindst 6.\n\nAlt det praktiske — søvn, tilgængelighed, forplejning — står på min side om arrangementet, og knappen derfra fører til Molsness.\n\nKender du nogen, det ville passe til, må du gerne sende det videre.",
+  "tekst_sha256": "60cc1504cc2e5e591c5cf1313102e097b51dd941913a584b76e4ad2962f4eb02",
+  "brodtekst_sha256": "60cc1504cc2e5e591c5cf1313102e097b51dd941913a584b76e4ad2962f4eb02",
+  "ejerverifikation": {
+    "verificeret_af": "Kristian G. G. Dansted",
+    "dato": "2026-11-01",
+    "rolle": "ejer",
+    "omfang": "Molsness' introduktionspris 1.200 kr. samt arrangements- og tilgaengelighedsoplysningerne",
+    "note": "Faktakontrollen er dermed lukket for disse oplysninger. Tekniske krav, billedkrav og planlagt tidspunkt gaelder uaendret."
+  },
+  "tredjepartspriser": [
+    {
+      "beloeb": 1200,
+      "hvem": "Molsness",
+      "kilde": "https://www.molsness.dk/arrangementer/?ytroute=/arrangementer/62198/mand-24-timer-uden-krav-et-doegn-med-naturen-stilheden-og-faellesskabet/"
+    },
+    {
+      "beloeb": 29,
+      "hvem": "Molsness",
+      "kilde": "https://www.molsness.dk/arrangementer/?ytroute=/arrangementer/62198/mand-24-timer-uden-krav-et-doegn-med-naturen-stilheden-og-faellesskabet/"
+    },
+    {
+      "beloeb": 3,
+      "hvem": "Molsness",
+      "kilde": "https://www.molsness.dk/arrangementer/?ytroute=/arrangementer/62198/mand-24-timer-uden-krav-et-doegn-med-naturen-stilheden-og-faellesskabet/"
+    },
+    {
+      "beloeb": 1232,
+      "hvem": "Molsness",
+      "kilde": "https://www.molsness.dk/arrangementer/?ytroute=/arrangementer/62198/mand-24-timer-uden-krav-et-doegn-med-naturen-stilheden-og-faellesskabet/"
+    }
+  ],
+  "godkendelse": {
+    "tidspunkt": "2026-11-01T22:31:00+01:00",
+    "kanal": "chat",
+    "version": "v2",
+    "teksthash": "60cc1504cc2e5e59",
+    "erstatter": {
+      "laasefil": "publicering/laase-tilbagekaldt/element-51-v1.json",
+      "teksthash": "ba5f5149e5707cb1",
+      "versionslaas": "243aa95c6f50a959"
+    }
+  },
+  "kontrol": {
+    "version": "1.0.0",
+    "resultat_sha256": "165f841af98967ac"
+  },
+  "versionslaas": "14f86afa5e8345b1"
+}
