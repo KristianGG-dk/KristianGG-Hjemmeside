@@ -31,10 +31,15 @@
 import { readFileSync, writeFileSync, existsSync, readdirSync } from 'node:fs';
 import { join } from 'node:path';
 import { beregnLaas, sha256 } from './laas.mjs';
+import {
+  registerSpaerre, forfald, kravraekke, forSentRaekke, foejTilRegister,
+  MAKS_FORSINKELSE_S,
+} from './krav.mjs';
 
 const GRAPH = 'https://graph.facebook.com/v21.0';
 const LAASE = 'publicering/laase';
 const REGISTER = 'publicering/register.json';
+const KRAV = 'krav-instagram.json';
 
 // Ventetid paa at containeren bliver klar. Meta behandler asynkront.
 const POLL_FORSOEG = 20;
@@ -98,24 +103,18 @@ async function containerStatus(id) {
 }
 
 /** Samler de elementer der er forfaldne, og forklarer hvert fravalg. */
-function udvaelg(nu) {
-  const reg = laesRegister();
-  const valgt = [], sprunget = [];
+export function udvaelg(nu, { laase = LAASE, register } = {}) {
+  const reg = register ?? laesRegister();
+  const valgt = [], sprunget = [], forSent = [];
 
-  for (const f of readdirSync(LAASE).filter((x) => x.endsWith('.json')).sort()) {
-    const e = JSON.parse(readFileSync(join(LAASE, f), 'utf8'));
+  for (const f of readdirSync(laase).filter((x) => x.endsWith('.json')).sort()) {
+    const e = JSON.parse(readFileSync(join(laase, f), 'utf8'));
     const nr = e.element;
     if (e.kanal !== 'instagram') { sprunget.push([nr, `kanal er ${e.kanal}, ikke instagram`]); continue; }
 
-    const post = [...reg].reverse().find((x) => x.element === nr && AFSENDT.includes(x.status));
-    if (post) { sprunget.push([nr, `staar som ${post.status} i registret`]); continue; }
-
-    // En tidligere fejl er en spaerre, ikke en invitation til at proeve igen.
-    const sidste = [...reg].reverse().find((x) => x.element === nr);
-    if (sidste && sidste.status === 'PUBLICERING FEJLET') {
-      sprunget.push([nr, 'seneste forsoeg fejlede — kraever menneskelig stillingtagen foer nyt forsoeg']);
-      continue;
-    }
+    // Faelles spaerre: afsendt, undervejs, fejlet eller stoppet.
+    const spaerre = registerSpaerre(reg, nr);
+    if (spaerre) { sprunget.push([nr, spaerre]); continue; }
 
     try {
       const { laas } = beregnLaas(e);
@@ -127,13 +126,53 @@ function udvaelg(nu) {
       sprunget.push([nr, `AFVIST: ${err.message}`]); continue;
     }
 
-    const naar = Math.floor(new Date(e.dato).getTime() / 1000);
-    if (Number.isNaN(naar)) { sprunget.push([nr, `ulaeseligt dato-felt: ${e.dato}`]); continue; }
-    if (naar > nu) { sprunget.push([nr, `forfalder foerst ${tid(naar)}`]); continue; }
+    // Hoejst en time efter det godkendte tidspunkt. De syv foerste
+    // Instagram-opslag gik ud 45-212 minutter for sent; de skaeve minutter i
+    // cron'en gjorde forsinkelsen mindre, men satte ingen graense. Nu er der
+    // en: derover stoppes opslaget og registreres som stoppet.
+    const { tilstand, naar } = forfald(e, nu, MAKS_FORSINKELSE_S);
+    if (tilstand === 'ulaeselig') { sprunget.push([nr, `ulaeseligt dato-felt: ${e.dato}`]); continue; }
+    if (tilstand === 'fremtid') { sprunget.push([nr, `forfalder foerst ${tid(naar)}`]); continue; }
+    if (tilstand === 'for_sent') {
+      const min = Math.round((nu - naar) / 60);
+      sprunget.push([nr, `forfaldt ${tid(naar)} — ${min} minutter siden, over graensen paa ${Math.round(MAKS_FORSINKELSE_S / 60)}. Stoppet til manuel vurdering`]);
+      forSent.push({ e, naar });
+      continue;
+    }
 
     valgt.push({ e, naar });
   }
-  return { valgt, sprunget };
+  return { valgt, sprunget, forSent };
+}
+
+/** Tager kravet FOER der sendes noget. Se krav.mjs. */
+export function tagKrav(nu = Math.floor(Date.now() / 1000)) {
+  const { valgt, sprunget, forSent } = udvaelg(nu);
+  if (sprunget.length) {
+    console.log('── springes over ──');
+    for (const [nr, hvorfor] of sprunget) console.log(`  element ${String(nr).padStart(2)}  ${hvorfor}`);
+    console.log('');
+  }
+  foejTilRegister([
+    ...forSent.map(({ e, naar }) => forSentRaekke(e, 'instagram', naar, MAKS_FORSINKELSE_S)),
+    ...valgt.map(({ e }) => kravraekke(e, 'instagram')),
+  ], REGISTER);
+  writeFileSync(KRAV, JSON.stringify(valgt.map(({ e }) => e.element), null, 2) + '\n');
+  console.log(`${valgt.length} element(er) kravet er taget paa, ${forSent.length} stoppet som for sent.`);
+  for (const { e } of valgt) console.log(`  krav paa element ${e.element} «${e.titel}»`);
+  return { valgt, forSent };
+}
+
+/** De elementer, kravet er taget paa. Kravfilen er sandheden. Se krav.mjs. */
+function fraKrav() {
+  const numre = JSON.parse(readFileSync(KRAV, 'utf8'));
+  return numre.map((nr) => {
+    const fil = join(LAASE, `element-${String(nr).padStart(2, '0')}.json`);
+    if (!existsSync(fil)) throw new Error(`kravet naevner element ${nr}, men ${fil} findes ikke`);
+    const e = JSON.parse(readFileSync(fil, 'utf8'));
+    if (e.kanal !== 'instagram') throw new Error(`element ${nr} er kanal ${e.kanal}, ikke instagram`);
+    return { e, naar: Math.floor(new Date(e.dato).getTime() / 1000) };
+  });
 }
 
 async function publicerEt(e) {
@@ -189,7 +228,9 @@ async function publicerEt(e) {
 
 async function koer({ toerloeb = true } = {}) {
   const nu = Math.floor(Date.now() / 1000);
-  const { valgt, sprunget } = udvaelg(nu);
+  const medKrav = existsSync(KRAV);
+  const { valgt, sprunget } = medKrav ? { valgt: fraKrav(), sprunget: [] } : udvaelg(nu);
+  if (medKrav) console.log(`Kravfil fundet — publicerer de ${valgt.length} element(er), kravet er taget paa.\n`);
 
   console.log(toerloeb
     ? 'TOERLOEB — intet sendes. Viser hvad der ville blive publiceret.\n'
@@ -251,8 +292,16 @@ function statusKun(fil) {
   return 0;
 }
 
-const args = process.argv.slice(2);
-if (args[0] === '--skriv-register') {
+// Modulet eksporterer udvaelg() og tagKrav(), saa proever kan kalde dem.
+// Uden denne vagt ville et import af filen koere en hel publicering.
+const koertDirekte = import.meta.url === `file://${process.argv[1]}`;
+const args = koertDirekte ? process.argv.slice(2) : [];
+if (!koertDirekte) {
+  // intet: filen er importeret, ikke startet
+} else if (args[0] === '--tag-krav') {
+  try { tagKrav(); process.exit(0); }
+  catch (err) { console.error('FEJL:', err.message); process.exit(1); }
+} else if (args[0] === '--skriv-register') {
   process.exit(skrivRegister(args[1]) > 0 ? 1 : 0);
 } else if (args[0] === '--status-kun') {
   process.exit(statusKun(args[1]) > 0 ? 1 : 0);

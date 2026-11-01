@@ -31,8 +31,19 @@ import { beregnLaas, sha256 } from './laas.mjs';
 
 const API = 'https://api.linkedin.com/rest/posts';
 const USERINFO = 'https://api.linkedin.com/v2/userinfo';
+const BILLEDER = 'https://api.linkedin.com/rest/images?action=initializeUpload';
 const VERSION = '202509';
 const PERSON_PRAEFIKS = 'urn:li:person:';
+
+/** Billedet skal komme fra vores eget domaene. Intet andet hentes og sendes. */
+const BILLED_VAERT = 'kristiangg.dk';
+const BILLED_TYPER = ['image/jpeg', 'image/png'];
+const BILLED_MAKS_BYTE = 10 * 1024 * 1024;
+
+/** Kastes naar et godkendt billede ikke kan hentes eller lægges op. */
+export class BilledeAfvist extends Error {
+  constructor(m) { super(m); this.name = 'BilledeAfvist'; }
+}
 
 /** Kastes af destinationskontrollen. Egen type, saa den ikke forveksles. */
 export class DestinationAfvist extends Error {
@@ -92,7 +103,103 @@ export async function bevisEjer(token, forventet, hent = fetch) {
   return { urn: faktisk, navn: svar.name ?? null };
 }
 
-export function byggPayload(e, personUrn) {
+/**
+ * Henter det godkendte billede fra kristiangg.dk.
+ *
+ * Billedet er en del af godkendelsen: «billede» og «alt_tekst» er laaste
+ * felter. Kan det ikke hentes, er opslaget ikke det godkendte, og saa
+ * publiceres der ikke. Ingen reserveloesning, intet andet billede, og aldrig
+ * et opslag uden.
+ */
+export async function hentGodkendtBillede(url, hent = fetch) {
+  let u;
+  try { u = new URL(url); } catch { throw new BilledeAfvist(`billede_url er ikke en adresse: ${url}`); }
+  if (u.protocol !== 'https:') throw new BilledeAfvist(`billede_url skal vaere https: ${url}`);
+  if (u.hostname !== BILLED_VAERT && u.hostname !== `www.${BILLED_VAERT}`) {
+    throw new BilledeAfvist(`billedet skal ligge paa ${BILLED_VAERT}, ikke ${u.hostname}`);
+  }
+
+  let r;
+  try { r = await hent(u.href); }
+  catch (err) { throw new BilledeAfvist(`billedet kunne ikke hentes: ${err.message}`); }
+  if (!r.ok) throw new BilledeAfvist(`${u.href} svarede ${r.status}. Billedet findes ikke paa adressen.`);
+
+  const type = (r.headers.get('content-type') ?? '').split(';')[0].trim().toLowerCase();
+  if (!BILLED_TYPER.includes(type)) {
+    throw new BilledeAfvist(`${u.href} svarede content-type «${type}». Kun ${BILLED_TYPER.join(' og ')}.`);
+  }
+  const bytes = new Uint8Array(await r.arrayBuffer());
+  if (!bytes.length) throw new BilledeAfvist(`${u.href} svarede 0 byte.`);
+  if (bytes.length > BILLED_MAKS_BYTE) {
+    throw new BilledeAfvist(`billedet er ${bytes.length} byte, over graensen paa ${BILLED_MAKS_BYTE}.`);
+  }
+  return { bytes, type, url: u.href };
+}
+
+/**
+ * Laegger billedet op og returnerer dets URN.
+ *
+ * To trin, som LinkedIns Images API foreskriver: initializeUpload giver en
+ * engangsadresse og billedets URN, og derefter afleveres bytes paa adressen.
+ *
+ * OM METODEN PAA UPLOAD-ADRESSEN
+ * Images API dokumenterer initializeUpload og selve URN'en entydigt, men
+ * LinkedIns egne sider var ikke tilgaengelige herfra, da dette blev skrevet,
+ * og de sekundaere kilder er uenige: Images API beskrives med PUT, mens den
+ * aeldre Assets-vej brugte POST. Derfor gaettes der ikke: der sendes PUT, og
+ * svarer adressen «metoden er ikke tilladt», sendes POST én gang. Hvilken af
+ * dem der virkede, skrives i loggen, saa det kan laases naar det er set.
+ * Virker ingen af dem, kastes der — og saa publiceres der intet.
+ */
+export async function uploadBillede(token, ejerUrn, billede, hent = fetch) {
+  let r, svar;
+  try {
+    r = await hent(BILLEDER, {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json',
+        'LinkedIn-Version': VERSION,
+        'X-Restli-Protocol-Version': '2.0.0',
+      },
+      body: JSON.stringify({ initializeUploadRequest: { owner: ejerUrn } }),
+    });
+    svar = await r.json();
+  } catch (err) {
+    throw new BilledeAfvist(`initializeUpload fejlede: ${err.message}`);
+  }
+  if (!r.ok) throw new BilledeAfvist(`initializeUpload svarede ${r.status}: ${JSON.stringify(svar).slice(0, 300)}`);
+
+  const adresse = svar?.value?.uploadUrl;
+  const urn = svar?.value?.image;
+  if (!adresse || !urn) {
+    throw new BilledeAfvist(`initializeUpload bar hverken uploadUrl eller image: ${JSON.stringify(svar).slice(0, 300)}`);
+  }
+
+  let brugt = null, sidsteSvar = null;
+  for (const metode of ['PUT', 'POST']) {
+    let u;
+    try {
+      u = await hent(adresse, {
+        method: metode,
+        headers: { Authorization: `Bearer ${token}`, 'Content-Type': billede.type },
+        body: billede.bytes,
+      });
+    } catch (err) {
+      throw new BilledeAfvist(`upload med ${metode} fejlede: ${err.message}`);
+    }
+    if (u.ok) { brugt = metode; break; }
+    sidsteSvar = `${metode} → ${u.status}`;
+    // Kun «metoden er ikke tilladt» giver anledning til at proeve den anden.
+    if (u.status !== 405 && u.status !== 501) break;
+  }
+  if (!brugt) throw new BilledeAfvist(`billedet kunne ikke lægges op (${sidsteSvar}).`);
+
+  console.log(`  billede lagt op med ${brugt}: ${urn}`);
+  return { urn, metode: brugt };
+}
+
+export function byggPayload(e, personUrn, billedUrn = null) {
   const post = {
     author: personUrn,
     commentary: e.tekst,            // ordret som låst
@@ -101,7 +208,14 @@ export function byggPayload(e, personUrn) {
     lifecycleState: 'PUBLISHED',
     isReshareDisabledByAuthor: false,
   };
-  if (e.artikel_url) {
+  // «content» kan baere ét af dem. Baerer elementet baade billede og artikel,
+  // er godkendelsen tvetydig, og saa gaettes der ikke paa hvilken der menes.
+  if (billedUrn && e.artikel_url) {
+    throw new Error('Elementet har baade billede_url og artikel_url. LinkedIn kan kun baere ét. Publicering stoppet.');
+  }
+  if (billedUrn) {
+    post.content = { media: { id: billedUrn, altText: e.alt_tekst } };
+  } else if (e.artikel_url) {
     post.content = { article: { source: e.artikel_url, title: e.titel, description: e.meta_description } };
   }
   return post;
@@ -133,9 +247,36 @@ export async function publicer(e, { dryRun = true } = {}) {
   if (!e.godkendt_af || !e.godkendt_dato) throw new Error('Elementet bærer ingen godkendelse. Publicering stoppet.');
   if (e.kanal !== 'linkedin') throw new Error(`Elementet er mærket "${e.kanal}", ikke linkedin. Publicering stoppet.`);
 
-  const payload = byggPayload(e, urn);
+  // ── 6. Billedet ─────────────────────────────────────────────────────────
+  // Et opslag, der er godkendt med billede, maa ALDRIG gaa ud uden. «billede»
+  // og «alt_tekst» er laaste felter, og billede_url er den adresse, det
+  // godkendte motiv ligger paa. Mangler adressen, mens motivet er laast, er
+  // godkendelsen ikke komplet — og saa publiceres der ikke.
+  if (e.billede && !e.billede_url) {
+    throw new Error(
+      `Elementet er godkendt med motivet «${e.billede}», men baerer ingen billede_url. ` +
+      'Et opslag godkendt med billede publiceres ikke som ren tekst. Publicering stoppet.'
+    );
+  }
+
+  let billedUrn = null;
+  if (e.billede_url) {
+    // Hentes ogsaa i toerloeb: saa er proeven en rigtig proeve paa, at
+    // adressen svarer, og at det er et billede. Der lægges intet op.
+    const billede = await hentGodkendtBillede(e.billede_url);
+    console.log(`  billede hentet: ${billede.url} (${billede.type}, ${billede.bytes.length} byte)`);
+    if (!dryRun) {
+      billedUrn = (await uploadBillede(token, urn, billede)).urn;
+    }
+  }
+
+  const payload = byggPayload(e, urn, billedUrn);
   if (dryRun) {
     console.log('TØRLØB — intet sendt. Ville POSTe til', API);
+    if (e.billede_url) {
+      console.log('  (billedet er hentet og kontrolleret, men IKKE lagt op. I rigtig');
+      console.log('   koersel saettes content.media.id til billedets URN.)');
+    }
     console.log(JSON.stringify(payload, null, 2));
     return { dryRun: true, payload };
   }
@@ -153,9 +294,49 @@ export async function publicer(e, { dryRun = true } = {}) {
   return { post_id: r.headers.get('x-restli-id') };
 }
 
+/**
+ * Beviser billedvejen UDEN at oprette et opslag.
+ *
+ * Henter det godkendte billede og lægger det op hos LinkedIn — og stopper
+ * dér. Et billede, der ikke er knyttet til et opslag, er ikke synligt nogen
+ * steder og er ikke en publicering. Formaalet er at afgoere, hvilken metode
+ * upload-adressen tager imod, FOER det gaelder et rigtigt opslag.
+ *
+ *   node publicer-linkedin.mjs --billedproeve publicering/laase/element-41.json
+ */
+async function billedproeve(e) {
+  console.log('BILLEDPROEVE — der oprettes INTET opslag.\n');
+  const urn = pruvDestination();
+  const token = process.env.LI_ACCESS_TOKEN;
+  if (!token) throw new Error('LI_ACCESS_TOKEN mangler i miljøet.');
+  const ejer = await bevisEjer(token, urn);
+  console.log(`  destination bekræftet: ${ejer.urn}${ejer.navn ? ` (${ejer.navn})` : ''}`);
+  if (!e.billede_url) throw new Error(`Element ${e.element} har ingen billede_url.`);
+
+  const billede = await hentGodkendtBillede(e.billede_url);
+  console.log(`  billede hentet: ${billede.url} (${billede.type}, ${billede.bytes.length} byte)`);
+  const { urn: billedUrn, metode } = await uploadBillede(token, urn, billede);
+
+  console.log('');
+  console.log(`BILLEDPROEVE BESTAAET. Upload-adressen tog imod ${metode}.`);
+  console.log(`Billedets URN: ${billedUrn}`);
+  console.log('Der er ikke oprettet noget opslag. Billedet er ikke synligt for nogen.');
+  console.log('');
+  console.log(`Virker ${metode}, kan listen i uploadBillede() laases til kun ${metode}.`);
+  return { billedproeve: true, metode, urn: billedUrn };
+}
+
 if (import.meta.url === `file://${process.argv[1]}`) {
-  const e = JSON.parse(readFileSync(process.argv[2], 'utf8'));
+  const argv = process.argv.slice(2);
+  const fil = argv.find((a) => !a.startsWith('--'));
+  const e = JSON.parse(readFileSync(fil, 'utf8'));
+  if (argv.includes('--billedproeve')) {
+    billedproeve(e)
+      .then(() => process.exit(0))
+      .catch((err) => { console.error('BILLEDPROEVE FEJLEDE:', err.message); process.exit(1); });
+  } else {
   publicer(e, { dryRun: !process.argv.includes('--publicer') })
     .then((r) => console.log(JSON.stringify(r, null, 2)))
     .catch((err) => { console.error('FEJL:', err.message); process.exit(1); });
+  }
 }

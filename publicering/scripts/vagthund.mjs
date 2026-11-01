@@ -47,6 +47,18 @@ const K_INFO = (k, m) => info.push(`${k.padEnd(10)}  ${m}`);
 const AFSENDT = ['PUBLICERET', 'PLANLAGT', 'PLANLAGT MANUELT', 'AFVENTER DATO'];
 const FEJLEDE = ['PUBLICERING FEJLET', 'PLANLAEGNING FEJLET'];
 
+/**
+ * «PUBLICERING IGANG» betyder, at kravet blev taget, men koerslen aldrig
+ * meldte tilbage. Opslaget KAN vaere gaaet ud. Det er det alvorligste, der
+ * kan staa i registret, og det kraever et menneske paa platformen.
+ *
+ * «STOPPET FOR SENT» betyder, at motoren selv stoppede et opslag, fordi det
+ * forfaldt for mere end en time siden. Det er ikke en fejl i motoren, men
+ * opslaget er ikke gaaet ud, og nogen skal tage stilling.
+ */
+const UVIST = 'PUBLICERING IGANG';
+const FOR_SENT = 'STOPPET FOR SENT';
+
 const dage = (ms) => Math.floor(ms / 86400000);
 const dk = (d) => d.toISOString().slice(0, 16).replace('T', ' ') + ' UTC';
 
@@ -117,6 +129,16 @@ async function main() {
     const passeret = NU > forfald;
     const dageSiden = dage(NU - forfald);
 
+    if (sidste.status === UVIST) {
+      FEJL(e.element, `${e.kanal}: «${UVIST}» — kravet blev taget ${dk(new Date(sidste.tidspunkt))}, men koerslen meldte aldrig tilbage. `
+        + 'Opslaget kan vaere gaaet ud. Se efter paa platformen, og skriv udfaldet i registret, FOER der proeves igen.');
+      continue;
+    }
+    if (sidste.status === FOR_SENT) {
+      FEJL(e.element, `${e.kanal}: stoppet, fordi det forfaldt ${dk(forfald)} og var over en time gammelt. `
+        + 'Opslaget er IKKE gaaet ud. Publicér det i haanden, eller godkend et nyt tidspunkt.');
+      continue;
+    }
     if (FEJLEDE.includes(sidste.status)) {
       FEJL(e.element, `${e.kanal}: seneste status er «${sidste.status}» og intet er lykkedes siden`);
       continue;
@@ -234,9 +256,23 @@ async function main() {
   try {
     const STI = 'publicering/google-token.json';
     const hvor = 'Se dokumentation/google-business-profile.md, afsnittet om fornyelse.';
-    const motorGbp = koe.filter((e) => e.kanal === 'gbp' && e.metode === 'motor' && new Date(e.tidspunkt) > NU);
+    const kommendeGbp = koe.filter((e) => e.kanal === 'gbp' && new Date(e.tidspunkt) > NU);
+    const motorGbp = kommendeGbp.filter((e) => e.metode === 'motor');
     if (!existsSync(STI)) {
-      if (motorGbp.length) K_ADVAR('Google', `${motorGbp.length} kommende element(er) skal publiceres af motoren, men adgangen er aldrig autoriseret. ${hvor}`);
+      // Tavshed her var selv en fejl: kanalen saa rask ud, fordi INTET
+      // gbp-element stod som «motor». Men det planlagte workflow koerer 48
+      // gange i doegnet og udfoerer intet, og hvert kommende Google-opslag
+      // skal altsaa laegges op i haanden. Det skal staa i klartekst.
+      if (motorGbp.length) {
+        K_FEJL('Google', `${motorGbp.length} kommende element(er) skal publiceres af motoren, men adgangen er aldrig autoriseret. ${hvor}`);
+      } else if (kommendeGbp.length) {
+        K_ADVAR('Google', `adgangen er aldrig autoriseret (ingen google-token.json). `
+          + `${kommendeGbp.length} kommende gbp-element(er) staar som «manuel» og skal laegges op i haanden: `
+          + kommendeGbp.map((e) => `${e.element} (${String(e.tidspunkt).slice(0, 10)})`).join(', ')
+          + `. ${hvor}`);
+      } else {
+        K_INFO('Google', `adgangen er ikke autoriseret, og der er ingen kommende gbp-elementer.`);
+      }
     } else {
       const t = JSON.parse(readFileSync(STI, 'utf8'));
       if (t.refresh_tidsbegraenset && t.refresh_udloeber) {

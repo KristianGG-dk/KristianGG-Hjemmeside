@@ -21,6 +21,12 @@ name: Kontroller social adgang
 
 on:
   workflow_dispatch:
+    inputs:
+      billedproeve:
+        description: 'Afprøv også LinkedIns billedupload (opretter INTET opslag)'
+        required: false
+        type: boolean
+        default: false
 
 permissions: {}
 
@@ -86,6 +92,20 @@ jobs:
           LI_PERSON_URN: ${{ secrets.LI_PERSON_URN }}
           LI_TILLADT_URN: ${{ secrets.LI_TILLADT_URN }}
         run: node publicering/scripts/kontroller-linkedin-adgang.mjs
+
+      # Beviser billedvejen uden at oprette et opslag: billedet hentes og
+      # lægges op hos LinkedIn, og dér stopper det. Et billede uden opslag er
+      # ikke synligt nogen steder. Formaalet er at afgoere, hvilken metode
+      # upload-adressen tager imod, FOER element 41 skal ud den 5. november.
+      - name: Billedproeve (opretter intet opslag)
+        if: ${{ inputs.billedproeve }}
+        env:
+          LI_ACCESS_TOKEN: ${{ secrets.LI_ACCESS_TOKEN }}
+          LI_PERSON_URN: ${{ secrets.LI_PERSON_URN }}
+          LI_TILLADT_URN: ${{ secrets.LI_TILLADT_URN }}
+        run: |
+          node publicering/scripts/publicer-linkedin.mjs \
+            --billedproeve publicering/laase/element-41.json
 
   samlet:
     name: Samlet resultat
