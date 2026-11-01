@@ -158,3 +158,24 @@ Det hul, der står tilbage, er **Sundhedsstyrelsen og arbejdsmiljøområdet**
 ingen teknisk løsning, der er værd at bygge.
 
 **Tretten kilder kan overvåges automatisk.** Det er nok til at bygge fase 1.
+
+---
+
+## Efterprøvning af entitet-fejlen, 17:51 UTC
+
+Rettelsen er kørt
+([kørsel 41333177564](https://github.com/KristianGG-dk/KristianGG-Hjemmeside/actions/runs/41333177564)).
+Adressen sendes nu korrekt som `?format=feed&type=rss` uden `&amp;`.
+
+**Resultatet er uændret: 2 af 14.**
+
+Sundhedspolitisk Tidsskrift svarer på den rette adresse, og svaret *er* RSS —
+men feedet indeholder **nul poster**. Begge varianter, rss og atom, er tomme.
+Kilden er altså reelt ubrugelig, ikke ramt af min fejl.
+
+Det samme gælder Dansk Psykolog Forening: feedet findes, men står tomt.
+
+Rettelsen var alligevel værd at lave. Den fjernede en forkert forklaring, og
+nu hviler konklusionen på kildens egen tilstand frem for på en fejl i mit
+script. Men den ændrede ikke tallet, og Sundhedspolitisk Tidsskrift kan ikke
+bruges.
