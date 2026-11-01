@@ -84,6 +84,43 @@ export function forfald(e, nu, maks = MAKS_FORSINKELSE_S) {
   return { tilstand: 'forfalden', naar };
 }
 
+/**
+ * Koeen skal vaere enig med laasen, og den skal sige «motor».
+ *
+ * HVORFOR OGSAA PAA LINKEDIN OG INSTAGRAM
+ * De to spor laeste kun laasefiler og saa aldrig koeen. Derfor kunne et
+ * element ikke saettes paa pause uden at aendre laasefilen — og en aendret
+ * laasefil er en bortfaldet godkendelse. Google-sporet har altid kontrolleret
+ * koeen; nu goer alle tre.
+ *
+ * Pause er dermed: saet «metode» til noget andet end «motor» i koe.json.
+ * Laasen, teksthashen og godkendelsen er uroerte, og motoren roerer ikke
+ * elementet, foer metoden saettes tilbage.
+ *
+ * Samtidig fanges det, ingen ellers fangede: at koeens tidspunkt og laasens
+ * dato er gledet fra hinanden, saa vagthunden overvaager ét tidspunkt og
+ * motoren publicerer paa et andet.
+ */
+export function koeSpaerre(koe, e, sti, kanal) {
+  const k = koe.filter((x) => x.element === e.element && x.kanal === kanal);
+  if (k.length !== 1) return `AFVIST: ${k.length} ${kanal}-poster i koeen, ventede én`;
+  if (k[0].metode !== 'motor') {
+    return `koeen siger metode "${k[0].metode}" — motoren roerer det ikke (sat paa pause)`;
+  }
+  if (sti && k[0].laasefil && k[0].laasefil !== sti) {
+    return `AFVIST: koeen peger paa ${k[0].laasefil}, ikke ${sti}`;
+  }
+  const a = new Date(k[0].tidspunkt).getTime(), b = new Date(e.dato).getTime();
+  // Er laasens egen dato ulaeselig, er det IKKE uenighed mellem koe og laas.
+  // Den fejl hoerer til datokontrollen, som siger praecis hvad der er galt.
+  // Hver kontrol melder om sit eget.
+  if (Number.isNaN(b)) return null;
+  if (Number.isNaN(a) || a !== b) {
+    return `AFVIST: koeens tidspunkt (${k[0].tidspunkt}) er ikke den godkendte dato (${e.dato})`;
+  }
+  return null;
+}
+
 /** Kravraekken, der committes FOER der sendes noget. */
 export function kravraekke(e, kanal) {
   return {

@@ -12,7 +12,7 @@ import { join } from 'node:path';
 import { beregnLaas, sha256 } from '../scripts/laas.mjs';
 import { udvaelg as igUdvaelg } from '../scripts/publicer-instagram.mjs';
 import { udvaelg as liUdvaelg } from '../scripts/publicer-linkedin-planlagt.mjs';
-import { registerSpaerre, forfald, IGANG, FOR_SENT, MAKS_FORSINKELSE_S } from '../scripts/krav.mjs';
+import { registerSpaerre, koeSpaerre, forfald, IGANG, FOR_SENT, MAKS_FORSINKELSE_S } from '../scripts/krav.mjs';
 
 let bestaaet = 0, fejlet = 0;
 const proev = (navn, fn) => {
@@ -38,13 +38,22 @@ function element(kanal = 'instagram', over = {}) {
   return e;
 }
 
-/** Koerer den rigtige udvaelgelse mod én laasefil og et register. */
-function koer(e, register, nu = FORFALD + 60) {
+/**
+ * Koerer den rigtige udvaelgelse mod én laasefil, et register og en koe.
+ * Koeen skal med: udvaelgelsen kontrollerer den nu (pause, se koeSpaerre),
+ * og uden den ville proeverne falde paa, at element 900 ikke staar i den
+ * rigtige koe.json.
+ */
+function koer(e, register, nu = FORFALD + 60, koe) {
   const rod = mkdtempSync(join(tmpdir(), 'krav-'));
   try {
     writeFileSync(join(rod, 'element-900.json'), JSON.stringify(e));
     const fn = e.kanal === 'linkedin' ? liUdvaelg : igUdvaelg;
-    return fn(nu, { laase: rod, register });
+    return fn(nu, {
+      laase: rod,
+      register,
+      koe: koe ?? [{ element: 900, kanal: e.kanal, tidspunkt: e.dato, metode: 'motor', laasefil: null, url: null }],
+    });
   } finally { rmSync(rod, { recursive: true, force: true }); }
 }
 
@@ -121,6 +130,58 @@ proev('foer tidspunktet: hverken valgt eller stoppet', () => {
   const { valgt, forSent } = koer(element(), [], FORFALD - 60);
   assert.equal(valgt.length, 0);
   assert.equal(forSent.length, 0);
+});
+
+console.log('\nPause: koeen kan standse et element uden at roere godkendelsen');
+
+const koePost = (over = {}) => ({
+  element: 900, kanal: 'instagram', tidspunkt: DATO, metode: 'motor',
+  laasefil: 'publicering/laase/element-900.json', url: null, ...over,
+});
+
+proev('metode «motor» og enig med laasen: intet spaerrer', () => {
+  assert.equal(koeSpaerre([koePost()], element(), 'publicering/laase/element-900.json', 'instagram'), null);
+});
+
+proev('metode «pause» standser elementet', () => {
+  const g = koeSpaerre([koePost({ metode: 'pause' })], element(), null, 'instagram');
+  assert.match(g, /sat paa pause/);
+});
+
+proev('metode «manuel» standser elementet', () => {
+  assert.match(koeSpaerre([koePost({ metode: 'manuel' })], element(), null, 'instagram'), /motoren roerer det ikke/);
+});
+
+proev('elementet skal staa i koeen', () => {
+  assert.match(koeSpaerre([], element(), null, 'instagram'), /0 instagram-poster/);
+});
+
+proev('to poster paa samme element afvises', () => {
+  assert.match(koeSpaerre([koePost(), koePost()], element(), null, 'instagram'), /2 instagram-poster/);
+});
+
+proev('koeens tidspunkt skal vaere laasens dato', () => {
+  const g = koeSpaerre([koePost({ tidspunkt: '2026-11-06T19:00:00+01:00' })], element(), null, 'instagram');
+  assert.match(g, /ikke den godkendte dato/);
+});
+
+proev('koeen skal pege paa netop denne laasefil', () => {
+  const g = koeSpaerre([koePost({ laasefil: 'publicering/laase/element-001.json' })], element(),
+    'publicering/laase/element-900.json', 'instagram');
+  assert.match(g, /koeen peger paa/);
+});
+
+proev('pause virker gennem den rigtige udvaelgelse', () => {
+  const e = element();
+  const rod = mkdtempSync(join(tmpdir(), 'pause-'));
+  try {
+    writeFileSync(join(rod, 'element-900.json'), JSON.stringify(e));
+    const paa = igUdvaelg(FORFALD + 60, { laase: rod, register: [], koe: [koePost()] });
+    const af = igUdvaelg(FORFALD + 60, { laase: rod, register: [], koe: [koePost({ metode: 'pause' })] });
+    assert.equal(paa.valgt.length, 1, 'uden pause: publiceres');
+    assert.equal(af.valgt.length, 0, 'med pause: publiceres ikke');
+    assert.equal(af.forSent.length, 0, 'pause er ikke «for sent»');
+  } finally { rmSync(rod, { recursive: true, force: true }); }
 });
 
 console.log('\nHjaelpefunktionerne hver for sig');

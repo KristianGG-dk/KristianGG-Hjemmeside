@@ -24,12 +24,13 @@ import { join } from 'node:path';
 import { beregnLaas, sha256 } from './laas.mjs';
 import { publicer } from './publicer-linkedin.mjs';
 import {
-  registerSpaerre, forfald, kravraekke, forSentRaekke, foejTilRegister,
+  registerSpaerre, koeSpaerre, forfald, kravraekke, forSentRaekke, foejTilRegister,
   laesRegister as laesReg, MAKS_FORSINKELSE_S,
 } from './krav.mjs';
 
 const LAASE = 'publicering/laase';
 const REGISTER = 'publicering/register.json';
+const KOE = 'publicering/koe.json';
 const RESULTAT = 'resultat-linkedin.json';
 const KRAV = 'krav-linkedin.json';
 
@@ -47,8 +48,9 @@ function skrub(s) {
           .replace(/(access_token"?\s*[:=]\s*"?)[^&\s",}]+/gi, '$1«udeladt»');
 }
 
-export function udvaelg(nu, { laase = LAASE, register } = {}) {
+export function udvaelg(nu, { laase = LAASE, register, koe } = {}) {
   const reg = register ?? laesRegister();
+  const k = koe ?? (existsSync(KOE) ? JSON.parse(readFileSync(KOE, 'utf8')) : []);
   const valgt = [], sprunget = [], forSent = [];
 
   for (const f of readdirSync(laase).filter((x) => x.endsWith('.json')).sort()) {
@@ -60,6 +62,10 @@ export function udvaelg(nu, { laase = LAASE, register } = {}) {
     // udfald er en spaerre, ikke en invitation til at proeve igen.
     const spaerre = registerSpaerre(reg, nr);
     if (spaerre) { sprunget.push([nr, spaerre]); continue; }
+
+    // Koeen skal sige «motor» og vaere enig med laasen. Se koeSpaerre.
+    const kSpaerre = koeSpaerre(k, e, laase === LAASE ? `${LAASE}/${f}` : null, 'linkedin');
+    if (kSpaerre) { sprunget.push([nr, kSpaerre]); continue; }
 
     try {
       const { laas } = beregnLaas(e);
