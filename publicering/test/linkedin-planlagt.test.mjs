@@ -35,12 +35,23 @@ function element(ekstra = {}) {
   return e;
 }
 
-/** Skriver elementet som eneste laasefil i en tom mappe og udvaelger. */
-function koer(e, { nu = FORFALD + 60, register = [] } = {}) {
+/**
+ * Skriver elementet som eneste laasefil i en tom mappe og udvaelger.
+ *
+ * Koeen gives med: udvaelgelsen kontrollerer den nu, saa et element kan
+ * saettes paa pause uden at roere laasefilen. Uden en koe ville proeverne
+ * falde paa, at element 900 ikke staar i repoets rigtige koe.json.
+ * Pausen selv er proevet i krav.test.mjs.
+ */
+function koer(e, { nu = FORFALD + 60, register = [], koe } = {}) {
   const rod = mkdtempSync(join(tmpdir(), 'li-planlagt-'));
   try {
     writeFileSync(join(rod, 'element-900.json'), JSON.stringify(e));
-    return udvaelg(nu, { laase: rod, register });
+    return udvaelg(nu, {
+      laase: rod,
+      register,
+      koe: koe ?? [{ element: 900, kanal: 'linkedin', tidspunkt: e.dato, metode: 'motor', laasefil: null, url: null }],
+    });
   } finally {
     rmSync(rod, { recursive: true, force: true });
   }

@@ -111,6 +111,24 @@ function verificerElement(sti) {
     } else {
       nej(`billedet findes IKKE: ${e.billede_url} → ${sti}. Platformen henter adressen selv og får 404, så opslaget fejler på publiceringsdagen.`);
     }
+
+    // Adressen skal pege paa det LAASTE motiv. «billede» er et laast felt,
+    // «billede_url» er ikke — netop derfor kunne PR #89 rette stoerrelsen
+    // uden at godkendelsen bortfaldt. Men saa maa nogen kontrollere, at
+    // adressen stadig er det motiv, Kristian godkendte. Et skifte fra
+    // vintersol-skov til et andet motiv ville ellers passere ubemaerket.
+    // Navnet skal vaere motivet, eventuelt med en stoerrelse: «skovsoe.jpg»
+    // eller «skovsoe-640.jpg». Ikke blot begynde med motivet — ellers ville
+    // motivet «gaatur» ogsaa godtage «gaatur-kort-640.jpg», som er et andet
+    // billede.
+    const fil = rel.split('/').pop() ?? '';
+    const flugt = e.billede ? String(e.billede).replace(/[.*+?^${}()|[\]\\]/g, '\\$&') : '';
+    const navnOk = e.billede && new RegExp(`^${flugt}(-\\d+)?\\.(jpe?g|png)$`, 'i').test(fil);
+    if (e.billede && !navnOk) {
+      nej(`billede_url peger på «${fil}», men det låste motiv er «${e.billede}». Adressen er ikke det godkendte motiv.`);
+    } else if (e.billede) {
+      ok(`adressen er det låste motiv «${e.billede}»`);
+    }
   }
 
   // 4b. Google Business Profile: platformens krav. Et opslag, der ikke kan
