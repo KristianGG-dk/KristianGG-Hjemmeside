@@ -43,6 +43,17 @@ jobs:
       - name: Find feeds via autodiscovery
         run: node publicering/research/fase0-find-feeds.mjs
 
+      # Tredje runde: sitemap-indeks for VIVE og Retsinformation,
+      # datopaalidelighed, og om der findes en tilladt vej til
+      # Sundhedsstyrelsen. Ingen omgaaelse af adgangsbegraensninger.
+      - name: Runde 3 — indeks, datoer og Sundhedsstyrelsen
+        run: node publicering/research/fase0-runde3.mjs
+
+      # Runde 3b: bredere felt af danske nyheds- og fagkilder, samme
+      # autodiscovery-metode. Fundne feeds hentes og kontrolleres.
+      - name: Runde 3b — danske nyhedskilder
+        run: node publicering/research/fase0-danske-nyheder.mjs
+
       - name: Gem rapport og raadata
         if: always()
         uses: actions/upload-artifact@v4
@@ -53,4 +64,8 @@ jobs:
             fase0-raa.json
             fase0-feeds.md
             fase0-feeds.json
+            fase0-runde3.md
+            fase0-runde3.json
+            fase0-danske.md
+            fase0-danske.json
           retention-days: 90
