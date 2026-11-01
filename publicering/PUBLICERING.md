@@ -20,19 +20,48 @@ Motoren udfører den tekniske handling. Den træffer ingen beslutning om indhold
 | Kanal | Publicering | Hvem udløser | Planlægning |
 | --- | --- | --- | --- |
 | `website` | Hugo + Netlify | automatisk | Hugo udelader fremtidsdaterede indlæg; `genopbyg-planlagt` bygger på dagen |
-| `facebook` | Meta Graph API | Kristian trykker | **Meta holder opslaget** via `scheduled_publish_time` |
+| `facebook` | Meta Graph API | automatisk, `planlaeg-alle` hver 6. time | **Meta holder opslaget** via `scheduled_publish_time` |
 | `instagram` | Meta Graph API | automatisk på tidspunktet | **motoren holder det selv** — se nedenfor |
-| `linkedin` | manuelt i LinkedIns brugerflade | Kristian | manuelt |
+| `linkedin` | LinkedIn REST API | automatisk på tidspunktet | **motoren holder det selv** — LinkedIn kan ikke planlægge |
 | `gbp`, `metode: motor` | Google Business Profile API | automatisk på tidspunktet | **motoren holder det selv** — se nedenfor |
 | `gbp`, `metode: manuel` | manuelt i Google Business Profile | Kristian | manuelt |
 
-`linkedin` har ingen aktiv API-integration. Den planlægges i platformens egen
-brugerflade og **registreres** i motoren, så kø, register og vagthund dækker
-den på lige fod. Det samme gælder `gbp`-elementer med `metode: manuel`.
+Et element med `metode: manuel` i køen røres aldrig af motoren, uanset kanal.
+Det er køens `metode`, der afgør det, ikke låsefilen. Et element **uden
+låsefil** kan motoren slet ikke se: alle udvælgelser læser `publicering/laase`.
 
-`gbp` med `metode: motor` publiceres af motoren gennem Business Profile API'et
-(fra 04-10-2026). Det er køens `metode`, der afgør det, ikke låsefilen: et
-element, der står som manuelt i køen, røres aldrig af motoren.
+`gbp` med `metode: motor` publiceres gennem Business Profile API'et
+(fra 04-10-2026).
+
+### Facebook: hvorfor kørslen blev automatisk
+
+`planlaeg-alle` var kun manuel indtil 25-10-2026. Det kostede fire opslag.
+Element 33 og 34 var godkendte, låste Facebook-elementer med `metode: motor`,
+men ingen startede workflowet før deres dato. De står stadig som
+`AFVENTER DATO`, og messen er forbi. Element 35 og 36 faldt på samme måde.
+
+Automatisk kørsel er sikker, fordi udvælgelsen i `planlaeg-facebook.mjs`
+allerede spærrer alt andet end et godkendt, låst og endnu ikke afsendt element
+inden for Metas vindue på 10 minutter til 30 dage. Et element, hvis dato er
+passeret, springes over med en begrundelse — motoren publicerer **ikke** et
+forsinket opslag af sig selv. Det kræver en ny dato og en ny godkendelse.
+
+### LinkedIn: motoren skal selv være vågen
+
+LinkedIn kan ikke planlægge. `lifecycleState` accepterer kun `PUBLISHED` ved
+oprettelse, og der findes ingen `scheduledAt`. Skal et opslag ud kl. 08.00,
+skal nogen kalde API'et kl. 08.00.
+
+`publicer-linkedin-planlagt.yml` gør det hvert kvarter, med samme model som
+Instagram: udvælgelsen ligger i `publicer-linkedin-planlagt.mjs`, og den
+faktiske publicering i `publicer-linkedin.mjs`, som er **uændret**. Den fil
+bærer destinationskontrollen med fem spærrer og har tre prøver på sig; den
+røres ikke for at tilføje planlægning.
+
+De fem hidtidige LinkedIn-elementer er publiceret manuelt og har ingen
+låsefil. Motoren kan derfor ikke se dem, og den rører dem ikke. Automatisk
+LinkedIn-publicering gælder først de elementer, der godkendes **med** låsefil
+fra nu af.
 
 ## Godkendelse på tværs af kanaler
 

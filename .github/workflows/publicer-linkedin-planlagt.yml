@@ -1,0 +1,111 @@
+# Publicerer de LinkedIn-elementer, hvis godkendte tidspunkt er naaet.
+#
+# LinkedIn kan ikke planlaegge. "lifecycleState" accepterer kun PUBLISHED ved
+# oprettelse, og der findes ingen scheduledAt. Skal et opslag ud kl. 08.00,
+# skal nogen kalde API'et kl. 08.00. Det er denne koersel.
+#
+# Alle fem hidtidige LinkedIn-elementer er publiceret manuelt. Det var
+# billigere end at bygge dette, saa laenge koeen var kort. Med en loebende
+# publiceringsplan er det ikke laengere billigere.
+#
+# Delt i to jobs som de oevrige: publiceringen koerer uden skriveadgang til
+# repoet, og kun registreringen bagefter maa skrive.
+name: Publicer planlagte LinkedIn-elementer
+
+on:
+  schedule:
+    # Hvert kvarter, paa skaeve minutter — samme begrundelse som Instagram.
+    # '0,30 * * * *' er det mest brugte cron-udtryk paa GitHub Actions, og
+    # planlagte koersler staar i koe, naar alle andres ogsaa goer. De syv
+    # Instagram-opslag gik ud 45-212 minutter for sent paa det udtryk.
+    #
+    # Minutterne er forskudt fra Instagram (7,22,37,52) og Google (5,35), saa
+    # de tre koersler ikke slaas om den samme runner.
+    - cron: '11,26,41,56 * * * *'
+  workflow_dispatch:
+    inputs:
+      publicer:
+        description: 'Sæt til true for at publicere. Ellers tørløb.'
+        required: true
+        type: boolean
+        default: false
+
+# To koersler maa aldrig vaere i gang samtidig. Registret skrives foerst i
+# jobbet "registrer", saa en overlappende koersel ville laese et register uden
+# den foerstes post og kunne publicere det samme element to gange.
+concurrency:
+  group: publicer-linkedin-planlagt
+  cancel-in-progress: false
+
+permissions: {}
+
+jobs:
+  publicer:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    # Beskyt miljoeet i repo-indstillingerne: begraens "Deployment branches"
+    # til main, saa workflow_dispatch fra en vilkaarlig branch ikke faar secrets.
+    environment: publicering
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+
+      - name: Publicer forfaldne LinkedIn-elementer
+        shell: bash
+        env:
+          LI_ACCESS_TOKEN: ${{ secrets.LI_ACCESS_TOKEN }}
+          LI_PERSON_URN: ${{ secrets.LI_PERSON_URN }}
+          LI_TILLADT_URN: ${{ secrets.LI_TILLADT_URN }}
+          # Planlagt koersel publicerer for alvor. Manuel start er toerloeb,
+          # medmindre der udtrykkeligt saettes flueben.
+          PUBLICER: ${{ github.event_name == 'schedule' || inputs.publicer }}
+        run: |
+          ARGS=""; [ "$PUBLICER" = "true" ] && ARGS="--publicer"
+          # Ingen pipe: scriptet skriver selv resultat-linkedin.json.
+          # Et 'tee' ville overskrive den JSON med den menneskelaeselige log.
+          node publicering/scripts/publicer-linkedin-planlagt.mjs $ARGS
+
+      - name: Gem resultatet til registrering
+        if: ${{ always() && (github.event_name == 'schedule' || inputs.publicer) }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: resultat-linkedin
+          path: resultat-linkedin.json
+          if-no-files-found: warn
+
+  registrer:
+    needs: publicer
+    if: ${{ always() && (github.event_name == 'schedule' || inputs.publicer) }}
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write    # eneste sted der skrives, og kun register.json
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - uses: actions/download-artifact@v4
+        with:
+          name: resultat-linkedin
+        continue-on-error: true
+
+      - name: Skriv i registret
+        if: always()
+        continue-on-error: true
+        run: node publicering/scripts/publicer-linkedin-planlagt.mjs --skriv-register resultat-linkedin.json
+
+      - name: Commit registret
+        if: always()
+        run: |
+          git config user.name "publiceringsmotor"
+          git config user.email "kontakt@kristiangg.dk"
+          git add publicering/register.json
+          git diff --staged --quiet || git commit -m "registrer: linkedin"
+          git push
+
+      # Doemmer kun - skriver ikke. Ellers stod posterne i registret to gange.
+      - name: Fejl jobbet hvis noget ikke blev publiceret
+        run: node publicering/scripts/publicer-linkedin-planlagt.mjs --status-kun resultat-linkedin.json
