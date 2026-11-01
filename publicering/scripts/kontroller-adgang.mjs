@@ -1,10 +1,20 @@
 // Ikke-publicerende kontrol af Meta-adgangen.
 //
-// Svarer paa fire spoergsmaal uden at skrive noget som helst paa Facebook:
+// Svarer paa disse spoergsmaal uden at skrive noget som helst paa Facebook:
 //   1. Hvilken identitet baerer tokenet, og hvilken type er det?
 //   2. Udloeber det — og hvornaar?
 //   3. Hvilke scopes har det, og gaelder de den rigtige side?
-//   4. Kan det se siden og aflaese dens opslag?
+//   4. Hvilke opgaver (tasks) har systembrugeren paa siden?
+//   5. Hvad baerer det udledte side-token af scopes?
+//   6. Kan det aflaese sidens opslag?
+//
+// HVAD DER ER EN FEJL, OG HVAD DER BLOT SKAL BEMAERKES
+// Motoren poster til /{side}/photos og /{side}/feed. Det kraever
+// pages_manage_posts, pages_read_engagement og opgaven CREATE_CONTENT paa
+// siden. Mangler noget af det, er det FEJL. At LAESE sidens feed kraever
+// derimod en opgave mere (MODERATE eller MANAGE), og motoren laeser aldrig
+// feedet. Fejler laesningen alene af den grund, meldes det som OBS, ikke
+// som FEJL — ellers stopper kontrollen paa noget, motoren ikke bruger.
 //
 // Der sendes udelukkende GET. Intet POST, intet opslag, ingen aendring.
 //
@@ -19,6 +29,9 @@
 
 const GRAPH = 'https://graph.facebook.com/v21.0';
 
+// Scopes motoren skal bruge for at poste. Se forklaringen oeverst.
+const KRAEVEDE = ['pages_read_engagement', 'pages_manage_posts'];
+
 const PAGE_ID = process.env.FB_PAGE_ID;
 const TOKEN = process.env.FB_PAGE_TOKEN;
 const APP_ID = process.env.FB_APP_ID;
@@ -30,8 +43,10 @@ const APP_SECRET = process.env.FB_APP_SECRET;
 let sideToken = null;
 
 let fejl = 0;
+let obs = 0;
 const ok = (m) => console.log(`  OK    ${m}`);
 const nej = (m) => { console.log(`  FEJL  ${m}`); fejl++; };
+const advar = (m) => { console.log(`  OBS   ${m}`); obs++; };
 const info = (m) => console.log(`  ·     ${m}`);
 
 /** Fjerner alt der ligner et token fra en tekst, foer den logges. */
@@ -56,15 +71,41 @@ async function hentMed(token, sti, params = {}) {
   }
   if (!r.ok || svar.error) {
     const e = svar.error ?? {};
-    throw new Error(
+    const fejlen = new Error(
       `${sti} → ${r.status} ${skrub(e.message ?? JSON.stringify(svar))}` +
       (e.code ? ` (code ${e.code}${e.error_subcode ? '/' + e.error_subcode : ''})` : '')
     );
+    fejlen.kode = e.code ?? null;
+    throw fejlen;
   }
   return svar;
 }
 
 const hent = (sti, params) => hentMed(TOKEN, sti, params);
+
+/** Inspicerer et token med debug_token. GET. Returnerer Metas data-felt. */
+async function inspicer(inputToken) {
+  const inspektoer = APP_ID && APP_SECRET ? `${APP_ID}|${APP_SECRET}` : inputToken;
+  const u = new URL(`${GRAPH}/debug_token`);
+  u.searchParams.set('input_token', inputToken);
+  u.searchParams.set('access_token', inspektoer);
+  const svar = await (await fetch(u)).json();
+  if (svar.error) throw new Error(skrub(svar.error.message));
+  return svar.data ?? {};
+}
+
+/** Skriver om en rettighed gaelder netop vores side, ud fra granulaere scopes. */
+function tjekGranulaer(d, kraevede, udfald) {
+  for (const s of kraevede) {
+    const g = (d.granular_scopes ?? []).find((x) => x.scope === s);
+    if (!g) continue;
+    const ids = g.target_ids;
+    if (!ids) { info(`${s}: gaelder alle aktiver`); continue; }
+    ids.includes(PAGE_ID)
+      ? ok(`${s} gaelder side ${PAGE_ID}`)
+      : udfald(`${s} gaelder IKKE side ${PAGE_ID} — kun ${ids.join(', ')}`);
+  }
+}
 
 function tid(sekunder) {
   if (sekunder === 0 || sekunder === undefined || sekunder === null) return 'udloeber aldrig';
@@ -94,14 +135,7 @@ async function main() {
   // 2. Tokenets type, udloeb og scopes
   console.log('\n── tokenet ──');
   try {
-    const inspektoer = APP_ID && APP_SECRET ? `${APP_ID}|${APP_SECRET}` : TOKEN;
-    const u = new URL(`${GRAPH}/debug_token`);
-    u.searchParams.set('input_token', TOKEN);
-    u.searchParams.set('access_token', inspektoer);
-    const r = await fetch(u);
-    const svar = await r.json();
-    if (svar.error) throw new Error(skrub(svar.error.message));
-    const d = svar.data ?? {};
+    const d = await inspicer(TOKEN);
 
     d.type ? ok(`type: ${d.type}`) : nej('ingen type oplyst');
     d.is_valid ? ok('tokenet er gyldigt') : nej('tokenet er IKKE gyldigt');
@@ -114,7 +148,7 @@ async function main() {
     // sender POST til /{side}/photos eller /{side}/feed. Det kraever disse to.
     // pages_show_list bruges kun af /me/accounts, som motoren ikke kalder —
     // den blev tidligere krævet her og gav en falsk alarm.
-    const kraevede = ['pages_read_engagement', 'pages_manage_posts'];
+    const kraevede = KRAEVEDE;
     const valgfrie = ['pages_show_list', 'pages_manage_metadata'];
     const scopes = d.scopes ?? [];
     info(`scopes: ${scopes.join(', ') || '(ingen)'}`);
@@ -126,18 +160,7 @@ async function main() {
     }
 
     // Granulaere scopes afsloerer, om rettigheden gaelder netop denne side.
-    const gran = d.granular_scopes ?? [];
-    if (gran.length) {
-      for (const s of kraevede) {
-        const g = gran.find((x) => x.scope === s);
-        if (!g) continue;
-        const ids = g.target_ids;
-        if (!ids) { info(`${s}: gaelder alle aktiver`); continue; }
-        ids.includes(PAGE_ID)
-          ? ok(`${s} gaelder side ${PAGE_ID}`)
-          : nej(`${s} gaelder IKKE side ${PAGE_ID} — kun ${ids.join(', ')}`);
-      }
-    }
+    tjekGranulaer(d, kraevede, nej);
   } catch (err) {
     nej(`kunne ikke inspicere tokenet: ${err.message}`);
   }
@@ -158,11 +181,57 @@ async function main() {
     nej(err.message);
   }
 
-  // 4. Laeseadgang til opslag. Bekraefter reel adgang uden at skrive.
+  // 4. Sidetildelingen: hvilke opgaver har systembrugeren paa siden?
+  // /me/accounts med system user-tokenet viser hver tildelt side med dens
+  // tasks. Det er Metas eget svar paa, hvad tildelingen i Business Manager
+  // faktisk giver. Kraever pages_show_list. Kun GET.
+  console.log('\n── sidetildeling ──');
+  let opgaver = null;
+  try {
+    const konti = await hent('me/accounts', { fields: 'id,name,tasks', limit: '100' });
+    const side = (konti.data ?? []).find((x) => x.id === PAGE_ID);
+    if (!side) {
+      nej(`side ${PAGE_ID} er ikke blandt de ${konti.data?.length ?? 0} sider, systembrugeren er tildelt`);
+    } else {
+      opgaver = side.tasks ?? [];
+      info(`opgaver paa siden: ${opgaver.join(', ') || '(ingen)'}`);
+      opgaver.includes('CREATE_CONTENT')
+        ? ok('CREATE_CONTENT — systembrugeren maa oprette opslag (kraeves af motoren)')
+        : nej('CREATE_CONTENT mangler — systembrugeren maa ikke oprette opslag paa siden');
+      const kanLaese = opgaver.includes('MODERATE') || opgaver.includes('MANAGE');
+      info(`MODERATE/MANAGE: ${kanLaese ? 'til stede' : 'ikke til stede'} — kraeves kun for at LAESE sidens feed`);
+    }
+  } catch (err) {
+    info(`kunne ikke aflaese sidetildelingen: ${err.message}`);
+    info('(er FB_PAGE_TOKEN selv et side-token, svarer /me/accounts ikke)');
+  }
+
+  // 5. Det udledte side-token: type, udloeb OG scopes. Det er DETTE token,
+  // motoren poster med, saa det er dets rettigheder, der afgoer sagen.
+  if (sideToken) {
+    console.log('\n── det udledte side-token ──');
+    try {
+      const d = await inspicer(sideToken);
+      info(`type: ${d.type ?? 'ukendt'}`);
+      d.is_valid ? ok('side-tokenet er gyldigt') : nej('side-tokenet er IKKE gyldigt');
+      info(`udloeb: ${tid(d.expires_at)}`);
+      d.expires_at === 0
+        ? ok('det udledte side-token udloeber ikke — egnet til CI')
+        : info('det udledte side-token har et udloeb — se ovenfor');
+      const scopes = d.scopes ?? [];
+      info(`scopes: ${scopes.join(', ') || '(ingen)'}`);
+      for (const s of KRAEVEDE) {
+        scopes.includes(s) ? ok(`side-tokenet baerer ${s}`) : nej(`side-tokenet mangler ${s}`);
+      }
+      tjekGranulaer(d, KRAEVEDE, nej);
+    } catch (err) {
+      nej(`kunne ikke inspicere det udledte side-token: ${err.message}`);
+    }
+  }
+
+  // 6. Laeseadgang til opslag. Bekraefter reel adgang uden at skrive.
   console.log('\n── laeseadgang ──');
-  // Et bruger-token kan ikke laese en sides feed. Det skal vaere side-tokenet —
-  // samme faelde som ved publicering, hvor Meta svarer misvisende. Testen
-  // brugte tidligere brugertokenet og gav derfor en falsk alarm.
+  // Et bruger-token kan ikke laese en sides feed. Det skal vaere side-tokenet.
   if (!sideToken) {
     info('intet side-token kunne udledes ovenfor — laeseadgang kan ikke proeves');
   } else {
@@ -171,33 +240,24 @@ async function main() {
       const n = (feed.data ?? []).length;
       ok(`kan laese sidens opslag med side-tokenet (${n === 0 ? 'siden har ingen opslag endnu' : 'hentede 1 opslag'})`);
     } catch (err) {
-      nej(err.message);
-    }
-  }
-
-  // 5. Hvis et side-token kunne udledes: hvad er DET for et token
-  if (sideToken) {
-    console.log('\n── det udledte side-token ──');
-    try {
-      const inspektoer = APP_ID && APP_SECRET ? `${APP_ID}|${APP_SECRET}` : sideToken;
-      const u = new URL(`${GRAPH}/debug_token`);
-      u.searchParams.set('input_token', sideToken);
-      u.searchParams.set('access_token', inspektoer);
-      const svar = await (await fetch(u)).json();
-      if (svar.error) throw new Error(skrub(svar.error.message));
-      const d = svar.data ?? {};
-      info(`type: ${d.type ?? 'ukendt'}`);
-      info(`udloeb: ${tid(d.expires_at)}`);
-      d.expires_at === 0
-        ? ok('det udledte side-token udloeber ikke — egnet til CI')
-        : info('det udledte side-token har et udloeb — se ovenfor');
-    } catch (err) {
-      nej(`kunne ikke inspicere det udledte side-token: ${err.message}`);
+      // Fejl #10 med scopes paa plads, CREATE_CONTENT til stede og uden
+      // MODERATE/MANAGE er netop det tilfaelde, hvor kun LAESNING mangler.
+      const kunLaesning = err.kode === 10 && opgaver
+        && opgaver.includes('CREATE_CONTENT')
+        && !opgaver.includes('MODERATE') && !opgaver.includes('MANAGE');
+      if (kunLaesning) {
+        advar(err.message);
+        advar('Feedet kan ikke laeses, fordi systembrugeren ikke har MODERATE eller MANAGE');
+        advar('paa siden. Motoren laeser aldrig feedet, og publicering kraever kun');
+        advar('CREATE_CONTENT, som er til stede. Ikke en publiceringsfejl.');
+      } else {
+        nej(err.message);
+      }
     }
   }
 
   console.log(fejl === 0
-    ? '\nKONTROL: ALT BESTAAET — token, side og rettigheder er paa plads'
+    ? `\nKONTROL: BESTAAET — token, side og rettigheder til publicering er paa plads${obs ? ` (${obs} OBS-linjer)` : ''}`
     : `\nKONTROL: ${fejl} FEJL — se ovenfor`);
   process.exit(fejl === 0 ? 0 : 1);
 }

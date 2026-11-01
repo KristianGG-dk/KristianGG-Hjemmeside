@@ -1,23 +1,36 @@
 // Ikke-publicerende kontrol af LinkedIn-adgangen.
 //
-// Svarer paa fem spoergsmaal uden at skrive noget som helst paa LinkedIn:
+// Svarer paa disse spoergsmaal uden at skrive noget som helst paa LinkedIn:
 //   1. Er der overhovedet et token?
-//   2. Hvem tilhoerer det — og er det Kristians egen profil?
-//   3. Stemmer det med den tilladte destination?
-//   4. Hvilke rettigheder baerer det?
-//   5. Hvornaar udloeber det?
+//   2. Er destinationen fastlaast — og ikke stadig sentinelvaerdien?
+//   3. Hvem tilhoerer tokenet — og er det den fastlaaste destination?
+//   4. Hvornaar udloeber det, ifoelge den fornyelse der udstedte det?
 //
-// Der sendes udelukkende GET. Intet POST, intet opslag, ingen aendring.
+// I GitHub Actions sendes udelukkende GET mod /v2/userinfo. Intet opslag,
+// ingen aendring.
 //
 // Kraever i miljoeet:
 //   LI_ACCESS_TOKEN
-//   LI_TILLADT_URN     den eneste destination der maa publiceres til
-// Valgfrit, giver en fyldigere tokenrapport:
-//   LI_CLIENT_ID, LI_CLIENT_SECRET   (kun lokalt — aldrig i GitHub Secrets)
+//   LI_PERSON_URN, LI_TILLADT_URN   samme regler som i publisheren
+//
+// UDLOEB OG RETTIGHEDER
+// Den loebende kontrol bruger IKKE introspektion. Det er besluttet
+// 01-11-2026: client secret bliver i miljoeet linkedin-oauth og gives ikke
+// til kontrolkoerslen. Udloebet aflaeses i stedet af
+// publicering/linkedin-token.json, som fornyelsen skriver ud fra LinkedIns
+// eget svar. Scopet w_member_social blev ogsaa skrevet dér ved fornyelsen.
+//
+// Introspektion (rettigheder og udloeb direkte fra LinkedIn) koeres kun,
+// hvis LI_CLIENT_ID og LI_CLIENT_SECRET staar i miljoeet — det vil sige
+// lokalt, eller hvis det senere besluttes at koere i linkedin-oauth.
 //
 // Tokenet skrives ALDRIG ud. Alt der logges, skrubbes foerst.
 
+import { existsSync, readFileSync } from 'node:fs';
 import { pruvDestination, bevisEjer, DestinationAfvist } from './publicer-linkedin.mjs';
+
+const SENTINEL = 'urn:li:person:AFVENTER';
+const METADATA = 'publicering/linkedin-token.json';
 
 const USERINFO = 'https://api.linkedin.com/v2/userinfo';
 const INTROSPECT = 'https://www.linkedin.com/oauth/v2/introspectToken';
@@ -44,8 +57,17 @@ async function main() {
   console.log('\nLinkedIn — adgangskontrol. Kun laesning.\n');
 
   // 1. Token
-  if (!TOKEN) return nej('LI_ACCESS_TOKEN mangler i miljøet. Kør linkedin-oauth.mjs byt først.');
-  ok(`token til stede (${TOKEN.length} tegn)`);
+  if (!TOKEN) {
+    nej('LI_ACCESS_TOKEN mangler. Der er aldrig gemt et token.');
+    info('Kør workflowet «Forny LinkedIn-token» med handlingen bootstrap');
+    info('(første gang) eller forny (senere) — ikke kontroller, som intet gemmer.');
+  } else {
+    ok(`token til stede (${TOKEN.length} tegn)`);
+  }
+
+  if ((process.env.LI_TILLADT_URN ?? '').trim() === SENTINEL) {
+    nej(`LI_TILLADT_URN står stadig på ${SENTINEL}. Destinationen er ikke fastlåst — bootstrap er ikke gennemført.`);
+  }
 
   // 2-3. Destination
   let tilladt = null;
@@ -59,7 +81,7 @@ async function main() {
 
   // 2. Ejeren — LinkedIns eget svar
   let hvem = null;
-  try {
+  if (TOKEN) try {
     const r = await fetch(USERINFO, { headers: { Authorization: `Bearer ${TOKEN}` } });
     hvem = await r.json();
     if (!r.ok) {
@@ -83,8 +105,38 @@ async function main() {
     }
   }
 
-  // 4-5. Rettigheder og udløb
-  if (CLIENT_ID && CLIENT_SECRET) {
+  // 4. Udløb ifølge fornyelsen. Ingen netværk.
+  if (!existsSync(METADATA)) {
+    nej(`${METADATA} findes ikke — der er ingen dokumenteret fornyelse, og udløbet kendes ikke.`);
+  } else {
+    try {
+      const m = JSON.parse(readFileSync(METADATA, 'utf8'));
+      info(`fornyet ${String(m.fornyet ?? '?').slice(0, 10)} for ${m.urn ?? '?'}`);
+      if (m.urn && tilladt && m.urn !== tilladt) {
+        nej('fornyelsens identitet svarer ikke til den tilladte destination');
+      }
+      const udl = Date.parse(m.udloeber);
+      if (Number.isNaN(udl)) {
+        nej('udløbsdatoen i metadatafilen kan ikke læses');
+      } else {
+        const tilbage = dage((udl - Date.now()) / 1000);
+        const linje = `udløber ${m.udloeber.slice(0, 10)} — om ${tilbage} dage`;
+        tilbage <= 0 ? nej(`tokenet er udløbet (${linje})`)
+          : tilbage <= 14 ? nej(`${linje}. Forny nu.`)
+          : ok(linje);
+      }
+      if (m.scope) {
+        String(m.scope).includes('w_member_social')
+          ? ok(`scope ved fornyelsen: ${m.scope}`)
+          : nej(`w_member_social manglede ved fornyelsen. Scope: ${m.scope}`);
+      }
+    } catch (e) {
+      nej(`${METADATA} kan ikke læses: ${e.message}`);
+    }
+  }
+
+  // Introspektion — kun når client-oplysningerne står i miljøet (lokalt).
+  if (TOKEN && CLIENT_ID && CLIENT_SECRET) {
     try {
       const r = await fetch(INTROSPECT, {
         method: 'POST',
@@ -113,8 +165,7 @@ async function main() {
       info(`introspektion sprang fra: ${skrub(e.message)}`);
     }
   } else {
-    info('LI_CLIENT_ID og LI_CLIENT_SECRET ikke i miljøet — rettigheder og udløb');
-    info('kan ikke aflæses. Kør lokalt med dem, hvis du vil se dem.');
+    info('Introspektion springes over (besluttet: client secret bliver i linkedin-oauth).');
   }
 
   console.log(fejl === 0
@@ -123,4 +174,4 @@ async function main() {
   process.exit(fejl === 0 ? 0 : 1);
 }
 
-main().catch((e) => { console.error('FEJL:', skrub(e.message)); process.exit(1); });
+main().catch((e) => { console.error('UVENTET FEJL:', skrub(e.message)); process.exit(1); });
