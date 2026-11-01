@@ -1,0 +1,58 @@
+# Fase 1 — ugentlig indsamling og vurdering.
+#
+# Den LAESER kilder og SKRIVER en rapport. Den publicerer intet, roerer
+# hverken koe, register, laase eller indhold, og den godkender ingenting.
+# Et fund er raamateriale til ugens godkendelsespakke — intet andet.
+#
+# permissions: contents: read. Workflowet kan ikke skrive til repoet.
+# Ugens fund lagres indtil videre som artefakt; varig historik i
+# publicering/research/fund/ kraever en commit, og dén vej aabnes foerst,
+# naar Kristian har set motoren koere og godkendt fase 1.
+#
+# Koerer mandag morgen, saa fundene ligger klar til ugens godkendelse.
+name: Research — ugentlig indsamling
+
+on:
+  schedule:
+    - cron: '20 6 * * 1'   # mandag 07.20 dansk vintertid
+  workflow_dispatch:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'publicering/research/**'
+      - 'publicering/test/research.test.mjs'
+      - '.github/workflows/research-ugentlig.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  research:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+
+      # Proeverne foerst. Fejler de, henter vi ikke noget.
+      - name: Motorens proever
+        run: node publicering/test/research.test.mjs
+
+      - name: Indsaml
+        run: node publicering/research/hent.mjs
+
+      # Vurderingen laeser sitets egne sider, saa indholdet skal vaere her.
+      # Den bygger ikke sitet — den laeser content/ direkte.
+      - name: Vurder mod sitet og skriv pakkeafsnit
+        run: node publicering/research/vurder.mjs --skriv
+
+      - name: Gem ugens fund og pakkeafsnit
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: research-ugens-fund
+          path: |
+            publicering/research/fund/
+            publicering/research/tilstand.json
+          retention-days: 90
