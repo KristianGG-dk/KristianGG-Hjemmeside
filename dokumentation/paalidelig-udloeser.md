@@ -26,7 +26,91 @@ Konsekvensen er konkret: **med 60-minutters-grænsen og cron som eneste
 udløser vil de fleste opslag blive STOPPET i stedet for publiceret.**
 Grænsen er ikke problemet. Udløseren er.
 
-## Løsningen
+## Løsningen er skrevet — der mangler kun ét trin fra dig
+
+`netlify/functions/udloes-publicering.mjs` er en planlagt Netlify-funktion.
+Den kører hvert kvarter, ser i køen, og kalder GitHubs `repository_dispatch`,
+**kun når noget faktisk er forfaldent inden for vinduet**. Gør den det,
+starter `publicer-instagram-planlagt` eller `publicer-linkedin-planlagt`
+med det samme, og et opslag godkendt til kl. 08.00 går ud mellem 08.00 og
+08.15 i stedet for "engang på dagen".
+
+Den publicerer intet selv. Alle spærrer ligger i motoren: lås, teksthash,
+godkendelse, kø, register, billede og tidsvindue.
+
+**Uden token gør den ingenting.** Mangler `GITHUB_DISPATCH_TOKEN`, skriver den
+det i loggen og stopper. Sitet bygger uanset, og funktionen rører ikke
+sitets sider.
+
+### Hvorfor den ser i køen først
+
+Et kvarters tidsplan ville ellers starte 192 kørsler i døgnet, og de fleste
+ville finde ingenting. Funktionen henter `koe.json` fra det offentlige repo
+og kalder kun GitHub, når der er noget at gøre. Kan den ikke hente køen,
+kalder den alligevel — den fejler i retning af at publicere, ikke af at tie.
+
+### Hvad det koster
+
+Ingenting. Netlifys gratisplan rummer 125.000 funktionskald om måneden;
+hvert kvarter er cirka 2.900. Repoet er offentligt, så GitHub Actions-minutter
+er gratis. Der kommer ingen løbende udgift.
+
+## Det ene trin, du selv skal gøre
+
+Funktionen mangler kun et token. Fire skridt, cirka tre minutter.
+
+**1. Opret tokenet.**
+Gå til <https://github.com/settings/personal-access-tokens/new>.
+
+* Token name: `netlify-udloeser`
+* Resource owner: `KristianGG-dk`
+* Expiration: vælg selv — sæt en påmindelse, for et udløbet token stopper
+  udløseren uden at noget andet fejler
+* Repository access: **Only select repositories** → `KristianGG-Hjemmeside`
+* Permissions → Repository permissions → **Actions: Read and write**
+
+Intet andet. Tokenet kan starte workflows og ikke andet. Kopiér det — det
+vises kun én gang.
+
+**2. Læg det i Netlify.**
+Netlify → dit site → Site configuration → Environment variables → Add a
+variable.
+
+* Key: `GITHUB_DISPATCH_TOKEN`
+* Value: tokenet fra trin 1
+* Scopes: det er nok at vælge **Functions**
+
+Læg det **ikke** i GitHub Secrets. Det hører hjemme hos planlæggeren, ikke
+hos den, der bliver kaldt.
+
+**3. Udløs et build.**
+Funktionen kommer først med, når sitet er bygget efter dette. Enten venter du
+på næste push, eller du trykker Deploys → Trigger deploy → Deploy site.
+
+**4. Se at den kører.**
+Netlify → Logs → Functions → `udloes-publicering`. Første kørsel kommer inden
+for et kvarter. Står der «Intet forfaldent inden for vinduet», virker den —
+der var blot ikke noget at gøre.
+
+### Hvis du hellere vil undgå det
+
+Du behøver ikke. Uden tokenet gælder cron og 24-timersvinduet, og et godkendt
+opslag går ud samme dag — bare ikke på klokkeslættet. Funktionen ligger
+inaktiv, indtil du giver den tokenet.
+
+## De to andre muligheder
+
+Begge er beskrevet, hvis du foretrækker dem.
+
+**cron-job.org** (gratis). To jobs med metode POST, adressen nedenfor, de to
+headere og kroppen. Ulempen er, at tokenet ligger hos en tredjepart.
+
+**En maskine, der kører døgnet rundt.** En almindelig `crontab` med `curl`.
+Mest kontrol, men kræver at maskinen er tændt.
+
+## Kaldet, hvis du vil gøre det i hånden
+
+
 
 Workflowene kan nu startes udefra med `repository_dispatch`. En planlægger,
 der faktisk kører til tiden, kalder GitHub:
