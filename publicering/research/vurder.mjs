@@ -40,6 +40,16 @@ function udtryk(ord) {
 }
 const SPEC = new Set((kat.emneord.specifikke || []).map(normaliser));
 
+// Fund er ofte engelske, sitet er dansk. Uden aekvivalensgrupper finder
+// «ecotherapy» aldrig /til-dig/naturterapi/, og motoren foreslaar en ny side
+// dér, hvor den burde foreslaa en opdatering.
+const GRUPPE = new Map();
+for (const g of kat.emneord.aekvivalenter?.grupper || []) {
+  const n = g.map(normaliser);
+  for (const o of n) GRUPPE.set(o, n);
+}
+const ligner = (ord) => GRUPPE.get(normaliser(ord)) || [normaliser(ord)];
+
 // ── sitets egne sider ──────────────────────────────────────────────────────
 function sider() {
   const ud = [];
@@ -57,7 +67,9 @@ function sider() {
       let url = '/' + rel.replace(/\.md$/, '/').replace(/_index\/$/, '');
       if (/^\/blog\//.test(url)) url = '/blog/' + (v('slug') || rel.split('/').pop().replace(/^\d{4}-\d{2}-\d{2}-/, '').replace(/\.md$/, '')) + '/';
       ud.push({ fil: rel, url, titel: v('title'), beskrivelse: v('description'),
-        tekst: '', normtekst: normaliser(`${v('title')} ${v('description')} ${v('hero_title')} ${v('hero_subtitle')} ${raa.slice(hoved.length)}`) });
+        normtitel: normaliser(`${v('title')} ${v('hero_title')}`),
+        bred: url === '/' || /\/_index/.test(rel) || rel.endsWith('_index.md'),
+        tekst: '', normkerne: normaliser(`${v('title')} ${v('description')} ${v('hero_title')} ${v('hero_subtitle')}`), normtekst: normaliser(`${v('title')} ${v('description')} ${v('hero_title')} ${v('hero_subtitle')} ${raa.slice(hoved.length)}`) });
     }
   };
   gaa(path.join(ROD, 'content'));
@@ -77,15 +89,38 @@ function sider() {
 const MIN_DELTE = 2;
 
 function match(fund, s) {
-  const ord = (fund.emneord || []).map(normaliser);
+  const ord = [...new Set((fund.emneord || []).map(normaliser))];
   if (!ord.length) return null;
-  const delte = ord.filter((o) => udtryk(o).test(s.normtekst));
-  if (delte.length < MIN_DELTE) return null;
+
+  // Et emne taeller som delt, hvis siden bruger ET AF ordene i dets
+  // aekvivalensgruppe — ikke kun praecis det ord, fundet brugte.
+  const delte = [], iKerne = [], iTitel = [];
+  for (const o of ord) {
+    const varianter = ligner(o);
+    if (varianter.some((v) => udtryk(v).test(s.normtekst))) {
+      delte.push(o);
+      if (varianter.some((v) => udtryk(v).test(s.normkerne))) iKerne.push(o);
+      if (varianter.some((v) => udtryk(v).test(s.normtitel))) iTitel.push(o);
+    }
+  }
+  if (!delte.length) return null;
+
   const spec = delte.filter((o) => SPEC.has(o));
-  if (!spec.length && delte.length < 3) return null;
-  const vaegt = spec.length * 2 + (delte.length - spec.length);
+  const specIKerne = iKerne.filter((o) => SPEC.has(o));
+
+  // Et specifikt ord i sidens titel eller beskrivelse er et staerkt signal og
+  // raekker alene. Ellers kraeves der absolut overlap, ikke bare et forhold:
+  // det var 1 ÷ 1 = 100 %, der gjorde matchet meningsloest i foerste runde.
+  const staerkt = specIKerne.length >= 1;
+  if (!staerkt) {
+    if (delte.length < MIN_DELTE) return null;
+    if (!spec.length && delte.length < 3) return null;
+  }
+
+  const vaegt = spec.length * 2 + (delte.length - spec.length) + specIKerne.length;
   const maks = ord.filter((o) => SPEC.has(o)).length * 2 + ord.filter((o) => !SPEC.has(o)).length;
-  return { score: maks ? vaegt / maks : 0, delte, specifikke: spec, antal: delte.length };
+  return { score: maks ? Math.min(1, vaegt / maks) : 0, delte, specifikke: spec, antal: delte.length, staerkt,
+    iTitel: iTitel.length, bred: !!s.bred };
 }
 
 function beslut(f, bedste) {
@@ -95,7 +130,7 @@ function beslut(f, bedste) {
     if (svagKilde) {
       return { valg: 'E', hvorfor: `${bedste.side.url} daekker emnet (${bedste.delte.join(', ')}), og ${f.evidens} kan ikke tilfoeje dokumentation.` };
     }
-    const hvor = bedste.score >= 0.7 ? 'behandler emnet' : 'er taettest paa, men daekker kun delvist';
+    const hvor = bedste.staerkt ? 'behandler praecis dette emne' : bedste.score >= 0.7 ? 'behandler emnet' : 'er taettest paa, men daekker kun delvist';
     return { valg: 'A', hvorfor: `${bedste.side.url} ${hvor} — ${bedste.antal} delte emner (${bedste.delte.join(', ')}). En ${f.evidens === 'primaer' ? 'primaerkilde' : 'kilde'} fra ${f.kildenavn} kan styrke den side frem for at blive en ny.` };
   }
 
@@ -114,7 +149,12 @@ const data = JSON.parse(fs.readFileSync(path.join(FUND, `${valgt}.json`), 'utf8'
 const S = sider();
 
 const vurderet = data.fund.map((f) => {
-  const traf = S.map((s) => { const m = match(f, s); return m ? { side: s, ...m } : null; }).filter(Boolean).sort((a, b) => b.score - a.score || b.antal - a.antal);
+  // Rangering. En side, der baerer emnet i sin TITEL, slaar en side, der
+  // blot naevner det i broedteksten. Forsiden og sektionsforsiderne naevner
+  // alt og maa ikke vinde paa den konto — de rykkes bagerst ved lige stand.
+  const traf = S.map((s) => { const m = match(f, s); return m ? { side: s, ...m } : null; })
+    .filter(Boolean)
+    .sort((a, b) => b.iTitel - a.iTitel || (a.bred - b.bred) || b.score - a.score || b.antal - a.antal);
   const bedste = traf[0];
   return { ...f, bedsteSide: bedste ? { url: bedste.side.url, titel: bedste.side.titel, score: Math.round(bedste.score * 100), antal: bedste.antal, delte: bedste.delte } : null, ...beslut(f, bedste) };
 });

@@ -363,6 +363,122 @@
         "europæiske fællesskab",
         "toldunion"
       ]
+    },
+    "aekvivalenter": {
+      "note": "Fund er ofte engelske, sitet er dansk. Uden disse grupper finder «ecotherapy» aldrig /til-dig/naturterapi/, og motoren foreslaar en ny side, hvor den burde foreslaa en opdatering. Rammer et fund ét ord i en gruppe, taeller hele gruppen som delt med en side, der bruger et andet ord fra samme gruppe.",
+      "grupper": [
+        [
+          "skovbad",
+          "forest bathing",
+          "forest bath",
+          "shinrin-yoku",
+          "shinrin"
+        ],
+        [
+          "naturterapi",
+          "nature-based therapy",
+          "nature-based intervention",
+          "ecotherapy",
+          "green care",
+          "naturbaseret",
+          "friluftsterapi",
+          "nature-based education"
+        ],
+        [
+          "psykoterapi",
+          "psychotherapy",
+          "samtaleterapi",
+          "psykoterapeut"
+        ],
+        [
+          "nervesystem",
+          "nervous system",
+          "autonome nervesystem",
+          "autonomic nervous",
+          "nervesystemregulering"
+        ],
+        [
+          "vagusnerve",
+          "vagus nerve",
+          "vagal",
+          "polyvagal",
+          "parasympatisk"
+        ],
+        [
+          "heart rate variability",
+          "hjerterytmevariabilitet",
+          "hrv"
+        ],
+        [
+          "aandedraetsterapi",
+          "åndedrætsterapi",
+          "åndedrætsøvelse",
+          "breathwork",
+          "slow breathing",
+          "slow-paced breathing",
+          "breathing protocol",
+          "vejrtrækningsøvelse"
+        ],
+        [
+          "mindfulness",
+          "meditation",
+          "nærvær",
+          "naervaer"
+        ],
+        [
+          "stress",
+          "stressregulering",
+          "belastning"
+        ],
+        [
+          "udbrændthed",
+          "udbraendthed",
+          "burnout"
+        ],
+        [
+          "angst",
+          "anxiety"
+        ],
+        [
+          "depression",
+          "depressive"
+        ],
+        [
+          "søvn",
+          "soevn",
+          "sleep",
+          "insomni",
+          "insomnia",
+          "søvnløshed",
+          "tankemylder"
+        ],
+        [
+          "trivsel",
+          "well-being",
+          "wellbeing",
+          "mental sundhed",
+          "mental health",
+          "psykisk"
+        ],
+        [
+          "arbejdsmiljø",
+          "arbejdsmiljoe",
+          "occupational",
+          "sygefravær",
+          "sygefravaer",
+          "arbejdsliv"
+        ],
+        [
+          "ensomhed",
+          "loneliness"
+        ],
+        [
+          "pårørende",
+          "paaroerende",
+          "sorg",
+          "grief"
+        ]
+      ]
     }
   },
   "fravalgte": [

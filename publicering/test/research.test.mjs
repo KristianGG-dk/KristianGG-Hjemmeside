@@ -148,6 +148,41 @@ proev('Vurderingen vaelger A naar en side allerede daekker emnet', () => {
   } finally { fs.unlinkSync(fil); }
 });
 
+proev('Engelske fund finder danske sider — aekvivalensgrupperne', () => {
+  const uge = '1999-04';
+  const fil = path.join(R, 'fund', `${uge}.json`);
+  fs.mkdirSync(path.join(R, 'fund'), { recursive: true });
+  fs.writeFileSync(fil, JSON.stringify({ uge, koert: new Date().toISOString(), kildestatus: [], antal: 2, fund: [
+    { id: 'e', titelhash: 'f', kilde: 'europepmc', kildenavn: 'Europe PMC', prioritet: 4, evidens: 'primaer',
+      titel: 'Slow-Paced Breathing and Heart Rate Variability', url: 'https://doi.org/10/b', dato: '2026-10-06',
+      resume: '', emneord: ['slow-paced breathing', 'heart rate variability'] },
+    { id: 'g', titelhash: 'h', kilde: 'europepmc', kildenavn: 'Europe PMC', prioritet: 4, evidens: 'primaer',
+      titel: 'Ecotherapy as restorative healing', url: 'https://doi.org/10/a', dato: '2026-10-14',
+      resume: '', emneord: ['ecotherapy'] }] }, null, 2));
+  try {
+    const ud = execFileSync('node', [path.join(R, 'vurder.mjs'), uge], { encoding: 'utf8' });
+    assert.match(ud, /nervesystemet/, 'engelsk aandedraetsstudie skal finde den danske nervesystemside');
+    assert.doesNotMatch(ud, /Ingen eksisterende side deler nok emner/, 'begge fund skulle finde en side');
+    assert.match(ud, /\*\*A\./);
+  } finally { fs.unlinkSync(fil); }
+});
+
+proev('Forsiden vinder ikke over en emneside', () => {
+  const uge = '1999-05';
+  const fil = path.join(R, 'fund', `${uge}.json`);
+  fs.writeFileSync(fil, JSON.stringify({ uge, koert: new Date().toISOString(), kildestatus: [], antal: 1, fund: [
+    { id: 'i', titelhash: 'j', kilde: 'europepmc', kildenavn: 'Europe PMC', prioritet: 4, evidens: 'primaer',
+      titel: 'Mindfulness and forest bath', url: 'https://doi.org/10/c', dato: '2026-10-01',
+      resume: '', emneord: ['forest bath', 'mindfulness'] }] }, null, 2));
+  try {
+    const ud = execFileSync('node', [path.join(R, 'vurder.mjs'), uge], { encoding: 'utf8' });
+    const m = ud.match(/Naermeste side: (\S+)/);
+    assert.ok(m, 'der skulle vaere et sidematch');
+    assert.notEqual(m[1], '/', 'forsiden maa ikke vinde — den naevner alt');
+    assert.match(m[1], /skovbad|naturterapi/, `forventede en skovbad-/naturterapiside, fik ${m[1]}`);
+  } finally { fs.unlinkSync(fil); }
+});
+
 proev('Praeprint foerer til D og markeres', () => {
   const uge = '1999-02';
   const fil = path.join(R, 'fund', `${uge}.json`);
