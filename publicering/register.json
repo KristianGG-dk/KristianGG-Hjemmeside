@@ -879,5 +879,60 @@
     "tidspunkt": "2026-11-01T13:00:00.000Z",
     "registreret_af": "manuel",
     "noter": "Godkendt af Kristian paa godkendelsessiden 01-11-2026, element for element, med beslutningen bundet til teksthashen. Foerste runde kl. 12.23-12.27; element 40, 41, 43, 52 og 54 blev skrevet om og godkendt igen kl. 12.52. Pakke: 2026-uge-45-47.md."
+  },
+  {
+    "element": 33,
+    "kanal": "facebook",
+    "versionslaas": "db8c5cf88b2e24f3",
+    "status": "STOPPET FOR SENT",
+    "post_id": null,
+    "godkendt_tidspunkt": "2026-10-15T19:00:00.000+02:00",
+    "tidspunkt": "2026-11-01T22:25:48.480Z",
+    "registreret_af": "motor",
+    "noter": "forfaldt for 413 timer og 26 minutter siden. Graensen er 24 timer. Publiceres ikke automatisk; kraever menneskelig stillingtagen."
+  },
+  {
+    "element": 34,
+    "kanal": "facebook",
+    "versionslaas": "2fbcc5d96aafdd06",
+    "status": "STOPPET FOR SENT",
+    "post_id": null,
+    "godkendt_tidspunkt": "2026-10-16T19:00:00.000+02:00",
+    "tidspunkt": "2026-11-01T22:25:48.480Z",
+    "registreret_af": "motor",
+    "noter": "forfaldt for 389 timer og 26 minutter siden. Graensen er 24 timer. Publiceres ikke automatisk; kraever menneskelig stillingtagen."
+  },
+  {
+    "element": 43,
+    "kanal": "facebook",
+    "versionslaas": "f26ac559205930e4",
+    "status": "PUBLICERING IGANG",
+    "post_id": null,
+    "godkendt_tidspunkt": "2026-11-07T19:00:00+01:00",
+    "tidspunkt": "2026-11-01T22:25:48.480Z",
+    "registreret_af": "motor",
+    "noter": "Kravet er taget. Melder koerslen ikke tilbage, skal udfaldet afklares i haanden."
+  },
+  {
+    "element": 48,
+    "kanal": "facebook",
+    "versionslaas": "4cae3bfa3694151a",
+    "status": "PUBLICERING IGANG",
+    "post_id": null,
+    "godkendt_tidspunkt": "2026-11-16T19:00:00+01:00",
+    "tidspunkt": "2026-11-01T22:25:48.480Z",
+    "registreret_af": "motor",
+    "noter": "Kravet er taget. Melder koerslen ikke tilbage, skal udfaldet afklares i haanden."
+  },
+  {
+    "element": 52,
+    "kanal": "facebook",
+    "versionslaas": "25898a3e2a9f5d3c",
+    "status": "PUBLICERING IGANG",
+    "post_id": null,
+    "godkendt_tidspunkt": "2026-11-20T19:00:00+01:00",
+    "tidspunkt": "2026-11-01T22:25:48.480Z",
+    "registreret_af": "motor",
+    "noter": "Kravet er taget. Melder koerslen ikke tilbage, skal udfaldet afklares i haanden."
   }
 ]
