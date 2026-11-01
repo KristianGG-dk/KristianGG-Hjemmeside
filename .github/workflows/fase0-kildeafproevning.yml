@@ -1,0 +1,71 @@
+# Fase 0 — afproevning af kandidatkilder til trendovervaagning.
+#
+# Hvorfor den koerer paa pull_request og ikke bare manuelt:
+# workflow_dispatch kan kun udloeses for workflows, der ligger paa
+# standardgrenen. Denne ligger paa en feature-branch og skal kunne koere,
+# FOER noget merges — det er hele pointen med en afproevning. PR-udloeseren
+# er den eneste vej til det.
+#
+# Den roerer intet i produktionsmotoren: ingen hemmeligheder, kun laeseret,
+# ingen skrivning til repoet, og den afproever hver kilde én gang med pause
+# imellem. Den publicerer ingenting og aendrer hverken koe, register,
+# laase, indhold eller godkendelser.
+name: Fase 0 — kildeafproevning
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'publicering/research/**'
+      - '.github/workflows/fase0-kildeafproevning.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read        # kun laese. Kan intet aendre.
+
+jobs:
+  afproev:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+
+      # Ingen npm install. Scriptet bruger kun Node-indbyggede moduler,
+      # saa package.json ikke skal roeres for en afproevning.
+      - name: Afproev kandidatkilderne
+        run: node publicering/research/fase0-afproev-kilder.mjs
+
+      # Anden runde: for de domaener der fejlede, spoerges sitet selv, om det
+      # oplyser et feed. Det er den standardiserede vej og kraever ingen gaet.
+      - name: Find feeds via autodiscovery
+        run: node publicering/research/fase0-find-feeds.mjs
+
+      # Tredje runde: sitemap-indeks for VIVE og Retsinformation,
+      # datopaalidelighed, og om der findes en tilladt vej til
+      # Sundhedsstyrelsen. Ingen omgaaelse af adgangsbegraensninger.
+      - name: Runde 3 — indeks, datoer og Sundhedsstyrelsen
+        run: node publicering/research/fase0-runde3.mjs
+
+      # Runde 3b: bredere felt af danske nyheds- og fagkilder, samme
+      # autodiscovery-metode. Fundne feeds hentes og kontrolleres.
+      - name: Runde 3b — danske nyhedskilder
+        run: node publicering/research/fase0-danske-nyheder.mjs
+
+      - name: Gem rapport og raadata
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: fase0-kildeafproevning
+          path: |
+            fase0-rapport.md
+            fase0-raa.json
+            fase0-feeds.md
+            fase0-feeds.json
+            fase0-runde3.md
+            fase0-runde3.json
+            fase0-danske.md
+            fase0-danske.json
+          retention-days: 90
