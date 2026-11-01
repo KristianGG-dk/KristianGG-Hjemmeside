@@ -80,13 +80,6 @@ jobs:
         with:
           fetch-depth: 1
 
-      - name: Skift til research/fund
-        run: |
-          set -euo pipefail
-          git fetch origin research/fund --depth=1 2>/dev/null \
-            && git checkout -B research/fund origin/research/fund \
-            || git checkout -B research/fund
-
       - uses: actions/setup-node@v4
         with:
           node-version: '24'
@@ -98,8 +91,21 @@ jobs:
 
       # Vagten igen, paa det der faktisk skal skrives. Den foerste koersel
       # skete i et job uden skriveret; denne koerer lige foer committen.
+      # Vagten koeres FOER grenskiftet, saa den kommer fra standardgrenen —
+      # den gren, der er gennemgaaet og merget. Koertes den efter skiftet,
+      # ville sikkerhedskontrollen stamme fra research/fund: den gren, dette
+      # job selv skriver til. En vagt, automatikken kan naa at aendre, er
+      # ingen vagt.
       - name: Vagt — kontroller det der skal arkiveres
         run: node publicering/research/vagt-arkiv.mjs indkommet/fund
+
+      # Foerst nu skiftes der gren. Findes den ikke endnu, oprettes den.
+      - name: Skift til research/fund
+        run: |
+          set -euo pipefail
+          git fetch origin research/fund --depth=1 2>/dev/null \
+            && git checkout -B research/fund origin/research/fund \
+            || git checkout -B research/fund
 
       - name: Arkiver ugens fund
         run: |

@@ -73,10 +73,22 @@ function udtryk(ord) {
   return new RegExp(`(?<!\\p{L})${flugt}\\p{L}{0,3}(?!\\p{L})`, 'iu');
 }
 
+// To stavemaader af samme ord er ét begreb, ikke to. «arbejdsmiljoe» og
+// «arbejdsmiljø» bliver samme udtryk efter normaliseringen, saa stod de
+// begge i registret, taalte de begge med — og ét begreb alene opfyldte
+// kravet om to generiske ord. De elleve dubletstavemaader er fjernet fra
+// registret, og her foldes listen alligevel, saa fejlen ikke kan komme
+// tilbage, naar ordlisten udvides. Foerste forekomst er den, der vises.
+function unikke(ord) {
+  const set = new Map();
+  for (const o of ord || []) if (!set.has(normaliser(o))) set.set(normaliser(o), o);
+  return [...set.values()];
+}
+
 export function lavRelevans(emneord) {
-  const spec = (emneord.specifikke || []).map((o) => [o, udtryk(o)]);
-  const gen = (emneord.generiske || []).map((o) => [o, udtryk(o)]);
-  const veto = (emneord.udelukkelsesord?.ord || []).map((o) => [o, udtryk(o)]);
+  const spec = unikke(emneord.specifikke).map((o) => [o, udtryk(o)]);
+  const gen = unikke(emneord.generiske).map((o) => [o, udtryk(o)]);
+  const veto = unikke(emneord.udelukkelsesord?.ord).map((o) => [o, udtryk(o)]);
   const kraevSpec = emneord.regel?.specifikke_kraevet ?? 1;
   const kraevGen = emneord.regel?.generiske_kraevet ?? 2;
 
