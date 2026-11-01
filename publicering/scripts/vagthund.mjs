@@ -223,6 +223,60 @@ async function main() {
     ADVAR(e.element, `${e.kanal}: planlagt ${hvor} til ${dk(forfald)} — passeret for ${dageSiden} dag(e) siden. Bekraeft selv at opslaget er gaaet ud.`);
   }
 
+  // ── OPSLAG, DER LIGGER HOS META UDEN AT NOGEN VIL DEM ───────────────────
+  //
+  // Meta HOLDER et planlagt opslag og udgiver det selv paa dagen. Bliver et
+  // element tilbagekaldt eller sat paa pause, EFTER det er afleveret, sker
+  // der ingenting her i repoet: laasefilen flyttes til laase-tilbagekaldt/,
+  // koeposten faar laasefil: null — og opslaget gaar alligevel ud hos Meta.
+  //
+  // Motoren kan ikke forhindre det. Den kan kun sige det, og sige det med
+  // post_id'et, saa opslaget kan findes og annulleres. Se
+  // dokumentation/annuller-hos-meta.md.
+  //
+  // Dette er den ene fejl, hvor vagthunden er det eneste vaern: alle andre
+  // spaerrer virker FOER afsendelsen, og denne ligger efter.
+  for (const [el, r] of (() => {
+    const sidst = new Map();
+    for (const x of register) sidst.set(x.element, x);
+    return [...sidst];
+  })()) {
+    if (r.status !== 'PLANLAGT') continue;
+    const k = koe.find((e) => e.element === el);
+
+    // Uden graensen nedenfor ville en oprydning i gamle laasefiler give alarm
+    // om opslag, der gik ud for uger siden. Da er det «bekraeft selv»-
+    // paamindelsen laengere oppe, der gaelder.
+    // Tidspunktet kan komme tre steder fra, og de har hver sit format:
+    // koeens ISO-streng, registrets planlagt_til i SEKUNDER, eller raekkens
+    // eget tidsstempel. «r.planlagt_til * 1000 ?? ...» ville ikke virke:
+    // undefined * 1000 er NaN, og ?? fanger kun null og undefined.
+    const naar = k?.tidspunkt ? new Date(k.tidspunkt)
+      : Number.isFinite(r.planlagt_til) ? new Date(r.planlagt_til * 1000)
+      : new Date(r.tidspunkt);
+    if (Number.isNaN(naar.getTime())) {
+      FEJL(el, `${k?.kanal ?? r.kanal}: staar som PLANLAGT hos Meta, men intet laeseligt tidspunkt. Se efter i haanden.`);
+      continue;
+    }
+    // Kun mens opslaget STADIG ligger og venter. Er datoen passeret, har Meta
+    // allerede udgivet det, og saa er der intet at annullere.
+    if (!(naar > NU)) continue;
+    const laas = `publicering/laase/element-${String(el).padStart(2, '0')}.json`;
+    const grunde = [];
+    if (!k) grunde.push('elementet staar ikke laengere i koeen');
+    else {
+      if (k.tilbagekaldt) grunde.push(`koeen siger tilbagekaldt (${k.tilbagekaldt.dato ?? 'uden dato'})`);
+      if (k.metode !== 'motor') grunde.push(`koeen siger metode «${k.metode}»`);
+      if (!k.laasefil) grunde.push('koeposten har ingen laasefil');
+    }
+    if (!existsSync(laas)) grunde.push(`laasefilen ${laas} findes ikke`);
+    if (grunde.length) {
+      FEJL(el, `${k?.kanal ?? r.kanal}: opslaget LIGGER HOS META som planlagt (${r.post_id ?? 'uden post_id'}) `
+        + `og gaar ud ${dk(naar)}, men ${grunde.join('; ')}. `
+        + 'Meta udgiver det selv — annullér det hos Meta, hvis det ikke skal ud.');
+    }
+  }
+
   // ── LinkedIn-tokenets udloeb ────────────────────────────────────────────
   // Tokenet lever omkring 60 dage. Loeber det ud, stopper LinkedIn-kanalen
   // uden at noget andet fejler - derfor varsles der i god tid.
