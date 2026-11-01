@@ -1,0 +1,27 @@
+{
+  "element": 53,
+  "kanal": "gbp",
+  "titel": "Naturterapi i Odense gennem vinteren",
+  "alt_tekst": "Lav vintersol gennem bare trækroner i en fynsk skov",
+  "billede": "vintersol-skov",
+  "cta": "Book en gratis telefonsamtale",
+  "hashtags": [],
+  "dato": "2026-11-04T09:00:00+01:00",
+  "godkendt_af": "Kristian G. G. Dansted",
+  "godkendt_dato": "2026-11-01",
+  "godkendelsespakke": "2026-uge-45-47.md",
+  "meta_description": "gbp-opslag: Naturterapi i Odense gennem vinteren",
+  "slug": "element-53-gbp",
+  "slut_url": "(gbp-opslag, ingen URL foer publicering)",
+  "kategorier": [],
+  "billede_url": "https://kristiangg.dk/images/natur/vintersol-skov-1350.jpg",
+  "links": [],
+  "tekst": "Naturterapi tilbydes året rundt — også november til februar.\n\nArbejdsform: bevægelse, sansning, krop og omgivelser indgår aktivt. Det er ikke en samtale, der er flyttet udenfor, og det er ikke skovbad.\n\nSted: naturområder i og omkring Odense. Ved uvejr afholdes sessionen i klinikken, Lumbyvej 11B, 5000 Odense.\n\nVarighed: 3, 6, 12 eller 24 timer. Priser på hjemmesiden.\n\nUdøver: Kristian G. G. Dansted, registreret psykoterapeut (FaDP) og naturterapeut.\n\nFørste kontakt er en telefonsamtale uden beregning.",
+  "tekst_sha256": "12f69f791c6355025549c67f9a7c2fe5c24e2b674fd9dc220cf28502d435ef48",
+  "brodtekst_sha256": "12f69f791c6355025549c67f9a7c2fe5c24e2b674fd9dc220cf28502d435ef48",
+  "kontrol": {
+    "version": "1.0.0",
+    "resultat_sha256": "5da2a6dee03fb570"
+  },
+  "versionslaas": "0bd3551effd7b6d9"
+}

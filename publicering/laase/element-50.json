@@ -1,0 +1,32 @@
+{
+  "element": 50,
+  "kanal": "instagram",
+  "titel": "Vi går sammen, men vi taler ikke meget",
+  "alt_tekst": "To personer går ved siden af hinanden ad en sti langs en sø",
+  "billede": "gaatur",
+  "cta": "Skriv, hvis I er en flok, der kunne bruge sådan en formiddag",
+  "hashtags": [
+    "#skovbad",
+    "#natur",
+    "#odense",
+    "#fyn"
+  ],
+  "dato": "2026-11-18T19:00:00+01:00",
+  "godkendt_af": "Kristian G. G. Dansted",
+  "godkendt_dato": "2026-11-01",
+  "godkendelsespakke": "2026-uge-45-47.md",
+  "meta_description": "instagram-opslag: Vi går sammen, men vi taler ikke meget",
+  "slug": "element-50-ig",
+  "slut_url": "(instagram-opslag, ingen URL foer publicering)",
+  "kategorier": [],
+  "billede_url": "https://kristiangg.dk/images/natur/gaatur-1350.jpg",
+  "links": [],
+  "tekst": "Vi går sammen, men vi taler ikke meget.\n\nDet er den sætning, der overrasker folk mest, når de hører, hvad et skovbad i gruppe er. Man er en flok, man går samme vej — og alligevel er der lange stykker, hvor ingen siger noget.\n\nIngen præsentationsrunde. Ingen skal fortælle, hvad de laver, eller hvorfor de er der. Du kan gå ved siden af en kollega i tyve minutter uden at skulle underholde.\n\nDet er dét, der gør formen brugbar for en flok, der kender hinanden i forvejen. Man behøver ikke være sociale sammen. Man skal bare være ude sammen.\n\nSkovbad er et ophold i skoven med sanserne. Det er ikke terapi — og det er netop derfor, det kan bruges af en hel arbejdsplads.\n\nGrupper på 4–12, op til 2,5 time, på Fyn.\n\nEr I en flok, der kunne bruge sådan en formiddag? Skriv til mig.",
+  "tekst_sha256": "17c05d920f0cb02a14e4e8f69132846969e3f7366a06deda5c4999d58e294493",
+  "brodtekst_sha256": "17c05d920f0cb02a14e4e8f69132846969e3f7366a06deda5c4999d58e294493",
+  "kontrol": {
+    "version": "1.0.0",
+    "resultat_sha256": "7e3da9958d6b4268"
+  },
+  "versionslaas": "4eb8b05aa36be3d2"
+}

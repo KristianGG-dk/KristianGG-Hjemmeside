@@ -1,0 +1,27 @@
+{
+  "element": 43,
+  "kanal": "facebook",
+  "titel": "Halvanden time — og du vælger, hvor vi er",
+  "alt_tekst": "Kristian G. G. Dansted udendørs med et stykke træ i hånden",
+  "billede": "kristian-portraet",
+  "cta": "Skriv, hvis du vil tale om, hvad der passer bedst til dig",
+  "hashtags": [],
+  "dato": "2026-11-07T19:00:00+01:00",
+  "godkendt_af": "Kristian G. G. Dansted",
+  "godkendt_dato": "2026-11-01",
+  "godkendelsespakke": "2026-uge-45-47.md",
+  "meta_description": "facebook-opslag: Halvanden time — og du vælger, hvor vi er",
+  "slug": "element-43-fb",
+  "slut_url": "(facebook-opslag, ingen URL foer publicering)",
+  "kategorier": [],
+  "billede_url": "https://kristiangg.dk/images/natur/kristian-portraet-1350.jpg",
+  "links": [],
+  "tekst": "En session varer halvanden time. Og du vælger, hvor den foregår.\n\nDer er tre steder, og de er ikke det samme.\n\nKlinikken på Lumbyvej. Fire vægge, en dør der er lukket, ingen der går forbi. For en del er det netop det, der skal være på plads, før man kan sige noget. Man ved, hvor man er, og man ved, hvornår man er færdig.\n\nOnline. Man sidder hjemme i sit eget. Det giver nogle en afstand, der gør det lettere at begynde — og det er den eneste mulighed, hvis man bor på den anden side af landet eller har svært ved at komme ud ad døren.\n\nUde i landskabet. Man går side om side i stedet for at sidde over for hinanden. Man skal ikke holde øjenkontakt, og pauserne bliver ikke akavede, fordi man har noget at lave imens. Det lyder småt. For nogle er det forskellen på, om det bliver sagt.\n\nDu behøver ikke vælge rigtigt den første gang. Vi kan begynde et sted og flytte os, hvis det viser sig at passe bedre et andet.\n\nPriserne står på hjemmesiden, og vi begynder altid med en kort telefonsamtale, der ikke koster noget.\n\nEr du i tvivl om, hvad der ville passe til dig, så skriv — så taler vi om det.",
+  "tekst_sha256": "4e9830e0d231b5797d54492c6ec1fc4deb994a19b55a850088f6b02b584ec0c9",
+  "brodtekst_sha256": "4e9830e0d231b5797d54492c6ec1fc4deb994a19b55a850088f6b02b584ec0c9",
+  "kontrol": {
+    "version": "1.0.0",
+    "resultat_sha256": "ea2290ae9cd39c69"
+  },
+  "versionslaas": "f26ac559205930e4"
+}

@@ -714,5 +714,170 @@
     "registreret_af": "manuel",
     "verifikation": "maskinel_http",
     "noter": "Element 29 stod hverken i koeen eller i registret, selv om laasefilen og indlaegget laa paa main. Foert ind 25-10-2026. HTTP-hentning af siden: h1 ordret som den laaste titel."
+  },
+  {
+    "element": 40,
+    "kanal": "website",
+    "versionslaas": "0ee616d01ee9f011",
+    "status": "AFVENTER DATO",
+    "post_id": null,
+    "godkendt_tidspunkt": "2026-11-04T07:00:00+01:00",
+    "tidspunkt": "2026-11-01T13:00:00.000Z",
+    "registreret_af": "manuel",
+    "noter": "Godkendt af Kristian paa godkendelsessiden 01-11-2026, element for element, med beslutningen bundet til teksthashen. Foerste runde kl. 12.23-12.27; element 40, 41, 43, 52 og 54 blev skrevet om og godkendt igen kl. 12.52. Pakke: 2026-uge-45-47.md."
+  },
+  {
+    "element": 53,
+    "kanal": "gbp",
+    "versionslaas": "0bd3551effd7b6d9",
+    "status": "AFVENTER DATO",
+    "post_id": null,
+    "godkendt_tidspunkt": "2026-11-04T09:00:00+01:00",
+    "tidspunkt": "2026-11-01T13:00:00.000Z",
+    "registreret_af": "manuel",
+    "noter": "Godkendt af Kristian paa godkendelsessiden 01-11-2026, element for element, med beslutningen bundet til teksthashen. Foerste runde kl. 12.23-12.27; element 40, 41, 43, 52 og 54 blev skrevet om og godkendt igen kl. 12.52. Pakke: 2026-uge-45-47.md."
+  },
+  {
+    "element": 41,
+    "kanal": "linkedin",
+    "versionslaas": "17c80fc3e8372382",
+    "status": "AFVENTER DATO",
+    "post_id": null,
+    "godkendt_tidspunkt": "2026-11-05T08:00:00+01:00",
+    "tidspunkt": "2026-11-01T13:00:00.000Z",
+    "registreret_af": "manuel",
+    "noter": "Godkendt af Kristian paa godkendelsessiden 01-11-2026, element for element, med beslutningen bundet til teksthashen. Foerste runde kl. 12.23-12.27; element 40, 41, 43, 52 og 54 blev skrevet om og godkendt igen kl. 12.52. Pakke: 2026-uge-45-47.md."
+  },
+  {
+    "element": 42,
+    "kanal": "instagram",
+    "versionslaas": "e0c3238a8ea0a850",
+    "status": "AFVENTER DATO",
+    "post_id": null,
+    "godkendt_tidspunkt": "2026-11-05T19:00:00+01:00",
+    "tidspunkt": "2026-11-01T13:00:00.000Z",
+    "registreret_af": "manuel",
+    "noter": "Godkendt af Kristian paa godkendelsessiden 01-11-2026, element for element, med beslutningen bundet til teksthashen. Foerste runde kl. 12.23-12.27; element 40, 41, 43, 52 og 54 blev skrevet om og godkendt igen kl. 12.52. Pakke: 2026-uge-45-47.md."
+  },
+  {
+    "element": 43,
+    "kanal": "facebook",
+    "versionslaas": "f26ac559205930e4",
+    "status": "AFVENTER DATO",
+    "post_id": null,
+    "godkendt_tidspunkt": "2026-11-07T19:00:00+01:00",
+    "tidspunkt": "2026-11-01T13:00:00.000Z",
+    "registreret_af": "manuel",
+    "noter": "Godkendt af Kristian paa godkendelsessiden 01-11-2026, element for element, med beslutningen bundet til teksthashen. Foerste runde kl. 12.23-12.27; element 40, 41, 43, 52 og 54 blev skrevet om og godkendt igen kl. 12.52. Pakke: 2026-uge-45-47.md."
+  },
+  {
+    "element": 44,
+    "kanal": "instagram",
+    "versionslaas": "30e864141ceb146a",
+    "status": "AFVENTER DATO",
+    "post_id": null,
+    "godkendt_tidspunkt": "2026-11-09T19:00:00+01:00",
+    "tidspunkt": "2026-11-01T13:00:00.000Z",
+    "registreret_af": "manuel",
+    "noter": "Godkendt af Kristian paa godkendelsessiden 01-11-2026, element for element, med beslutningen bundet til teksthashen. Foerste runde kl. 12.23-12.27; element 40, 41, 43, 52 og 54 blev skrevet om og godkendt igen kl. 12.52. Pakke: 2026-uge-45-47.md."
+  },
+  {
+    "element": 45,
+    "kanal": "linkedin",
+    "versionslaas": "181c7fa9846b8e34",
+    "status": "AFVENTER DATO",
+    "post_id": null,
+    "godkendt_tidspunkt": "2026-11-10T08:00:00+01:00",
+    "tidspunkt": "2026-11-01T13:00:00.000Z",
+    "registreret_af": "manuel",
+    "noter": "Godkendt af Kristian paa godkendelsessiden 01-11-2026, element for element, med beslutningen bundet til teksthashen. Foerste runde kl. 12.23-12.27; element 40, 41, 43, 52 og 54 blev skrevet om og godkendt igen kl. 12.52. Pakke: 2026-uge-45-47.md."
+  },
+  {
+    "element": 54,
+    "kanal": "gbp",
+    "versionslaas": "2e65cb491ef29b2e",
+    "status": "AFVENTER DATO",
+    "post_id": null,
+    "godkendt_tidspunkt": "2026-11-10T09:00:00+01:00",
+    "tidspunkt": "2026-11-01T13:00:00.000Z",
+    "registreret_af": "manuel",
+    "noter": "Godkendt af Kristian paa godkendelsessiden 01-11-2026, element for element, med beslutningen bundet til teksthashen. Foerste runde kl. 12.23-12.27; element 40, 41, 43, 52 og 54 blev skrevet om og godkendt igen kl. 12.52. Pakke: 2026-uge-45-47.md."
+  },
+  {
+    "element": 46,
+    "kanal": "website",
+    "versionslaas": "b72c869c425ca811",
+    "status": "AFVENTER DATO",
+    "post_id": null,
+    "godkendt_tidspunkt": "2026-11-13T07:00:00+01:00",
+    "tidspunkt": "2026-11-01T13:00:00.000Z",
+    "registreret_af": "manuel",
+    "noter": "Godkendt af Kristian paa godkendelsessiden 01-11-2026, element for element, med beslutningen bundet til teksthashen. Foerste runde kl. 12.23-12.27; element 40, 41, 43, 52 og 54 blev skrevet om og godkendt igen kl. 12.52. Pakke: 2026-uge-45-47.md."
+  },
+  {
+    "element": 47,
+    "kanal": "instagram",
+    "versionslaas": "89985b90634fad27",
+    "status": "AFVENTER DATO",
+    "post_id": null,
+    "godkendt_tidspunkt": "2026-11-13T19:00:00+01:00",
+    "tidspunkt": "2026-11-01T13:00:00.000Z",
+    "registreret_af": "manuel",
+    "noter": "Godkendt af Kristian paa godkendelsessiden 01-11-2026, element for element, med beslutningen bundet til teksthashen. Foerste runde kl. 12.23-12.27; element 40, 41, 43, 52 og 54 blev skrevet om og godkendt igen kl. 12.52. Pakke: 2026-uge-45-47.md."
+  },
+  {
+    "element": 48,
+    "kanal": "facebook",
+    "versionslaas": "4cae3bfa3694151a",
+    "status": "AFVENTER DATO",
+    "post_id": null,
+    "godkendt_tidspunkt": "2026-11-16T19:00:00+01:00",
+    "tidspunkt": "2026-11-01T13:00:00.000Z",
+    "registreret_af": "manuel",
+    "noter": "Godkendt af Kristian paa godkendelsessiden 01-11-2026, element for element, med beslutningen bundet til teksthashen. Foerste runde kl. 12.23-12.27; element 40, 41, 43, 52 og 54 blev skrevet om og godkendt igen kl. 12.52. Pakke: 2026-uge-45-47.md."
+  },
+  {
+    "element": 49,
+    "kanal": "gbp",
+    "versionslaas": "e2ad2ceb25c7b143",
+    "status": "AFVENTER DATO",
+    "post_id": null,
+    "godkendt_tidspunkt": "2026-11-17T09:00:00+01:00",
+    "tidspunkt": "2026-11-01T13:00:00.000Z",
+    "registreret_af": "manuel",
+    "noter": "Godkendt af Kristian paa godkendelsessiden 01-11-2026, element for element, med beslutningen bundet til teksthashen. Foerste runde kl. 12.23-12.27; element 40, 41, 43, 52 og 54 blev skrevet om og godkendt igen kl. 12.52. Pakke: 2026-uge-45-47.md."
+  },
+  {
+    "element": 50,
+    "kanal": "instagram",
+    "versionslaas": "4eb8b05aa36be3d2",
+    "status": "AFVENTER DATO",
+    "post_id": null,
+    "godkendt_tidspunkt": "2026-11-18T19:00:00+01:00",
+    "tidspunkt": "2026-11-01T13:00:00.000Z",
+    "registreret_af": "manuel",
+    "noter": "Godkendt af Kristian paa godkendelsessiden 01-11-2026, element for element, med beslutningen bundet til teksthashen. Foerste runde kl. 12.23-12.27; element 40, 41, 43, 52 og 54 blev skrevet om og godkendt igen kl. 12.52. Pakke: 2026-uge-45-47.md."
+  },
+  {
+    "element": 51,
+    "kanal": "linkedin",
+    "versionslaas": "243aa95c6f50a959",
+    "status": "AFVENTER DATO",
+    "post_id": null,
+    "godkendt_tidspunkt": "2026-11-19T08:00:00+01:00",
+    "tidspunkt": "2026-11-01T13:00:00.000Z",
+    "registreret_af": "manuel",
+    "noter": "Godkendt af Kristian paa godkendelsessiden 01-11-2026, element for element, med beslutningen bundet til teksthashen. Foerste runde kl. 12.23-12.27; element 40, 41, 43, 52 og 54 blev skrevet om og godkendt igen kl. 12.52. Pakke: 2026-uge-45-47.md."
+  },
+  {
+    "element": 52,
+    "kanal": "facebook",
+    "versionslaas": "a2c1a889f95dc923",
+    "status": "AFVENTER DATO",
+    "post_id": null,
+    "godkendt_tidspunkt": "2026-11-20T19:00:00+01:00",
+    "tidspunkt": "2026-11-01T13:00:00.000Z",
+    "registreret_af": "manuel",
+    "noter": "Godkendt af Kristian paa godkendelsessiden 01-11-2026, element for element, med beslutningen bundet til teksthashen. Foerste runde kl. 12.23-12.27; element 40, 41, 43, 52 og 54 blev skrevet om og godkendt igen kl. 12.52. Pakke: 2026-uge-45-47.md."
   }
 ]
