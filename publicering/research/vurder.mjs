@@ -25,12 +25,20 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { normaliser } from './lib.mjs';
 
 const HER = path.dirname(fileURLToPath(import.meta.url));
 const ROD = path.resolve(HER, '../..');
 const FUND = path.join(HER, 'fund');
 const kat = JSON.parse(fs.readFileSync(path.join(HER, 'kilder.json'), 'utf8'));
-const ORD = kat.emneord.ord.map((o) => o.toLowerCase());
+
+// Samme ordgraense som i relevansfilteret, saa et match betyder det samme
+// de to steder.
+function udtryk(ord) {
+  const flugt = normaliser(ord).replace(/[.*+?^${}()|[\]\\]/g, '\\$&').replace(/[\s-]+/g, '[\\s-]+');
+  return new RegExp(`(?<!\\p{L})${flugt}\\p{L}{0,3}(?!\\p{L})`, 'iu');
+}
+const SPEC = new Set((kat.emneord.specifikke || []).map(normaliser));
 
 // ── sitets egne sider ──────────────────────────────────────────────────────
 function sider() {
@@ -49,39 +57,53 @@ function sider() {
       let url = '/' + rel.replace(/\.md$/, '/').replace(/_index\/$/, '');
       if (/^\/blog\//.test(url)) url = '/blog/' + (v('slug') || rel.split('/').pop().replace(/^\d{4}-\d{2}-\d{2}-/, '').replace(/\.md$/, '')) + '/';
       ud.push({ fil: rel, url, titel: v('title'), beskrivelse: v('description'),
-        tekst: `${v('title')} ${v('description')} ${v('hero_title')} ${v('hero_subtitle')} ${raa.slice(hoved.length)}`.toLowerCase() });
+        tekst: '', normtekst: normaliser(`${v('title')} ${v('description')} ${v('hero_title')} ${v('hero_subtitle')} ${raa.slice(hoved.length)}`) });
     }
   };
   gaa(path.join(ROD, 'content'));
   return ud;
 }
 
-// Hvor godt daekker en side fundets emner? Vi taeller, hvor mange af fundets
-// egne emneord siden ogsaa bruger — det er et groft maal, men det er aabent
-// og kan efterproeves, og det er bedre end en uigennemsigtig lighedsscore.
+// Hvor godt daekker en side fundets emner?
+//
+// I demonstrationen gav ét emneord mod en side, der indeholdt det ord,
+// 1 ÷ 1 = 100 %. Derfor stod der «100 % emneoverlap» paa naesten alt, og
+// derfor «daekkede» blogindlaegget om viljestyrke et fund om en slange.
+//
+// Nu kraeves der et ABSOLUT overlap, ikke kun et forhold: mindst to delte
+// ord, og mindst ét specifikt — eller tre generiske. Et specifikt ord vejer
+// dobbelt. Rammer en side ikke det, er der intet match, og feltet staar tomt
+// frem for at pege paa en tilfaeldig side.
+const MIN_DELTE = 2;
+
 function match(fund, s) {
-  const ord = fund.emneord.length ? fund.emneord : ORD.filter((o) => `${fund.titel} ${fund.resume}`.toLowerCase().includes(o));
-  if (!ord.length) return { score: 0, delte: [] };
-  const delte = ord.filter((o) => s.tekst.includes(o));
-  return { score: delte.length / ord.length, delte };
+  const ord = (fund.emneord || []).map(normaliser);
+  if (!ord.length) return null;
+  const delte = ord.filter((o) => udtryk(o).test(s.normtekst));
+  if (delte.length < MIN_DELTE) return null;
+  const spec = delte.filter((o) => SPEC.has(o));
+  if (!spec.length && delte.length < 3) return null;
+  const vaegt = spec.length * 2 + (delte.length - spec.length);
+  const maks = ord.filter((o) => SPEC.has(o)).length * 2 + ord.filter((o) => !SPEC.has(o)).length;
+  return { score: maks ? vaegt / maks : 0, delte, specifikke: spec, antal: delte.length };
 }
 
 function beslut(f, bedste) {
   const svagKilde = f.evidens === 'formidling' || f.evidens === 'praeprint';
-  if (bedste && bedste.score >= 0.75) {
-    return svagKilde
-      ? { valg: 'E', hvorfor: `${bedste.side.url} daekker allerede emnet, og ${f.evidens} kan ikke tilfoeje dokumentation. Fundet aendrer intet.` }
-      : { valg: 'A', hvorfor: `${bedste.side.url} behandler emnet (${bedste.delte.join(', ')}). En primaerkilde fra ${f.kildenavn} kan styrke afsnittet frem for at blive en ny side.` };
+
+  if (bedste) {
+    if (svagKilde) {
+      return { valg: 'E', hvorfor: `${bedste.side.url} daekker emnet (${bedste.delte.join(', ')}), og ${f.evidens} kan ikke tilfoeje dokumentation.` };
+    }
+    const hvor = bedste.score >= 0.7 ? 'behandler emnet' : 'er taettest paa, men daekker kun delvist';
+    return { valg: 'A', hvorfor: `${bedste.side.url} ${hvor} — ${bedste.antal} delte emner (${bedste.delte.join(', ')}). En ${f.evidens === 'primaer' ? 'primaerkilde' : 'kilde'} fra ${f.kildenavn} kan styrke den side frem for at blive en ny.` };
   }
-  if (bedste && bedste.score >= 0.4) {
-    return { valg: 'A', hvorfor: `${bedste.side.url} er taettest paa (${bedste.delte.join(', ')}), men daekker kun delvist. Udbyg den side frem for at oprette en ny.` };
-  }
-  if (svagKilde) {
-    return f.evidens === 'praeprint'
-      ? { valg: 'D', hvorfor: 'Praeprint. Ikke fagfaellebedoemt og kan ikke baere en paastand. Afvent publicering, eller find primaerkilden.' }
-      : { valg: 'C', hvorfor: `${f.kildenavn} er formidling, ikke dokumentation. Egner sig til et kort opslag — en side kraever en primaerkilde.` };
-  }
-  return { valg: 'B', hvorfor: `Ingen eksisterende side daekker emnet (bedste traef ${bedste ? Math.round(bedste.score * 100) + ' %' : 'ingen'}), og ${f.kildenavn} er ${f.evidens}. Kan baere en selvstaendig tekst.` };
+
+  // Intet sidematch. Hvad der saa maa ske, afgoeres af evidensniveauet.
+  if (f.evidens === 'praeprint') return { valg: 'D', hvorfor: 'Praeprint, ikke fagfaellebedoemt, og ingen eksisterende side daekker emnet. Afvent publicering, eller find primaerkilden.' };
+  if (f.evidens === 'formidling') return { valg: 'C', hvorfor: `${f.kildenavn} er formidling, ikke dokumentation. Kan baere et kort opslag — en side kraever en primaerkilde.` };
+  if (f.evidens === 'fagmedie') return { valg: 'C', hvorfor: `${f.kildenavn} er fagmedie. Egner sig til et opslag; skal det blive en side, skal kilden bag findes foerst.` };
+  return { valg: 'B', hvorfor: `Ingen eksisterende side deler mindst ${MIN_DELTE} emner med fundet, og ${f.kildenavn} er ${f.evidens}. Kan baere en selvstaendig tekst.` };
 }
 
 // ── koersel ────────────────────────────────────────────────────────────────
@@ -92,9 +114,9 @@ const data = JSON.parse(fs.readFileSync(path.join(FUND, `${valgt}.json`), 'utf8'
 const S = sider();
 
 const vurderet = data.fund.map((f) => {
-  const traf = S.map((s) => ({ side: s, ...match(f, s) })).filter((m) => m.score > 0).sort((a, b) => b.score - a.score);
+  const traf = S.map((s) => { const m = match(f, s); return m ? { side: s, ...m } : null; }).filter(Boolean).sort((a, b) => b.score - a.score || b.antal - a.antal);
   const bedste = traf[0];
-  return { ...f, bedsteSide: bedste ? { url: bedste.side.url, titel: bedste.side.titel, score: Math.round(bedste.score * 100) } : null, ...beslut(f, bedste) };
+  return { ...f, bedsteSide: bedste ? { url: bedste.side.url, titel: bedste.side.titel, score: Math.round(bedste.score * 100), antal: bedste.antal, delte: bedste.delte } : null, ...beslut(f, bedste) };
 });
 
 const tael = (v) => vurderet.filter((x) => x.valg === v).length;
@@ -114,8 +136,9 @@ if (!vurderet.length) {
       L.push(`**${v.valg}. ${v.titel}**`, '');
       L.push(`- Kilde: ${v.kildenavn} (${v.evidens})${v.dato ? `, ${v.dato}` : ''}`);
       L.push(`- ${v.url}`);
-      if (v.bedsteSide) L.push(`- Naermeste side: ${v.bedsteSide.url} (${v.bedsteSide.score} % emneoverlap)`);
-      L.push(`- Emner: ${v.emneord.join(', ')}`);
+      if (v.bedsteSide) L.push(`- Naermeste side: ${v.bedsteSide.url} — ${v.bedsteSide.antal} delte emner (${v.bedsteSide.score} %)`);
+      else L.push('- Ingen eksisterende side deler nok emner med fundet');
+      L.push(`- Emner: ${v.emneord.join(', ')}${v.relevansgrund ? ` — ${v.relevansgrund}` : ''}`);
       L.push(`- **Vurdering:** ${v.hvorfor}`);
       if (v.evidens === 'praeprint') L.push('- ⚠ Praeprint — ikke fagfaellebedoemt. Maa ikke baere en paastand alene.');
       if (v.evidens === 'formidling') L.push('- ⚠ Formidling — maa ikke staa som dokumentation. Find primaerkilden.');

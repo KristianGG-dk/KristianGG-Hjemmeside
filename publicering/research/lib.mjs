@@ -51,12 +51,55 @@ const adapter = {
   },
 };
 
+// Danske bogstaver skrives paa to maader. En kilde kan skrive «fællesskab»
+// eller «faellesskab», «søvn» eller «soevn». Begge former normaliseres til
+// ae/oe/aa paa BEGGE sider, foer der sammenlignes — ellers afhaenger et
+// match af, hvordan kilden staver.
+export function normaliser(s) {
+  return (s || '').toLowerCase()
+    .replace(/æ/g, 'ae').replace(/ø/g, 'oe').replace(/å/g, 'aa')
+    .replace(/ä/g, 'ae').replace(/ö/g, 'oe');
+}
+
+// Ordgraense, der kan taale danske bogstaver.
+//
+// JavaScripts \b bygger paa ASCII og opfoerer sig forkert omkring ae, oe og aa.
+// Her bruges Unicode-bogstavklassen i stedet, med plads til op til tre
+// boejningsbogstaver bagpaa: «stress» rammer «stressen», men IKKE «genterapi»
+// for «terapi» — og det var praecis den fejl, der lukkede optogenetisk
+// genterapi ind i demonstrationen.
+function udtryk(ord) {
+  const flugt = normaliser(ord).replace(/[.*+?^${}()|[\]\\]/g, '\\$&').replace(/[\s-]+/g, '[\\s-]+');
+  return new RegExp(`(?<!\\p{L})${flugt}\\p{L}{0,3}(?!\\p{L})`, 'iu');
+}
+
 export function lavRelevans(emneord) {
-  const ORD = emneord.map((o) => o.toLowerCase());
+  const spec = (emneord.specifikke || []).map((o) => [o, udtryk(o)]);
+  const gen = (emneord.generiske || []).map((o) => [o, udtryk(o)]);
+  const veto = (emneord.udelukkelsesord?.ord || []).map((o) => [o, udtryk(o)]);
+  const kraevSpec = emneord.regel?.specifikke_kraevet ?? 1;
+  const kraevGen = emneord.regel?.generiske_kraevet ?? 2;
+
   return function relevans(p) {
-    const h = `${p.titel || ''} ${p.resume || ''}`.toLowerCase();
-    const ramt = ORD.filter((o) => h.includes(o));
-    return { relevant: ramt.length > 0, ramte: [...new Set(ramt)].slice(0, 6) };
+    const h = normaliser(`${p.titel || ''} ${p.resume || ''}`);
+
+    // Vetoet gaar foerst. Et tvetydigt fagord som «drought stress» eller
+    // «periodontal» betyder, at ordet «stress» her ikke har med mennesker at
+    // goere, og saa er resten af traefferne ligegyldige.
+    const udelukket = veto.filter(([o, r]) => r.test(h)).map(([o]) => o);
+    if (udelukket.length) return { relevant: false, grund: `udelukket af: ${udelukket.slice(0, 3).join(', ')}`, ramte: [], specifikke: [], generiske: [] };
+
+    const s = spec.filter(([o, r]) => r.test(h)).map(([o]) => o);
+    const g = gen.filter(([o, r]) => r.test(h)).map(([o]) => o);
+
+    // Ét generisk ord alene kvalificerer aldrig. Det var dét, der lukkede
+    // plantefysiologi og tandkoedssygdom ind.
+    const relevant = s.length >= kraevSpec || g.length >= kraevGen;
+    const grund = relevant
+      ? (s.length ? `specifikt: ${s.slice(0, 3).join(', ')}` : `${g.length} generiske: ${g.slice(0, 3).join(', ')}`)
+      : (g.length === 1 ? `kun ét generisk ord (${g[0]}) — for svagt alene` : 'ingen traef');
+
+    return { relevant, grund, ramte: [...s, ...g].slice(0, 8), specifikke: s, generiske: g };
   };
 }
 

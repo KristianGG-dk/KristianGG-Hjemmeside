@@ -60,16 +60,63 @@ proev('medRxiv markeres som ikke fagfaellebedoemt', () => {
   assert.equal(p[0].fagfaellebedoemt, false);
 });
 
-proev('Relevansfilteret frasorterer det, sitet ikke arbejder med', () => {
-  const rel = lavRelevans(kat.emneord.ord);
-  assert.equal(rel({ titel: 'Ny forskning i skovbad og stress', resume: '' }).relevant, true);
-  assert.equal(rel({ titel: 'Landbrugsstoette til roedbeder', resume: 'EU' }).relevant, false);
-  assert.deepEqual(rel({ titel: 'Angst og soevn', resume: '' }).ramte.sort(), ['angst', 'soevn']);
+proev('Ordgraensen rammer ord, ikke tegnfoelger — genterapi er ikke terapi', () => {
+  const rel = lavRelevans(kat.emneord);
+  assert.equal(rel({ titel: 'Optogenetisk behandling', resume: 'genterapi til nethinden' }).relevant, false);
+  assert.equal(rel({ titel: 'Stress og trivsel paa arbejdspladsen', resume: 'sygefravaer' }).relevant, true);
+});
+
+proev('Ét generisk ord alene kvalificerer aldrig', () => {
+  const rel = lavRelevans(kat.emneord);
+  const v = rel({ titel: 'Noget om stress', resume: 'intet andet' });
+  assert.equal(v.relevant, false);
+  assert.match(v.grund, /kun ét generisk ord/);
+  assert.equal(rel({ titel: 'Stress og angst', resume: 'og soevn' }).relevant, true, 'to generiske skal raekke');
+});
+
+proev('Ét specifikt ord raekker', () => {
+  const rel = lavRelevans(kat.emneord);
+  const v = rel({ titel: 'Nyt studie om skovbad', resume: '' });
+  assert.equal(v.relevant, true);
+  assert.deepEqual(v.specifikke, ['skovbad']);
+});
+
+proev('Vetoet afviser de tvetydige fagord fra demonstrationen', () => {
+  const rel = lavRelevans(kat.emneord);
+  for (const [t, r] of [
+    ['Drought Stress, Soil Salinity and Diesel Oil', 'biodegradation'],
+    ['Stress and Periodontal Disease', 'tandkoed'],
+    ['Germinability in Passiflora seeds under salt stress', ''],
+    ['Forslag om stop for nye datacentre', 'regulering'],
+    ['EU-aftale om veterinaerspoergsmaal', 'Det Europaeiske Faellesskab'],
+  ]) {
+    const v = rel({ titel: t, resume: r });
+    assert.equal(v.relevant, false, `${t} skulle vaere afvist`);
+    assert.match(v.grund, /udelukket af/);
+  }
+});
+
+proev('De rigtige fund fra demonstrationen slipper stadig igennem', () => {
+  const rel = lavRelevans(kat.emneord);
+  for (const t of [
+    'Mindfulness and forest bath for arterial hypertension',
+    'Acute Effects of Two Slow-Paced Breathing Protocols on Heart Rate Variability',
+    'How the Acute Psychosocial Stress Response Ends: Vagal Re-Engagement',
+    'Intensive Interventions for Burnout, Stress and Occupational Well-Being',
+  ]) assert.equal(rel({ titel: t, resume: '' }).relevant, true, `${t} skulle vaere beholdt`);
 });
 
 proev('tekst() afkoder entiteter — fejlen der ramte fase 0', () => {
   assert.equal(tekst('a &amp; b'), 'a & b');
   assert.equal(tekst('<p>Hej   der</p>'), 'Hej der');
+});
+
+proev('Ordforraadet er delt i specifikke, generiske og udelukkelsesord', () => {
+  assert.ok(kat.emneord.specifikke.length > 20);
+  assert.ok(kat.emneord.generiske.length > 10);
+  assert.ok(kat.emneord.udelukkelsesord.ord.length > 10);
+  const spec = new Set(kat.emneord.specifikke);
+  for (const g of kat.emneord.generiske) assert.ok(!spec.has(g), `${g} staar baade som specifik og generisk`);
 });
 
 proev('Alle kilder har prioritet 1-4 og et kendt evidensniveau', () => {

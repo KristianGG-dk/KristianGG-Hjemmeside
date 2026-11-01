@@ -38,7 +38,7 @@ const TOERLOEB = process.argv.includes('--toerloeb');
 const sov = (ms) => new Promise((r) => setTimeout(r, ms));
 const hash = (s) => crypto.createHash('sha256').update(s).digest('hex').slice(0, 16);
 const kat = JSON.parse(fs.readFileSync(path.join(HER, 'kilder.json'), 'utf8'));
-const relevans = lavRelevans(kat.emneord.ord);
+const relevans = lavRelevans(kat.emneord);
 const tilstand = fs.existsSync(TILSTAND) ? JSON.parse(fs.readFileSync(TILSTAND, 'utf8')) : {};
 
 async function hent(url, { etag, metode = 'GET' } = {}) {
@@ -72,13 +72,18 @@ async function fraSitemap(k) {
     }
   }
 
+  // Stifilter. VIVE aendrede 257 adresser i demonstrationen, og de 15 nyeste
+  // var medarbejderprofiler og rettede aeldre sider — ikke udgivelser. Loftet
+  // bliver af hensyn til kilden; i stedet vaelges der blandt de rigtige stier.
   const graense = Date.now() - VINDUE_DAGE * 864e5;
   const kandidater = [];
   for (const x of xml) {
     for (const m of x.matchAll(/<url>([\s\S]*?)<\/url>/g)) {
       const loc = (m[1].match(/<loc>([^<]+)</) || [])[1];
       const lm = gyldigDato((m[1].match(/<lastmod>([^<]+)</) || [])[1] || '');
-      if (loc && lm && lm.getTime() >= graense) kandidater.push({ url: loc.trim(), dato: lm });
+      if (!loc || !lm || lm.getTime() < graense) continue;
+      if (k.stier && !k.stier.some((st) => loc.includes(st))) continue;
+      kandidater.push({ url: loc.trim(), dato: lm });
     }
   }
   kandidater.sort((a, b) => b.dato - a.dato);
@@ -125,7 +130,17 @@ for (const k of kat.kilder) {
     else if (!r.ok || r.status >= 400) note = r.ok ? `HTTP ${r.status}` : r.fejl;
     else {
       if (r.etag) tilstand[k.id] = { ...(tilstand[k.id] || {}), etag: r.etag };
-      try { poster = adapter[k.metode](r.krop); } catch (e) { note = `kunne ikke laeses: ${e.message}`; }
+      try {
+        poster = adapter[k.metode](r.krop);
+        // ODA kan ikke fritekstsoege paa tvaers af felter, saa sagerne hentes
+        // bredt og skaeres til paa titlen her. Uden det kom datacenter- og
+        // veterinaersager med i demonstrationen.
+        if (k.efterfilter) {
+          const foer = poster.length;
+          poster = poster.filter((p) => k.efterfilter.some((f) => (p.titel || '').toLowerCase().includes(f.toLowerCase())));
+          note = `${foer} sager hentet, ${poster.length} tilbage efter titelfilter`;
+        }
+      } catch (e) { note = `kunne ikke laeses: ${e.message}`; }
     }
   }
 
@@ -140,7 +155,7 @@ for (const k of kat.kilder) {
     set.add(id); set.add(titelhash);
     fund.push({ id, titelhash, kilde: k.id, kildenavn: k.navn, prioritet: k.prioritet, evidens: k.evidens,
       titel: p.titel, url: p.url, dato: p.dato ? p.dato.toISOString().slice(0, 10) : null,
-      resume: p.resume || '', emneord: rel.ramte, fagfaellebedoemt: p.fagfaellebedoemt ?? null, fundet: nu.toISOString() });
+      resume: p.resume || '', emneord: rel.ramte, specifikke: rel.specifikke, generiske: rel.generiske, relevansgrund: rel.grund, fagfaellebedoemt: p.fagfaellebedoemt ?? null, fundet: nu.toISOString() });
     nye++;
   }
   kildestatus.push({ id: k.id, navn: k.navn, prioritet: k.prioritet, status: uaendret ? 'uaendret (304)' : note || 'ok',

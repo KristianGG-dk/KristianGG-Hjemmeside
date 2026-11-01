@@ -28,6 +28,10 @@
         "sundhedsydelser",
         "psykoterapi",
         "markedsfoering"
+      ],
+      "stier": [
+        "/eli/lta/",
+        "/eli/retsinfo/"
       ]
     },
     {
@@ -36,12 +40,23 @@
       "prioritet": 1,
       "evidens": "primaer",
       "metode": "api-folketinget",
-      "url": "https://oda.ft.dk/api/Sag?$top=40&$orderby=opdateringsdato%20desc&$format=json",
+      "url": "https://oda.ft.dk/api/Sag?$top=60&$orderby=opdateringsdato%20desc&$format=json",
       "emner": [
         "lovforslag",
         "politik",
         "psykisk sundhed"
-      ]
+      ],
+      "efterfilter": [
+        "psyk",
+        "stress",
+        "trivsel",
+        "arbejdsmiljø",
+        "sundhed",
+        "social",
+        "ensomhed",
+        "sygefrav"
+      ],
+      "note": "ODA understoetter ikke fritekstsoegning paa tvaers af felter. Hentes bredt og filtreres paa titel foer relevansvurderingen."
     },
     {
       "id": "sundhedsdata",
@@ -54,6 +69,11 @@
         "sundhedsdata",
         "trivsel",
         "statistik"
+      ],
+      "stier": [
+        "/nyheder/",
+        "/udgivelser/",
+        "/find-tal-og-analyser/"
       ]
     },
     {
@@ -84,7 +104,13 @@
         "ensomhed",
         "udsatte",
         "paaroerende"
-      ]
+      ],
+      "stier": [
+        "/udgivelser/",
+        "/nyheder/",
+        "/publikationer/"
+      ],
+      "note": "257 adresser aendrede sig i demonstrationen, og de 15 nyeste var ikke de 15 mest relevante. Kun udgivelses- og nyhedsstier kommer i betragtning."
     },
     {
       "id": "ugeskriftet",
@@ -111,6 +137,10 @@
         "stress",
         "mental sundhed",
         "trivsel"
+      ],
+      "stier": [
+        "/viden/",
+        "/nyheder/"
       ]
     },
     {
@@ -151,6 +181,12 @@
         "sundhedspolitik",
         "lovaendringer",
         "socialpolitik"
+      ],
+      "stier": [
+        "/sundhed/",
+        "/social/",
+        "/arbejdsmarked/",
+        "/artikel/"
       ]
     },
     {
@@ -172,11 +208,12 @@
       "prioritet": 4,
       "evidens": "primaer",
       "metode": "api-crossref",
-      "url": "https://api.crossref.org/works?query=nature+therapy+stress+regulation&rows=25&sort=published&order=desc&select=title,DOI,URL,published,container-title",
+      "url": "https://api.crossref.org/works?query.bibliographic=%22forest+bathing%22+OR+%22nature-based+intervention%22+OR+%22breathwork%22+OR+%22heart+rate+variability%22&rows=25&sort=published&order=desc&select=title,DOI,URL,published,container-title",
       "emner": [
         "naturterapi",
         "stressregulering"
-      ]
+      ],
+      "note": "Foresproergslen var for bred i demonstrationen og hentede plantevidenskab. Nu query.bibliographic med citerede fraser."
     },
     {
       "id": "medrxiv",
@@ -193,69 +230,140 @@
     }
   ],
   "emneord": {
-    "note": "Et fund skal ramme mindst ét af disse for at komme videre. Ordene er udledt af sitets egne emnesider, saa relevansen maales mod det, Kristian faktisk arbejder med.",
-    "ord": [
-      "naturterapi",
+    "note": "Delt i specifikke og generiske efter demonstrationen 01-11-2026. Ét generisk ord alene kvalificerer ALDRIG et fund — «stress» lukkede plantefysiologi, tandkoedssygdom og oxidativt stress ind. Reglen er: mindst ét specifikt ord, ELLER mindst to generiske.",
+    "regel": {
+      "specifikke_kraevet": 1,
+      "generiske_kraevet": 2
+    },
+    "specifikke": [
       "skovbad",
+      "shinrin-yoku",
       "shinrin",
       "forest bathing",
-      "green care",
+      "forest bath",
+      "naturterapi",
       "naturbaseret",
-      "friluft",
-      "udeliv",
+      "nature-based intervention",
+      "nature-based therapy",
+      "ecotherapy",
+      "green care",
+      "friluftsterapi",
+      "walk and talk",
       "psykoterapi",
-      "terapi",
-      "terapeut",
-      "samtaleterapi",
+      "psykoterapeut",
       "hypnoterapi",
+      "samtaleterapi",
+      "nervesystem",
+      "nervesystemregulering",
+      "autonome nervesystem",
+      "autonomic nervous",
+      "vagusnerve",
+      "vagus nerve",
+      "vagal",
+      "polyvagal",
+      "co-regulering",
+      "coregulering",
+      "parasympatisk",
+      "sympatisk aktivering",
+      "heart rate variability",
+      "hjerterytmevariabilitet",
+      "aandedraetsterapi",
+      "åndedrætsterapi",
+      "åndedrætsøvelse",
+      "aandedraetsoevelse",
+      "vejrtrækningsøvelse",
+      "breathwork",
+      "slow breathing",
+      "slow-paced breathing",
+      "breathing protocol",
+      "mindfulness",
+      "udbrændthed",
+      "udbraendthed",
+      "burnout",
+      "stressbehandling",
+      "arbejdsrelateret stress",
+      "tankemylder",
+      "søvnløshed",
+      "soevnloeshed",
+      "insomni",
+      "low arousal"
+    ],
+    "generiske": [
       "stress",
-      "udbrændt",
-      "udbraendt",
-      "belastning",
-      "sygemeld",
-      "sygefravær",
-      "sygefravaer",
-      "arbejdsmiljø",
-      "arbejdsmiljoe",
-      "trivsel",
+      "terapi",
       "angst",
-      "bekymring",
-      "overtænk",
-      "overtaenk",
-      "panik",
+      "depression",
       "søvn",
       "soevn",
-      "insomni",
-      "tankemylder",
-      "nervesystem",
-      "autonom",
-      "vagus",
-      "arousal",
-      "co-regulering",
-      "regulering",
-      "åndedræt",
-      "aandedraet",
-      "vejrtrækning",
-      "vejrtraekning",
-      "breathwork",
-      "heart rate variability",
-      "mindfulness",
+      "trivsel",
       "nærvær",
       "naervaer",
       "meditation",
-      "krops",
+      "psykisk",
+      "mental sundhed",
+      "mental health",
+      "arbejdsmiljø",
+      "arbejdsmiljoe",
+      "sygefravær",
+      "sygefravaer",
       "ensomhed",
-      "fællesskab",
-      "faellesskab",
       "pårørende",
       "paaroerende",
       "sorg",
-      "mental sundhed",
-      "psykisk",
-      "depression",
       "selvværd",
-      "selvvaerd"
-    ]
+      "selvvaerd",
+      "belastning",
+      "regulering",
+      "stressregulering",
+      "følelsesregulering",
+      "foelelsesregulering",
+      "forebyggelse",
+      "well-being",
+      "wellbeing"
+    ],
+    "udelukkelsesord": {
+      "note": "Rammer et af disse, afvises fundet uanset hvad andet det rammer. Ordene er valgt ud fra de faktiske falske positive i demonstrationen — tvetydige fagord, hvor «stress» betyder noget helt andet end i psykologi.",
+      "ord": [
+        "oxidative stress",
+        "oxidativt stress",
+        "drought",
+        "salinity",
+        "salt stress",
+        "abiotic",
+        "soil",
+        "jordbund",
+        "germinat",
+        "seedling",
+        "seed",
+        "crop",
+        "plantevækst",
+        "cultivar",
+        "triticale",
+        "biodegradation",
+        "diesel",
+        "periodontal",
+        "tandkød",
+        "atherosclerosis",
+        "retinitis",
+        "optogenetic",
+        "optogenetisk",
+        "veterinær",
+        "veterinary",
+        "kvæg",
+        "landbrug",
+        "datacenter",
+        "datacentre",
+        "fødevaresikkerhed",
+        "heat stress",
+        "thermal stress",
+        "mechanical stress",
+        "water stress",
+        "corrosion",
+        "shear stress",
+        "europæiske fællesskab",
+        "toldunion"
+      ]
+    }
   },
   "fravalgte": [
     {
