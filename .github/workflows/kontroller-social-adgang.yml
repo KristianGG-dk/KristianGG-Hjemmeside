@@ -1,10 +1,22 @@
-# Kontrollerer at Meta-adgangen virker. Publicerer ALDRIG noget.
+# Kontrollerer adgangen til Facebook, Instagram og LinkedIn. Publicerer ALDRIG.
 #
-# Scriptet sender udelukkende GET. Der findes ingen sti gennem dette workflow
-# der kan skrive et opslag. Derfor er contents: read nok, og der er ingen
-# publicer-parameter at saette forkert.
+# TRE UAFHAENGIGE JOBS
+# Hver platform er sit eget job uden "needs" mellem dem. Fejler én platform,
+# koeres de to andre alligevel til ende, og man ser alle tre resultater i
+# samme koersel. Opsamlingsjobbet til sidst skriver en tabel og lader
+# koerslen fejle, hvis blot én platform fejlede — saa en fejl aldrig skjules.
 #
-# Startes manuelt, naar secrets er lagt i miljoeet "publicering".
+# KUN LAESNING
+# Ingen af de tre scripts indeholder et publicerende kald:
+#   Facebook   kontroller-adgang.mjs            udelukkende GET mod Graph
+#   Instagram  kontroller-instagram-adgang.mjs  udelukkende GET mod Graph
+#   LinkedIn   kontroller-linkedin-adgang.mjs   udelukkende GET mod /v2/userinfo
+# Publiceringsscripts kaldes ikke, og der er ingen publicer-parameter.
+#
+# LinkedIn-kontrollen bruger IKKE introspektion og faar IKKE client secret.
+# Besluttet 01-11-2026: client secret bliver i miljoeet linkedin-oauth.
+#
+# Startes manuelt.
 name: Kontroller social adgang
 
 on:
@@ -13,7 +25,8 @@ on:
 permissions: {}
 
 jobs:
-  kontroller:
+  facebook:
+    name: Facebook
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -23,7 +36,6 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '24'
-
       - name: Kontroller Facebook-adgang
         env:
           FB_PAGE_ID: ${{ secrets.FB_PAGE_ID }}
@@ -31,3 +43,79 @@ jobs:
           FB_APP_ID: ${{ secrets.FB_APP_ID }}
           FB_APP_SECRET: ${{ secrets.FB_APP_SECRET }}
         run: node publicering/scripts/kontroller-adgang.mjs
+
+  instagram:
+    name: Instagram
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    environment: publicering
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      # FB_PAGE_ID, FB_APP_ID og FB_APP_SECRET bruges kun til laesning: at
+      # bekraefte at Instagram-kontoen haenger paa vores side, og at faa
+      # granulaere scopes med i tokenrapporten.
+      - name: Kontroller Instagram-adgang
+        env:
+          IG_USER_ID: ${{ secrets.IG_USER_ID }}
+          IG_ACCESS_TOKEN: ${{ secrets.IG_ACCESS_TOKEN }}
+          FB_PAGE_ID: ${{ secrets.FB_PAGE_ID }}
+          FB_APP_ID: ${{ secrets.FB_APP_ID }}
+          FB_APP_SECRET: ${{ secrets.FB_APP_SECRET }}
+        run: node publicering/scripts/kontroller-instagram-adgang.mjs
+
+  linkedin:
+    name: LinkedIn
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    environment: publicering
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      # Samme tre hemmeligheder som publiceringskoerslen bruger — saa
+      # kontrollen proever praecis det token, motoren vil publicere med.
+      - name: Kontroller LinkedIn-adgang
+        env:
+          LI_ACCESS_TOKEN: ${{ secrets.LI_ACCESS_TOKEN }}
+          LI_PERSON_URN: ${{ secrets.LI_PERSON_URN }}
+          LI_TILLADT_URN: ${{ secrets.LI_TILLADT_URN }}
+        run: node publicering/scripts/kontroller-linkedin-adgang.mjs
+
+  samlet:
+    name: Samlet resultat
+    needs: [facebook, instagram, linkedin]
+    if: ${{ always() }}
+    runs-on: ubuntu-latest
+    permissions: {}
+    steps:
+      - name: Skriv resultat og doem
+        env:
+          FB: ${{ needs.facebook.result }}
+          IG: ${{ needs.instagram.result }}
+          LI: ${{ needs.linkedin.result }}
+        run: |
+          {
+            echo "## Social adgang"
+            echo ""
+            echo "| Platform | Resultat |"
+            echo "| --- | --- |"
+            echo "| Facebook | $FB |"
+            echo "| Instagram | $IG |"
+            echo "| LinkedIn | $LI |"
+            echo ""
+            echo "Intet er publiceret. Detaljer staar i hvert jobs log."
+          } >> "$GITHUB_STEP_SUMMARY"
+          echo "Facebook: $FB  Instagram: $IG  LinkedIn: $LI"
+          fejl=0
+          for r in "$FB" "$IG" "$LI"; do [ "$r" = "success" ] || fejl=$((fejl+1)); done
+          if [ "$fejl" -gt 0 ]; then
+            echo "::error::$fejl platform(e) bestod ikke kontrollen"
+            exit 1
+          fi
+          echo "Alle tre platforme bestod."

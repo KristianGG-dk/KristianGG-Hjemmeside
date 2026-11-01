@@ -213,9 +213,14 @@ async function kontroller() {
     }
   }
 
+  // Et groent flueben paa en kontrolkoersel ligner en gennemfoert fornyelse.
+  // Det var netop den forveksling, der skete 01-11-2026. Derfor siges det
+  // ligeud, at intet er gemt, og hvilken handling der gemmer.
+  const naeste = urn === SENTINEL ? 'bootstrap' : 'forny';
   console.log(fejl === 0
-    ? '\nKONTROL: ALT PAA PLADS. Naeste skridt er en rigtig kode.'
-    : `\nKONTROL: ${fejl} FEJL. Ret dem, foer du bruger en kode.`);
+    ? '\nKONTROL BESTAAET — INTET TOKEN ER FORNYET OG INTET ER GEMT.\n'
+      + `Koer workflowet igen med handlingen "${naeste}" for at gemme et token.`
+    : `\nKONTROL: ${fejl} FEJL. Ret dem, foer du bruger en kode. Intet er gemt.`);
   if (fejl) process.exit(1);
 }
 
