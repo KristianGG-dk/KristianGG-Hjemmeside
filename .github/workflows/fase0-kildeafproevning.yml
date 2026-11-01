@@ -1,0 +1,49 @@
+# Fase 0 — afproevning af kandidatkilder til trendovervaagning.
+#
+# Hvorfor den koerer paa pull_request og ikke bare manuelt:
+# workflow_dispatch kan kun udloeses for workflows, der ligger paa
+# standardgrenen. Denne ligger paa en feature-branch og skal kunne koere,
+# FOER noget merges — det er hele pointen med en afproevning. PR-udloeseren
+# er den eneste vej til det.
+#
+# Den roerer intet i produktionsmotoren: ingen hemmeligheder, kun laeseret,
+# ingen skrivning til repoet, og den afproever hver kilde én gang med pause
+# imellem. Den publicerer ingenting og aendrer hverken koe, register,
+# laase, indhold eller godkendelser.
+name: Fase 0 — kildeafproevning
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'publicering/research/**'
+      - '.github/workflows/fase0-kildeafproevning.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read        # kun laese. Kan intet aendre.
+
+jobs:
+  afproev:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+
+      # Ingen npm install. Scriptet bruger kun Node-indbyggede moduler,
+      # saa package.json ikke skal roeres for en afproevning.
+      - name: Afproev kandidatkilderne
+        run: node publicering/research/fase0-afproev-kilder.mjs
+
+      - name: Gem rapport og raadata
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: fase0-kildeafproevning
+          path: |
+            fase0-rapport.md
+            fase0-raa.json
+          retention-days: 90
