@@ -332,13 +332,22 @@
     "kanal": "linkedin",
     "tidspunkt": "2026-11-10T08:00:00+01:00",
     "metode": "motor",
-    "laasefil": null,
+    "laasefil": "publicering/laase/element-45.json",
     "url": null,
-    "tilbagekaldt": {
-      "dato": "2026-11-01",
-      "tidligere_laasefil": "publicering/laase-tilbagekaldt/element-45-v1.json",
-      "grund": "Godkendt tekst indeholder markdown (##), som LinkedIn viser bogstaveligt. Rettet version 45 v2 afventer ny godkendelse. Besluttet af Kristian 01-11-2026."
-    }
+    "historik": [
+      {
+        "haendelse": "tilbagekaldt",
+        "dato": "2026-11-01",
+        "laasefil": "publicering/laase-tilbagekaldt/element-45-v1.json",
+        "grund": "Godkendt tekst indeholder markdown (##), som LinkedIn viser bogstaveligt. Rettet version 45 v2 afventer ny godkendelse. Besluttet af Kristian 01-11-2026."
+      },
+      {
+        "haendelse": "godkendt v2",
+        "dato": "2026-11-01",
+        "laasefil": "publicering/laase/element-45.json",
+        "godkendelsespakke": "publicering/pakker/2026-rettelser-45-51-52.md"
+      }
+    ]
   },
   {
     "element": 46,
@@ -385,26 +394,44 @@
     "kanal": "linkedin",
     "tidspunkt": "2026-11-19T08:00:00+01:00",
     "metode": "motor",
-    "laasefil": null,
+    "laasefil": "publicering/laase/element-51.json",
     "url": null,
-    "tilbagekaldt": {
-      "dato": "2026-11-01",
-      "tidligere_laasefil": "publicering/laase-tilbagekaldt/element-51-v1.json",
-      "grund": "Prisen manglede Molsness' billetgebyr (29 kr.) og administrationsgebyr (3 kr. pr. ordre). Rettet version afventer ny godkendelse. Besluttet af Kristian 01-11-2026."
-    }
+    "historik": [
+      {
+        "haendelse": "tilbagekaldt",
+        "dato": "2026-11-01",
+        "laasefil": "publicering/laase-tilbagekaldt/element-51-v1.json",
+        "grund": "Prisen manglede Molsness' billetgebyr (29 kr.) og administrationsgebyr (3 kr. pr. ordre). Rettet version afventer ny godkendelse. Besluttet af Kristian 01-11-2026."
+      },
+      {
+        "haendelse": "godkendt v2",
+        "dato": "2026-11-01",
+        "laasefil": "publicering/laase/element-51.json",
+        "godkendelsespakke": "publicering/pakker/2026-rettelser-45-51-52.md"
+      }
+    ]
   },
   {
     "element": 52,
     "kanal": "facebook",
     "tidspunkt": "2026-11-20T19:00:00+01:00",
     "metode": "motor",
-    "laasefil": null,
+    "laasefil": "publicering/laase/element-52.json",
     "url": null,
-    "tilbagekaldt": {
-      "dato": "2026-11-01",
-      "tidligere_laasefil": "publicering/laase-tilbagekaldt/element-52-v1.json",
-      "grund": "Prisen manglede Molsness' billetgebyr (29 kr.) og administrationsgebyr (3 kr. pr. ordre); teksten sagde, at 1.200 kr. daekker det hele. Rettet version afventer ny godkendelse. Besluttet af Kristian 01-11-2026."
-    }
+    "historik": [
+      {
+        "haendelse": "tilbagekaldt",
+        "dato": "2026-11-01",
+        "laasefil": "publicering/laase-tilbagekaldt/element-52-v1.json",
+        "grund": "Prisen manglede Molsness' billetgebyr (29 kr.) og administrationsgebyr (3 kr. pr. ordre); teksten sagde, at 1.200 kr. daekker det hele. Rettet version afventer ny godkendelse. Besluttet af Kristian 01-11-2026."
+      },
+      {
+        "haendelse": "godkendt v2",
+        "dato": "2026-11-01",
+        "laasefil": "publicering/laase/element-52.json",
+        "godkendelsespakke": "publicering/pakker/2026-rettelser-45-51-52.md"
+      }
+    ]
   },
   {
     "element": 53,
