@@ -75,7 +75,11 @@ for (const d of DOMAENER) {
     for (const m of f.krop.matchAll(/<link[^>]+>/gi)) {
       const tag = m[0];
       if (!/rel=["']?alternate/i.test(tag) || !/application\/(rss|atom)\+xml/i.test(tag)) continue;
-      const href = (tag.match(/href=["']([^"']+)["']/i) || [])[1];
+      let href = (tag.match(/href=["']([^"']+)["']/i) || [])[1];
+      // HTML-entiteter skal afkodes. Uden dette blev ?format=feed&amp;type=rss
+      // sendt med &amp; i selve adressen, og Sundhedspolitisk Tidsskrift blev
+      // fejlagtigt meldt ubrugelig i koerslen 01-11-2026.
+      if (href) href = href.replace(/&amp;/g, '&').replace(/&#38;/g, '&').replace(/&quot;/g, '"');
       if (href) fundne.push(new URL(href, d.url).href);
     }
     const unikke = [...new Set(fundne)].slice(0, 3);   // hoejst tre pr. domaene
