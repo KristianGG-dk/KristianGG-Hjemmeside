@@ -45,8 +45,12 @@ function skrub(s) {
   return t.replace(/(access_token"?\s*[:=]\s*"?)[^&\s",}]+/gi, '$1«udeladt»');
 }
 
-/** Statusser der betyder "roer ikke elementet igen". */
-const AFSENDT = ['PUBLICERET', 'PLANLAGT'];
+/** Statusser der betyder "roer ikke elementet igen".
+ *  «PLANLAGT MANUELT» hoerer med: har et menneske lagt opslaget i platformens
+ *  egen planlaegger, ligger det og venter, og motoren maa ikke sende det én
+ *  gang til. Vagthunden og LinkedIn-sporet har altid regnet den med; disse to
+ *  gjorde ikke, og uenigheden var i sig selv en vej til et dobbeltopslag. */
+const AFSENDT = ['PUBLICERET', 'PLANLAGT', 'PLANLAGT MANUELT'];
 
 const laesRegister = () =>
   existsSync(REGISTER) ? JSON.parse(readFileSync(REGISTER, 'utf8')) : [];

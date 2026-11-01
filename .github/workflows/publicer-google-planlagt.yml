@@ -98,9 +98,14 @@ jobs:
         run: |
           git config user.name "publiceringsmotor"
           git config user.email "kontakt@kristiangg.dk"
-          git add publicering/register.json
-          git diff --staged --quiet || git commit -m "registrer: google"
-          git push
+          # Fem workflows skriver i samme register. Hjaelperen henter og
+          # laegger vores raekker oven paa, hvis en anden koersel pushede
+          # foerst — ellers gik posten tabt, og elementet ville blive
+          # publiceret igen ved naeste planlagte koersel.
+          bash publicering/scripts/commit-register.sh \
+            publicering/register.json \
+            "registrer: google" \
+            "node publicering/scripts/publicer-google.mjs --skriv-register resultat-google.json"
 
       # Doemmer kun - skriver ikke. Manglede adgangen, har publiceringsjobbet
       # selv fejlet; her fanges de elementer, der blev forsoegt.

@@ -6,7 +6,18 @@ import { beregnLaas, brodtekstHash, sha256, PAAKRAEVEDE_FELTER } from './laas.mj
 import { kontrollerOpslag } from './google-business.mjs';
 
 const LAASE = 'publicering/laase';
+const KOE = 'publicering/koe.json';
 const BYG = 'public';
+
+const koe = existsSync(KOE) ? JSON.parse(readFileSync(KOE, 'utf8')) : [];
+
+/** Hvilket offset havde Danmark paa netop dette oejeblik? */
+function dkOffset(d) {
+  const s = new Intl.DateTimeFormat('en-US', {
+    timeZone: 'Europe/Copenhagen', timeZoneName: 'longOffset',
+  }).format(d);
+  return s.match(/GMT([+-]\d{2}:\d{2})/)?.[1] ?? null;
+}
 let fejl = 0;
 const ok = (m) => console.log(`  OK    ${m}`);
 const nej = (m) => { console.log(`  FEJL  ${m}`); fejl++; };
@@ -23,6 +34,40 @@ function verificerElement(sti) {
   // 2. Godkendelsen findes
   (e.godkendt_af && e.godkendt_dato) ? ok(`godkendt af ${e.godkendt_af} ${e.godkendt_dato}`)
                                      : nej('ingen godkendelse i låsefilen');
+
+  // 2b. Tidspunktet. Motoren publicerer paa laasens "dato", og vagthunden
+  // overvaager koeens "tidspunkt". Er de ikke samme oejeblik, overvaages ét
+  // tidspunkt og publiceres paa et andet, og ingen af dem fejler.
+  //
+  // Offsettet kontrolleres mod Danmarks egen tid paa netop den dato. Alle
+  // tidspunkter er skrevet i dansk vaegtid — 07:00 betyder syv om morgenen i
+  // Odense. Staar der +02:00 paa en novemberdato, gaar opslaget ud en time
+  // for tidligt, og intet andet ville fange det.
+  {
+    const d = new Date(e.dato);
+    if (Number.isNaN(d.getTime())) {
+      nej(`ulæseligt dato-felt: ${e.dato}`);
+    } else {
+      const anvendt = String(e.dato).match(/([+-]\d{2}:\d{2})$/)?.[1];
+      const rigtigt = dkOffset(d);
+      if (!anvendt) {
+        nej(`dato mangler tidszone: ${e.dato}. Uden offset læses den som runnerens tid (UTC), ikke dansk tid.`);
+      } else if (anvendt !== rigtigt) {
+        nej(`dato har offset ${anvendt}, men Danmark havde ${rigtigt} den dag (${e.dato}) — opslaget ville gå ud på et andet klokkeslæt end godkendt`);
+      } else {
+        ok(`tidspunkt ${e.dato} er dansk tid (${rigtigt})`);
+      }
+
+      const iKoe = koe.filter((x) => x.element === e.element);
+      if (!iKoe.length) {
+        nej(`element ${e.element} står ikke i publicering/koe.json — vagthunden kan ikke se det`);
+      } else if (new Date(iKoe[0].tidspunkt).getTime() !== d.getTime()) {
+        nej(`køens tidspunkt (${iKoe[0].tidspunkt}) er ikke låsens dato (${e.dato})`);
+      } else {
+        ok('køens tidspunkt er låsens dato');
+      }
+    }
+  }
 
   // 3. Låsen stemmer med felterne
   try {
