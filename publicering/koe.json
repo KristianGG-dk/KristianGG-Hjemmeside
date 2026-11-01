@@ -168,6 +168,22 @@
     "url": null
   },
   {
+    "element": 22,
+    "kanal": "website",
+    "tidspunkt": "2026-10-02T07:00:00.000+02:00",
+    "metode": "motor",
+    "laasefil": "publicering/laase/element-22.json",
+    "url": "https://kristiangg.dk/blog/hvornaar-er-stress-noget-man-skal-goere-noget-ved/"
+  },
+  {
+    "element": 23,
+    "kanal": "website",
+    "tidspunkt": "2026-10-09T07:00:00.000+02:00",
+    "metode": "motor",
+    "laasefil": "publicering/laase/element-23.json",
+    "url": "https://kristiangg.dk/blog/naar-soevnen-ikke-er-problemet/"
+  },
+  {
     "element": 24,
     "kanal": "facebook",
     "tidspunkt": "2026-10-06T19:00:00.000+02:00",
@@ -208,20 +224,12 @@
     "url": null
   },
   {
-    "element": 22,
+    "element": 29,
     "kanal": "website",
-    "tidspunkt": "2026-10-02T07:00:00.000+02:00",
+    "tidspunkt": "2026-10-01T16:00:00.000+02:00",
     "metode": "motor",
-    "laasefil": "publicering/laase/element-22.json",
-    "url": null
-  },
-  {
-    "element": 23,
-    "kanal": "website",
-    "tidspunkt": "2026-10-09T07:00:00.000+02:00",
-    "metode": "motor",
-    "laasefil": "publicering/laase/element-23.json",
-    "url": null
+    "laasefil": "publicering/laase/element-29.json",
+    "url": "https://kristiangg.dk/blog/skovbad-odense-etos-helsemesser/"
   },
   {
     "element": 30,
@@ -277,6 +285,126 @@
     "tidspunkt": "2026-10-18T09:30:00.000+02:00",
     "metode": "manuel",
     "laasefil": null,
+    "url": null
+  },
+  {
+    "element": 40,
+    "kanal": "website",
+    "tidspunkt": "2026-11-04T07:00:00+01:00",
+    "metode": "motor",
+    "laasefil": "publicering/laase/element-40.json",
+    "url": "https://kristiangg.dk/blog/naturterapi-om-vinteren/"
+  },
+  {
+    "element": 41,
+    "kanal": "linkedin",
+    "tidspunkt": "2026-11-05T08:00:00+01:00",
+    "metode": "motor",
+    "laasefil": "publicering/laase/element-41.json",
+    "url": null
+  },
+  {
+    "element": 42,
+    "kanal": "instagram",
+    "tidspunkt": "2026-11-05T19:00:00+01:00",
+    "metode": "motor",
+    "laasefil": "publicering/laase/element-42.json",
+    "url": null
+  },
+  {
+    "element": 43,
+    "kanal": "facebook",
+    "tidspunkt": "2026-11-07T19:00:00+01:00",
+    "metode": "motor",
+    "laasefil": "publicering/laase/element-43.json",
+    "url": null
+  },
+  {
+    "element": 44,
+    "kanal": "instagram",
+    "tidspunkt": "2026-11-09T19:00:00+01:00",
+    "metode": "motor",
+    "laasefil": "publicering/laase/element-44.json",
+    "url": null
+  },
+  {
+    "element": 45,
+    "kanal": "linkedin",
+    "tidspunkt": "2026-11-10T08:00:00+01:00",
+    "metode": "motor",
+    "laasefil": "publicering/laase/element-45.json",
+    "url": null
+  },
+  {
+    "element": 46,
+    "kanal": "website",
+    "tidspunkt": "2026-11-13T07:00:00+01:00",
+    "metode": "motor",
+    "laasefil": "publicering/laase/element-46.json",
+    "url": "https://kristiangg.dk/blog/hvad-sker-der-i-den-foerste-samtale/"
+  },
+  {
+    "element": 47,
+    "kanal": "instagram",
+    "tidspunkt": "2026-11-13T19:00:00+01:00",
+    "metode": "motor",
+    "laasefil": "publicering/laase/element-47.json",
+    "url": null
+  },
+  {
+    "element": 48,
+    "kanal": "facebook",
+    "tidspunkt": "2026-11-16T19:00:00+01:00",
+    "metode": "motor",
+    "laasefil": "publicering/laase/element-48.json",
+    "url": null
+  },
+  {
+    "element": 49,
+    "kanal": "gbp",
+    "tidspunkt": "2026-11-17T09:00:00+01:00",
+    "metode": "manuel",
+    "laasefil": "publicering/laase/element-49.json",
+    "url": null
+  },
+  {
+    "element": 50,
+    "kanal": "instagram",
+    "tidspunkt": "2026-11-18T19:00:00+01:00",
+    "metode": "motor",
+    "laasefil": "publicering/laase/element-50.json",
+    "url": null
+  },
+  {
+    "element": 51,
+    "kanal": "linkedin",
+    "tidspunkt": "2026-11-19T08:00:00+01:00",
+    "metode": "motor",
+    "laasefil": "publicering/laase/element-51.json",
+    "url": null
+  },
+  {
+    "element": 52,
+    "kanal": "facebook",
+    "tidspunkt": "2026-11-20T19:00:00+01:00",
+    "metode": "motor",
+    "laasefil": "publicering/laase/element-52.json",
+    "url": null
+  },
+  {
+    "element": 53,
+    "kanal": "gbp",
+    "tidspunkt": "2026-11-04T09:00:00+01:00",
+    "metode": "manuel",
+    "laasefil": "publicering/laase/element-53.json",
+    "url": null
+  },
+  {
+    "element": 54,
+    "kanal": "gbp",
+    "tidspunkt": "2026-11-10T09:00:00+01:00",
+    "metode": "manuel",
+    "laasefil": "publicering/laase/element-54.json",
     "url": null
   }
 ]

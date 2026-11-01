@@ -145,17 +145,23 @@ async function main() {
       continue;
     }
 
-    // Facebook, Google og LinkedIn holder selv opslaget. Motoren kan ikke se
-    // ind i dem herfra, saa dette kan ikke bevises — kun paamindes om.
+    // Facebook, Google og LinkedIn holder selv opslaget, naar det er afleveret
+    // til dem. Motoren kan ikke se ind i dem herfra, saa det kan ikke bevises —
+    // kun paamindes om.
     //
-    // Instagram er en undtagelse: Meta holder IKKE et Instagram-opslag for os.
-    // Der er ingen scheduled_publish_time, saa motoren publicerer selv paa
-    // tidspunktet. Staar et forfaldent Instagram-element uden resultat, ligger
-    // det altsaa ingen steder og venter — den planlagte koersel har svigtet.
+    // Instagram og Google Business Profile med metode "motor" er undtagelsen:
+    // der findes ingen scheduled_publish_time paa Instagram, og GBP-API'et
+    // holder ikke et opslag for os. Motoren publicerer selv paa tidspunktet.
+    // Staar et forfaldent element uden resultat, ligger det altsaa ingen
+    // steder og venter — den planlagte koersel har svigtet.
     //
-    // Google Business Profile med metode "motor" er samme tilfaelde: API'et
-    // holder ikke et opslag, saa motoren publicerer selv paa tidspunktet.
-    if (e.kanal === 'instagram' || (e.kanal === 'gbp' && e.metode === 'motor')) {
+    // METODEN AFGOER, IKKE KANALEN. Et Instagram-element med metode "manuel"
+    // har ingen laasefil, og Instagram-motoren udvaelger netop fra laasefiler.
+    // Den kan derfor slet ikke behandle elementet, og en alarm om en svigtet
+    // automatisk koersel ville vaere usand. Element 36 (18-10-2026) beviste
+    // det: vagthunden meldte FEJL paa en koersel, der aldrig skulle have
+    // vaeret der.
+    if ((e.kanal === 'instagram' || e.kanal === 'gbp') && e.metode === 'motor') {
       // Her kan vi faktisk bevise noget. Havde koerslen gjort sit arbejde,
       // stod der en raekke i registret. Den planlagte koersel gaar hver halve
       // time, saa vi giver en times naade for forsinkelse hos GitHub.
@@ -168,7 +174,23 @@ async function main() {
       continue;
     }
 
-    const hvor = e.metode === 'motor' ? 'hos Meta' : 'i platformens brugerflade';
+    // Resten skal publiceres eller bekraeftes af et menneske. STATUS afgoer
+    // ordlyden, ikke kanalen og ikke metoden.
+    //
+    // "AFVENTER DATO" betyder, at intet er afleveret nogen steder: elementet
+    // ligger kun i koeen. Siger vagthunden "planlagt i platformens
+    // brugerflade" om det, paastaar den en handling, ingen har foretaget — og
+    // saa ser et element, der er faldet paa gulvet, ud som et element, der
+    // ligger og venter hos Meta.
+    if (sidste.status === 'AFVENTER DATO') {
+      ADVAR(e.element, `${e.kanal}: forfaldt ${dk(forfald)} — passeret for ${dageSiden} dag(e) siden, og intet er afleveret til platformen. Manuel publicering eller bekraeftelse mangler.`);
+      continue;
+    }
+
+    // "PLANLAGT" saettes kun, naar Meta har kvitteret for at holde opslaget.
+    // "PLANLAGT MANUELT" betyder, at nogen har lagt det i platformens egen
+    // planlaegger. Ordlyden foelger derfor status, ikke metode.
+    const hvor = sidste.status === 'PLANLAGT' ? 'hos Meta' : 'i platformens brugerflade';
     ADVAR(e.element, `${e.kanal}: planlagt ${hvor} til ${dk(forfald)} — passeret for ${dageSiden} dag(e) siden. Bekraeft selv at opslaget er gaaet ud.`);
   }
 

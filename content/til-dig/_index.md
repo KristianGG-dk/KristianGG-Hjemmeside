@@ -31,7 +31,7 @@ services:
     href: "/til-dig/naturterapi/"
   - icon: ""
     title: "Psykoterapi"
-    description: "Helhedsorienteret psykoterapi der kombinerer samtaleterapi, hypnoterapi, NLP, KAT og DAT. Tilpasset netop dig og din situation."
+    description: "Helhedsorienteret psykoterapi der kombinerer samtaleterapi, hypnoterapi, NLP og KAT. Tilpasset netop dig og din situation."
     href: "/til-dig/psykoterapi/"
 
 delivery_formats:

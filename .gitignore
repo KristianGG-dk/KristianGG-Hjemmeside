@@ -23,3 +23,4 @@ client_secret*.json
 publicering/scripts/.gbp-state
 resultat-google.json
 resultat-instagram.json
+resultat-linkedin.json

@@ -1,16 +1,33 @@
-# Godkender ALLE ventende Facebook-elementer paa én gang.
+# Afleverer ALLE ventende Facebook-elementer til Meta.
 #
-# Hvert element afleveres til Meta med published=false og sit eget laaste
-# tidspunkt. Meta holder opslagene og offentliggoer dem selv paa datoen.
-# Du trykker altsaa én gang, og de gaar ud hver for sig.
+# Hvert element afleveres med published=false og sit eget laaste tidspunkt.
+# Meta holder opslagene og offentliggoer dem selv paa datoen.
 #
-# Startes ALDRIG automatisk. Toerloeb er standard.
+# Koerer nu ogsaa automatisk. Indtil 25-10-2026 var den kun manuel, og det
+# kostede fire opslag: element 33 og 34 var godkendte, laaste
+# Facebook-elementer med metode "motor", men ingen startede workflowet foer
+# deres dato. De staar stadig som AFVENTER DATO, og messen er forbi.
+# Element 35 og 36 faldt paa samme maade.
+#
+# Automatisk koersel er sikker, fordi udvaelgelsen i planlaeg-facebook.mjs
+# allerede spaerrer alt andet end et godkendt, laast og endnu ikke afsendt
+# element inden for Metas vindue paa 10 minutter til 30 dage. Et element uden
+# laasefil kan den slet ikke se, og et tidligere fejlet forsoeg er en spaerre.
 #
 # Delt i to jobs som publicer-social.yml: planlaegningen koerer uden
 # skriveadgang til repoet, og kun registreringen bagefter maa skrive.
 name: Planlaeg alle ventende elementer
 
 on:
+  schedule:
+    # Hver sjette time. Metas minimum er 10 minutter, saa et element skal blot
+    # vaere godkendt og merget nogle timer foer sin dato. Hyppigere er
+    # formaalsloest: Meta holder alligevel opslaget til tidspunktet.
+    #
+    # Falder et element uden for vinduet - dato passeret, eller under 10
+    # minutter ude - springer udvaelgelsen det over og siger hvorfor.
+    # Vagthunden fanger det bagefter.
+    - cron: '40 */6 * * *'
   workflow_dispatch:
     inputs:
       planlaeg:
@@ -19,8 +36,14 @@ on:
         type: boolean
         default: false
 
-permissions: {}
+# To koersler maa aldrig vaere i gang samtidig: registret skrives foerst i
+# jobbet "registrer", saa en overlappende koersel kunne aflevere det samme
+# element til Meta to gange.
+concurrency:
+  group: planlaeg-alle
+  cancel-in-progress: false
 
+permissions: {}
 jobs:
   planlaeg:
     runs-on: ubuntu-latest
@@ -40,13 +63,15 @@ jobs:
         env:
           FB_PAGE_ID: ${{ secrets.FB_PAGE_ID }}
           FB_PAGE_TOKEN: ${{ secrets.FB_PAGE_TOKEN }}
-          PLANLAEG: ${{ inputs.planlaeg }}
+          # Planlagt koersel planlaegger for alvor. Manuel start er toerloeb,
+          # medmindre der udtrykkeligt saettes flueben.
+          PLANLAEG: ${{ github.event_name == 'schedule' || inputs.planlaeg }}
         run: |
           ARGS=""; [ "$PLANLAEG" = "true" ] && ARGS="--planlaeg"
           node publicering/scripts/planlaeg-facebook.mjs $ARGS
 
       - name: Gem resultatet til registrering
-        if: ${{ always() && inputs.planlaeg }}
+        if: ${{ always() && (github.event_name == 'schedule' || inputs.planlaeg) }}
         uses: actions/upload-artifact@v4
         with:
           name: resultat-planlaegning
@@ -55,7 +80,7 @@ jobs:
 
   registrer:
     needs: planlaeg
-    if: ${{ always() && inputs.planlaeg }}   # ogsaa naar planlaegningen fejlede
+    if: ${{ always() && (github.event_name == 'schedule' || inputs.planlaeg) }}   # ogsaa naar planlaegningen fejlede
     runs-on: ubuntu-latest
     permissions:
       contents: write    # eneste sted der skrives, og kun register.json

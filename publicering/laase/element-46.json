@@ -1,0 +1,33 @@
+{
+  "element": 46,
+  "kanal": "website",
+  "titel": "Hvad sker der i den første samtale?",
+  "alt_tekst": "Kristian G. G. Dansted udendørs med et stykke træ i hånden",
+  "billede": "kristian-portraet",
+  "cta": "Gratis telefonsamtale via kontaktsiden",
+  "hashtags": [],
+  "dato": "2026-11-13T07:00:00+01:00",
+  "godkendt_af": "Kristian G. G. Dansted",
+  "godkendt_dato": "2026-11-01",
+  "godkendelsespakke": "2026-uge-45-47.md",
+  "kildefil": "content/blog/2026-11-13-hvad-sker-der-i-den-foerste-samtale.md",
+  "meta_description": "Telefonsamtalen først, og den koster ikke noget. Hvad den første rigtige samtale går med, og hvad du ikke skal forberede. Psykoterapi i Odense og på Fyn.",
+  "slug": "hvad-sker-der-i-den-foerste-samtale",
+  "slut_url": "/blog/hvad-sker-der-i-den-foerste-samtale/",
+  "kategorier": [
+    "psykoterapi"
+  ],
+  "og_image": "/images/natur/kristian-portraet-640.jpg",
+  "links": [
+    "/til-dig/psykoterapi/",
+    "/priser/",
+    "/kontakt/"
+  ],
+  "brodtekst_sha256": "9c0e7bbc491d7799c04010ddec5d68fffdfd89ccf73c47c626bdcff9fe4dbdf1",
+  "godkendt_tekst_sha256": "f69290e3572cdd4c1b1d69785473450710ee9d59f4c39aee5c1b029760299195",
+  "kontrol": {
+    "version": "1.0.0",
+    "resultat_sha256": "4c5465ef47113b52"
+  },
+  "versionslaas": "b72c869c425ca811"
+}

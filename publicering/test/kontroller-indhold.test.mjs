@@ -40,6 +40,49 @@ fanges('pris der ikke findes', 'Tre timer koster 1.500 kr.', 'pris', 'FAIL');
 fanges('ekskl. moms', 'Tre timer koster 1.800 kr. ekskl. moms.', 'moms', 'FAIL');
 slipper('rigtig pris', 'Tre timer koster 1.800 kr.');
 
+// ── Tredjeparts priser ───────────────────────────────────────────────────
+// Reglen skal skelne mellem Kristians egen pris og en andens. Fem tilfaelde,
+// bygget over det konkrete fund: Etos' entré til deres egen messe i element 33.
+// FIRE ud af fem skal stadig fange. Afgraensningen aabner ÉT hul, ikke flere.
+console.log('\nTredjeparts priser (FAIL i fire af fem tilfaelde)');
+const ETOS = [{ beloeb: 60, hvem: 'Etos', kilde: 'https://etos.dk/odense/' }];
+
+// 1. Egen pris med daekning paa /priser/ — skal slippe.
+slipper('1/5 egen pris staar paa /priser/', 'Tre timer naturterapi koster 1.800 kr.');
+
+// 2. Egen pris UDEN daekning — skal fange. Afgraensningen maa ikke aabne denne.
+fanges('2/5 egen pris uden daekning paa /priser/', 'Et forloeb koster 2.450 kr.', 'pris', 'FAIL');
+
+// 3. Tredjeparts pris, dokumenteret OG tilskrevet — skal slippe.
+slipper('3/5 tredjeparts pris, dokumenteret og tilskrevet',
+  'Etos Helsemesser tager selv entré ved indgangen: 60 kr. for én dag.',
+  { tredjepartspriser: ETOS });
+
+// 4. Tilskrevet i teksten, men IKKE dokumenteret i laasefilen — skal fange.
+//    Ingen har kontrolleret tallet mod ejerens egen offentliggoerelse.
+fanges('4/5 tilskrevet men udokumenteret',
+  'Etos Helsemesser tager selv entré ved indgangen: 60 kr. for én dag.', 'pris', 'FAIL');
+
+// 5. Dokumenteret i laasefilen, men IKKE tilskrevet i teksten — skal fange.
+//    Laeseren kan tage de 60 kr. for Kristians egen pris.
+fanges('5/5 dokumenteret men utilskrevet',
+  'Der er entré ved indgangen: 60 kr. for én dag.', 'pris', 'FAIL',
+  { tredjepartspriser: ETOS });
+
+// Afgraensningen maa ikke kunne aabnes med en ufuldstaendig post.
+fanges('post uden kilde daekker ikke', 'Etos tager 60 kr. i entré.', 'pris', 'FAIL',
+  { tredjepartspriser: [{ beloeb: 60, hvem: 'Etos' }] });
+fanges('post uden hvem daekker ikke', 'Etos tager 60 kr. i entré.', 'pris', 'FAIL',
+  { tredjepartspriser: [{ beloeb: 60, kilde: 'https://etos.dk/odense/' }] });
+// Tilskrivningen skal staa FOER beloebet og taet paa det.
+fanges('navnet staar efter beloebet', 'Entréen er 60 kr. Den opkraeves af Etos.', 'pris', 'FAIL',
+  { tredjepartspriser: ETOS });
+
+console.log('\nDAT som kvalifikation (FAIL)');
+fanges('DAT som forkortelse', 'Jeg har uddannelse i bl.a. KAT, DAT og NLP.', 'titler', 'FAIL');
+fanges('DAT skrevet ud', 'Jeg arbejder med dialektisk adfærdsterapi.', 'titler', 'FAIL');
+slipper('KAT alene er uberoert', 'Jeg har uddannelse i kognitiv adfærdsterapi (KAT).');
+
 console.log('\nForskning uden kilde (FAIL)');
 fanges('studie uden evidens', 'Et randomiseret forsøg fra 2018 undersøgte et program.', 'forskning', 'FAIL');
 slipper('studie med evidens', 'Et randomiseret forsøg fra 2018 undersøgte et program.',

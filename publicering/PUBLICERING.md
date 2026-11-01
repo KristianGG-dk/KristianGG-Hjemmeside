@@ -20,19 +20,48 @@ Motoren udfører den tekniske handling. Den træffer ingen beslutning om indhold
 | Kanal | Publicering | Hvem udløser | Planlægning |
 | --- | --- | --- | --- |
 | `website` | Hugo + Netlify | automatisk | Hugo udelader fremtidsdaterede indlæg; `genopbyg-planlagt` bygger på dagen |
-| `facebook` | Meta Graph API | Kristian trykker | **Meta holder opslaget** via `scheduled_publish_time` |
+| `facebook` | Meta Graph API | automatisk, `planlaeg-alle` hver 6. time | **Meta holder opslaget** via `scheduled_publish_time` |
 | `instagram` | Meta Graph API | automatisk på tidspunktet | **motoren holder det selv** — se nedenfor |
-| `linkedin` | manuelt i LinkedIns brugerflade | Kristian | manuelt |
+| `linkedin` | LinkedIn REST API | automatisk på tidspunktet | **motoren holder det selv** — LinkedIn kan ikke planlægge |
 | `gbp`, `metode: motor` | Google Business Profile API | automatisk på tidspunktet | **motoren holder det selv** — se nedenfor |
 | `gbp`, `metode: manuel` | manuelt i Google Business Profile | Kristian | manuelt |
 
-`linkedin` har ingen aktiv API-integration. Den planlægges i platformens egen
-brugerflade og **registreres** i motoren, så kø, register og vagthund dækker
-den på lige fod. Det samme gælder `gbp`-elementer med `metode: manuel`.
+Et element med `metode: manuel` i køen røres aldrig af motoren, uanset kanal.
+Det er køens `metode`, der afgør det, ikke låsefilen. Et element **uden
+låsefil** kan motoren slet ikke se: alle udvælgelser læser `publicering/laase`.
 
-`gbp` med `metode: motor` publiceres af motoren gennem Business Profile API'et
-(fra 04-10-2026). Det er køens `metode`, der afgør det, ikke låsefilen: et
-element, der står som manuelt i køen, røres aldrig af motoren.
+`gbp` med `metode: motor` publiceres gennem Business Profile API'et
+(fra 04-10-2026).
+
+### Facebook: hvorfor kørslen blev automatisk
+
+`planlaeg-alle` var kun manuel indtil 25-10-2026. Det kostede fire opslag.
+Element 33 og 34 var godkendte, låste Facebook-elementer med `metode: motor`,
+men ingen startede workflowet før deres dato. De står stadig som
+`AFVENTER DATO`, og messen er forbi. Element 35 og 36 faldt på samme måde.
+
+Automatisk kørsel er sikker, fordi udvælgelsen i `planlaeg-facebook.mjs`
+allerede spærrer alt andet end et godkendt, låst og endnu ikke afsendt element
+inden for Metas vindue på 10 minutter til 30 dage. Et element, hvis dato er
+passeret, springes over med en begrundelse — motoren publicerer **ikke** et
+forsinket opslag af sig selv. Det kræver en ny dato og en ny godkendelse.
+
+### LinkedIn: motoren skal selv være vågen
+
+LinkedIn kan ikke planlægge. `lifecycleState` accepterer kun `PUBLISHED` ved
+oprettelse, og der findes ingen `scheduledAt`. Skal et opslag ud kl. 08.00,
+skal nogen kalde API'et kl. 08.00.
+
+`publicer-linkedin-planlagt.yml` gør det hvert kvarter, med samme model som
+Instagram: udvælgelsen ligger i `publicer-linkedin-planlagt.mjs`, og den
+faktiske publicering i `publicer-linkedin.mjs`, som er **uændret**. Den fil
+bærer destinationskontrollen med fem spærrer og har tre prøver på sig; den
+røres ikke for at tilføje planlægning.
+
+De fem hidtidige LinkedIn-elementer er publiceret manuelt og har ingen
+låsefil. Motoren kan derfor ikke se dem, og den rører dem ikke. Automatisk
+LinkedIn-publicering gælder først de elementer, der godkendes **med** låsefil
+fra nu af.
 
 ## Godkendelse på tværs af kanaler
 
@@ -159,6 +188,28 @@ Instagram og `gbp` med `metode: motor` bruger `AFVENTER DATO` → `PUBLICERET`
 eller `PUBLICERING FEJLET`. `PLANLAGT` bruges ikke, fordi platformen ikke holder
 opslaget.
 
+### `PUBLICERET` på bevis eller på bekræftelse
+
+En post bliver `PUBLICERET` på to måder, og de er ikke lige stærke:
+
+| | Grundlag | Felt |
+| --- | --- | --- |
+| Maskinelt | platformen svarede motoren, eller siden blev hentet | `"verifikation": "maskinel_http"`, eller intet felt når `post_id` bærer beviset |
+| Bekræftelse | Kristian har set opslaget og sagt det | `"verifikation": "kristians_bekraeftelse"` |
+
+En bekræftelse dækker **at opslaget er gået ud**. Den er ikke en godkendelse af
+indholdet, og den erstatter ikke en låsefil.
+
+Element 2 er grunden til, at forskellen står i filen. Den blev sat til
+`PUBLICERET` 18-09 på en bekræftelse, der viste sig at være forkert — opslaget
+lå stadig i LinkedIns planlægger — og blev rettet tilbage 19-09. Vagthunden
+skriver derfor bekræftede poster ud med teksten *"ikke maskinelt verificeret"*,
+så de aldrig ser ud som bevis.
+
+Hvor en maskinel vej findes men ikke er bygget, skal `noter` sige det. For
+Facebook findes `post_id`, og en skrivebeskyttet kontrol af `is_published` via
+Graph API er mulig i environment `publicering`. Den er ikke bygget.
+
 ## Vagthunden
 
 Vagthunden sammenholder køen med registret to gange dagligt. Den **læser kun** —
@@ -175,6 +226,34 @@ kan derfor kun påminde. **Instagram og `gbp` med `metode: motor` er
 undtagelser:** da motoren selv publicerer, ville en kørsel have efterladt en
 post i registret. Et forfaldent element uden resultat er derfor en **FEJL** —
 efter en times nåde for forsinkelse hos GitHub.
+
+### Metoden afgør alarmen, ikke kanalen
+
+Alarmen om en svigtet automatisk kørsel gælder kun `metode: motor`. Et
+Instagram-element med `metode: manuel` har ingen låsefil, og
+Instagram-motoren udvælger netop fra låsefiler — den kan slet ikke se
+elementet.
+
+Element 36 (18-10-2026) beviste det. Vagthunden meldte FEJL på en kørsel,
+der aldrig skulle have været der, og den fejl stod i vejen for de to rigtige
+fund i samme kørsel.
+
+### Status afgør ordlyden
+
+| Seneste status | Hvad vagthunden siger |
+| --- | --- |
+| `AFVENTER DATO` | *intet er afleveret til platformen. Manuel publicering eller bekræftelse mangler* |
+| `PLANLAGT` | *planlagt hos Meta — bekræft selv* |
+| `PLANLAGT MANUELT` | *planlagt i platformens brugerflade — bekræft selv* |
+
+`AFVENTER DATO` betyder, at elementet kun ligger i køen. Skrev vagthunden
+«planlagt i platformens brugerflade» om det, påstod den en handling, ingen
+havde foretaget — og et element, der var faldet på gulvet, så ud som et
+element, der lå og ventede hos Meta. Element 33, 34 og 35 stod netop sådan
+efter messen.
+
+Regressionsprøven ligger i `publicering/test/vagthund.test.mjs`. Den kører
+scriptet som en sort boks mod midlertidige kø- og registerfiler.
 
 Vagthunden varsler også, hvis Google-adgangen er tidsbegrænset (appen står i
 "Testing"), og hvis der ligger motorelementer til Google, men adgangen aldrig
@@ -242,6 +321,50 @@ kontrolstempel der ikke passer.
 
 REVIEW: effektord, kvantorer og procenttal uden kilde, og samme tekst paa to
 kanaler.
+
+### Priser: egne og andres
+
+Reglen er, at **en pris skal være den rigtige** — ikke at ingen andens pris må
+nævnes. Indtil 04-10-2026 fejlede alle beløb, der ikke stod på `/priser/`.
+Det fjernede Etos' egne entrépriser fra element 33, selv om de var rigtige og
+ikke Kristians. Reglen er derfor delt i to:
+
+| Prisen er | Krav |
+| --- | --- |
+| Kristians egen | beløbet skal stå på `content/priser.md` |
+| en tredjeparts | **dokumentation** og **tilskrivning** — begge dele |
+
+Dokumentationen er en post i låsefilens `tredjepartspriser`:
+
+```json
+"tredjepartspriser": [
+  { "beloeb": 100, "hvem": "Foreningen mod Familiebelastning",
+    "kilde": "https://kristiangg.dk/begivenheder/skovbad-svanninge-bakker/" }
+]
+```
+
+Tilskrivningen er, at navnet i `hvem` står i teksten **senest 160 tegn før
+beløbet**. Står det efter beløbet, eller længere væk, er det ikke tilskrevet.
+
+Ingen af delene er nok alene. Dokumentation uden tilskrivning betyder, at
+læseren læser prisen som Kristians. Tilskrivning uden dokumentation betyder,
+at ingen har kontrolleret tallet mod ejerens egen offentliggørelse.
+
+`tredjepartspriser` indgår ikke i `LAASTE_FELTER`, men feltet er alligevel
+dækket: tilføjer nogen en post efter godkendelsen, forsvinder et FAIL fra
+kontrolresultatet, og så afviger kontrolstemplet, og gaten stopper.
+
+### DAT
+
+`DAT` og `dialektisk adfaerdsterapi` er på listen over forbudte betegnelser
+siden 04-10-2026. Der foreligger ingen dokumentation for kvalifikationen.
+Betegnelsen er fjernet fra `content/til-dig/_index.md` og
+`content/til-kommuner/vikardaekning.md`, og den findes ikke længere i det
+byggede site. `KAT` er uberørt og dokumenteret.
+
+To forekomster er **bevidst bevaret**, fordi de er selve spærren og ikke en
+påstand: mønsteret i `indholdsregler.json` og prøven i
+`publicering/test/kontroller-indhold.test.mjs`.
 
 ### Foer godkendelse
 

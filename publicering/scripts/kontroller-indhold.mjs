@@ -73,7 +73,37 @@ export function kendtePriser(sti) {
 
 export function priserITekst(tekst) {
   return [...tekst.matchAll(/(\d{1,3}(?:\.\d{3})+|\d+)\s*(?:kr\.?|kroner|DKK)/gi)]
-    .map((m) => ({ beloeb: Number(m[1].replaceAll('.', '')), match: m[0] }));
+    .map((m) => ({ beloeb: Number(m[1].replaceAll('.', '')), match: m[0], idx: m.index }));
+}
+
+// ── Tredjeparts priser ───────────────────────────────────────────────────
+// Reglen er, at en pris skal vaere den rigtige. Den er ikke, at ingen andens
+// pris maa naevnes. Entréen til en andens messe er en oplysning, ikke et
+// tilbud fra Kristian.
+//
+// Indtil 04-10-2026 fejlede alle beloeb, der ikke stod paa /priser/. Det
+// fjernede Etos' egne entrépriser fra element 33, selv om de var rigtige og
+// ikke hans. To ting skal vaere paa plads, foer en andens pris maa staa:
+//
+//   dokumentation   laasefilens felt "tredjepartspriser": {beloeb, hvem, kilde}
+//   tilskrivning    ejerens navn i teksten kort foer beloebet
+//
+// Dokumentation uden tilskrivning betyder, at laeseren laeser prisen som
+// Kristians. Tilskrivning uden dokumentation betyder, at ingen har kontrolleret
+// tallet. Derfor er ingen af delene nok alene.
+export function tredjepartspriser(e) {
+  const m = new Map();
+  for (const p of Array.isArray(e?.tredjepartspriser) ? e.tredjepartspriser : []) {
+    const beloeb = Number(p?.beloeb);
+    if (!Number.isFinite(beloeb) || !p?.hvem || !p?.kilde) continue;
+    m.set(beloeb, p);
+  }
+  return m;
+}
+
+/** Staar ejerens navn i teksten inden for vinduet foer beloebet? */
+export function tilskrevet(tekst, idx, hvem, vindue) {
+  return tekst.slice(Math.max(0, idx - vindue), idx).toLowerCase().includes(String(hvem).toLowerCase());
 }
 
 // ── Genbrug ──────────────────────────────────────────────────────────────
@@ -99,10 +129,19 @@ export function kontrollerElement(e, regler, { priser, andre = [] } = {}) {
   for (const f of fund(tekst, regler.moms.moenster))
     tilfoej('FAIL', 'moms', regler.moms, f, 'Aldrig "ekskl. moms" paa en forbrugerpris for en momsfri ydelse', regler.moms.moenster);
 
-  for (const p of priserITekst(tekst))
-    if (!priser.has(p.beloeb))
-      tilfoej('FAIL', 'pris', regler.pris, { match: p.match, uddrag: uddrag(tekst, tekst.indexOf(p.match), p.match.length) },
-        `Beloebet ${p.beloeb} kr. findes ikke paa /priser/`, 'pris');
+  const tredje = tredjepartspriser(e);
+  const vindue = regler.pris.tredjepart?.tilskrivning_tegn ?? 160;
+  for (const p of priserITekst(tekst)) {
+    if (priser.has(p.beloeb)) continue;              // egen pris med daekning paa /priser/
+    const f = { match: p.match, uddrag: uddrag(tekst, p.idx, p.match.length) };
+    const tp = tredje.get(p.beloeb);
+    if (!tp)
+      tilfoej('FAIL', 'pris', regler.pris, f,
+        `Beloebet ${p.beloeb} kr. findes ikke paa /priser/ og er ikke dokumenteret som en tredjeparts pris i laasefilens "tredjepartspriser"`, 'pris');
+    else if (!tilskrevet(tekst, p.idx, tp.hvem, vindue))
+      tilfoej('FAIL', 'pris', regler.pris, f,
+        `Beloebet ${p.beloeb} kr. er dokumenteret som ${tp.hvem}s pris, men "${tp.hvem}" staar ikke i teksten inden for ${vindue} tegn foer beloebet. Uden tilskrivning kan den laeses som Kristians egen pris`, 'pris');
+  }
 
   const harEvidens = Array.isArray(e.evidens) && e.evidens.length > 0
     && e.evidens.every((x) => x.id && x.url && x.dokumenterer_ikke);

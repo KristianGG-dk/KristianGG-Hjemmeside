@@ -1,0 +1,33 @@
+{
+  "element": 40,
+  "kanal": "website",
+  "titel": "Naturterapi om vinteren — hvad der faktisk ændrer sig",
+  "alt_tekst": "Lav vintersol gennem bare trækroner i en fynsk skov",
+  "billede": "vintersol-skov",
+  "cta": "Gratis telefonsamtale via kontaktsiden",
+  "hashtags": [],
+  "dato": "2026-11-04T07:00:00+01:00",
+  "godkendt_af": "Kristian G. G. Dansted",
+  "godkendt_dato": "2026-11-01",
+  "godkendelsespakke": "2026-uge-45-47.md",
+  "kildefil": "content/blog/2026-11-04-naturterapi-om-vinteren.md",
+  "meta_description": "Naturterapi foregår året rundt. Hvad der ændrer sig i november: ruten, tempoet og det, folk kommer med. Skovene og kysterne omkring Odense og på Fyn.",
+  "slug": "naturterapi-om-vinteren",
+  "slut_url": "/blog/naturterapi-om-vinteren/",
+  "kategorier": [
+    "naturterapi"
+  ],
+  "og_image": "/images/natur/vintersol-skov-640.jpg",
+  "links": [
+    "/til-dig/naturterapi/",
+    "/til-dig/stress/",
+    "/kontakt/"
+  ],
+  "brodtekst_sha256": "c1bc3654f551a66ebe164239f29d87c1aea97c25ecaea7f75c337fec000c22c4",
+  "godkendt_tekst_sha256": "4e759f37a8c22c9ac98d2173071a98c4df1e7d98a1e0c2a9f9ce2380d12a2c84",
+  "kontrol": {
+    "version": "1.0.0",
+    "resultat_sha256": "969e1deb17112093"
+  },
+  "versionslaas": "0ee616d01ee9f011"
+}

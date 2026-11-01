@@ -18,9 +18,22 @@ name: Publicer planlagte Instagram-elementer
 
 on:
   schedule:
-    # Hver halve time. GitHub kan forsinke planlagte koersler under belastning,
-    # saa et opslag gaar ud paa eller kort efter det godkendte tidspunkt.
-    - cron: '0,30 * * * *'
+    # Hvert kvarter, paa skaeve minutter.
+    #
+    # Maalt paa de syv Instagram-elementer, motoren har publiceret, gik
+    # opslagene ud 45, 95, 104, 136, 152, 165 og 212 minutter efter det
+    # godkendte tidspunkt. Ingen af dem til tiden.
+    #
+    # Aarsagen er koe hos GitHub, ikke i udvaelgelsen: scriptet springer et
+    # element over, saa laenge dato ligger i fremtiden, og publicerer ved
+    # foerste koersel derefter. '0,30 * * * *' er det mest brugte cron-udtryk
+    # paa GitHub Actions, og planlagte koersler staar i koe, naar alle andres
+    # ogsaa goer. Skaeve minutter rammer uden for myldretiden, og fire
+    # koersler i timen giver fire chancer i stedet for to.
+    #
+    # Opslaget kan aldrig gaa ud FOER sin godkendte dato. Taettere koersler
+    # kan kun goere forsinkelsen mindre, aldrig negativ.
+    - cron: '7,22,37,52 * * * *'
   workflow_dispatch:
     inputs:
       publicer:
@@ -28,6 +41,15 @@ on:
         required: true
         type: boolean
         default: false
+
+# To koersler maa aldrig vaere i gang samtidig. Registret skrives foerst i
+# jobbet "registrer", saa en overlappende koersel ville laese et register uden
+# den foerstes post og kunne publicere det samme element to gange. Med fire
+# koersler i timen er vinduet mindre, og spaerren derfor noedvendig. Den
+# anden koersel venter i stedet og ser det opdaterede register.
+concurrency:
+  group: publicer-instagram-planlagt
+  cancel-in-progress: false
 
 permissions: {}
 
