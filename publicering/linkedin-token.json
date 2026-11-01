@@ -1,0 +1,9 @@
+{
+  "urn": "urn:li:person:fV4QpuSXtN",
+  "fornyet": "2026-11-01T20:52:15.411Z",
+  "udloeber": "2026-12-31T20:52:11.946Z",
+  "levetid_dage": 60,
+  "scope": "openid,profile,w_member_social",
+  "har_refresh_token": false,
+  "refresh_levetid_dage": null
+}
