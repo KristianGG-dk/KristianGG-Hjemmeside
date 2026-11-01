@@ -32,7 +32,7 @@ import { readFileSync, writeFileSync, existsSync, readdirSync } from 'node:fs';
 import { join } from 'node:path';
 import { beregnLaas, sha256 } from './laas.mjs';
 import {
-  registerSpaerre, forfald, kravraekke, forSentRaekke, foejTilRegister,
+  registerSpaerre, koeSpaerre, forfald, kravraekke, forSentRaekke, foejTilRegister,
   MAKS_FORSINKELSE_S,
 } from './krav.mjs';
 
@@ -40,6 +40,7 @@ const GRAPH = 'https://graph.facebook.com/v21.0';
 const LAASE = 'publicering/laase';
 const REGISTER = 'publicering/register.json';
 const KRAV = 'krav-instagram.json';
+const KOE = 'publicering/koe.json';
 
 // Ventetid paa at containeren bliver klar. Meta behandler asynkront.
 const POLL_FORSOEG = 20;
@@ -103,8 +104,9 @@ async function containerStatus(id) {
 }
 
 /** Samler de elementer der er forfaldne, og forklarer hvert fravalg. */
-export function udvaelg(nu, { laase = LAASE, register } = {}) {
+export function udvaelg(nu, { laase = LAASE, register, koe } = {}) {
   const reg = register ?? laesRegister();
+  const k = koe ?? (existsSync(KOE) ? JSON.parse(readFileSync(KOE, 'utf8')) : []);
   const valgt = [], sprunget = [], forSent = [];
 
   for (const f of readdirSync(laase).filter((x) => x.endsWith('.json')).sort()) {
@@ -115,6 +117,10 @@ export function udvaelg(nu, { laase = LAASE, register } = {}) {
     // Faelles spaerre: afsendt, undervejs, fejlet eller stoppet.
     const spaerre = registerSpaerre(reg, nr);
     if (spaerre) { sprunget.push([nr, spaerre]); continue; }
+
+    // Koeen skal sige «motor» og vaere enig med laasen. Se koeSpaerre.
+    const kSpaerre = koeSpaerre(k, e, laase === LAASE ? `${LAASE}/${f}` : null, 'instagram');
+    if (kSpaerre) { sprunget.push([nr, kSpaerre]); continue; }
 
     try {
       const { laas } = beregnLaas(e);

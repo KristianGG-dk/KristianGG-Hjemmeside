@@ -22,6 +22,22 @@ on:
     # Minutterne er forskudt fra Instagram (7,22,37,52) og Google (5,35), saa
     # de tre koersler ikke slaas om den samme runner.
     - cron: '11,26,41,56 * * * *'
+  # GitHubs cron er «best effort» og intet andet. Maalt 27/10-01/11 koerte
+  # dette workflow reelt hver 3.-6. time, ikke hvert kvarter (issue #90).
+  # Med 60-minutters-graensen betyder det, at de fleste opslag vil blive
+  # STOPPET i stedet for publiceret — graensen er ikke problemet, cron er.
+  #
+  # Derfor kan koerslen ogsaa startes udefra. En paalidelig planlaegger
+  # (cron-job.org, en Netlify-funktion, en maskine der koerer) kalder:
+  #
+  #   POST https://api.github.com/repos/KristianGG-dk/KristianGG-Hjemmeside/dispatches
+  #   Authorization: Bearer <fine-grained PAT, kun Actions: write>
+  #   {"event_type": "publicer-linkedin"}
+  #
+  # Se dokumentation/paalidelig-udloeser.md. Indtil den findes, er cron den
+  # eneste udloeser, og saa vil graensen standse opslag.
+  repository_dispatch:
+    types: [publicer-linkedin]
   workflow_dispatch:
     inputs:
       publicer:
@@ -61,14 +77,14 @@ jobs:
 
       - name: Tag kravet paa forfaldne elementer
         id: tag
-        if: ${{ github.event_name == 'schedule' || inputs.publicer }}
+        if: ${{ github.event_name == 'schedule' || github.event_name == 'repository_dispatch' || inputs.publicer }}
         run: |
           set -euo pipefail
           node publicering/scripts/publicer-linkedin-planlagt.mjs --tag-krav
           echo "antal=$(node -e 'console.log(JSON.parse(require("fs").readFileSync("krav-linkedin.json","utf8")).length)')" >> "$GITHUB_OUTPUT"
 
       - name: Commit kravet
-        if: ${{ github.event_name == 'schedule' || inputs.publicer }}
+        if: ${{ github.event_name == 'schedule' || github.event_name == 'repository_dispatch' || inputs.publicer }}
         run: |
           git config user.name "publiceringsmotor"
           git config user.email "kontakt@kristiangg.dk"
@@ -78,7 +94,7 @@ jobs:
             "node publicering/scripts/publicer-linkedin-planlagt.mjs --tag-krav"
 
       - name: Gem kravet til publiceringsjobbet
-        if: ${{ github.event_name == 'schedule' || inputs.publicer }}
+        if: ${{ github.event_name == 'schedule' || github.event_name == 'repository_dispatch' || inputs.publicer }}
         uses: actions/upload-artifact@v4
         with:
           name: krav-linkedin
@@ -114,7 +130,7 @@ jobs:
           LI_TILLADT_URN: ${{ secrets.LI_TILLADT_URN }}
           # Planlagt koersel publicerer for alvor. Manuel start er toerloeb,
           # medmindre der udtrykkeligt saettes flueben.
-          PUBLICER: ${{ github.event_name == 'schedule' || inputs.publicer }}
+          PUBLICER: ${{ github.event_name == 'schedule' || github.event_name == 'repository_dispatch' || inputs.publicer }}
         run: |
           ARGS=""; [ "$PUBLICER" = "true" ] && ARGS="--publicer"
           # Ingen pipe: scriptet skriver selv resultat-linkedin.json.
@@ -122,7 +138,7 @@ jobs:
           node publicering/scripts/publicer-linkedin-planlagt.mjs $ARGS
 
       - name: Gem resultatet til registrering
-        if: ${{ always() && (github.event_name == 'schedule' || inputs.publicer) }}
+        if: ${{ always() && (github.event_name == 'schedule' || github.event_name == 'repository_dispatch' || inputs.publicer) }}
         uses: actions/upload-artifact@v4
         with:
           name: resultat-linkedin
@@ -131,7 +147,7 @@ jobs:
 
   registrer:
     needs: publicer
-    if: ${{ always() && (github.event_name == 'schedule' || inputs.publicer) }}
+    if: ${{ always() && (github.event_name == 'schedule' || github.event_name == 'repository_dispatch' || inputs.publicer) }}
     runs-on: ubuntu-latest
     permissions:
       contents: write    # eneste sted der skrives, og kun register.json
