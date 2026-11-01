@@ -82,7 +82,9 @@ jobs:
           if [ -n "$(git status --porcelain publicering/linkedin-token.json)" ]; then
             git config user.name "kristiangg-motor"
             git config user.email "kontakt@kristiangg.dk"
-            git add publicering/linkedin-token.json
-            git commit -m "linkedin: token fornyet"
-            git push
+            # Uden udloebsdatoen i repoet kan vagthunden ikke varsle.
+            # Derfor skal dette push ogsaa kunne taale, at grenen har
+            # flyttet sig. Ingen genskrivningskommando: filen er en fuld
+            # tilstand, og vores udgave er den rigtige.
+            bash publicering/scripts/commit-register.sh publicering/linkedin-token.json "linkedin: token fornyet"
           fi

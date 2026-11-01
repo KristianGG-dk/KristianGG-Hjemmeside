@@ -102,9 +102,14 @@ jobs:
         run: |
           git config user.name "publiceringsmotor"
           git config user.email "kontakt@kristiangg.dk"
-          git add publicering/register.json
-          git diff --staged --quiet || git commit -m "registrer: linkedin"
-          git push
+          # Fem workflows skriver i samme register. Hjaelperen henter og
+          # laegger vores raekker oven paa, hvis en anden koersel pushede
+          # foerst — ellers gik posten tabt, og elementet ville blive
+          # publiceret igen ved naeste planlagte koersel.
+          bash publicering/scripts/commit-register.sh \
+            publicering/register.json \
+            "registrer: linkedin" \
+            "node publicering/scripts/publicer-linkedin-planlagt.mjs --skriv-register resultat-linkedin.json"
 
       # Doemmer kun - skriver ikke. Ellers stod posterne i registret to gange.
       - name: Fejl jobbet hvis noget ikke blev publiceret

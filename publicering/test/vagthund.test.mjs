@@ -49,6 +49,28 @@ function koer({ kanal, metode, status, tidspunkt, laasefil = null, url = null })
   }
 }
 
+/** Som koer(), men med en LinkedIn-tokenfil i rodmappen. */
+function koerMedToken(udloeberOm) {
+  const rod = mkdtempSync(join(tmpdir(), 'vagthund-token-'));
+  try {
+    mkdirSync(join(rod, 'publicering/laase'), { recursive: true });
+    writeFileSync(join(rod, 'publicering/koe.json'), '[]');
+    writeFileSync(join(rod, 'publicering/register.json'), '[]');
+    const udloeber = new Date(new Date(NU).getTime() + udloeberOm * 86400000).toISOString();
+    writeFileSync(join(rod, 'publicering/linkedin-token.json'), JSON.stringify(
+      { urn: 'urn:li:person:PROEVE', fornyet: NU, udloeber, levetid_dage: 60,
+        scope: 'openid,profile,w_member_social', har_refresh_token: false }));
+    try {
+      return { ud: execFileSync('node', [VAGTHUND, '--uden-net', '--nu', NU],
+        { cwd: rod, encoding: 'utf8' }), kode: 0 };
+    } catch (err) {
+      return { ud: (err.stdout ?? '') + (err.stderr ?? ''), kode: err.status ?? 1 };
+    }
+  } finally {
+    rmSync(rod, { recursive: true, force: true });
+  }
+}
+
 function proev(navn, post, forventet) {
   const { ud, kode } = koer(post);
   const fejlede = kode !== 0;
@@ -161,6 +183,31 @@ proev('website + motor + AFVENTER DATO uden url', {
   fejl: true,
   indeholder: ['website uden url i koeen'],
 });
+
+// ── LinkedIn-tokenets varsel ────────────────────────────────────────────────
+// Varslet skal naa Kristian, og den eneste alarmkanal er jobbets exit-kode:
+// fejler koerslen, sender GitHub mail. En advarsel staar kun i en log.
+// Tokenet lever 60 dage og fornys i haanden, saa varslet skal komme tidligt
+// nok til, at der er tid — ikke tre dage foer.
+console.log('\nLinkedIn-tokenets udloeb varsles i tide');
+
+for (const [dage, skalFejle, hvorfor] of [
+  [40, false, 'god tid tilbage — kun en oplysning'],
+  [14, true, 'fjorten dage — mail skal ud nu'],
+  [2, true, 'to dage — mail'],
+  [-1, true, 'udloebet — mail'],
+]) {
+  const { ud, kode } = koerMedToken(dage);
+  const fejlede = kode !== 0;
+  if (fejlede === skalFejle && ud.includes('LinkedIn')) {
+    bestaaet++;
+    console.log(`  OK    ${dage} dage til udloeb: ${skalFejle ? 'FEJL' : 'ingen fejl'} (${hvorfor})`);
+  } else {
+    fejlet++;
+    console.log(`  FEJL  ${dage} dage til udloeb: forventede ${skalFejle ? 'FEJL' : 'ingen fejl'}, fik exit ${kode}`);
+    console.log(ud.split('\n').filter((l) => l.includes('LinkedIn')).map((l) => '        ' + l.trim()).join('\n'));
+  }
+}
 
 console.log(`\n${bestaaet} bestaaet, ${fejlet} fejlet`);
 process.exit(fejlet ? 1 : 0);

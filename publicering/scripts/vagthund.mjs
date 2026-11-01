@@ -209,10 +209,13 @@ async function main() {
       const hvor = 'Forny paa https://kristiangg.dk/oauth/linkedin/';
       if (tilbage <= 0) {
         K_FEJL('LinkedIn', `tokenet udloeb ${dk(new Date(t.udloeber))}. Kanalen kan ikke publicere. ${hvor}`);
-      } else if (tilbage <= 3) {
-        K_FEJL('LinkedIn', `tokenet udloeber om ${tilbage} dag(e). ${hvor}`);
       } else if (tilbage <= 14) {
-        K_ADVAR('LinkedIn', `tokenet udloeber om ${tilbage} dage. ${hvor}`);
+        // FEJL, ikke advarsel. Alarmkanalen er jobbets exit-kode: en advarsel
+        // staar kun i en log, ingen aabner, saa foerste rigtige besked kom
+        // tre dage foer udloebet. Tokenet udloeber 31-12, og tre dage foer er
+        // mellem jul og nytaar. Fjorten dage er ogsaa den graense,
+        // kontroller-linkedin-adgang.mjs allerede regner som en fejl.
+        K_FEJL('LinkedIn', `tokenet udloeber om ${tilbage} dag(e). Forny nu. ${hvor}`);
       } else {
         K_INFO('LinkedIn', `token gyldigt ${tilbage} dage endnu (${t.urn})`);
       }
