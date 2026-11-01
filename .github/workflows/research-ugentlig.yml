@@ -1,0 +1,128 @@
+# Researchmotoren — ugentlig indsamling, vurdering og arkivering.
+#
+# To job med hver sin rettighed. Det er hele sikkerhedsmodellen:
+#
+#   research  contents: read   henter fra internettet, kan intet skrive
+#   arkiver   contents: write  ser aldrig internettet, laeser kun artefakten
+#
+# Det job, der behandler data fra fremmede servere, har ingen skriveret.
+# Det job, der har skriveret, henter intet udefra. Et manipuleret svar fra
+# en kilde kan derfor ikke naa frem til noget, der kan skrive i repoet.
+#
+# Mellem dem staar vagt-arkiv.mjs, som afviser enhver fundfil, der ikke er
+# velformet — ukendte felter, styretegn, urimelige laengder eller en url, der
+# ikke er http(s). Vagten koerer paa DATA, aldrig paa kode: intet fra en
+# indsamlet kilde bliver fortolket eller udfoert.
+#
+# Arkiveringen pusher til grenen `research/fund` og ALDRIG til main.
+# Publicering sker uaendret gennem godkendelseskaeden.
+name: Research — ugentlig indsamling
+
+on:
+  schedule:
+    - cron: '20 6 * * 1'   # mandag morgen, foer ugens godkendelse
+  workflow_dispatch:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'publicering/research/**'
+      - 'publicering/test/research.test.mjs'
+      - '.github/workflows/research-ugentlig.yml'
+
+permissions: {}          # intet som udgangspunkt. Hvert job beder om sit eget.
+
+jobs:
+  research:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read      # kan laese repoet. Kan intet aendre.
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+
+      # Proeverne foerst. Fejler de, hentes der ingenting.
+      - name: Motorens proever
+        run: node publicering/test/research.test.mjs
+
+      - name: Indsaml
+        run: node publicering/research/hent.mjs
+
+      - name: Vurder mod sitet og skriv pakkeafsnit
+        run: node publicering/research/vurder.mjs --skriv
+
+      - name: Vagt — er fundfilerne velformede?
+        run: node publicering/research/vagt-arkiv.mjs publicering/research/fund
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: research-ugens-fund
+          path: |
+            publicering/research/fund/
+            publicering/research/pakkeafsnit/
+            publicering/research/tilstand.json
+          retention-days: 90
+
+  arkiver:
+    needs: research
+    # Kun paa den planlagte koersel og manuel start. En pull request skal
+    # aldrig kunne faa noget arkiveret.
+    if: github.event_name != 'pull_request'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write     # det eneste job med skriveret. Roerer ikke nettet.
+    steps:
+      # Hentes fra standardgrenen og skiftes derefter til research/fund.
+      # Findes grenen ikke endnu, oprettes den. En checkout af en gren, der
+      # maaske ikke findes, ville ellers fejle foerste gang.
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Skift til research/fund
+        run: |
+          set -euo pipefail
+          git fetch origin research/fund --depth=1 2>/dev/null \
+            && git checkout -B research/fund origin/research/fund \
+            || git checkout -B research/fund
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+
+      - uses: actions/download-artifact@v4
+        with:
+          name: research-ugens-fund
+          path: indkommet
+
+      # Vagten igen, paa det der faktisk skal skrives. Den foerste koersel
+      # skete i et job uden skriveret; denne koerer lige foer committen.
+      - name: Vagt — kontroller det der skal arkiveres
+        run: node publicering/research/vagt-arkiv.mjs indkommet/fund
+
+      - name: Arkiver ugens fund
+        run: |
+          set -euo pipefail
+          mkdir -p publicering/research/fund
+          cp indkommet/fund/*.json publicering/research/fund/ 2>/dev/null || true
+          mkdir -p publicering/research/pakkeafsnit
+          cp indkommet/pakkeafsnit/*.md publicering/research/pakkeafsnit/ 2>/dev/null || true
+          cp indkommet/tilstand.json publicering/research/ 2>/dev/null || true
+          rm -rf indkommet
+
+          # Sidste spaerre: intet uden for research-mappen maa vaere aendret.
+          git add -A
+          AENDRET=$(git diff --cached --name-only)
+          UDENFOR=$(echo "$AENDRET" | grep -v '^publicering/research/' || true)
+          if [ -n "$UDENFOR" ]; then
+            echo "Diffen roerer noget uden for publicering/research/:"
+            echo "$UDENFOR"
+            exit 1
+          fi
+          if [ -z "$AENDRET" ]; then echo "Intet nyt at arkivere."; exit 0; fi
+
+          git config user.email noreply@anthropic.com
+          git config user.name "Research-motor"
+          git commit -m "Research: ugens fund $(date -u +%G-%V)"
+          git push origin HEAD:research/fund

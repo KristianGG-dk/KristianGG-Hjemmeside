@@ -1,0 +1,521 @@
+{
+  "version": "1.0.0",
+  "grundlag": "Maalt i fase 0, 1. november 2026. Kun kilder, der faktisk svarede, staar her. Se fase0-resultat-2026-11-01.md og fase0-resultat-runde3.md.",
+  "prioritering": {
+    "1": "Danske myndigheder, lovgivning og forskningsinstitutioner",
+    "2": "Danske fagmedier og relevante organisationer",
+    "3": "Danske nyhedsmedier — aktuelle debatter og samfundstendenser",
+    "4": "Internationale forskningskilder som supplement"
+  },
+  "evidensniveauer": {
+    "primaer": "Maa baere dokumentation. Myndighed, lovgivning eller fagfaellebedoemt forskning.",
+    "institution": "Staerk, men sekundaer. Forskningsinstitution.",
+    "fagmedie": "God indgang, svag dokumentation. Kilden bag skal findes.",
+    "formidling": "Signal om hvad der roerer sig. MAA ALDRIG staa som dokumentation.",
+    "praeprint": "Ikke fagfaellebedoemt. Maa aldrig baere en paastand alene og skal markeres som praeprint."
+  },
+  "kilder": [
+    {
+      "id": "retsinformation",
+      "navn": "Retsinformation",
+      "prioritet": 1,
+      "evidens": "primaer",
+      "metode": "sitemap",
+      "url": "https://www.retsinformation.dk/sitemap.xml",
+      "underfiler": 3,
+      "emner": [
+        "lovgivning",
+        "sundhedsydelser",
+        "psykoterapi",
+        "markedsfoering"
+      ],
+      "stier": [
+        "/eli/lta/",
+        "/eli/retsinfo/"
+      ]
+    },
+    {
+      "id": "folketinget",
+      "navn": "Folketinget Open Data",
+      "prioritet": 1,
+      "evidens": "primaer",
+      "metode": "api-folketinget",
+      "url": "https://oda.ft.dk/api/Sag?$top=60&$orderby=opdateringsdato%20desc&$format=json",
+      "emner": [
+        "lovforslag",
+        "politik",
+        "psykisk sundhed"
+      ],
+      "efterfilter": [
+        "psyk",
+        "stress",
+        "trivsel",
+        "arbejdsmiljø",
+        "sundhed",
+        "social",
+        "ensomhed",
+        "sygefrav"
+      ],
+      "note": "ODA understoetter ikke fritekstsoegning paa tvaers af felter. Hentes bredt og filtreres paa titel foer relevansvurderingen."
+    },
+    {
+      "id": "sundhedsdata",
+      "navn": "Sundhedsdatastyrelsen",
+      "prioritet": 1,
+      "evidens": "primaer",
+      "metode": "sitemap",
+      "url": "https://sundhedsdatastyrelsen.dk/sitemap.xml",
+      "emner": [
+        "sundhedsdata",
+        "trivsel",
+        "statistik"
+      ],
+      "stier": [
+        "/nyheder/",
+        "/udgivelser/",
+        "/find-tal-og-analyser/"
+      ]
+    },
+    {
+      "id": "laegemiddelstyrelsen",
+      "navn": "Laegemiddelstyrelsen",
+      "prioritet": 1,
+      "evidens": "primaer",
+      "metode": "rss",
+      "url": "https://laegemiddelstyrelsen.dk/da/Feeds/rss-feed/",
+      "emner": [
+        "laegemidler",
+        "sundhedsfaglig"
+      ]
+    },
+    {
+      "id": "vive",
+      "navn": "VIVE",
+      "prioritet": 1,
+      "evidens": "institution",
+      "metode": "sitemap",
+      "url": "https://www.vive.dk/sitemap.xml",
+      "underfiler": 1,
+      "kunSti": "/da/",
+      "etag": true,
+      "emner": [
+        "trivsel",
+        "socialt arbejde",
+        "ensomhed",
+        "udsatte",
+        "paaroerende"
+      ],
+      "stier": [
+        "/udgivelser/",
+        "/nyheder/",
+        "/publikationer/"
+      ],
+      "note": "257 adresser aendrede sig i demonstrationen, og de 15 nyeste var ikke de 15 mest relevante. Kun udgivelses- og nyhedsstier kommer i betragtning."
+    },
+    {
+      "id": "ugeskriftet",
+      "navn": "Ugeskrift for Laeger",
+      "prioritet": 2,
+      "evidens": "fagmedie",
+      "metode": "rss",
+      "url": "https://ugeskriftet.dk/rss/forside",
+      "emner": [
+        "laegefaglig",
+        "forskning",
+        "psykiatri"
+      ]
+    },
+    {
+      "id": "psykiatrifonden",
+      "navn": "Psykiatrifonden",
+      "prioritet": 2,
+      "evidens": "fagmedie",
+      "metode": "sitemap",
+      "url": "https://www.psykiatrifonden.dk/sitemap.xml",
+      "emner": [
+        "angst",
+        "stress",
+        "mental sundhed",
+        "trivsel"
+      ],
+      "stier": [
+        "/viden/",
+        "/nyheder/"
+      ]
+    },
+    {
+      "id": "videnskab",
+      "navn": "Videnskab.dk",
+      "prioritet": 3,
+      "evidens": "formidling",
+      "metode": "rss",
+      "url": "https://videnskab.dk/feed/",
+      "emner": [
+        "psykologi",
+        "sundhed",
+        "natur",
+        "hjerneforskning"
+      ]
+    },
+    {
+      "id": "dr-indland",
+      "navn": "DR Indland",
+      "prioritet": 3,
+      "evidens": "formidling",
+      "metode": "rss",
+      "url": "https://www.dr.dk/nyheder/service/feeds/indland",
+      "emner": [
+        "samfundsdebat",
+        "trivsel",
+        "arbejdsliv"
+      ]
+    },
+    {
+      "id": "altinget",
+      "navn": "Altinget",
+      "prioritet": 3,
+      "evidens": "formidling",
+      "metode": "sitemap",
+      "url": "https://www.altinget.dk/sitemap.xml",
+      "emner": [
+        "sundhedspolitik",
+        "lovaendringer",
+        "socialpolitik"
+      ],
+      "stier": [
+        "/sundhed/",
+        "/social/",
+        "/arbejdsmarked/",
+        "/artikel/"
+      ]
+    },
+    {
+      "id": "europepmc",
+      "navn": "Europe PMC",
+      "prioritet": 4,
+      "evidens": "primaer",
+      "metode": "api-europepmc",
+      "url": "https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=%28%22forest%20bathing%22%20OR%20%22shinrin-yoku%22%20OR%20%22nature-based%20intervention%22%20OR%20%22ecotherapy%22%20OR%20%22slow%20breathing%22%29&format=json&pageSize=25&sort=P_PDATE_D%20desc",
+      "emner": [
+        "skovbad",
+        "naturterapi",
+        "aandedraet"
+      ]
+    },
+    {
+      "id": "crossref",
+      "navn": "Crossref",
+      "prioritet": 4,
+      "evidens": "primaer",
+      "metode": "api-crossref",
+      "url": "https://api.crossref.org/works?query.bibliographic=%22forest+bathing%22+OR+%22nature-based+intervention%22+OR+%22breathwork%22+OR+%22heart+rate+variability%22&rows=25&sort=published&order=desc&select=title,DOI,URL,published,container-title",
+      "emner": [
+        "naturterapi",
+        "stressregulering"
+      ],
+      "note": "Foresproergslen var for bred i demonstrationen og hentede plantevidenskab. Nu query.bibliographic med citerede fraser."
+    },
+    {
+      "id": "medrxiv",
+      "navn": "medRxiv",
+      "prioritet": 4,
+      "evidens": "praeprint",
+      "metode": "api-medrxiv",
+      "url": "https://api.medrxiv.org/details/medrxiv/__FRA__/__TIL__/0",
+      "emner": [
+        "praeprint",
+        "psykiatri",
+        "stress"
+      ]
+    }
+  ],
+  "emneord": {
+    "note": "Delt i specifikke og generiske efter demonstrationen 01-11-2026. Ét generisk ord alene kvalificerer ALDRIG et fund — «stress» lukkede plantefysiologi, tandkoedssygdom og oxidativt stress ind. Reglen er: mindst ét specifikt ord, ELLER mindst to generiske.",
+    "regel": {
+      "specifikke_kraevet": 1,
+      "generiske_kraevet": 2
+    },
+    "specifikke": [
+      "skovbad",
+      "shinrin-yoku",
+      "shinrin",
+      "forest bathing",
+      "forest bath",
+      "naturterapi",
+      "naturbaseret",
+      "nature-based intervention",
+      "nature-based therapy",
+      "ecotherapy",
+      "green care",
+      "friluftsterapi",
+      "walk and talk",
+      "psykoterapi",
+      "psykoterapeut",
+      "hypnoterapi",
+      "samtaleterapi",
+      "nervesystem",
+      "nervesystemregulering",
+      "autonome nervesystem",
+      "autonomic nervous",
+      "vagusnerve",
+      "vagus nerve",
+      "vagal",
+      "polyvagal",
+      "co-regulering",
+      "coregulering",
+      "parasympatisk",
+      "sympatisk aktivering",
+      "heart rate variability",
+      "hjerterytmevariabilitet",
+      "aandedraetsterapi",
+      "åndedrætsterapi",
+      "åndedrætsøvelse",
+      "aandedraetsoevelse",
+      "vejrtrækningsøvelse",
+      "breathwork",
+      "slow breathing",
+      "slow-paced breathing",
+      "breathing protocol",
+      "mindfulness",
+      "udbrændthed",
+      "udbraendthed",
+      "burnout",
+      "stressbehandling",
+      "arbejdsrelateret stress",
+      "tankemylder",
+      "søvnløshed",
+      "soevnloeshed",
+      "insomni",
+      "low arousal"
+    ],
+    "generiske": [
+      "stress",
+      "terapi",
+      "angst",
+      "depression",
+      "søvn",
+      "soevn",
+      "trivsel",
+      "nærvær",
+      "naervaer",
+      "meditation",
+      "psykisk",
+      "mental sundhed",
+      "mental health",
+      "arbejdsmiljø",
+      "arbejdsmiljoe",
+      "sygefravær",
+      "sygefravaer",
+      "ensomhed",
+      "pårørende",
+      "paaroerende",
+      "sorg",
+      "selvværd",
+      "selvvaerd",
+      "belastning",
+      "regulering",
+      "stressregulering",
+      "følelsesregulering",
+      "foelelsesregulering",
+      "forebyggelse",
+      "well-being",
+      "wellbeing"
+    ],
+    "udelukkelsesord": {
+      "note": "Rammer et af disse, afvises fundet uanset hvad andet det rammer. Ordene er valgt ud fra de faktiske falske positive i demonstrationen — tvetydige fagord, hvor «stress» betyder noget helt andet end i psykologi.",
+      "ord": [
+        "oxidative stress",
+        "oxidativt stress",
+        "drought",
+        "salinity",
+        "salt stress",
+        "abiotic",
+        "soil",
+        "jordbund",
+        "germinat",
+        "seedling",
+        "seed",
+        "crop",
+        "plantevækst",
+        "cultivar",
+        "triticale",
+        "biodegradation",
+        "diesel",
+        "periodontal",
+        "tandkød",
+        "atherosclerosis",
+        "retinitis",
+        "optogenetic",
+        "optogenetisk",
+        "veterinær",
+        "veterinary",
+        "kvæg",
+        "landbrug",
+        "datacenter",
+        "datacentre",
+        "fødevaresikkerhed",
+        "heat stress",
+        "thermal stress",
+        "mechanical stress",
+        "water stress",
+        "corrosion",
+        "shear stress",
+        "europæiske fællesskab",
+        "toldunion"
+      ]
+    },
+    "aekvivalenter": {
+      "note": "Fund er ofte engelske, sitet er dansk. Uden disse grupper finder «ecotherapy» aldrig /til-dig/naturterapi/, og motoren foreslaar en ny side, hvor den burde foreslaa en opdatering. Rammer et fund ét ord i en gruppe, taeller hele gruppen som delt med en side, der bruger et andet ord fra samme gruppe.",
+      "grupper": [
+        [
+          "skovbad",
+          "forest bathing",
+          "forest bath",
+          "shinrin-yoku",
+          "shinrin"
+        ],
+        [
+          "naturterapi",
+          "nature-based therapy",
+          "nature-based intervention",
+          "ecotherapy",
+          "green care",
+          "naturbaseret",
+          "friluftsterapi",
+          "nature-based education"
+        ],
+        [
+          "psykoterapi",
+          "psychotherapy",
+          "samtaleterapi",
+          "psykoterapeut"
+        ],
+        [
+          "nervesystem",
+          "nervous system",
+          "autonome nervesystem",
+          "autonomic nervous",
+          "nervesystemregulering"
+        ],
+        [
+          "vagusnerve",
+          "vagus nerve",
+          "vagal",
+          "polyvagal",
+          "parasympatisk"
+        ],
+        [
+          "heart rate variability",
+          "hjerterytmevariabilitet",
+          "hrv"
+        ],
+        [
+          "aandedraetsterapi",
+          "åndedrætsterapi",
+          "åndedrætsøvelse",
+          "breathwork",
+          "slow breathing",
+          "slow-paced breathing",
+          "breathing protocol",
+          "vejrtrækningsøvelse"
+        ],
+        [
+          "mindfulness",
+          "meditation",
+          "nærvær",
+          "naervaer"
+        ],
+        [
+          "stress",
+          "stressregulering",
+          "belastning"
+        ],
+        [
+          "udbrændthed",
+          "udbraendthed",
+          "burnout"
+        ],
+        [
+          "angst",
+          "anxiety"
+        ],
+        [
+          "depression",
+          "depressive"
+        ],
+        [
+          "søvn",
+          "soevn",
+          "sleep",
+          "insomni",
+          "insomnia",
+          "søvnløshed",
+          "tankemylder"
+        ],
+        [
+          "trivsel",
+          "well-being",
+          "wellbeing",
+          "mental sundhed",
+          "mental health",
+          "psykisk"
+        ],
+        [
+          "arbejdsmiljø",
+          "arbejdsmiljoe",
+          "occupational",
+          "sygefravær",
+          "sygefravaer",
+          "arbejdsliv"
+        ],
+        [
+          "ensomhed",
+          "loneliness"
+        ],
+        [
+          "pårørende",
+          "paaroerende",
+          "sorg",
+          "grief"
+        ]
+      ]
+    }
+  },
+  "fravalgte": [
+    {
+      "id": "sundhedspolitisk",
+      "navn": "Sundhedspolitisk Tidsskrift",
+      "hvorfor": "Feedet findes og svarer som RSS, men indeholder nul poster. Afproevet igen 01-11-2026 efter rettelse af entitet-fejl — stadig tomt."
+    },
+    {
+      "id": "dp",
+      "navn": "Dansk Psykolog Forening",
+      "hvorfor": "Feedet findes, men staar tomt."
+    },
+    {
+      "id": "sst",
+      "navn": "Sundhedsstyrelsen",
+      "hvorfor": "Svarer 429 paa alt, ogsaa robots.txt. Kan ikke overvaages maskinelt paa en tilladt maade. Haandteres manuelt via deres nyhedsbrev."
+    },
+    {
+      "id": "arbejdstilsynet",
+      "navn": "Arbejdstilsynet",
+      "hvorfor": "1471 adresser i sitemap, nul med lastmod. AEndring kunne kun ses ved at hente hver side — det er crawling, ikke indekslaesning."
+    },
+    {
+      "id": "nfa",
+      "navn": "NFA",
+      "hvorfor": "Hverken feed, robots.txt eller sitemap."
+    },
+    {
+      "id": "pubmed",
+      "navn": "PubMed E-utilities",
+      "hvorfor": "IKKE AFKLARET, ikke fravalgt. robots.txt afviser /entrez/. E-utilities er et dokumenteret API, men NCBI's brugspolitik er ikke laest og der er ingen API-noegle. Tages ind naar det er paa plads."
+    },
+    {
+      "id": "dagblade",
+      "navn": "Politiken, Information, TV 2, Kristeligt Dagblad, Mandag Morgen m.fl.",
+      "hvorfor": "Oplyser ikke feeds med <link rel=alternate>. Fravalgt FORELOEBIGT — de har sandsynligvis feeds, der bare ikke annonceres. Kan tages op, hvis adressen findes hos udgiveren."
+    }
+  ]
+}
