@@ -38,6 +38,7 @@ import { readFileSync, writeFileSync, existsSync, readdirSync } from 'node:fs';
 import { join } from 'node:path';
 import { pathToFileURL } from 'node:url';
 import { beregnLaas, sha256 } from './laas.mjs';
+import { MAKS_FORSINKELSE_S, forfald, forSentGrund, registerSpaerre } from './krav.mjs';
 import {
   pruvDestination, hentAdgang, bevisLokation, byggOpslag, sendOpslag,
   DestinationAfvist, AdgangAfvist, skrub, maskId,
@@ -48,11 +49,15 @@ const KOE = 'publicering/koe.json';
 const REGISTER = 'publicering/register.json';
 export const RESULTAT = 'resultat-google.json';
 
-/** Et forfaldent opslag publiceres kun automatisk inden for dette vindue. */
-export const MAKS_FORSINKELSE_S = 24 * 60 * 60;
+// Tidsreglen kommer fra krav.mjs. Google havde sin egen kopi paa 24 timer, og
+// to steder med samme regel bliver uenige med tiden. Navnet reeksporteres, saa
+// google-business.test.mjs kan blive ved at importere det herfra.
+export { MAKS_FORSINKELSE_S };
 
-/** Statusser der betyder "roer ikke elementet igen". */
-const AFSENDT = ['PUBLICERET', 'PLANLAGT', 'PLANLAGT MANUELT'];
+// Spaerren paa registret er den faelles i krav.mjs. Google havde sin egen
+// liste, og den kendte ikke «PUBLICERING IGANG» eller «STOPPET FOR SENT»:
+// et element med uvist udfald ville derfor blive udvalgt igen og kunne gaa ud
+// to gange. Tredje sted med samme regel, tredje gang den var uenig.
 
 const laesJson = (sti, standard) => (existsSync(sti) ? JSON.parse(readFileSync(sti, 'utf8')) : standard);
 const tid = (sek) => new Date(sek * 1000).toISOString().slice(0, 16).replace('T', ' ') + ' UTC';
@@ -67,13 +72,8 @@ export function udvaelg({ laase, koe, register, nu }) {
     const nr = e.element;
     if (e.kanal !== 'gbp') continue;
 
-    const post = [...register].reverse().find((x) => x.element === nr && AFSENDT.includes(x.status));
-    if (post) { sprunget.push([nr, `staar som ${post.status} i registret`]); continue; }
-    const sidste = [...register].reverse().find((x) => x.element === nr);
-    if (sidste && ['PUBLICERING FEJLET', 'PLANLAEGNING FEJLET'].includes(sidste.status)) {
-      sprunget.push([nr, 'seneste forsoeg fejlede — kraever menneskelig stillingtagen foer nyt forsoeg']);
-      continue;
-    }
+    const spaerre = registerSpaerre(register, nr);
+    if (spaerre) { sprunget.push([nr, spaerre]); continue; }
 
     const k = koe.filter((x) => x.element === nr && x.kanal === 'gbp');
     if (k.length !== 1) { sprunget.push([nr, `AFVIST: ${k.length} gbp-poster i koeen, ventede én`]); continue; }
@@ -91,13 +91,15 @@ export function udvaelg({ laase, koe, register, nu }) {
       sprunget.push([nr, `AFVIST: ${err.message}`]); continue;
     }
 
-    const naar = Math.floor(new Date(e.dato).getTime() / 1000);
+    // Tidsreglen er den faelles: tidligst paa tidspunktet, senest et doegn
+    // efter — eller tidligere, hvis elementet baerer sin egen frist.
+    const { tilstand, naar } = forfald(e, nu, MAKS_FORSINKELSE_S);
     const koeNaar = Math.floor(new Date(k[0].tidspunkt).getTime() / 1000);
-    if (Number.isNaN(naar)) { sprunget.push([nr, `ulaeseligt dato-felt: ${e.dato}`]); continue; }
+    if (tilstand === 'ulaeselig') { sprunget.push([nr, `ulaeseligt dato-felt: ${e.dato}`]); continue; }
     if (naar !== koeNaar) { sprunget.push([nr, `AFVIST: koeens tidspunkt (${k[0].tidspunkt}) er ikke den godkendte dato (${e.dato})`]); continue; }
-    if (naar > nu) { sprunget.push([nr, `forfalder foerst ${tid(naar)}`]); continue; }
-    if (nu - naar > MAKS_FORSINKELSE_S) {
-      sprunget.push([nr, `forfaldt ${tid(naar)} — over et doegn siden. Publiceres ikke automatisk; kraever menneskelig stillingtagen`]);
+    if (tilstand === 'fremtid') { sprunget.push([nr, `forfalder foerst ${tid(naar)}`]); continue; }
+    if (tilstand === 'for_sent') {
+      sprunget.push([nr, `${tid(naar)}: ${forSentGrund(e, naar, nu, MAKS_FORSINKELSE_S)}`]);
       continue;
     }
     valgt.push({ e, naar });

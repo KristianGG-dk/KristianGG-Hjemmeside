@@ -230,9 +230,20 @@ ingen('versionslaasen afviger', udvaelg({ ...data({ e: element({ versionslaas: '
 ingen('ingen godkendelse', udvaelg({ ...data({ e: element({ godkendt_af: null }) }), nu: FORFALD + 60 }), 'godkendelse');
 ingen('platformskrav brudt', udvaelg({ ...data({ e: element({ tekst: 'Ring 12345678' }) }), nu: FORFALD + 60 }), 'telefon');
 ingen('tidspunktet er ikke naaet', udvaelg({ ...data(), nu: FORFALD - 60 }), 'forfalder foerst');
-ingen('over et doegn for sent', udvaelg({ ...data(), nu: FORFALD + MAKS_FORSINKELSE_S + 60 }), 'over et doegn');
+// Graensen er inklusiv: praecis et doegn efter er stadig tilladt.
+sandt('praecis paa doegngraensen: vaelges stadig',
+  udvaelg({ ...data(), nu: FORFALD + MAKS_FORSINKELSE_S }).valgt.length === 1);
+ingen('ét sekund over doegnet', udvaelg({ ...data(), nu: FORFALD + MAKS_FORSINKELSE_S + 1 }), 'kraever menneskelig stillingtagen');
+ingen('seks timer for sent er IKKE for sent laengere', udvaelg({ ...data({ e: element({ gyldig_timer: 3 }) }), nu: FORFALD + 6 * 3600 }), 'egen kortere frist');
+sandt('seks timer forsinket uden egen frist: vaelges',
+  udvaelg({ ...data(), nu: FORFALD + 6 * 3600 }).valgt.length === 1);
 ingen('allerede publiceret', udvaelg({ ...data({ register: [{ element: 900, status: 'PUBLICERET' }] }), nu: FORFALD + 60 }), 'PUBLICERET');
 ingen('seneste forsoeg fejlede', udvaelg({ ...data({ register: [{ element: 900, status: 'PUBLICERING FEJLET' }] }), nu: FORFALD + 60 }), 'fejlede');
+// Et opslag, Kristian selv har lagt op paa profilen, maa ALDRIG sendes igen
+// af motoren. Det er registerraekken, der baerer den viden.
+ingen('publiceret i haanden', udvaelg({ ...data({ register: [{ element: 900, status: 'PLANLAGT MANUELT' }] }), nu: FORFALD + 60 }), 'PLANLAGT MANUELT');
+ingen('kravet er taget, men udfaldet er uvist', udvaelg({ ...data({ register: [{ element: 900, status: 'PUBLICERING IGANG' }] }), nu: FORFALD + 60 }), 'kan vaere gaaet ud');
+ingen('stoppet som for sent', udvaelg({ ...data({ register: [{ element: 900, status: 'STOPPET FOR SENT' }] }), nu: FORFALD + 60 }), 'for sent');
 sandt('andre kanaler roeres ikke', udvaelg({ laase: [{ sti: STI, e: element({ kanal: 'instagram' }) }], koe: [], register: [], nu: FORFALD + 60 }).valgt.length === 0);
 sandt('godkendt, laast, i koeen og forfaldent: vaelges', udvaelg({ ...data({ register: [{ element: 900, status: 'AFVENTER DATO' }] }), nu: FORFALD + 60 }).valgt.length === 1);
 

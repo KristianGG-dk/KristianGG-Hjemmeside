@@ -69,6 +69,33 @@ function verificerElement(sti) {
     }
   }
 
+  // 2c. Tidsfølsomt indhold, hvis elementet bærer det.
+  //
+  // «gyldig_timer» og «udloeber» er frivillige og giver elementet en KORTERE
+  // gyldighed end døgnet. De indgår ikke i versionslåsen — ellers ville det
+  // at sætte dem bortkaste godkendelsen. Men så skal gaten kontrollere, at de
+  // er velformede, for en ulæselig dato ville ellers blive læst som «intet
+  // udløb» og give elementet hele døgnet.
+  if (e.gyldig_timer !== undefined) {
+    const g = e.gyldig_timer;
+    (typeof g === 'number' && Number.isFinite(g) && g > 0)
+      ? ok(`gyldig_timer: ${g} time(r) efter det godkendte tidspunkt`)
+      : nej(`gyldig_timer skal være et positivt tal, er ${JSON.stringify(g)}`);
+  }
+  if (e.udloeber !== undefined) {
+    const u = new Date(e.udloeber).getTime();
+    const d = new Date(e.dato).getTime();
+    if (Number.isNaN(u)) {
+      nej(`udloeber er ikke en læselig dato: ${JSON.stringify(e.udloeber)}`);
+    } else if (!/([+-]\d{2}:\d{2})$/.test(String(e.udloeber))) {
+      nej(`udloeber mangler tidszone: ${e.udloeber}. Uden offset læses den som UTC, ikke dansk tid.`);
+    } else if (!Number.isNaN(d) && u <= d) {
+      nej(`udloeber (${e.udloeber}) ligger før eller på det godkendte tidspunkt (${e.dato}) — elementet kunne aldrig publiceres`);
+    } else {
+      ok(`udløber ${e.udloeber}`);
+    }
+  }
+
   // 3. Låsen stemmer med felterne
   try {
     const { laas } = beregnLaas(e);

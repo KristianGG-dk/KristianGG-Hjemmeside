@@ -39,8 +39,33 @@ export const STOPPET = ['PUBLICERING FEJLET', 'PLANLAEGNING FEJLET', 'PUBLICERIN
 export const IGANG = 'PUBLICERING IGANG';
 export const FOR_SENT = 'STOPPET FOR SENT';
 
-/** Hoejst en time efter det godkendte tidspunkt. Derefter et menneske. */
-export const MAKS_FORSINKELSE_S = 60 * 60;
+/**
+ * Hvor laenge efter det godkendte tidspunkt motoren stadig maa publicere.
+ *
+ * Kristians beslutning 01-11-2026: 24 timer. Den erstatter den tidligere
+ * graense paa 60 minutter (krav 2 i issue #90).
+ *
+ * Baggrunden er maalt: GitHubs cron koerer reelt hver 3.-6. time, og med en
+ * times graense ville de FLESTE godkendte opslag blive stoppet frem for
+ * publiceret. Graensen var ikke problemet; udloeseren er. Et doegn giver
+ * udloeseren luft nok til, at et godkendt opslag ikke bortfalder.
+ *
+ * Motoren venter ikke med vilje. Den publicerer ved FOERSTE gyldige koersel
+ * efter det godkendte tidspunkt — vinduet er en graense, ikke en udsaettelse.
+ *
+ * Reglen staar HER og kun her. Google havde sin egen kopi paa 24 timer, og to
+ * steder med samme regel bliver uenige med tiden.
+ */
+export const MAKS_FORSINKELSE_S = 24 * 60 * 60;
+
+/** «3 timer og 12 minutter». Til beskeder, der skal kunne laeses. */
+export function varighed(sekunder) {
+  const m = Math.round(Math.abs(sekunder) / 60);
+  const t = Math.floor(m / 60), r = m % 60;
+  if (t === 0) return `${m} minut${m === 1 ? '' : 'ter'}`;
+  if (r === 0) return `${t} time${t === 1 ? '' : 'r'}`;
+  return `${t} time${t === 1 ? '' : 'r'} og ${r} minut${r === 1 ? '' : 'ter'}`;
+}
 
 export const laesRegister = (sti = REGISTER) =>
   (existsSync(sti) ? JSON.parse(readFileSync(sti, 'utf8')) : []);
@@ -73,15 +98,58 @@ export function registerSpaerre(register, nr) {
 }
 
 /**
- * Er tidspunktet naaet, og er det ikke for laenge siden?
- *   { tilstand: 'fremtid' | 'forfalden' | 'for_sent', naar }
+ * Tidsfoelsomt indhold: et element kan baere en KORTERE gyldighed end doegnet.
+ *
+ * Et arrangement, en tilmeldingsfrist eller en kampagnedag taaler ikke at gaa
+ * ud et doegn for sent, selv om de fleste opslag goer. To maader, og de kan
+ * bruges hver for sig eller sammen:
+ *
+ *   "gyldig_timer": 3            tre timer efter det godkendte tidspunkt
+ *   "udloeber": "2026-11-05T12:00:00+01:00"   et absolut klokkeslet
+ *
+ * Felterne er FRIVILLIGE. Mangler de, gaelder doegnet. De indgaar IKKE i
+ * versionslaasen, og de er ikke sat paa noget eksisterende element: skal et
+ * godkendt opslag have et af dem, aftales det med Kristian og Claude foerst.
+ *
+ * Returnerer det sekund, hvor elementet senest maa publiceres.
+ */
+export function sidsteFrist(e, naar, maks = MAKS_FORSINKELSE_S) {
+  const frister = [naar + maks];
+  if (Number.isFinite(e.gyldig_timer) && e.gyldig_timer > 0) {
+    frister.push(naar + Math.round(e.gyldig_timer * 3600));
+  }
+  if (e.udloeber) {
+    const u = Math.floor(new Date(e.udloeber).getTime() / 1000);
+    if (!Number.isNaN(u)) frister.push(u);
+  }
+  return Math.min(...frister);
+}
+
+/** Baerer elementet en kortere gyldighed end doegnet? Til beskeder. */
+export function harEgenFrist(e) {
+  return Boolean((Number.isFinite(e.gyldig_timer) && e.gyldig_timer > 0) || e.udloeber);
+}
+
+/**
+ * Er tidspunktet naaet, og er det ikke for sent?
+ *   { tilstand: 'ulaeselig' | 'fremtid' | 'forfalden' | 'for_sent', naar, frist }
+ *
+ * Graensen er inklusiv: PRAECIS 24 timer efter er stadig tillladt, og foerst
+ * sekundet efter er for sent. «Sidste tilladte tidspunkt» betyder tilladt.
+ *
+ * Alle tider regnes paa absolutte oejeblikke. «dato» baerer selv sit danske
+ * offset (+01:00 om vinteren, +02:00 om sommeren), og gaten kontrollerer, at
+ * offsettet er Danmarks paa netop den dato. Derfor er sommertid haandteret
+ * uden at motoren kender et tidszonenavn: et doegn er 86400 sekunder, ogsaa
+ * hen over et tidsskifte.
  */
 export function forfald(e, nu, maks = MAKS_FORSINKELSE_S) {
   const naar = Math.floor(new Date(e.dato).getTime() / 1000);
-  if (Number.isNaN(naar)) return { tilstand: 'ulaeselig', naar: null };
-  if (naar > nu) return { tilstand: 'fremtid', naar };
-  if (nu - naar > maks) return { tilstand: 'for_sent', naar };
-  return { tilstand: 'forfalden', naar };
+  if (Number.isNaN(naar)) return { tilstand: 'ulaeselig', naar: null, frist: null };
+  const frist = sidsteFrist(e, naar, maks);
+  if (naar > nu) return { tilstand: 'fremtid', naar, frist };
+  if (nu > frist) return { tilstand: 'for_sent', naar, frist };
+  return { tilstand: 'forfalden', naar, frist };
 }
 
 /**
@@ -132,16 +200,26 @@ export function kravraekke(e, kanal) {
   };
 }
 
-/** Raekken for et element, der forfaldt for laenge siden. */
-export function forSentRaekke(e, kanal, naar, maks = MAKS_FORSINKELSE_S) {
-  const min = Math.round((Math.floor(Date.now() / 1000) - naar) / 60);
+/** Hvorfor et element er for sent. Bruges baade i loggen og i registret. */
+export function forSentGrund(e, naar, nu, maks = MAKS_FORSINKELSE_S) {
+  const frist = sidsteFrist(e, naar, maks);
+  const egen = frist < naar + maks;
+  return `forfaldt for ${varighed(nu - naar)} siden. `
+    + (egen
+      ? `Elementet baerer sin egen kortere frist (${e.udloeber ? `udloeber ${e.udloeber}` : `gyldig_timer: ${e.gyldig_timer}`}), `
+        + `og den udloeb for ${varighed(nu - frist)} siden.`
+      : `Graensen er ${varighed(maks)}.`)
+    + ' Publiceres ikke automatisk; kraever menneskelig stillingtagen.';
+}
+
+/** Raekken for et element, der forfaldt for sent. */
+export function forSentRaekke(e, kanal, naar, maks = MAKS_FORSINKELSE_S, nu = Math.floor(Date.now() / 1000)) {
   return {
     element: e.element, kanal, versionslaas: e.versionslaas,
     status: FOR_SENT, post_id: null,
     godkendt_tidspunkt: e.dato, tidspunkt: new Date().toISOString(),
     registreret_af: 'motor',
-    noter: `Forfaldt for ${min} minutter siden, graensen er ${Math.round(maks / 60)}. `
-         + 'Et opslag, der kommer for sent, kan vaere forkert nu. Publiceres ikke automatisk.',
+    noter: forSentGrund(e, naar, nu, maks),
   };
 }
 

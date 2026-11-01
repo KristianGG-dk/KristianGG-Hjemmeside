@@ -45,7 +45,46 @@ concurrency:
 
 permissions: {}
 jobs:
+  # FOERSTE job. Skriver «PUBLICERING IGANG» i registret for det, der skal
+  # afleveres til Meta ELLER indhentes, og committer det FOER noget sendes.
+  # Et opslag, der ER afleveret til Meta, men hvis registrering gik tabt,
+  # ville ellers blive afleveret igen og gaa ud TO gange paa dagen.
+  #
+  # Jobbet har skriveret, men ser aldrig nettet og faar intet token.
+  krav:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+
+      - name: Tag kravet
+        if: ${{ github.event_name == 'schedule' || inputs.planlaeg }}
+        run: node publicering/scripts/planlaeg-facebook.mjs --tag-krav
+
+      - name: Commit kravet
+        if: ${{ github.event_name == 'schedule' || inputs.planlaeg }}
+        run: |
+          git config user.name "publiceringsmotor"
+          git config user.email "kontakt@kristiangg.dk"
+          bash publicering/scripts/commit-register.sh \
+            publicering/register.json \
+            "krav: facebook" \
+            "node publicering/scripts/planlaeg-facebook.mjs --tag-krav"
+
+      - name: Gem kravet til planlaegningsjobbet
+        if: ${{ github.event_name == 'schedule' || inputs.planlaeg }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: krav-facebook
+          path: krav-facebook.json
+          if-no-files-found: warn
+
   planlaeg:
+    needs: krav
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -55,6 +94,12 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '24'
+
+      # Kravfilen afgoer, hvad der afleveres og hvad der indhentes.
+      - uses: actions/download-artifact@v4
+        with:
+          name: krav-facebook
+        continue-on-error: true
 
       - name: Planlaeg
         # shell: bash giver 'bash -eo pipefail', saa nodes exit-kode ikke

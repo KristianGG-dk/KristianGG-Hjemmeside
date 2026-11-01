@@ -24,7 +24,7 @@ import { join } from 'node:path';
 import { beregnLaas, sha256 } from './laas.mjs';
 import { publicer } from './publicer-linkedin.mjs';
 import {
-  registerSpaerre, koeSpaerre, forfald, kravraekke, forSentRaekke, foejTilRegister,
+  registerSpaerre, koeSpaerre, forfald, kravraekke, forSentRaekke, forSentGrund, foejTilRegister,
   laesRegister as laesReg, MAKS_FORSINKELSE_S,
 } from './krav.mjs';
 
@@ -83,8 +83,7 @@ export function udvaelg(nu, { laase = LAASE, register, koe } = {}) {
     if (tilstand === 'ulaeselig') { sprunget.push([nr, `ulaeseligt dato-felt: ${e.dato}`]); continue; }
     if (tilstand === 'fremtid') { sprunget.push([nr, `forfalder foerst ${tid(naar)}`]); continue; }
     if (tilstand === 'for_sent') {
-      const min = Math.round((nu - naar) / 60);
-      sprunget.push([nr, `forfaldt ${tid(naar)} — ${min} minutter siden, over graensen paa ${Math.round(MAKS_FORSINKELSE_S / 60)}. Stoppet til manuel vurdering`]);
+      sprunget.push([nr, `${tid(naar)}: ${forSentGrund(e, naar, nu, MAKS_FORSINKELSE_S)}`]);
       forSent.push({ e, naar });
       continue;
     }
@@ -107,7 +106,7 @@ export function tagKrav(nu = Math.floor(Date.now() / 1000)) {
     console.log('');
   }
   const raekker = [
-    ...forSent.map(({ e, naar }) => forSentRaekke(e, 'linkedin', naar, MAKS_FORSINKELSE_S)),
+    ...forSent.map(({ e, naar }) => forSentRaekke(e, 'linkedin', naar, MAKS_FORSINKELSE_S, nu)),
     ...valgt.map(({ e }) => kravraekke(e, 'linkedin')),
   ];
   foejTilRegister(raekker, REGISTER);
