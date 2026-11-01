@@ -55,13 +55,45 @@ jobs:
       - name: Vagt — er fundfilerne velformede?
         run: node publicering/research/vagt-arkiv.mjs publicering/research/fund
 
+      # Artefakten pakkes fra én fast mappe, ikke fra tre stier i repoet.
+      #
+      # upload-artifact regner den faelles rodmappe ud for de stier, den faar,
+      # og lægger filerne relativt til DEN. Med fund/ og tilstand.json alene
+      # var roden publicering/research, og arkiveringen fandt «fund/» og
+      # «tilstand.json», som den regner med. Da udkastet kom til i PR #87,
+      # flyttede den faelles rod ét niveau op til «publicering», og de samme
+      # filer laa nu under «research/fund/» og «research/tilstand.json».
+      # Arkiveringen leder stadig efter «indkommet/fund» — og vagten afviser
+      # en mappe, der ikke findes, med kode 2. Mandagskoerslen ville braekke.
+      #
+      # En mappe, vi selv bygger, har samme form hver gang, uanset hvor
+      # filerne ligger i repoet.
+      - name: Stil filerne op til arkivering
+        run: |
+          set -euo pipefail
+          mkdir -p tilarkiv/fund tilarkiv/udkast
+          cp publicering/research/fund/*.json tilarkiv/fund/
+          # tilstand.json er ETag-cache, ikke data. Den skrives af hent.mjs
+          # ved enden af en lykket indsamling, saa den findes her — men et
+          # job maa ikke doe over en cachefil.
+          if [ -f publicering/research/tilstand.json ]; then
+            cp publicering/research/tilstand.json tilarkiv/tilstand.json
+          else
+            echo "Ingen tilstand.json — ETag-cachen arkiveres ikke denne gang."
+          fi
+          # Tom uge giver intet udkast. Det er i orden og siges ligeud.
+          if compgen -G 'publicering/udkast/research-*.md' > /dev/null; then
+            cp publicering/udkast/research-*.md tilarkiv/udkast/
+          else
+            echo "Intet researchudkast denne uge."
+          fi
+          echo "── klar til arkivering ──"
+          find tilarkiv -type f | sort
+
       - uses: actions/upload-artifact@v4
         with:
           name: research-ugens-fund
-          path: |
-            publicering/research/fund/
-            publicering/research/tilstand.json
-            publicering/udkast/research-*.md
+          path: tilarkiv/
           retention-days: 90
 
   arkiver:
@@ -110,11 +142,19 @@ jobs:
       - name: Arkiver ugens fund
         run: |
           set -euo pipefail
+          # Fundfilerne SKAL vaere der: naaede koerslen hertil, har vagten
+          # netop godkendt dem. Et «|| true» her skjulte, at der ikke blev
+          # arkiveret noget, og lod jobbet gaa groent.
           mkdir -p publicering/research/fund
-          cp indkommet/fund/*.json publicering/research/fund/ 2>/dev/null || true
+          cp indkommet/fund/*.json publicering/research/fund/
+          [ -f indkommet/tilstand.json ] && cp indkommet/tilstand.json publicering/research/ || echo "Ingen tilstand.json i artefakten." 
+          # Udkastet kan mangle i en tom uge. Det er i orden og siges ligeud.
           mkdir -p publicering/udkast
-          cp indkommet/udkast/research-*.md publicering/udkast/ 2>/dev/null || true
-          cp indkommet/tilstand.json publicering/research/ 2>/dev/null || true
+          if compgen -G 'indkommet/udkast/research-*.md' > /dev/null; then
+            cp indkommet/udkast/research-*.md publicering/udkast/
+          else
+            echo "Intet researchudkast i artefakten."
+          fi
           rm -rf indkommet
 
           # Sidste spaerre: intet uden for research-mappen maa vaere aendret.
