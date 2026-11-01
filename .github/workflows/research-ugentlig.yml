@@ -60,6 +60,7 @@ jobs:
           name: research-ugens-fund
           path: |
             publicering/research/fund/
+            publicering/research/pakkeafsnit/
             publicering/research/tilstand.json
           retention-days: 90
 
@@ -105,6 +106,8 @@ jobs:
           set -euo pipefail
           mkdir -p publicering/research/fund
           cp indkommet/fund/*.json publicering/research/fund/ 2>/dev/null || true
+          mkdir -p publicering/research/pakkeafsnit
+          cp indkommet/pakkeafsnit/*.md publicering/research/pakkeafsnit/ 2>/dev/null || true
           cp indkommet/tilstand.json publicering/research/ 2>/dev/null || true
           rm -rf indkommet
 

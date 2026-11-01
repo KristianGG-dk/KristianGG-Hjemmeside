@@ -157,7 +157,11 @@ L.push('_Afsnittet er maskinskrevet af `publicering/research/vurder.mjs` og inds
 
 const ud = L.join('\n');
 if (process.argv.includes('--skriv')) {
-  const f = path.join(HER, 'fund', `${valgt}-pakkeafsnit.md`);
+  // Pakkeafsnittet er AFLEDT output og hoerer ikke i fund/. Dér ligger kun
+  // raadata som AAAA-UU.json, og vagten afviser med rette alt andet dér.
+  const m = path.join(HER, 'pakkeafsnit');
+  fs.mkdirSync(m, { recursive: true });
+  const f = path.join(m, `${valgt}.md`);
   fs.writeFileSync(f, ud); process.stderr.write(`skrevet: ${f}\n`);
 }
 console.log(ud);
