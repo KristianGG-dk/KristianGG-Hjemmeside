@@ -23,5 +23,19 @@
     "version": "1.0.0",
     "resultat_sha256": "b46894bb9dbd828c"
   },
-  "versionslaas": "a2c1a889f95dc923"
+  "versionslaas": "a2c1a889f95dc923",
+  "ejerverifikation": {
+    "verificeret_af": "Kristian G. G. Dansted",
+    "dato": "2026-11-01",
+    "rolle": "ejer",
+    "omfang": "Molsness' introduktionspris 1.200 kr. samt arrangements- og tilgaengelighedsoplysningerne",
+    "note": "Faktakontrollen er dermed lukket for disse oplysninger. Tekniske krav, billedkrav og planlagt tidspunkt gaelder uaendret."
+  },
+  "tredjepartspriser": [
+    {
+      "beloeb": 1200,
+      "hvem": "Molsness",
+      "kilde": "https://www.molsness.dk/arrangementer/?ytroute=/arrangementer/62198/mand-24-timer-uden-krav-et-doegn-med-naturen-stilheden-og-faellesskabet/"
+    }
+  ]
 }
