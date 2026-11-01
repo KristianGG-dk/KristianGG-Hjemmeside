@@ -38,6 +38,11 @@ jobs:
       - name: Afproev kandidatkilderne
         run: node publicering/research/fase0-afproev-kilder.mjs
 
+      # Anden runde: for de domaener der fejlede, spoerges sitet selv, om det
+      # oplyser et feed. Det er den standardiserede vej og kraever ingen gaet.
+      - name: Find feeds via autodiscovery
+        run: node publicering/research/fase0-find-feeds.mjs
+
       - name: Gem rapport og raadata
         if: always()
         uses: actions/upload-artifact@v4
@@ -46,4 +51,6 @@ jobs:
           path: |
             fase0-rapport.md
             fase0-raa.json
+            fase0-feeds.md
+            fase0-feeds.json
           retention-days: 90
