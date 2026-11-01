@@ -23,5 +23,12 @@
     "version": "1.0.0",
     "resultat_sha256": "3a23550a4c855f4b"
   },
-  "versionslaas": "e2ad2ceb25c7b143"
+  "versionslaas": "e2ad2ceb25c7b143",
+  "ejerverifikation": {
+    "verificeret_af": "Kristian G. G. Dansted",
+    "dato": "2026-11-01",
+    "rolle": "ejer",
+    "omfang": "329 kr. pr. person er den endelige pris inklusive moms (skovbad i gruppe)",
+    "note": "Faktakontrollen er dermed lukket for prisen. Tekniske krav, billedkrav og planlagt tidspunkt gaelder uaendret."
+  }
 }
