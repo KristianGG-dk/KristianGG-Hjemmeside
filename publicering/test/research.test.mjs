@@ -9,7 +9,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { execFileSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
-import { adapter, gyldigDato, lavRelevans, tekst } from '../research/lib.mjs';
+import { adapter, gyldigDato, lavRelevans, normaliser, tekst } from '../research/lib.mjs';
 
 const HER = path.dirname(fileURLToPath(import.meta.url));
 const R = path.join(HER, '..', 'research');
@@ -72,6 +72,25 @@ proev('Ét generisk ord alene kvalificerer aldrig', () => {
   assert.equal(v.relevant, false);
   assert.match(v.grund, /kun ét generisk ord/);
   assert.equal(rel({ titel: 'Stress og angst', resume: 'og soevn' }).relevant, true, 'to generiske skal raekke');
+});
+
+proev('To stavemaader af samme ord taeller som ét begreb', () => {
+  const rel = lavRelevans(kat.emneord);
+  // «arbejdsmiljø» og «arbejdsmiljoe» stod begge i registret og blev begge
+  // talt med. Ét begreb opfyldte dermed kravet om to generiske ord, og
+  // enhver artikel om arbejdsmiljø alene slap igennem.
+  const v = rel({ titel: 'Arbejdsmiljoeet er udfordret paa afdelingen', resume: '' });
+  assert.equal(v.relevant, false, 'ét begreb maa ikke raekke, uanset stavemaade');
+  assert.equal(v.generiske.length, 1, 'samme begreb maa kun taelle én gang');
+  for (const t of ['Soevn hos aeldre', 'Naervaer i skolen', 'Rapport om sygefravaer']) {
+    assert.equal(rel({ titel: t, resume: '' }).relevant, false, t);
+  }
+  // Og registret selv maa ikke indeholde to stavemaader af samme ord.
+  const fold = (l) => new Set(l.map(normaliser));
+  for (const felt of ['specifikke', 'generiske']) {
+    assert.equal(fold(kat.emneord[felt]).size, kat.emneord[felt].length,
+      `${felt} indeholder samme ord i to stavemaader`);
+  }
 });
 
 proev('Ét specifikt ord raekker', () => {
