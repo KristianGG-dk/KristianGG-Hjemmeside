@@ -54,7 +54,53 @@ concurrency:
 permissions: {}
 
 jobs:
+  # FOERSTE job. Skriver «PUBLICERING IGANG» i registret for de elementer,
+  # der skal sendes, og committer det FOER noget sendes. Doer koerslen
+  # derefter, staar kravet tilbage, og ingen senere koersel roerer elementet:
+  # udfaldet er uvist, og uvist kraever et menneske. Se krav.mjs.
+  #
+  # Jobbet har skriveret, men ser ALDRIG nettet og faar intet token. Det job,
+  # der taler med platformen, har stadig kun contents: read.
+  krav:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    outputs:
+      antal: ${{ steps.tag.outputs.antal }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+
+      - name: Tag kravet paa forfaldne elementer
+        id: tag
+        if: ${{ github.event_name == 'schedule' || inputs.publicer }}
+        run: |
+          set -euo pipefail
+          node publicering/scripts/publicer-instagram.mjs --tag-krav
+          echo "antal=$(node -e 'console.log(JSON.parse(require("fs").readFileSync("krav-instagram.json","utf8")).length)')" >> "$GITHUB_OUTPUT"
+
+      - name: Commit kravet
+        if: ${{ github.event_name == 'schedule' || inputs.publicer }}
+        run: |
+          git config user.name "publiceringsmotor"
+          git config user.email "kontakt@kristiangg.dk"
+          bash publicering/scripts/commit-register.sh \
+            publicering/register.json \
+            "krav: instagram" \
+            "node publicering/scripts/publicer-instagram.mjs --tag-krav"
+
+      - name: Gem kravet til publiceringsjobbet
+        if: ${{ github.event_name == 'schedule' || inputs.publicer }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: krav-instagram
+          path: krav-instagram.json
+          if-no-files-found: warn
+
   publicer:
+    needs: krav
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -64,6 +110,13 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '24'
+
+      # Kravfilen afgoer, hvad der sendes. Udvaelgelsen ville nu springe netop
+      # disse over, fordi de staar som «PUBLICERING IGANG» — det er meningen.
+      - uses: actions/download-artifact@v4
+        with:
+          name: krav-instagram
+        continue-on-error: true
 
       - name: Publicer forfaldne Instagram-elementer
         shell: bash

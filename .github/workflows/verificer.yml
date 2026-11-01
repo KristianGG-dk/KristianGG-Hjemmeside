@@ -47,10 +47,13 @@ jobs:
 
       # Motorens proever: destinationskontrol, fornyelse og fail closed for
       # LinkedIn og Google. Intet netvaerk, intet token - kun attrapper.
+      # ALLE proevefiler, ikke kun linkedin-* og google-*. krav.test.mjs og
+      # research.test.mjs faldt uden for det gamle moenster og blev dermed
+      # aldrig koert af gaten.
       - name: Motorens prøver
         run: |
           set -e
-          for t in publicering/test/linkedin-*.test.mjs publicering/test/google-*.test.mjs; do
+          for t in publicering/test/*.test.mjs; do
             echo "── $t"
             node "$t"
           done
@@ -59,6 +62,4 @@ jobs:
       # uden kilde, genbrug, sporbarhed og kontrolstempel. FAIL og uafklaret
       # REVIEW stopper merge. Se publicering/regler/indholdsregler.json.
       - name: Indholdskontrol af alle kanaler
-        run: |
-          node publicering/test/kontroller-indhold.test.mjs
-          node publicering/scripts/kontroller-indhold.mjs
+        run: node publicering/scripts/kontroller-indhold.mjs

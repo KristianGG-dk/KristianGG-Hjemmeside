@@ -23,16 +23,17 @@ import { readFileSync, readdirSync, writeFileSync, existsSync } from 'node:fs';
 import { join } from 'node:path';
 import { beregnLaas, sha256 } from './laas.mjs';
 import { publicer } from './publicer-linkedin.mjs';
+import {
+  registerSpaerre, forfald, kravraekke, forSentRaekke, foejTilRegister,
+  laesRegister as laesReg, MAKS_FORSINKELSE_S,
+} from './krav.mjs';
 
 const LAASE = 'publicering/laase';
 const REGISTER = 'publicering/register.json';
 const RESULTAT = 'resultat-linkedin.json';
+const KRAV = 'krav-linkedin.json';
 
-/** Statusser der betyder "elementet er afsendt eller undervejs". */
-const AFSENDT = ['PUBLICERET', 'PLANLAGT', 'PLANLAGT MANUELT'];
-
-const laesRegister = () =>
-  existsSync(REGISTER) ? JSON.parse(readFileSync(REGISTER, 'utf8')) : [];
+const laesRegister = () => laesReg(REGISTER);
 
 const tid = (sek) => new Date(sek * 1000).toISOString().slice(0, 16).replace('T', ' ') + ' UTC';
 
@@ -48,23 +49,17 @@ function skrub(s) {
 
 export function udvaelg(nu, { laase = LAASE, register } = {}) {
   const reg = register ?? laesRegister();
-  const valgt = [], sprunget = [];
+  const valgt = [], sprunget = [], forSent = [];
 
   for (const f of readdirSync(laase).filter((x) => x.endsWith('.json')).sort()) {
     const e = JSON.parse(readFileSync(join(laase, f), 'utf8'));
     const nr = e.element;
     if (e.kanal !== 'linkedin') { sprunget.push([nr, `kanal er ${e.kanal}, ikke linkedin`]); continue; }
 
-    const post = [...reg].reverse().find((x) => x.element === nr && AFSENDT.includes(x.status));
-    if (post) { sprunget.push([nr, `staar som ${post.status} i registret`]); continue; }
-
-    // En tidligere fejl er en spaerre. Motoren proever ikke igen af sig selv:
-    // et uvist udfald kan betyde, at opslaget ER gaaet ud.
-    const sidste = [...reg].reverse().find((x) => x.element === nr);
-    if (sidste && sidste.status === 'PUBLICERING FEJLET') {
-      sprunget.push([nr, 'seneste forsoeg fejlede — kraever menneskelig stillingtagen foer nyt forsoeg']);
-      continue;
-    }
+    // Faelles spaerre: afsendt, undervejs, fejlet eller stoppet. Et uvist
+    // udfald er en spaerre, ikke en invitation til at proeve igen.
+    const spaerre = registerSpaerre(reg, nr);
+    if (spaerre) { sprunget.push([nr, spaerre]); continue; }
 
     try {
       const { laas } = beregnLaas(e);
@@ -75,13 +70,45 @@ export function udvaelg(nu, { laase = LAASE, register } = {}) {
       sprunget.push([nr, `AFVIST: ${err.message}`]); continue;
     }
 
-    const naar = Math.floor(new Date(e.dato).getTime() / 1000);
-    if (Number.isNaN(naar)) { sprunget.push([nr, `ulaeseligt dato-felt: ${e.dato}`]); continue; }
-    if (naar > nu) { sprunget.push([nr, `forfalder foerst ${tid(naar)}`]); continue; }
+    // Tidspunktet. Hoejst en time efter det godkendte: et opslag, der kommer
+    // halvanden time for sent, kan vaere forkert nu — og det skal et menneske
+    // afgoere, ikke en sen automatik. Det stoppes og registreres som stoppet.
+    const { tilstand, naar } = forfald(e, nu, MAKS_FORSINKELSE_S);
+    if (tilstand === 'ulaeselig') { sprunget.push([nr, `ulaeseligt dato-felt: ${e.dato}`]); continue; }
+    if (tilstand === 'fremtid') { sprunget.push([nr, `forfalder foerst ${tid(naar)}`]); continue; }
+    if (tilstand === 'for_sent') {
+      const min = Math.round((nu - naar) / 60);
+      sprunget.push([nr, `forfaldt ${tid(naar)} — ${min} minutter siden, over graensen paa ${Math.round(MAKS_FORSINKELSE_S / 60)}. Stoppet til manuel vurdering`]);
+      forSent.push({ e, naar });
+      continue;
+    }
 
     valgt.push({ e, naar });
   }
-  return { valgt, sprunget };
+  return { valgt, sprunget, forSent };
+}
+
+/**
+ * Tager kravet FOER der sendes noget: skriver «PUBLICERING IGANG» i registret
+ * og lister de elementer, publiceringsjobbet derefter maa sende. Koerer uden
+ * net og uden token. Se krav.mjs for hvorfor.
+ */
+export function tagKrav(nu = Math.floor(Date.now() / 1000)) {
+  const { valgt, sprunget, forSent } = udvaelg(nu);
+  if (sprunget.length) {
+    console.log('── springes over ──');
+    for (const [nr, hvorfor] of sprunget) console.log(`  element ${String(nr).padStart(2)}  ${hvorfor}`);
+    console.log('');
+  }
+  const raekker = [
+    ...forSent.map(({ e, naar }) => forSentRaekke(e, 'linkedin', naar, MAKS_FORSINKELSE_S)),
+    ...valgt.map(({ e }) => kravraekke(e, 'linkedin')),
+  ];
+  foejTilRegister(raekker, REGISTER);
+  writeFileSync(KRAV, JSON.stringify(valgt.map(({ e }) => e.element), null, 2) + '\n');
+  console.log(`${valgt.length} element(er) kravet er taget paa, ${forSent.length} stoppet som for sent.`);
+  for (const { e } of valgt) console.log(`  krav paa element ${e.element} «${e.titel}»`);
+  return { valgt, forSent };
 }
 
 async function publicerEt(e) {
@@ -98,9 +125,33 @@ async function publicerEt(e) {
   }
 }
 
+/**
+ * De elementer, kravet er taget paa. Findes kravfilen, er DEN sandheden:
+ * udvaelgelsen ville nu springe netop disse over, fordi de staar som
+ * «PUBLICERING IGANG» — det er hele meningen med kravet. Laasen, teksthashen,
+ * godkendelsen, destinationen og billedet kontrolleres stadig for hvert
+ * enkelt, i publicer().
+ */
+function fraKrav() {
+  const numre = JSON.parse(readFileSync(KRAV, 'utf8'));
+  const ud = [];
+  for (const nr of numre) {
+    const fil = join(LAASE, `element-${String(nr).padStart(2, '0')}.json`);
+    if (!existsSync(fil)) throw new Error(`kravet naevner element ${nr}, men ${fil} findes ikke`);
+    const e = JSON.parse(readFileSync(fil, 'utf8'));
+    if (e.kanal !== 'linkedin') throw new Error(`element ${nr} er kanal ${e.kanal}, ikke linkedin`);
+    ud.push({ e, naar: Math.floor(new Date(e.dato).getTime() / 1000) });
+  }
+  return ud;
+}
+
 async function koer({ toerloeb = true } = {}) {
   const nu = Math.floor(Date.now() / 1000);
-  const { valgt, sprunget } = udvaelg(nu);
+  const medKrav = existsSync(KRAV);
+  const { valgt, sprunget } = medKrav
+    ? { valgt: fraKrav(), sprunget: [] }
+    : udvaelg(nu);
+  if (medKrav) console.log(`Kravfil fundet — publicerer de ${valgt.length} element(er), kravet er taget paa.\n`);
 
   console.log(toerloeb
     ? 'TOERLOEB — intet sendes. Viser hvad der ville blive publiceret.\n'
@@ -161,7 +212,10 @@ function statusKun(fil) {
 
 if (import.meta.url === `file://${process.argv[1]}`) {
   const args = process.argv.slice(2);
-  if (args[0] === '--skriv-register') {
+  if (args[0] === '--tag-krav') {
+    try { tagKrav(); process.exit(0); }
+    catch (err) { console.error('FEJL:', err.message); process.exit(1); }
+  } else if (args[0] === '--skriv-register') {
     process.exit(skrivRegister(args[1]) > 0 ? 1 : 0);
   } else if (args[0] === '--status-kun') {
     process.exit(statusKun(args[1]) > 0 ? 1 : 0);

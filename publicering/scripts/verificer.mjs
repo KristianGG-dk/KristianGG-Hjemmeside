@@ -87,6 +87,32 @@ function verificerElement(sti) {
     else ok('tekst uændret siden godkendelsen');
   }
 
+  // 4aa. Billedet skal findes paa den adresse, opslaget henviser til.
+  //
+  // Meta, Google og LinkedIn HENTER billedet fra kristiangg.dk. Peger
+  // adressen paa en fil, der ikke udgives, svarer den 404, og opslaget
+  // fejler hos platformen — ikke her, men paa publiceringsdagen.
+  //
+  // Alle tretten sociale laase for uge 45-47 pegede paa <motiv>-1350.jpg.
+  // Ingen af motiverne findes i 1350 px; den stoerste jpg er 640 px. Gaten
+  // kontrollerede, AT der stod en billedadresse, men aldrig at den foerte
+  // nogen steder. Instagram 42 den 5. november ville have fejlet, og
+  // Facebook-planlaegningen af 43, 48 og 52 ved hver sjette times koersel.
+  //
+  // Kontrollen sker mod byggeoutputtet, for det er det, Netlify udgiver.
+  // Er der ikke bygget (lokal koersel), kontrolleres static/ i stedet, og
+  // det siges ligeud.
+  if (e.kanal !== 'website' && e.billede_url) {
+    const rel = String(e.billede_url).replace(/^https?:\/\/[^/]+/, '').replace(/^\/+/, '');
+    const bygget = existsSync(BYG);
+    const sti = bygget ? join(BYG, rel) : join('static', rel);
+    if (existsSync(sti)) {
+      ok(`billedet findes: ${rel}${bygget ? '' : ' (kontrolleret i static/, der er ikke bygget)'}`);
+    } else {
+      nej(`billedet findes IKKE: ${e.billede_url} → ${sti}. Platformen henter adressen selv og får 404, så opslaget fejler på publiceringsdagen.`);
+    }
+  }
+
   // 4b. Google Business Profile: platformens krav. Et opslag, der ikke kan
   // sendes ordret, skal stoppes her og ikke først på publiceringsdagen.
   if (e.kanal === 'gbp') {
