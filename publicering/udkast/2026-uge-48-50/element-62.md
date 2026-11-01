@@ -13,7 +13,7 @@ Fra lørdag middag til søndag middag er vi ude. Stillevandring ved havet, skovb
 
 Du behøver ikke fortælle din livshistorie. Der er gruppesamtaler, og man kan sige noget eller lade være. Det er ikke terapi — det er et døgn i naturen sammen med andre mænd.
 
-Molsness er arrangør og sælger billetterne. Molsness' introduktionspris er 1.200 kr. pr. person inklusive forplejning, aktiviteter og overnatning. Hertil kommer Molsness' billetgebyr på 29 kr. og 3 kr. i administrationsgebyr pr. ordre.
+Molsness er arrangør og sælger billetterne. Molsness' introduktionspris er 1.200 kr. pr. person inklusive forplejning, aktiviteter og overnatning. Molsness tager desuden 29 kr. i billetgebyr pr. billet og 3 kr. pr. ordre i administration. En enkelt billet koster altså 1.232 kr.
 
 Højst 12 deltagere og mindst 6, før det bliver til noget. Molsness ligger på Asylvej 19 i Knebel.
 
