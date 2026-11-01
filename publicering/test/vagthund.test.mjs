@@ -209,5 +209,71 @@ for (const [dage, skalFejle, hvorfor] of [
   }
 }
 
+// ── Forladte opslag hos Meta ───────────────────────────────────────────────
+// Den ene fejl, hvor vagthunden er det eneste vaern: alle andre spaerrer
+// virker FOER afsendelsen, og denne ligger efter. Meta holder opslaget og
+// udgiver det selv, ogsaa hvis elementet er tilbagekaldt bagefter.
+console.log('\nOpslag, der ligger hos Meta uden at nogen vil dem');
+
+/** Koerer vagthunden mod én koepost og flere registerraekker. */
+function koerFlere({ koe, register }) {
+  const rod = mkdtempSync(join(tmpdir(), 'vagthund-meta-'));
+  try {
+    mkdirSync(join(rod, 'publicering/laase'), { recursive: true });
+    writeFileSync(join(rod, 'publicering/koe.json'), JSON.stringify(koe));
+    writeFileSync(join(rod, 'publicering/register.json'), JSON.stringify(register));
+    try {
+      return { ud: execFileSync('node', [VAGTHUND, '--uden-net', '--nu', NU], { cwd: rod, encoding: 'utf8' }), kode: 0 };
+    } catch (err) {
+      return { ud: (err.stdout ?? '') + (err.stderr ?? ''), kode: err.status ?? 1 };
+    }
+  } finally { rmSync(rod, { recursive: true, force: true }); }
+}
+
+const planlagtHosMeta = [
+  { element: 900, kanal: 'facebook', status: 'AFVENTER DATO', tidspunkt: '2026-10-01T00:00:00.000Z' },
+  // planlagt_til er i SEKUNDER, som planlaeg-facebook.mjs skriver den.
+  { element: 900, kanal: 'facebook', status: 'PLANLAGT', post_id: '123_456',
+    planlagt_til: Math.floor(new Date('2026-12-01T19:00:00+01:00').getTime() / 1000),
+    tidspunkt: '2026-10-02T00:00:00.000Z' },
+];
+const koepost = (over = {}) => ({
+  element: 900, kanal: 'facebook', tidspunkt: '2026-12-01T19:00:00+01:00',
+  metode: 'motor', laasefil: 'publicering/laase/element-900.json', url: null, ...over,
+});
+
+for (const [navn, koe] of [
+  ['tilbagekaldt', [koepost({ tilbagekaldt: { dato: '2026-11-01' }, laasefil: null })]],
+  ['sat paa pause', [koepost({ metode: 'pause' })]],
+  ['fjernet fra koeen', []],
+]) {
+  const { ud, kode } = koerFlere({ koe, register: planlagtHosMeta });
+  const godt = kode !== 0 && ud.includes('LIGGER HOS META') && ud.includes('123_456');
+  godt ? (bestaaet++, console.log(`  OK    ${navn}: FEJL med post_id`))
+       : (fejlet++, console.log(`  FEJL  ${navn}: forventede FEJL med post_id, fik exit ${kode}`));
+}
+
+{
+  // Det normale tilfaelde: elementet ligger hos Meta, OG alle vil det stadig.
+  // Laasefilen findes dog ikke i den midlertidige mappe, saa kontrollen skal
+  // melde netop det — og intet andet.
+  const { ud } = koerFlere({ koe: [koepost()], register: planlagtHosMeta });
+  const kun = ud.includes('laasefilen') && !ud.includes('tilbagekaldt') && !ud.includes('metode');
+  kun ? (bestaaet++, console.log('  OK    manglende laasefil naevnes alene, uden paastande om koeen'))
+      : (fejlet++, console.log('  FEJL  begrundelsen er ikke praecis\n' + ud.split('\n').filter((l) => l.includes('element 900')).join('\n')));
+}
+
+{
+  // ANNULLERET HOS META er ikke PLANLAGT, saa kontrollen skal tie.
+  const { ud } = koerFlere({
+    koe: [koepost({ tilbagekaldt: { dato: '2026-11-01' }, laasefil: null })],
+    register: [...planlagtHosMeta,
+      { element: 900, kanal: 'facebook', status: 'ANNULLERET HOS META', post_id: '123_456', tidspunkt: '2026-10-03T00:00:00.000Z' }],
+  });
+  !ud.includes('LIGGER HOS META')
+    ? (bestaaet++, console.log('  OK    annulleret hos Meta: kontrollen tier'))
+    : (fejlet++, console.log('  FEJL  melder stadig fejl efter annullering'));
+}
+
 console.log(`\n${bestaaet} bestaaet, ${fejlet} fejlet`);
 process.exit(fejlet ? 1 : 0);
