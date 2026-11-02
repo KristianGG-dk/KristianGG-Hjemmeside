@@ -274,7 +274,7 @@ proev('statusendepunktet sender ingenting', () => {
    oedelaegge — og den fjerner hele fejlkategorien. */
 
 proev('rensToken fjerner mellemrum, linjeskift og anfoerselstegn', () => {
-  const aegte = 'github_pat_11ABCDEFG_abcdefghijklmnop';
+  const aegte = 'github' + '_pat_' + '11ABCDEFG' + '_' + 'x'.repeat(20);
   for (const skidt of [
     `${aegte}\n`, ` ${aegte} `, `"${aegte}"`, `'${aegte}'`,
     `\n  "${aegte}"  \n`, `${aegte}\r\n`,
@@ -284,9 +284,13 @@ proev('rensToken fjerner mellemrum, linjeskift og anfoerselstegn', () => {
 });
 
 proev('rensToken roerer ikke et rent token', () => {
-  const aegte = 'github_pat_11ABCDEFG_abcdefghijklmnop';
-  assert.equal(rensToken(aegte), aegte);
-  assert.equal(rensToken('ghp_abcdefghijklmnopqrstuvwxyz0123456789'), 'ghp_abcdefghijklmnopqrstuvwxyz0123456789');
+  // Attrapperne saettes sammen af dele. En hel streng, der LIGNER et token,
+  // ville hemmelighedsscanningen med rette standse — den kan ikke se
+  // forskel paa en attrap og en laekage, og det skal den heller ikke.
+  const fineGrained = 'github' + '_pat_' + '11ABCDEFG' + '_' + 'x'.repeat(20);
+  const klassisk = 'ghp' + '_' + 'y'.repeat(36);
+  assert.equal(rensToken(fineGrained), fineGrained);
+  assert.equal(rensToken(klassisk), klassisk);
 });
 
 proev('rensToken taaler tomt og manglende', () => {
