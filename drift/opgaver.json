@@ -1,0 +1,337 @@
+{
+  "version": 1,
+  "opdateret": "2026-11-02T19:05:30.208Z",
+  "opgaver": [
+    {
+      "id": "K1-linkedin-billedproeve",
+      "titel": "LinkedIn-billedupload afproevet uden at publicere",
+      "ansvarlig": "codex",
+      "prioritet": "hoej",
+      "frist": "2026-11-05",
+      "status": "lukket",
+      "kilde": [
+        {
+          "type": "issue",
+          "ref": 90
+        },
+        {
+          "type": "actions-run",
+          "ref": 41353997314
+        }
+      ],
+      "naeste_handling": null,
+      "afhaengigheder": [],
+      "afslutning": {
+        "dato": "2026-11-02T19:00:51.633Z",
+        "bevis": "Billedproeven bestod 2026-11-01 21:49 UTC (koersel 41353997314): API-version 202610, upload-adressen tog imod PUT, URN modtaget, og der blev IKKE oprettet noget opslag. Element 41 kan derfor publiceres med sit godkendte billede 5. november.",
+        "af": "codex (foerste afstemning)"
+      },
+      "historik": [
+        {
+          "tid": "2026-11-02T19:00:51.629Z",
+          "af": "codex (foerste afstemning)",
+          "hvad": "oprettet"
+        },
+        {
+          "tid": "2026-11-02T19:00:51.633Z",
+          "af": "codex (foerste afstemning)",
+          "hvad": "lukket: Billedproeven bestod 2026-11-01 21:49 UTC (koersel 41353997314): API-version 202610, upload-adressen tog imod PUT, URN modtaget, og der blev IKKE oprettet noget opslag. Element 41 kan derfor publiceres med sit godkendte billede 5. november."
+        }
+      ]
+    },
+    {
+      "id": "K2a-google-oauth",
+      "titel": "Google Business Profile: adgang autoriseret i produktion",
+      "ansvarlig": "codex",
+      "prioritet": "hoej",
+      "frist": null,
+      "status": "lukket",
+      "kilde": [
+        {
+          "type": "beslutning",
+          "ref": "B-010"
+        },
+        {
+          "type": "fil",
+          "ref": "publicering/google-token.json"
+        },
+        {
+          "type": "pr",
+          "ref": 105
+        }
+      ],
+      "naeste_handling": null,
+      "afhaengigheder": [],
+      "afslutning": {
+        "dato": "2026-11-02T19:00:51.633Z",
+        "bevis": "Autoriseret 2026-11-02 med scope business.manage, uden udloebsdato. Lokationen er laast i publicering/google-token.json, og workflowet «Kontroller Google-adgang» er groent. FORAELDET KRAV FJERNET: OAuth skal ikke gennemfoeres igen.",
+        "af": "codex (foerste afstemning)"
+      },
+      "historik": [
+        {
+          "tid": "2026-11-02T19:00:51.633Z",
+          "af": "codex (foerste afstemning)",
+          "hvad": "oprettet"
+        },
+        {
+          "tid": "2026-11-02T19:00:51.633Z",
+          "af": "codex (foerste afstemning)",
+          "hvad": "lukket: Autoriseret 2026-11-02 med scope business.manage, uden udloebsdato. Lokationen er laast i publicering/google-token.json, og workflowet «Kontroller Google-adgang» er groent. FORAELDET KRAV FJERNET: OAuth skal ikke gennemfoeres igen."
+        }
+      ]
+    },
+    {
+      "id": "K2b-google-handlingsknapper",
+      "titel": "Google Business Profile: handlingsknapper paa de tre opslag",
+      "ansvarlig": "codex",
+      "prioritet": "hoej",
+      "frist": null,
+      "status": "lukket",
+      "kilde": [
+        {
+          "type": "beslutning",
+          "ref": "B-005"
+        },
+        {
+          "type": "pr",
+          "ref": 109
+        },
+        {
+          "type": "pakke",
+          "ref": "2026-rettelser-gbp-knapper.md"
+        }
+      ],
+      "naeste_handling": null,
+      "afhaengigheder": [],
+      "afslutning": {
+        "dato": "2026-11-02T19:00:51.633Z",
+        "bevis": "Implementeret i PR #109. Element 53 → /til-dig/naturterapi/, 54 → /til-dig/psykoterapi/, 49 → /kurser/skovbad/, alle som LEARN_MORE. Kun feltet links er aendret; teksthashene og tidspunkterne er uaendrede. Laasene er regnet om og sporet ligger i rettelsespakken.",
+        "af": "codex (foerste afstemning)"
+      },
+      "historik": [
+        {
+          "tid": "2026-11-02T19:00:51.633Z",
+          "af": "codex (foerste afstemning)",
+          "hvad": "oprettet"
+        },
+        {
+          "tid": "2026-11-02T19:00:51.633Z",
+          "af": "codex (foerste afstemning)",
+          "hvad": "lukket: Implementeret i PR #109. Element 53 → /til-dig/naturterapi/, 54 → /til-dig/psykoterapi/, 49 → /kurser/skovbad/, alle som LEARN_MORE. Kun feltet links er aendret; teksthashene og tidspunkterne er uaendrede. Laasene er regnet om og sporet ligger i rettelsespakken."
+        }
+      ]
+    },
+    {
+      "id": "K2c-google-knap-i-virkeligheden",
+      "titel": "Google Business Profile: bekraeft knappens faktiske visning hos Google",
+      "ansvarlig": "vagthund",
+      "prioritet": "mellem",
+      "frist": "2026-11-04",
+      "status": "afventer-haendelse",
+      "kilde": [
+        {
+          "type": "opgave",
+          "ref": "K2b-google-handlingsknapper"
+        },
+        {
+          "type": "koe",
+          "ref": "element 53, 2026-11-04T09:00+01:00"
+        }
+      ],
+      "naeste_handling": "Naar element 53 er publiceret 4. november kl. 09.00, kontrolleres platformssvaret i registret, og knappen efterses paa profilen.",
+      "afhaengigheder": [
+        "K2b-google-handlingsknapper"
+      ],
+      "afslutning": null,
+      "historik": [
+        {
+          "tid": "2026-11-02T19:00:51.633Z",
+          "af": "codex (foerste afstemning)",
+          "hvad": "oprettet"
+        }
+      ]
+    },
+    {
+      "id": "K3-uge-48-50",
+      "titel": "Indhold til uge 48-50 skal skrives og godkendes",
+      "ansvarlig": "claude",
+      "prioritet": "hoej",
+      "frist": "2026-11-20",
+      "status": "aaben",
+      "kilde": [
+        {
+          "type": "mappe",
+          "ref": "publicering/udkast/2026-uge-48-50"
+        },
+        {
+          "type": "beslutning",
+          "ref": "B-009"
+        }
+      ],
+      "naeste_handling": "Claude faerdiggoer udkastene og laegger en godkendelsespakke frem. Kristian godkender element for element, FOER noget laases.",
+      "afhaengigheder": [],
+      "afslutning": null,
+      "historik": [
+        {
+          "tid": "2026-11-02T19:00:51.633Z",
+          "af": "codex (foerste afstemning)",
+          "hvad": "oprettet"
+        }
+      ]
+    },
+    {
+      "id": "K4-paalidelig-udloeser",
+      "titel": "Den paalidelige udloeser: Netlify skal starte publiceringen paa klokkeslettet",
+      "ansvarlig": "codex",
+      "prioritet": "hoej",
+      "frist": "2026-11-04",
+      "status": "afventer-haendelse",
+      "kilde": [
+        {
+          "type": "pr",
+          "ref": 109
+        },
+        {
+          "type": "pr",
+          "ref": 110
+        },
+        {
+          "type": "actions-run",
+          "ref": 41496645744
+        },
+        {
+          "type": "dokumentation",
+          "ref": "dokumentation/paalidelig-udloeser.md"
+        }
+      ],
+      "naeste_handling": "Tokenet er verificeret accepteret af GitHub. Mangler: at Netlifys planlaegger faktisk kalder funktionen. Bevises af foerste koersel af «Udloeserens livstegn». Udebliver den efter to hele timevinduer, undersoeges registreringen af den planlagte funktion hos Netlify.",
+      "afhaengigheder": [],
+      "afslutning": null,
+      "historik": [
+        {
+          "tid": "2026-11-02T19:00:51.633Z",
+          "af": "codex (foerste afstemning)",
+          "hvad": "oprettet"
+        }
+      ]
+    },
+    {
+      "id": "K5-foreningen-oplysninger",
+      "titel": "Foreningen mod Familiebelastning: oplysningerne er delvist foraeldede",
+      "ansvarlig": "claude",
+      "prioritet": "mellem",
+      "frist": null,
+      "status": "aaben",
+      "kilde": [
+        {
+          "type": "besked",
+          "ref": "Kristians masterprompt 2026-11-02, afsnit 6"
+        },
+        {
+          "type": "beslutning",
+          "ref": "B-011"
+        }
+      ],
+      "naeste_handling": "Claude kontrollerer de aktuelle oplysninger paa familiebelastning.dk (Aaben Familieraadgivning aabnede 29-10-2026, torsdag kl. 19-21), FOER der oprettes nye opgaver. Foreningens drift holdes adskilt fra Kristian GG, og intet aendres paa foreningens hjemmeside uden saerskilt godkendelse.",
+      "afhaengigheder": [],
+      "afslutning": null,
+      "historik": [
+        {
+          "tid": "2026-11-02T19:00:51.633Z",
+          "af": "codex (foerste afstemning)",
+          "hvad": "oprettet"
+        }
+      ]
+    },
+    {
+      "id": "D1-konverteringsmaaling-aktivering",
+      "titel": "Konverteringsmaalingen kan taendes, naar udbyder og samtykke er afklaret",
+      "ansvarlig": "kristian",
+      "prioritet": "mellem",
+      "frist": null,
+      "status": "afventer-kristian",
+      "kilde": [
+        {
+          "type": "beslutning",
+          "ref": "B-003"
+        },
+        {
+          "type": "dokumentation",
+          "ref": "dokumentation/konverteringsmaaling.md"
+        },
+        {
+          "type": "pr",
+          "ref": 108
+        }
+      ],
+      "naeste_handling": "Vaelg Plausible (ingen cookies, intet banner) eller GA4 (cookies, banner, Consent Mode), og afklar samtykkespoergsmaalet. Derefter er aktivering nogle faa linjer i hugo.toml. Alt andet er bygget og proevet.",
+      "afhaengigheder": [],
+      "afslutning": null,
+      "historik": [
+        {
+          "tid": "2026-11-02T19:00:51.633Z",
+          "af": "codex (foerste afstemning)",
+          "hvad": "oprettet"
+        }
+      ]
+    },
+    {
+      "id": "D2-google-ads-opstart",
+      "titel": "Google Ads kan oprettes, naar du vil bruge penge paa det",
+      "ansvarlig": "kristian",
+      "prioritet": "lav",
+      "frist": null,
+      "status": "afventer-kristian",
+      "kilde": [
+        {
+          "type": "beslutning",
+          "ref": "B-004"
+        },
+        {
+          "type": "dokumentation",
+          "ref": "dokumentation/google-ads.md"
+        }
+      ],
+      "naeste_handling": "Opret kontoen og konverteringshandlingen, og giv mig AW-id og etiket. Landingssider, soegeord, negativliste, geomaalretning og konverteringsstruktur ligger klar. Intet koster noget foer da.",
+      "afhaengigheder": [
+        "D1-konverteringsmaaling-aktivering"
+      ],
+      "afslutning": null,
+      "historik": [
+        {
+          "tid": "2026-11-02T19:00:51.633Z",
+          "af": "codex (foerste afstemning)",
+          "hvad": "oprettet"
+        }
+      ]
+    },
+    {
+      "id": "D3-netlify-credits",
+      "titel": "Netlify-credits kan standse produktionsbyg uden varsel",
+      "ansvarlig": "vagthund",
+      "prioritet": "mellem",
+      "frist": null,
+      "status": "aaben",
+      "kilde": [
+        {
+          "type": "haendelse",
+          "ref": "2026-11-02 15:41 UTC: alle credits brugt, produktionsbyg sat paa pause"
+        },
+        {
+          "type": "kode",
+          "ref": "publicering/scripts/vagthund.mjs byggekontrol"
+        }
+      ],
+      "naeste_handling": "Vagthunden laeser /byg.json og melder FEJL, hvis sitet ikke er bygget i 30 timer, eller hvis produktionen koerer en anden commit end main. Ingen yderligere handling, saa laenge den er groen.",
+      "afhaengigheder": [],
+      "afslutning": null,
+      "historik": [
+        {
+          "tid": "2026-11-02T19:00:51.633Z",
+          "af": "codex (foerste afstemning)",
+          "hvad": "oprettet"
+        }
+      ]
+    }
+  ]
+}

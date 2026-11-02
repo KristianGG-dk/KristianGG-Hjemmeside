@@ -32,6 +32,13 @@ const udenNet = args.includes('--uden-net');
 const nuArg = args.indexOf('--nu');
 const NU = nuArg !== -1 ? new Date(args[nuArg + 1]) : new Date();
 
+// --json goer udtraekket maskinlaesbart. Saa maa INTET andet staa paa stdout,
+// eller kan modtageren ikke laese det. Prosaen daempes derfor her, og kun
+// JSON-blokken til sidst skriver — gennem den gemte reference.
+const jsonTilstand = args.includes('--json');
+const rigtigLog = console.log;
+if (jsonTilstand) console.log = () => {};
+
 const fejl = [];
 const advarsler = [];
 const info = [];
@@ -613,6 +620,31 @@ async function main() {
     }
   } catch (err) {
     K_FEJL('Google', `kunne ikke laese adgangens metadata: ${err.message}`);
+  }
+
+  // ── Maskinlaesbart udtraek ───────────────────────────────────────────────
+  //
+  // Vagthunden er systemets kvalitetskontrol, ikke endnu en projektleder.
+  // Den skal derfor kunne AFLEVERE sine fund til det faelles opgaveregister
+  // frem for at skrive endnu en liste, nogen selv skal laese og handle paa.
+  //
+  // --json skriver fundene ud, som de er, uden prosaen. Formen er stabil, og
+  // synkroniser-drift.mjs oversaetter dem til opgaver med faste id'er, saa
+  // den samme mangel aldrig bliver til to opgaver.
+  if (jsonTilstand) {
+    const del = (linje) => {
+      // «omraade  resten» eller «element NN  resten»
+      const m = /^(element\s+\d+|\S+)\s{2,}([\s\S]*)$/.exec(linje);
+      return m ? { omraade: m[1].trim(), tekst: m[2].trim() } : { omraade: '?', tekst: linje.trim() };
+    };
+    rigtigLog(JSON.stringify({
+      tid: NU.toISOString(),
+      fejl: fejl.map(del),
+      bekraeft_selv: advarsler.map(del),
+      i_orden: info.map(del),
+      dom: fejl.length ? 'FEJL' : advarsler.length ? 'BEKRAEFT SELV' : 'ALT STEMMER',
+    }, null, 2));
+    process.exit(fejl.length ? 1 : 0);
   }
 
   const skriv = (titel, liste) => {
