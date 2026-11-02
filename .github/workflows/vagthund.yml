@@ -24,14 +24,65 @@ on:
 permissions: {}
 
 jobs:
-  vagthund:
+  # Lukker forfaldne, aldrig publicerede opslag, saa vagthunden ikke melder
+  # om dem i ugevis. Element 33 og 34 fik den samme alarm to gange dagligt i
+  # sytten dage; den slags gør, at man holder op med at laese vagthunden.
+  #
+  # Det koerer FOERST, og vagthunden venter paa det. Koerte de parallelt,
+  # ville vagthunden laese registret, foer lukningerne var landet, og melde
+  # dem som fejl alligevel — netop den mail, oprydningen skal fjerne.
+  #
+  # Jobbet skriver kun i register.json og kun nye raekker. Det roerer ikke
+  # laase, koe, pakker eller indhold, og det ser aldrig nettet.
+  #
+  # Det lukker ALDRIG noget, der er afsendt eller har et uvist udfald — se
+  # afslut-forfaldne.mjs. Og det lukker intet inden for publiceringsvinduet.
+  afslut:
     runs-on: ubuntu-latest
     permissions:
-      contents: read      # laeser kun. Skriver intet, publicerer intet.
+      contents: write     # kun register.json, og kun nye raekker
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
           node-version: '24'
+
+      - name: Afslut forfaldne, aldrig publicerede opslag
+        run: node publicering/scripts/afslut-forfaldne.mjs --skriv
+
+      - name: Commit afslutningerne
+        run: |
+          git config user.name "publiceringsmotor"
+          git config user.email "kontakt@kristiangg.dk"
+          bash publicering/scripts/commit-register.sh \
+            publicering/register.json \
+            "afslut: forfaldne opslag" \
+            "node publicering/scripts/afslut-forfaldne.mjs --skriv"
+
+  vagthund:
+    needs: afslut
+    # always(), saa en fejlet oprydning ikke blinder vagthunden. Den skal
+    # koere og melde, ogsaa naar noget andet er gaaet galt.
+    if: ${{ always() }}
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read      # laeser kun. Skriver intet, publicerer intet.
+      actions: read       # for at se, OM de planlagte koersler stadig koerer
+    steps:
+      # ref: main, ikke koerslens egen SHA. Afslut-jobbet har netop committet
+      # til main, og uden dette ville vagthunden laese registret fra FOER
+      # lukningerne og melde dem som fejl.
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
       - name: Se koeen efter
+        env:
+          # Til koerselskontrollen: har de planlagte workflows koert for nylig?
+          # Standser cron, falder et godkendt opslag igennem, og det skal
+          # opdages FOER det sker.
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: node publicering/scripts/vagthund.mjs
+

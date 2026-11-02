@@ -36,8 +36,27 @@ export const AFSENDT = ['PUBLICERET', 'PLANLAGT', 'PLANLAGT MANUELT'];
 /** Et uvist eller afvist udfald. Kraever et menneske foer nyt forsoeg. */
 export const STOPPET = ['PUBLICERING FEJLET', 'PLANLAEGNING FEJLET', 'PUBLICERING IGANG', 'STOPPET FOR SENT'];
 
+/**
+ * ENDELIGT afsluttet. Et menneske — eller afslut-forfaldne.mjs — har taget
+ * stilling, og elementet maa ALDRIG roeres igen.
+ *
+ * Disse to spaerrede IKKE, da de blev indfoert i PR #103 og #104, og det var
+ * en fejl med to haler:
+ *
+ *   1. Et lukket element blev udvalgt igen ved hver koersel og fik en ny
+ *      «STOPPET FOR SENT»-raekke hver gang. Netop den stoej, lukningen skulle
+ *      fjerne.
+ *   2. Et «ANNULLERET HOS META»-element, hvis dato endnu laa i fremtiden,
+ *      ville blive afleveret til Meta IGEN — altsaa publiceret, efter at det
+ *      var annulleret.
+ *
+ * Derfor staar de her, i den liste registerSpaerre() laeser.
+ */
+export const AFSLUTTET = ['OPGIVET', 'ANNULLERET HOS META'];
+
 export const IGANG = 'PUBLICERING IGANG';
 export const FOR_SENT = 'STOPPET FOR SENT';
+export const OPGIVET = 'OPGIVET';
 
 /**
  * Hvor laenge efter det godkendte tidspunkt motoren stadig maa publicere.
@@ -103,6 +122,9 @@ export function registerSpaerre(register, nr) {
   }
   if (STOPPET.includes(sidste)) {
     return 'seneste forsoeg fejlede — kraever menneskelig stillingtagen foer nyt forsoeg';
+  }
+  if (AFSLUTTET.includes(sidste)) {
+    return `staar som ${sidste} i registret — endeligt afsluttet, roeres ikke igen`;
   }
   return null;
 }

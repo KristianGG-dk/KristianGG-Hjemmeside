@@ -29,7 +29,10 @@ for elementet afgør:
 
 `OPGIVET` er en afsluttende status: vagthunden noterer den og tier.
 
-Element 33 og 34 er netop sådan et tilfælde. De forfaldt 15. og 16. oktober,
+Dette sker nu automatisk for forældede, aldrig publicerede opslag: se
+«Automatisk afslutning» i `vagthunden.md`.
+
+Element 33 og 34 var netop sådan et tilfælde. De forfaldt 15. og 16. oktober,
 mens planlægningen stadig var manuel, og de kan ikke publiceres nu. Motoren
 registrerede dem som stoppet, da den kørte 1. november, og de bliver meldt,
 indtil du lukker dem.
