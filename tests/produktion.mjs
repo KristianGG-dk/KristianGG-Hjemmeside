@@ -275,6 +275,7 @@ if (!chromium) {
     adv('Chromium kunne ikke startes — browserdelen blev sprunget over');
   } else {
     const SIDER = ['/', '/til-dig/stress/', '/kontakt/', '/priser/', '/om/', '/begivenheder/'];
+    const ydeevne = [];
     const SKAERME = [['desktop', 1280, 900], ['mobil', 390, 844]];
 
     for (const [navn, bredde, hoejde] of SKAERME) {
@@ -299,19 +300,82 @@ if (!chromium) {
         if (overloeb > 2) x(`${navn} ${sti}: siden er ${overloeb} px bredere end skaermen — vandret rul`);
 
         if (navn === 'mobil') {
+          /* Klikflader. Googles vejledning er 48x48 px med luft omkring —
+             men KUN for selvstaendige knapper og links. Links midt i en
+             saetning er undtaget, og det samme er elementer, der er skjult,
+             indtil de faar fokus (spring-til-indhold). Den foerste udgave af
+             denne kontrol taalte ikke den forskel og raabte op om
+             "Spring til indhold" paa hver eneste side. */
           const smaa = await side.$$eval('a, button', (els) => els
-            .filter((e) => e.offsetParent !== null)
-            .map((e) => ({ t: (e.textContent || '').trim().slice(0, 30), h: e.getBoundingClientRect().height }))
-            .filter((e) => e.h > 0 && e.h < 32));
-          if (smaa.length > 3) {
-            adv(`mobil ${sti}: ${smaa.length} klikflader er under 32 px hoeje (fx "${smaa[0].t}")`);
+            .filter((e) => {
+              const r = e.getBoundingClientRect();
+              if (r.height <= 0 || r.width <= 0) return false;
+              if (r.bottom < 0 || r.right < 0) return false;          // uden for skaermen
+              const s = getComputedStyle(e);
+              if (s.visibility === 'hidden' || s.opacity === '0') return false;
+              if (e.closest('[hidden]')) return false;
+              const vis = s.display;
+              if (vis === 'inline') return false;                      // link i en saetning
+              const forael = e.parentElement;
+              if (forael && /^(P|LI|SPAN)$/.test(forael.tagName) && vis === 'inline') return false;
+              return true;
+            })
+            .map((e) => {
+              const r = e.getBoundingClientRect();
+              return { t: (e.textContent || '').trim().replace(/\s+/g, ' ').slice(0, 40), h: Math.round(r.height), w: Math.round(r.width) };
+            })
+            .filter((e) => e.h < 40));
+          if (smaa.length) {
+            adv(`mobil ${sti}: ${smaa.length} selvstaendig(e) klikflade(r) under 40 px hoej: `
+              + smaa.slice(0, 4).map((e) => `"${e.t}" ${e.w}x${e.h}`).join(', '));
           }
+
+          /* Teknisk ydeevne. Maales paa mobilvisning, hvor den betyder mest. */
+          const maal = await side.evaluate(() => new Promise((klar) => {
+            const n = performance.getEntriesByType('navigation')[0] || {};
+            let lcp = 0;
+            try {
+              new PerformanceObserver((liste) => {
+                for (const e of liste.getEntries()) lcp = Math.max(lcp, e.startTime);
+              }).observe({ type: 'largest-contentful-paint', buffered: true });
+            } catch (e) { /* ikke understoettet */ }
+            setTimeout(() => {
+              const res = performance.getEntriesByType('resource');
+              klar({
+                ttfb: Math.round(n.responseStart || 0),
+                dcl: Math.round(n.domContentLoadedEventEnd || 0),
+                lcp: Math.round(lcp),
+                antal: res.length + 1,
+                kb: Math.round((res.reduce((a, r) => a + (r.transferSize || 0), 0) + (n.transferSize || 0)) / 1024),
+              });
+            }, 1200);
+          }));
+          ydeevne.push({ sti, ...maal });
+          if (maal.lcp > 4000) x(`mobil ${sti}: LCP ${maal.lcp} ms — over Googles graense paa 2500 ms med god margin`);
+          else if (maal.lcp > 2500) adv(`mobil ${sti}: LCP ${maal.lcp} ms — over Googles anbefalede 2500 ms`);
+          if (maal.kb > 2500) adv(`mobil ${sti}: ${maal.kb} kB hentet`);
+
+          /* Én h1 pr. side, og billeder skal have alt-tekst. */
+          const struktur = await side.evaluate(() => ({
+            h1: document.querySelectorAll('h1').length,
+            udenAlt: [...document.querySelectorAll('img')]
+              .filter((i) => !i.hasAttribute('alt')).map((i) => i.currentSrc || i.src).slice(0, 3),
+            sprog: document.documentElement.lang,
+          }));
+          if (struktur.h1 !== 1) x(`${sti}: ${struktur.h1} h1-overskrifter — der skal vaere præcis én`);
+          if (struktur.udenAlt.length) x(`${sti}: billede uden alt-attribut: ${struktur.udenAlt.join(', ')}`);
+          if (struktur.sprog !== 'da') x(`${sti}: <html lang="${struktur.sprog}"> — ventede da`);
         }
         await side.close();
       }
       await kontekst.close();
     }
     ok(`${SIDER.length} sider indlaest paa desktop (1280 px) og mobil (390 px) uden konsolfejl, doede ressourcer eller vandret rul`);
+    if (ydeevne.length) {
+      const snit = (n) => Math.round(ydeevne.reduce((a, m) => a + m[n], 0) / ydeevne.length);
+      ok(`ydeevne paa mobil (gennemsnit af ${ydeevne.length} sider): TTFB ${snit('ttfb')} ms, `
+        + `LCP ${snit('lcp')} ms, ${snit('antal')} anmodninger, ${snit('kb')} kB`);
+    }
 
     /* Interne links paa hver side i sitemappet */
     {

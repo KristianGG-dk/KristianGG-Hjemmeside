@@ -1,0 +1,52 @@
+{{- /*
+  Samtykkebanner — vises KUN, naar maalingen baade er aktiveret og kraever
+  samtykke. I dag er begge dele slaaet fra i hugo.toml, og partialen udsender
+  derfor ingenting. Ingen besoegende ser noget banner.
+
+  Hvorfor den findes alligevel: vaelges GA4, skal der foreligge et ja, FOER
+  maaleren indlaeses. Uden denne del ville aktivering kraeve et nyt stykke
+  arbejde paa et uheldigt tidspunkt. Nu er den skrevet, proevet og klar.
+
+  Hvordan den virker:
+    - window.kggSamtykke (assets/js/main.js) ejer tilstanden og lagringen.
+    - Banneret vises kun, naar status er "ukendt".
+    - Et ja eller nej skjuler banneret og udsender kgg:samtykke-givet eller
+      kgg:samtykke-afvist. konvertering.html lytter paa den foerste og
+      indlaeser foerst maaleren dér.
+    - Afvises der, sendes intet, og det der stod i koe kasseres.
+
+  Tilgaengelighed: role="dialog" med aria-labelledby, to rigtige knapper,
+  tastaturbetjening fra browseren. Banneret spaerrer ikke siden — man kan
+  laese videre uden at svare, og saa sendes der bare ingenting.
+*/ -}}
+{{- $k := site.Params.konvertering -}}
+{{- if and $k $k.aktiv $k.samtykke_kraeves }}
+<div id="kgg-samtykke" role="dialog" aria-labelledby="kgg-samtykke-titel" aria-describedby="kgg-samtykke-tekst" hidden
+     class="fixed inset-x-0 bottom-0 z-50 p-4 sm:p-6">
+  <div class="container-width bg-white border-2 border-mos rounded-xl shadow-lg p-5 sm:p-6 max-w-3xl mx-auto">
+    <p id="kgg-samtykke-titel" class="font-semibold text-skovbund">Må jeg måle, hvad der virker?</p>
+    <p id="kgg-samtykke-tekst" class="text-[0.95rem] leading-relaxed text-tekst-daempet mt-2">
+      Jeg vil gerne vide, hvor mange der tager kontakt — ikke hvem. Der sendes
+      aldrig noget, du skriver i formularen. Siger du nej, måles der intet, og
+      siden virker præcis som før.
+      <a href="/privatliv/" class="underline underline-offset-2 font-semibold text-mos hover:text-mos-dyb">Læs om privatliv</a>.
+    </p>
+    <div class="mt-4 flex flex-col sm:flex-row gap-3">
+      <button type="button" data-samtykke-ja class="btn-primary">Ja, det må du gerne</button>
+      <button type="button" data-samtykke-nej class="btn-outline">Nej tak</button>
+    </div>
+  </div>
+</div>
+<script>
+  (function () {
+    var b = document.getElementById('kgg-samtykke');
+    var api = window.kggSamtykke;
+    if (!b || !api || !api.kraeves()) return;
+    function skjul() { b.hidden = true; }
+    if (api.status() !== 'ukendt') { skjul(); return; }
+    b.hidden = false;
+    b.querySelector('[data-samtykke-ja]').addEventListener('click', function () { api.giv(); skjul(); });
+    b.querySelector('[data-samtykke-nej]').addEventListener('click', function () { api.afvis(); skjul(); });
+  })();
+</script>
+{{- end }}

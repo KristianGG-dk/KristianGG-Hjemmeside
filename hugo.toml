@@ -31,10 +31,15 @@ title = "Kristian GG"
 #
 # Læs dokumentation/konverteringsmaaling.md først. Valget af udbyder afgør,
 # om der skal indhentes samtykke, og det skal være afklaret FØR aktivering.
+# samtykke_kraeves afgoer, om der skal foreligge et ja, FOER maaleren
+# indlaeses, og foer en handling sendes. Plausible saetter ingen cookies
+# og behandler ingen personoplysninger; GA4 goer begge dele og kraever
+# samtykke. Vaelges GA4, skal denne saettes til true samtidig.
 [params.konvertering]
   aktiv = false
   udbyder = ""
   id = ""
+  samtykke_kraeves = false
 
 [taxonomies]
   category = "categories"
