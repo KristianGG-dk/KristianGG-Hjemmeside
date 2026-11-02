@@ -1,0 +1,95 @@
+{
+  "version": 1,
+  "om": "Beslutningsregisteret. Det ene sted en beslutning fra Kristian bliver husket, saa han ikke bliver spurgt to gange. Hver post skal have en kilde, der kan efterproeves i repoet. Poster slettes aldrig; aendres en beslutning, tilfoejes en ny med en nyere dato, og den gamle faar «afloest_af».",
+  "beslutninger": [
+    {
+      "id": "B-001",
+      "dato": "2026-11-01",
+      "emne": "forsinkelsesgraense",
+      "beslutning": "Graensen for hvor sent et godkendt opslag maa publiceres er 24 timer, ikke 60 minutter.",
+      "kilde": "dokumentation/tidsvinduet.md; publicering/scripts/krav.mjs MAKS_FORSINKELSE_S",
+      "afloeser": "B-000 (60 minutter, 2026-10)",
+      "afloest_af": null
+    },
+    {
+      "id": "B-002",
+      "dato": "2026-10",
+      "emne": "onlinebooking",
+      "beslutning": "Der er ingen onlinebooking paa sitet. Tid aftales efter den foerste telefonsamtale.",
+      "kilde": "content/kontakt.md; layouts/kontakt/single.html; tests/hjemmeside.mjs afviser ordet «book»",
+      "afloest_af": null
+    },
+    {
+      "id": "B-003",
+      "dato": "2026-11-02",
+      "emne": "konverteringsmaaling",
+      "beslutning": "Konverteringsmaalingen skal vaere teknisk faerdig, men IKKE aktiveret. Ingen maaler indlaeses, foer Kristian siger til.",
+      "kilde": "hugo.toml params.konvertering.aktiv = false; dokumentation/konverteringsmaaling.md; PR #107, #108",
+      "afloest_af": null
+    },
+    {
+      "id": "B-004",
+      "dato": "2026-11-02",
+      "emne": "google-ads",
+      "beslutning": "Google Ads maa forberedes teknisk, men ingen konto, kampagne eller annonce maa aktiveres, og der maa ikke bruges penge uden udtrykkelig godkendelse.",
+      "kilde": "dokumentation/google-ads.md; PR #108",
+      "afloest_af": null
+    },
+    {
+      "id": "B-005",
+      "dato": "2026-11-02",
+      "emne": "google-business-destinationer",
+      "beslutning": "Handlingsknapperne paa de tre Google-opslag peger paa: element 53 → /til-dig/naturterapi/, element 54 → /til-dig/psykoterapi/, element 49 → /kurser/skovbad/.",
+      "kilde": "publicering/pakker/2026-rettelser-gbp-knapper.md; PR #109",
+      "afloest_af": null
+    },
+    {
+      "id": "B-006",
+      "dato": "2026-11-01",
+      "emne": "uge-45-47",
+      "beslutning": "Indholdet i godkendelsespakken for uge 45-47 er godkendt element for element, med beslutningen bundet til teksthashen.",
+      "kilde": "publicering/pakker/2026-uge-45-47.md; publicering/register.json",
+      "afloest_af": null
+    },
+    {
+      "id": "B-007",
+      "dato": "2026-11-01",
+      "emne": "linkedin-billede",
+      "beslutning": "Element 41 maa ikke publiceres uden sit godkendte billede. Virker billedupload ikke, skal opslaget blokeres frem for at gaa ud som ren tekst.",
+      "kilde": "Issue #90; publicering/scripts/publicer-linkedin.mjs nægter naar e.billede og ingen billede_url",
+      "afloest_af": null
+    },
+    {
+      "id": "B-008",
+      "dato": "2026-11-02",
+      "emne": "gratis-forsamtale",
+      "beslutning": "Den gratis forsamtale skal staa tydeligt oeverst paa forsiden og paa de relevante ydelsessider.",
+      "kilde": "data/forsamtale.toml; dokumentation/gratis-forsamtale.md; PR #107",
+      "afloest_af": null
+    },
+    {
+      "id": "B-009",
+      "dato": "2026-11",
+      "emne": "merge",
+      "beslutning": "Ingen PR merges uden Kristians udtrykkelige godkendelse. Codex opretter og tester; Kristian merger.",
+      "kilde": "gentaget i hver opgavebeskrivelse fra Kristian",
+      "afloest_af": null
+    },
+    {
+      "id": "B-010",
+      "dato": "2026-11-02",
+      "emne": "google-business-adgang",
+      "beslutning": "Google Business Profile-adgangen er autoriseret i produktion med scope business.manage og uden udloebsdato. OAuth skal IKKE gennemfoeres igen.",
+      "kilde": "publicering/google-token.json; workflowet «Kontroller Google-adgang»; PR #104, #105",
+      "afloest_af": null
+    },
+    {
+      "id": "B-011",
+      "dato": "2026-11-02",
+      "emne": "foreningen-adskillelse",
+      "beslutning": "Foreningen mod Familiebelastning og Kristian GG's virksomhed holdes organisatorisk og datamaessigt adskilt. Ingen aendringer paa foreningens hjemmeside uden saerskilt godkendelse.",
+      "kilde": "Kristians masterprompt 2026-11-02, afsnit 6 (K5)",
+      "afloest_af": null
+    }
+  ]
+}

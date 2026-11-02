@@ -38,17 +38,28 @@ const ok = (m) => noter.push(m);
 
 const UA = 'kristiangg-produktionskontrol (+https://github.com/KristianGG-dk/KristianGG-Hjemmeside)';
 
+// Hver anmodning har en frist. Uden den kan en enkelt adresse, der aldrig
+// svarer, haenge hele kontrollen — og det skete: proeven mod den planlagte
+// funktion stod i over ti minutter, fordi en planlagt Netlify-funktion ikke
+// besvarer HTTP overhovedet.
+const FRIST_MS = 20000;
+
 async function hent(url, valg = {}) {
   for (let forsoeg = 1; forsoeg <= 3; forsoeg++) {
     try {
       const sv = await fetch(url, {
         redirect: 'manual',
+        signal: AbortSignal.timeout(FRIST_MS),
         headers: { 'User-Agent': UA, ...(valg.headers || {}) },
         ...valg,
       });
       return sv;
     } catch (e) {
-      if (forsoeg === 3) return { fejl: e.message, status: 0, headers: new Headers() };
+      const udloeb = e.name === 'TimeoutError' || /abort|timeout/i.test(e.message);
+      if (forsoeg === 3) {
+        return { fejl: udloeb ? `svarede ikke inden ${FRIST_MS / 1000} s` : e.message,
+                 status: 0, headers: new Headers() };
+      }
       await new Promise((r) => setTimeout(r, forsoeg * 1500));
     }
   }
@@ -156,6 +167,13 @@ if (sm.status !== 200) {
         for (const [n, v] of Object.entries(d)) {
           if (/^token_/.test(n)) adv(`  ${n}: ${JSON.stringify(v)}`);
         }
+      } else if (d.token_maa_starte_workflows === false) {
+        x('tokenet genkendes af GitHub, men har kun LAESEADGANG. POST /dispatches kraever '
+          + 'skriveadgang, saa hver udloesning afvises tavst. Giv det «Contents: Read and write» '
+          + `OG «Actions: Read and write». Rettigheder nu: ${JSON.stringify(d.token_rettigheder)}`);
+      } else if (d.token_maa_starte_workflows === true) {
+        ok(`tokenet er sat (${d.token_form}, ${d.token_laengde} tegn), genkendt af GitHub `
+          + 'og har skriveadgang — det MAA starte workflows');
       } else {
         ok(`tokenet er sat (${d.token_form}, ${d.token_laengde} tegn) og genkendt af GitHub`);
       }
@@ -170,6 +188,35 @@ if (sm.status !== 200) {
     } catch (e) {
       x(`udloeser-status kan ikke laeses som JSON: ${e.message}`);
     }
+  }
+}
+
+/* ══ 2d. ER DEN PLANLAGTE FUNKTION OVERHOVEDET REGISTRERET? ══════════════ */
+
+// Den afgoerende proeve. Netlify svarer 404 paa direkte HTTP-kald til en
+// PLANLAGT funktion — den kan kun kaldes af planlaeggeren. En ALMINDELIG
+// funktion svarer 200.
+//
+// Livstegnet udeblev i to hele timevinduer, selv om tokenet er verificeret,
+// funktionen er deployet og GitHub tager imod. Svarer denne 200, er
+// config.schedule ikke slaaet igennem, og funktionen er udrullet som et
+// almindeligt endepunkt, ingen nogensinde kalder. Det ville forklare alt.
+
+{
+  const p = await hent(BASE + '/.netlify/functions/udloes-publicering');
+  const k = p.status;
+  if (k === 404) {
+    ok('udloes-publicering svarer 404 paa direkte kald — registreret som PLANLAGT funktion');
+  } else if (k === 200) {
+    x('udloes-publicering svarer 200 paa direkte kald. Netlify har udrullet den som en '
+      + 'ALMINDELIG funktion, ikke en planlagt. config.schedule er ikke slaaet igennem, '
+      + 'og ingen planlaegger kalder den — derfor udeblev livstegnet.');
+  } else if (k === 0) {
+    ok('udloes-publicering besvarer slet ikke HTTP — det goer en PLANLAGT funktion heller ikke. '
+      + `(${p.fejl})`);
+  } else {
+    adv(`udloes-publicering svarer ${k} paa direkte kald (hverken 404 eller 200). `
+      + 'Kan ikke afgoere, om den er registreret som planlagt.');
   }
 }
 

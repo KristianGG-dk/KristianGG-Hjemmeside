@@ -13,6 +13,11 @@
 # tomme, og der er ingen checkout.
 name: Udloeserens livstegn
 
+# Navnet baerer afsenderen. Et livstegn sendt i haanden under fejlsoegning
+# ser ellers ud praecis som et fra Netlify, og vagthunden ville melde
+# udloeseren i drift paa et livstegn, et menneske selv havde sendt.
+run-name: Livstegn fra ${{ github.event.client_payload.fra || 'haanden' }}
+
 on:
   repository_dispatch:
     types: [udloeser-hjerteslag]
@@ -29,3 +34,4 @@ jobs:
         run: |
           echo "Udloeseren lever. Netlify naaede GitHub $(date -u +%Y-%m-%dT%H:%M:%SZ)."
           echo "Haendelse: ${{ github.event_name }}"
+          echo "Afsender:  ${{ github.event.client_payload.fra || 'haanden' }}"

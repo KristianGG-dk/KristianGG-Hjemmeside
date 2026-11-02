@@ -67,6 +67,30 @@ jobs:
             node "$t"
           done
 
+      # Den faelles driftsstruktur: at opgaveregisteret er gyldigt, at ingen
+      # opgave ligger hos Kristian, som systemet selv kunne have afgjort, og
+      # at synkroniseringen kan koeres igen uden at skabe dubletter.
+      - name: Driftsstrukturen
+        run: node publicering/test/drift.test.mjs
+
+      # De fem scenarier. En groen proeve af et enkelt modul beviser ingenting
+      # om, at Claude, Codex, motoren og vagthunden faktisk taler sammen.
+      - name: Samarbejdet mellem systemerne
+        run: node publicering/test/samarbejde.test.mjs
+
+      # Synkroniseringen skal vaere idempotent OGSAA mod det rigtige register.
+      # Koeres den to gange, maa anden koersel ikke aendre noget.
+      - name: Synkroniseringen kan koeres igen
+        run: |
+          node publicering/scripts/synkroniser-drift.mjs --skriv >/dev/null
+          node publicering/scripts/synkroniser-drift.mjs --skriv >/dev/null
+          if ! git diff --quiet drift/opgaver.json; then
+            echo "Synkroniseringen aendrede registeret uden at driften havde aendret sig:"
+            git --no-pager diff drift/opgaver.json
+            exit 1
+          fi
+          echo "To koersler, ingen aendring. Idempotent."
+
       # Indholdskontrollen: titler, effektpaastande, priser, moms, forskning
       # uden kilde, genbrug, sporbarhed og kontrolstempel. FAIL og uafklaret
       # REVIEW stopper merge. Se publicering/regler/indholdsregler.json.

@@ -32,6 +32,13 @@ const udenNet = args.includes('--uden-net');
 const nuArg = args.indexOf('--nu');
 const NU = nuArg !== -1 ? new Date(args[nuArg + 1]) : new Date();
 
+// --json goer udtraekket maskinlaesbart. Saa maa INTET andet staa paa stdout,
+// eller kan modtageren ikke laese det. Prosaen daempes derfor her, og kun
+// JSON-blokken til sidst skriver — gennem den gemte reference.
+const jsonTilstand = args.includes('--json');
+const rigtigLog = console.log;
+if (jsonTilstand) console.log = () => {};
+
 const fejl = [];
 const advarsler = [];
 const info = [];
@@ -423,8 +430,17 @@ async function main() {
       } else if (!r.ok) {
         K_ADVAR('Udloeser', `GitHub svarede ${r.status}. Livstegnet kunne ikke kontrolleres.`);
       } else {
-        const k = (await r.json()).workflow_runs ?? [];
-        if (!k.length) {
+        // Kun livstegn FRA NETLIFY taeller. Et livstegn sendt i haanden under
+        // fejlsoegning ser ellers ud som en fungerende udloeser — og det
+        // skete 2. november, da GitHub-halvdelen af kaeden blev afproevet.
+        const alle = (await r.json()).workflow_runs ?? [];
+        const k = alle.filter((x) => /fra netlify/i.test(x.display_title ?? x.name ?? ''));
+        if (alle.length && !k.length) {
+          K_ADVAR('Udloeser', `der er ${alle.length} livstegn, men ingen FRA NETLIFY — `
+            + `det seneste er «${alle[0].display_title ?? alle[0].name}». `
+            + 'Kaeden Netlify → token → GitHub er altsaa ikke bevist. '
+            + 'Slaa aarsagen op paa https://kristiangg.dk/.netlify/functions/udloeser-status');
+        } else if (!k.length) {
           K_ADVAR('Udloeser', 'der er endnu aldrig kommet et livstegn. '
             + 'Enten er Netlify ikke deployet siden livstegnet blev tilfoejet, eller ogsaa naar udloeseren ikke GitHub. '
             + 'Slaa det op paa https://kristiangg.dk/.netlify/functions/udloeser-status');
@@ -613,6 +629,31 @@ async function main() {
     }
   } catch (err) {
     K_FEJL('Google', `kunne ikke laese adgangens metadata: ${err.message}`);
+  }
+
+  // ── Maskinlaesbart udtraek ───────────────────────────────────────────────
+  //
+  // Vagthunden er systemets kvalitetskontrol, ikke endnu en projektleder.
+  // Den skal derfor kunne AFLEVERE sine fund til det faelles opgaveregister
+  // frem for at skrive endnu en liste, nogen selv skal laese og handle paa.
+  //
+  // --json skriver fundene ud, som de er, uden prosaen. Formen er stabil, og
+  // synkroniser-drift.mjs oversaetter dem til opgaver med faste id'er, saa
+  // den samme mangel aldrig bliver til to opgaver.
+  if (jsonTilstand) {
+    const del = (linje) => {
+      // «omraade  resten» eller «element NN  resten»
+      const m = /^(element\s+\d+|\S+)\s{2,}([\s\S]*)$/.exec(linje);
+      return m ? { omraade: m[1].trim(), tekst: m[2].trim() } : { omraade: '?', tekst: linje.trim() };
+    };
+    rigtigLog(JSON.stringify({
+      tid: NU.toISOString(),
+      fejl: fejl.map(del),
+      bekraeft_selv: advarsler.map(del),
+      i_orden: info.map(del),
+      dom: fejl.length ? 'FEJL' : advarsler.length ? 'BEKRAEFT SELV' : 'ALT STEMMER',
+    }, null, 2));
+    process.exit(fejl.length ? 1 : 0);
   }
 
   const skriv = (titel, liste) => {
