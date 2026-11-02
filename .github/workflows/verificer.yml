@@ -72,3 +72,40 @@ jobs:
       # REVIEW stopper merge. Se publicering/regler/indholdsregler.json.
       - name: Indholdskontrol af alle kanaler
         run: node publicering/scripts/kontroller-indhold.mjs
+
+  # Browserproeverne. De kraever Chromium og koerer derfor i deres eget job,
+  # saa en browser, der ikke vil installere, ikke vaelter resten af gaten.
+  #
+  # Fast ubuntu-24.04: ubuntu-latest er nu 26.04, som Playwright 1.56 afviser.
+  browserproever:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+
+      - name: Installer Hugo 0.147.0 extended
+        run: |
+          curl -sSL -o hugo.tar.gz \
+            https://github.com/gohugoio/hugo/releases/download/v0.147.0/hugo_extended_0.147.0_linux-amd64.tar.gz
+          tar xzf hugo.tar.gz hugo && sudo mv hugo /usr/local/bin/
+
+      - name: Byg
+        run: npm install && hugo --minify --buildFuture
+
+      - name: Installer Playwright med Chromium
+        run: npm install --no-save playwright@1.56.1 && npx playwright install --with-deps chromium
+
+      # Kontaktformularen: at en henvendelse faktisk kan sendes, og at
+      # subject aldrig er tom (en tom subject betyder, at Netlify slet ingen
+      # mail sender).
+      - name: Kontaktformularen i en rigtig browser
+        run: node tests/kontaktformular.mjs
+
+      # Konverteringsmaalingen: primaer konvertering foerst ved kvittering,
+      # sekundaere handlinger, ingen personoplysninger, samtykke og ingen
+      # dobbeltregistrering.
+      - name: Konverteringsmaalingen i en rigtig browser
+        run: node tests/konvertering.mjs
