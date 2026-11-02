@@ -356,6 +356,37 @@ await godtages('findLokationer foelger sider paa tvaers af konti', async () => {
 // repo-niveau ses af begge. placeringsdom() skal sige praecis hvad
 // forskellen betyder, for «GBP_CLIENT_ID mangler» er misvisende, naar
 // hemmeligheden findes — blot i det forkerte rum.
+// ── HANDLINGSKNAPPEN ──────────────────────────────────────────────────────
+// Google Business Profile tager imod ÉN callToAction pr. opslag. byggOpslag
+// saetter den, naar laasen har praecis ét https-link. De tre godkendte
+// Google-opslag har links: [], saa de faar ingen knap — det er en
+// indholdsbeslutning, ikke en teknisk begraensning. Disse proever viser, at
+// vejen virker, saa Kristian kan godkende en url og faa knappen med samme
+// dag, uden at der skal skrives kode.
+console.log('\nHandlingsknappen paa Google');
+
+{
+  const e = element({ links: ['https://kristiangg.dk/til-dig/naturterapi/'] });
+  const k = byggOpslag(e);
+  sandt('ét https-link giver en LEARN_MORE-knap',
+    k.callToAction?.actionType === 'LEARN_MORE'
+    && k.callToAction?.url === 'https://kristiangg.dk/til-dig/naturterapi/',
+    JSON.stringify(k.callToAction));
+}
+
+sandt('ingen links: ingen knap, og det er ikke en fejl',
+  byggOpslag(element({ links: [] })).callToAction === undefined);
+
+for (const [navn, links, stump] of [
+  ['to links afvises — Google tager kun én knap', ['https://a.dk/', 'https://b.dk/'], 'kun have én knap'],
+  ['http afvises', ['http://kristiangg.dk/'], 'https'],
+  ['links skal vaere en liste', 'ikke en liste', 'skal vaere en liste'],
+]) {
+  let fangst = null;
+  try { byggOpslag(element({ links })); } catch (err) { fangst = err.message; }
+  sandt(navn, fangst !== null && fangst.includes(stump), String(fangst));
+}
+
 console.log('\nHvor hemmelighederne ligger');
 
 const { placeringsdom } = await import('../scripts/forny-google-token.mjs');

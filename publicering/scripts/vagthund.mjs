@@ -22,7 +22,7 @@
 //   --nu <iso>    lad som om klokken er noget andet (til test)
 import { readFileSync, existsSync } from 'node:fs';
 import { beregnLaas, sha256 } from './laas.mjs';
-import { MAKS_FORSINKELSE_S, varighed } from './krav.mjs';
+import { MAKS_FORSINKELSE_S, varighed, AFSLUTTET } from './krav.mjs';
 
 const KOE = 'publicering/koe.json';
 const REGISTER = 'publicering/register.json';
@@ -61,17 +61,32 @@ const UVIST = 'PUBLICERING IGANG';
 const FOR_SENT = 'STOPPET FOR SENT';
 
 /**
- * Statusser, der LUKKER en sag. Et menneske har taget stilling, og der er
- * intet mere at raabe op om.
+ * Statusser, der LUKKER en sag: AFSLUTTET fra krav.mjs. Listen staar ÉT sted,
+ * fordi den baade skal spaerre for nye forsoeg (registerSpaerre) og tie her.
+ * Var de to lister uenige, ville et lukket element enten blive udvalgt igen
+ * eller meldt som «ukendt status».
  *
- * De skal staa her, ellers melder vagthunden «ukendt status» om netop de
- * raekker, dokumentationen beder Kristian skrive — og saa ville det at
- * foelge vejledningen efterlade vagthunden roed. Det var praecis, hvad der
- * skete: baade «ANNULLERET HOS META» (annuller-hos-meta.md) og «OPGIVET»
- * (tidsvinduet.md) blev meldt som ukendte, og proeven i PR #103 var for svag
- * til at fange det, fordi den kun saa efter, at ÉN besked udeblev.
+ * Et element med en af dem noteres som INFO med sin begrundelse. Historikken
+ * er saaledes synlig, uden at der raabes op om den.
  */
-const AFSLUTTET = ['ANNULLERET HOS META', 'OPGIVET'];
+
+/**
+ * Hvor laenge et afleveret, ubekraeftet opslag giver en paamindelse.
+ *
+ * «PLANLAGT» og «PLANLAGT MANUELT» betyder, at opslaget ligger hos
+ * platformen, som udgiver det selv. Vagthunden kan ikke se ind i Meta,
+ * Google eller LinkedIn og kan derfor hverken bekraefte eller afvise, at det
+ * gik ud. Den paamindede derfor om det — hver kaersel, i det uendelige.
+ *
+ * Element 24 har faaet den samme paamindelse to gange om dagen i seksogtyve
+ * dage. Efter den fjerde er den ikke en paamindelse laengere, men stoej, og
+ * stoej er det, der gør, at man holder op med at laese vagthunden.
+ *
+ * Efter denne frist antages opslaget udgivet og noteres som INFO. Det er en
+ * ANTAGELSE, og den skrives som en antagelse — ikke som en bekraeftelse.
+ * Intet registreres som publiceret paa den baggrund.
+ */
+const PAAMIND_DAGE = 7;
 
 const dage = (ms) => Math.floor(ms / 86400000);
 const dk = (d) => d.toISOString().slice(0, 16).replace('T', ' ') + ' UTC';
@@ -144,7 +159,14 @@ async function main() {
     const dageSiden = dage(NU - forfald);
 
     if (AFSLUTTET.includes(sidste.status)) {
-      INFO(e.element, `${e.kanal}: ${sidste.status.toLowerCase()}${sidste.noter ? ` — ${sidste.noter}` : ''}`);
+      // Afsluttet. De faktiske tal staar med, saa man bagefter kan se HVORFOR
+      // opslaget ikke blev publiceret — men det fylder ikke en alarm. Tallene
+      // tages fra raekkens egne felter, ikke ved at skaere i prosaen.
+      const dele = [];
+      if (sidste.sidste_status_foer) dele.push(`var «${sidste.sidste_status_foer}»`);
+      if (passeret) dele.push(`forfaldt ${dk(forfald)}, ${dageSiden} dage for sent`);
+      if (sidste.registreret_af) dele.push(`lukket af ${sidste.registreret_af}`);
+      INFO(e.element, `${e.kanal}: ${sidste.status.toLowerCase()}${dele.length ? ` (${dele.join('; ')})` : ''}`);
       continue;
     }
     if (sidste.status === UVIST) {
@@ -250,6 +272,14 @@ async function main() {
     // "PLANLAGT MANUELT" betyder, at nogen har lagt det i platformens egen
     // planlaegger. Ordlyden foelger derfor status, ikke metode.
     const hvor = sidste.status === 'PLANLAGT' ? 'hos Meta' : 'i platformens brugerflade';
+    if (dageSiden > PAAMIND_DAGE) {
+      // Se PAAMIND_DAGE. Platformen udgiver selv, og efter en uge er en
+      // paamindelse blevet stoej. Antagelsen skrives som en antagelse.
+      INFO(e.element, `${e.kanal}: planlagt ${hvor} til ${dk(forfald)} — ${dageSiden} dage siden. `
+        + 'Antages udgivet af platformen; vagthunden kan ikke bekraefte det. '
+        + 'Skal det staa som publiceret, skriv en raekke med status PUBLICERET og post_id.');
+      continue;
+    }
     ADVAR(e.element, `${e.kanal}: planlagt ${hvor} til ${dk(forfald)} — passeret for ${dageSiden} dag(e) siden. Bekraeft selv at opslaget er gaaet ud.`);
   }
 
@@ -304,6 +334,64 @@ async function main() {
       FEJL(el, `${k?.kanal ?? r.kanal}: opslaget LIGGER HOS META som planlagt (${r.post_id ?? 'uden post_id'}) `
         + `og gaar ud ${dk(naar)}, men ${grunde.join('; ')}. `
         + 'Meta udgiver det selv — annullér det hos Meta, hvis det ikke skal ud.');
+    }
+  }
+
+  // ── KOERER DE PLANLAGTE KOERSLER OVERHOVEDET? ───────────────────────────
+  //
+  // Den blinde vinkel indtil nu. Vagthunden kontrollerede, om opslagene var
+  // kommet ud — men ikke om MASKINEN, der skal sende dem, stadig koerer.
+  // Standsede cron, ville den foerst melde noget, naar et opslag var faldet
+  // igennem, og da er det for sent.
+  //
+  // Maalt 27/10-01/11 koerte Instagram-sporet reelt hver 3.-6. time, selv om
+  // cron siger hvert kvarter. GitHubs cron er «best effort». Graenserne
+  // herunder er derfor rummelige: de skal fange en koersel, der er STANDSET,
+  // ikke en der er forsinket.
+  //
+  // FEJL-graensen er sat efter, hvad der faktisk kan gaa tabt. Med et
+  // publiceringsvindue paa et doegn betyder et hul paa over et doegn, at et
+  // godkendt opslag kan falde helt igennem. Det er en rigtig driftsfejl.
+  //
+  // Kraever GITHUB_TOKEN og actions: read. Koeres vagthunden lokalt, findes
+  // de ikke, og kontrollen springes over og siger det.
+  const KOERSLER = [
+    ['publicer-instagram-planlagt.yml', 8, 24, 'Instagram-publiceringen'],
+    ['publicer-linkedin-planlagt.yml', 8, 24, 'LinkedIn-publiceringen'],
+    ['publicer-google-planlagt.yml', 8, 24, 'Google-publiceringen'],
+    ['planlaeg-alle.yml', 12, 36, 'Facebook-planlaegningen (cron hver 6. time)'],
+    ['genopbyg-planlagt.yml', 30, 50, 'Netlify-genopbygningen (cron én gang i doegnet)'],
+  ];
+  const token = process.env.GITHUB_TOKEN;
+  const repo = process.env.GITHUB_REPOSITORY;
+  if (!token || !repo || udenNet) {
+    K_INFO('Actions', udenNet
+      ? 'koerselskontrol sprunget over (--uden-net)'
+      : 'koerselskontrol sprunget over: GITHUB_TOKEN eller GITHUB_REPOSITORY mangler (lokal koersel)');
+  } else {
+    for (const [fil, advarTimer, fejlTimer, hvad] of KOERSLER) {
+      try {
+        const r = await fetch(
+          `https://api.github.com/repos/${repo}/actions/workflows/${fil}/runs?per_page=1&status=completed`,
+          { headers: { Authorization: `Bearer ${token}`, Accept: 'application/vnd.github+json' } });
+        if (!r.ok) { K_ADVAR('Actions', `${fil}: GitHub svarede ${r.status}. Kunne ikke kontrolleres.`); continue; }
+        const k = (await r.json()).workflow_runs ?? [];
+        if (!k.length) { K_ADVAR('Actions', `${fil}: ingen gennemfoerte koersler fundet.`); continue; }
+        const sidst = new Date(k[0].created_at);
+        const timer = (NU - sidst) / 3600000;
+        const linje = `${hvad} koerte sidst ${dk(sidst)} — for ${varighed(timer * 3600)} siden`;
+        if (timer > fejlTimer) {
+          K_FEJL('Actions', `${linje}. Graensen er ${fejlTimer} timer. `
+            + 'Koerslen er standset, og et godkendt opslag kan falde igennem. '
+            + `Se https://github.com/${repo}/actions/workflows/${fil}`);
+        } else if (timer > advarTimer) {
+          K_ADVAR('Actions', `${linje}. Mere end ${advarTimer} timer. GitHubs cron er upaalidelig — se dokumentation/paalidelig-udloeser.md.`);
+        } else {
+          K_INFO('Actions', linje);
+        }
+      } catch (err) {
+        K_ADVAR('Actions', `${fil}: kunne ikke kontrolleres (${err.message}).`);
+      }
     }
   }
 

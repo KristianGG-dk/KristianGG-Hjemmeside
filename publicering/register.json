@@ -961,5 +961,71 @@
     "post_id": "1555349083279360",
     "planlagt_til": 1795197600,
     "tidspunkt": "2026-11-01T22:26:08.229Z"
+  },
+  {
+    "element": 31,
+    "kanal": "linkedin",
+    "status": "OPGIVET",
+    "post_id": null,
+    "godkendt_tidspunkt": "2026-10-13T08:00:00.000+02:00",
+    "tidspunkt": "2026-11-02T14:43:30.200Z",
+    "registreret_af": "motor",
+    "sidste_status_foer": "AFVENTER DATO",
+    "noter": "Opgivet automatisk. Det godkendte tidspunkt 2026-10-13 06:00 UTC blev passeret for 20 dage og 8 timer siden, og publiceringsvinduet er 24 timer. Seneste status var «AFVENTER DATO», saa opslaget blev aldrig afsendt. Der er ingen laasefil, saa motoren kunne ikke selv sende det. Skal det alligevel ud, kraever det en ny godkendelse og et nyt tidspunkt."
+  },
+  {
+    "element": 32,
+    "kanal": "gbp",
+    "status": "OPGIVET",
+    "post_id": null,
+    "godkendt_tidspunkt": "2026-10-14T09:00:00.000+02:00",
+    "tidspunkt": "2026-11-02T14:43:30.200Z",
+    "registreret_af": "motor",
+    "sidste_status_foer": "AFVENTER DATO",
+    "noter": "Opgivet automatisk. Det godkendte tidspunkt 2026-10-14 07:00 UTC blev passeret for 19 dage og 7 timer siden, og publiceringsvinduet er 24 timer. Seneste status var «AFVENTER DATO», saa opslaget blev aldrig afsendt. Der er ingen laasefil, saa motoren kunne ikke selv sende det. Skal det alligevel ud, kraever det en ny godkendelse og et nyt tidspunkt."
+  },
+  {
+    "element": 33,
+    "kanal": "facebook",
+    "status": "OPGIVET",
+    "post_id": null,
+    "godkendt_tidspunkt": "2026-10-15T19:00:00.000+02:00",
+    "tidspunkt": "2026-11-02T14:43:30.200Z",
+    "registreret_af": "motor",
+    "sidste_status_foer": "STOPPET FOR SENT",
+    "noter": "Opgivet automatisk. Det godkendte tidspunkt 2026-10-15 17:00 UTC blev passeret for 17 dage og 21 timer siden, og publiceringsvinduet er 24 timer. Seneste status var «STOPPET FOR SENT», saa opslaget blev aldrig afsendt. Laasefilen findes fortsat. Skal det alligevel ud, kraever det en ny godkendelse og et nyt tidspunkt."
+  },
+  {
+    "element": 34,
+    "kanal": "facebook",
+    "status": "OPGIVET",
+    "post_id": null,
+    "godkendt_tidspunkt": "2026-10-16T19:00:00.000+02:00",
+    "tidspunkt": "2026-11-02T14:43:30.200Z",
+    "registreret_af": "motor",
+    "sidste_status_foer": "STOPPET FOR SENT",
+    "noter": "Opgivet automatisk. Det godkendte tidspunkt 2026-10-16 17:00 UTC blev passeret for 16 dage og 21 timer siden, og publiceringsvinduet er 24 timer. Seneste status var «STOPPET FOR SENT», saa opslaget blev aldrig afsendt. Laasefilen findes fortsat. Skal det alligevel ud, kraever det en ny godkendelse og et nyt tidspunkt."
+  },
+  {
+    "element": 35,
+    "kanal": "facebook",
+    "status": "OPGIVET",
+    "post_id": null,
+    "godkendt_tidspunkt": "2026-10-17T10:30:00.000+02:00",
+    "tidspunkt": "2026-11-02T14:43:30.200Z",
+    "registreret_af": "motor",
+    "sidste_status_foer": "AFVENTER DATO",
+    "noter": "Opgivet automatisk. Det godkendte tidspunkt 2026-10-17 08:30 UTC blev passeret for 16 dage og 6 timer siden, og publiceringsvinduet er 24 timer. Seneste status var «AFVENTER DATO», saa opslaget blev aldrig afsendt. Der er ingen laasefil, saa motoren kunne ikke selv sende det. Skal det alligevel ud, kraever det en ny godkendelse og et nyt tidspunkt."
+  },
+  {
+    "element": 36,
+    "kanal": "instagram",
+    "status": "OPGIVET",
+    "post_id": null,
+    "godkendt_tidspunkt": "2026-10-18T09:30:00.000+02:00",
+    "tidspunkt": "2026-11-02T14:43:30.200Z",
+    "registreret_af": "motor",
+    "sidste_status_foer": "AFVENTER DATO",
+    "noter": "Opgivet automatisk. Det godkendte tidspunkt 2026-10-18 07:30 UTC blev passeret for 15 dage og 7 timer siden, og publiceringsvinduet er 24 timer. Seneste status var «AFVENTER DATO», saa opslaget blev aldrig afsendt. Der er ingen laasefil, saa motoren kunne ikke selv sende det. Skal det alligevel ud, kraever det en ny godkendelse og et nyt tidspunkt."
   }
 ]
