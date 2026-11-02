@@ -311,6 +311,54 @@ if (!K) {
   ok('params.konvertering.aktiv = false — ingen maaler indlaeses');
 }
 
+// Samtykke. Naar maalingen en dag taendes, afgoer udbyderen, om der skal
+// foreligge et ja: Plausible saetter ingen cookies, GA4 goer. Kontrollen
+// staar her, saa en fremtidig aktivering ikke kan glemme den.
+if (K) {
+  if (!('samtykke_kraeves' in K)) {
+    x('params.konvertering.samtykke_kraeves mangler i hugo.toml');
+  } else if (K.udbyder === 'ga4' && K.samtykke_kraeves !== true) {
+    x('udbyder = "ga4" kraever samtykke_kraeves = true — GA4 saetter cookies');
+  } else {
+    ok(`samtykke_kraeves = ${K.samtykke_kraeves} passer til udbyder "${K.udbyder || '(ingen)'}"`);
+  }
+}
+
+// Privatlivspolitikken skal sige det samme som konfigurationen. Taendes
+// maalingen, uden at teksten foelger med, staar der en usandhed paa
+// /privatliv/ — og det er netop den slags, Datatilsynet ser paa.
+// layouts/shortcodes/maaling.html binder de to sammen; her kontrolleres det.
+{
+  const pv = hent('/privatliv/');
+  if (!pv) {
+    x('/privatliv/ findes ikke i bygget');
+  } else {
+    const siger_ingen = /ingen værktøjer til statistik/.test(pv);
+    const siger_maaler = /Hjemmesiden bruger (Plausible|Google Analytics)/.test(pv);
+    if (K && K.aktiv === false && !siger_ingen) {
+      x('/privatliv/ siger ikke laengere, at siden ikke bruger vaerktoejer til statistik, '
+        + 'selv om maalingen er slukket');
+    } else if (K && K.aktiv === false && siger_maaler) {
+      x('/privatliv/ omtaler en maaler, selv om maalingen er slukket');
+    } else if (K && K.aktiv === true && siger_ingen) {
+      x('/privatliv/ paastaar, at siden ikke maaler noget, men maalingen er TAENDT. '
+        + 'Teksten styres af layouts/shortcodes/maaling.html.');
+    } else {
+      ok('/privatliv/ siger det samme som params.konvertering i hugo.toml');
+    }
+  }
+}
+
+// Samtykkebanneret og data-samtykke maa ikke findes, saa laenge maalingen er
+// slukket. Dukker de op, er noget blevet aktiveret.
+const medBanner = ALLE.filter((s) => /kgg-samtykke/.test(hent(s.url)));
+const medAttribut = ALLE.filter((s) => /<html[^>]*\bdata-samtykke\b/i.test(hent(s.url)));
+if (K && K.aktiv === false) {
+  if (medBanner.length) x(`samtykkebanneret vises paa ${medBanner.length} side(r), selv om maalingen er slukket`);
+  if (medAttribut.length) x(`data-samtykke staar paa ${medAttribut.length} side(r), selv om samtykke ikke kraeves`);
+  if (!medBanner.length && !medAttribut.length) ok('intet samtykkebanner og ingen data-samtykke — intet vises for den besoegende');
+}
+
 const VAERTER = /plausible\.io|googletagmanager\.com|google-analytics\.com|gtag\/js|matomo|hotjar|clarity\.ms|connect\.facebook\.net|segment\.(?:io|com)|mixpanel/i;
 const OPRETTER = /\bdataLayer\s*=|\bgtag\s*\(|\bfbq\s*\(|window\.plausible\s*=/;
 const forurenet = [];

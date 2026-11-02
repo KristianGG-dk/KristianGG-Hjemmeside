@@ -1,0 +1,72 @@
+# Kontrollerer den RIGTIGE kristiangg.dk — ikke et byg.
+#
+# Hvorfor den findes: arbejdsmiljoeet har ingen udgaaende adgang til
+# kristiangg.dk, men en GitHub-runner har fri internetadgang. Det er den
+# eneste vej til at efterproeve, hvad der faktisk er i luften.
+#
+# Den LAESER kun. Eneste undtagelse er den rigtige formularindsendelse, som
+# skal slaas til udtrykkeligt ved kaldet, og som sender et tydeligt maerket
+# proeveopslag til kontakt@kristiangg.dk.
+name: Produktionskontrol
+
+on:
+  workflow_dispatch:
+    inputs:
+      base:
+        description: 'Adresse der kontrolleres (tom = https://kristiangg.dk)'
+        required: false
+        default: ''
+      indsend_proeve:
+        description: 'Send en RIGTIG proeve gennem kontaktformularen (ja/nej)'
+        required: false
+        default: 'nej'
+  push:
+    branches: ['claude/**']
+    paths:
+      - 'tests/produktion.mjs'
+      - '.github/workflows/produktionskontrol.yml'
+  schedule:
+    # Én gang i doegnet. Skaevt minut, saa den ikke staar i koe med alle andres.
+    - cron: '37 6 * * *'
+
+permissions:
+  contents: read
+
+jobs:
+  kontroller:
+    # Fast 24.04. ubuntu-latest er nu 26.04, som Playwright 1.56 ikke
+    # kender: "Playwright does not support chromium on ubuntu26.04-x64".
+    # Hele kontrollen faldt paa det, ogsaa de dele der ikke bruger browser.
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+
+      # Browseren maa ikke kunne vaelte hele kontrollen. Lykkes den ikke,
+      # koerer tests/produktion.mjs videre uden browserdelen og siger det.
+      - name: Installer Playwright med Chromium
+        id: browser
+        continue-on-error: true
+        run: npm install --no-save playwright@1.56.1 && npx playwright install --with-deps chromium
+
+      - name: Browseren kunne ikke installeres
+        if: steps.browser.outcome == 'failure'
+        run: echo "::warning::Chromium kunne ikke installeres. Browserdelen springes over."
+
+      - name: Kontroller produktionen
+        env:
+          BASE: ${{ inputs.base || 'https://kristiangg.dk' }}
+          # Ved et manuelt kald styres det af inputtet. Ved et push paa en
+          # arbejdsgren findes workflow_dispatch endnu ikke (GitHub viser kun
+          # dispatch for workflows, der ligger paa standardgrenen), og den
+          # rigtige indsendelse slaas derfor til med [proeveindsendelse] i
+          # commit-beskeden. Begge veje kraever en bevidst handling.
+          INDSEND_PROEVE: >-
+            ${{ (inputs.indsend_proeve == 'ja'
+                 || contains(github.event.head_commit.message, '[proeveindsendelse]'))
+                && 'ja' || 'nej' }}
+          PROEVE_MAERKE: proeve-${{ github.run_id }}
+        run: node tests/produktion.mjs

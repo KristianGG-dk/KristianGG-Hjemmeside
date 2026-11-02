@@ -31,10 +31,49 @@ title = "Kristian GG"
 #
 # Læs dokumentation/konverteringsmaaling.md først. Valget af udbyder afgør,
 # om der skal indhentes samtykke, og det skal være afklaret FØR aktivering.
+# samtykke_kraeves afgoer, om der skal foreligge et ja, FOER maaleren
+# indlaeses, og foer en handling sendes. Plausible saetter ingen cookies
+# og behandler ingen personoplysninger; GA4 goer begge dele og kraever
+# samtykke. Vaelges GA4, skal denne saettes til true samtidig.
+# ads_id og ads_label bruges KUN, hvis konverteringen ogsaa skal tilbage til
+# Google Ads. De findes i Google Ads under Maal > Konverteringer, naar en
+# konverteringshandling er oprettet: ads_id er "AW-XXXXXXXXXX", ads_label er
+# etiketten paa selve handlingen. Begge tomme = intet sendes til Ads.
+# Se dokumentation/google-ads.md.
 [params.konvertering]
   aktiv = false
   udbyder = ""
   id = ""
+  samtykke_kraeves = false
+  ads_id = ""
+  ads_label = ""
+
+# ── Byggemaerket ─────────────────────────────────────────────────────────────
+# /byg.json fortaeller, HVILKEN udgave der faktisk er i luften: commit og
+# byggetidspunkt. Uden den kan ingen se forskel paa "Netlify har bygget" og
+# "Netlify sagde ja til kaldet".
+#
+# Det er ikke teoretisk. genopbyg-planlagt.yml kalder Netlifys build hook og
+# melder groent, naar Netlify svarer 2xx. Er produktionsbyg sat paa pause —
+# fx fordi kontoens credits er brugt — svarer hooken stadig 2xx, bygget sker
+# bare aldrig. Workflowet er groent, og siden staar stille. Vagthunden laeser
+# nu maerket og opdager det.
+#
+# RSS og sitemap staar udtrykkeligt med i listen. Udelades de, holder Hugo op
+# med at skrive dem, og hele sitemappet forsvandt da ud af produktionen.
+[outputs]
+  home = ["HTML", "RSS", "sitemap", "BYG"]
+
+[outputFormats.BYG]
+  mediaType = "application/json"
+  baseName = "byg"
+  isPlainText = true
+  notAlternative = true
+
+# Hugo spaerrer som udgangspunkt for getenv. Kun de fire variabler, Netlify
+# selv saetter paa bygget, lukkes ind — ingen af dem er hemmelige.
+[security.funcs]
+  getenv = ['^HUGO_', '^COMMIT_REF$', '^BRANCH$', '^CONTEXT$', '^DEPLOY_ID$']
 
 [taxonomies]
   category = "categories"

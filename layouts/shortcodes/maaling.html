@@ -1,0 +1,38 @@
+{{- /*
+  Privatlivspolitikkens afsnit om maaling — foelger med af sig selv.
+
+  Problemet den loeser: privatlivspolitikken siger i dag, at siden hverken
+  saetter cookies eller bruger vaerktoejer til statistik. Det er sandt i dag.
+  Taendes konverteringsmaalingen uden at teksten foelger med, staar der en
+  usandhed paa /privatliv/ — og det er netop den slags, Datatilsynet ser paa.
+
+  Derfor staar teksten ikke i content/privatliv.md, men her, hvor den kan
+  foelge params.konvertering i hugo.toml. Én kontakt styrer baade maalingen
+  og det, der staar om den.
+
+  Brug i content/privatliv.md:
+      {{< maaling afsnit="besoeg" >}}
+      {{< maaling afsnit="annoncering" >}}
+*/ -}}
+{{- $k := site.Params.konvertering -}}
+{{- $aktiv := and $k $k.aktiv $k.id -}}
+{{- $afsnit := .Get "afsnit" | default "besoeg" -}}
+{{- $navn := cond (eq (string (and $k $k.udbyder)) "ga4") "Google Analytics 4" "Plausible Analytics" -}}
+
+{{- if eq $afsnit "besoeg" -}}
+{{- if not $aktiv -}}
+Hjemmesidens offentlige sider sætter ingen cookies og bruger ingen værktøjer til statistik, annoncering eller sporing. Skrifttyperne hentes fra kristiangg.dk og ikke fra en tredjepart.
+{{- else if $k.samtykke_kraeves -}}
+Hjemmesiden bruger {{ $navn }} til at tælle, hvor mange der tager kontakt. Det sker <strong>kun, hvis du siger ja</strong> til det i den boks, der vises, første gang du besøger siden. Siger du nej — eller svarer du ikke — måles der intet, og siden virker præcis som før. Dit valg gemmes i din egen browser og kan altid ændres ved at rydde browserens data for kristiangg.dk. Skrifttyperne hentes fra kristiangg.dk og ikke fra en tredjepart.
+{{- else -}}
+Hjemmesiden bruger {{ $navn }} til at tælle, hvor mange der tager kontakt. Der sættes ingen cookies, og der indsamles ingen oplysninger, der kan henføres til dig som person: kun hvilken side der blev set, og om der blev trykket på en kontaktknap. Skrifttyperne hentes fra kristiangg.dk og ikke fra en tredjepart.
+{{- end -}}
+{{- end -}}
+
+{{- if eq $afsnit "annoncering" -}}
+{{- if not $aktiv -}}
+Jeg sælger ikke personoplysninger og bruger dem ikke til annoncering.
+{{- else -}}
+Jeg sælger ikke personoplysninger. Målingen tæller, hvor mange der tager kontakt, og hvilken side de kom fra. <strong>Intet af det, du skriver i kontaktformularen, indgår i målingen</strong> — hverken din besked, din e-mailadresse eller dit telefonnummer. Bruges tallene til at vurdere en annoncekampagne, sker det på samme grundlag: antal, ikke personer.
+{{- end -}}
+{{- end -}}

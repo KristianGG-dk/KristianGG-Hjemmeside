@@ -129,39 +129,133 @@
 
 // Konverteringsmaaling — FORBEREDT, IKKE AKTIVERET.
 // ============================================================================
-// Opsamlingen herunder koerer altid, men afleverer kun til en maaler, der
-// FAKTISK findes paa siden. Saa laenge params.konvertering.aktiv er false i
-// hugo.toml, indlaeses ingen maaler (se layouts/partials/konvertering.html),
-// window.plausible og window.dataLayer findes ikke, og kggKonverter goer
-// derfor ingenting: intet netvaerkskald, ingen cookie, intet samtykkekrav.
+// Hele maskineriet staar faerdigt her. Det maaler ingenting, fordi ingen
+// maaler indlaeses: params.konvertering.aktiv er false i hugo.toml, og
+// layouts/partials/konvertering.html udsender derfor kun en kommentar.
 //
-// Det er med vilje bygget sadan. Naar maaleren en dag indlaeses, virker
-// maalepunkterne fra foerste besoeg uden at der skal roeres ved markup eller
-// ved denne fil.
+// Fem ting er loest her, ikke lovet:
 //
-// Maalepunkterne er data-konverter i markup'en:
-//   kontakt-sms, kontakt-mail, kontakt-telefon,
-//   gratis-forsamtale-priser, formular-sendt
+//   1. PRIMAER KONVERTERING. "formular-sendt" taelles foerst, naar Netlify
+//      har kvitteret for indsendelsen. Et klik paa knappen er ikke en
+//      henvendelse.
 //
-// Der sendes ALDRIG indhold fra formularen med — kun navnet paa handlingen og
-// stien paa siden. En besked, en mailadresse eller et telefonnummer maa ikke
-// forlade siden ad denne vej.
+//   2. SEKUNDAERE HANDLINGER. kontakt-sms, kontakt-telefon, kontakt-mail og
+//      gratis-forsamtale-priser taelles paa klik.
+//
+//   3. INGEN PERSONOPLYSNINGER. Kun noeglerne i TILLADTE_NOEGLER sendes, og
+//      hver vaerdi renses for mailadresser og telefonnumre, foer den
+//      forlader siden. Formularens felter roeres aldrig. Stien tages fra
+//      location.pathname UDEN query og fragment, saa et ?begivenhed=... fra
+//      adresselinjen heller ikke kan slippe med.
+//
+//   4. INGEN DOBBELTREGISTRERING. Tre spaerrer: modulet binder kun én gang,
+//      hvert navn taelles hoejst én gang pr. sidevisning, og den primaere
+//      konvertering taelles hoejst én gang pr. browsersession (sessionStorage),
+//      saa en genindlaesning af kvitteringen eller et dobbeltklik ikke
+//      taeller to.
+//
+//   5. SAMTYKKE. Kraever den valgte maaler samtykke, saettes
+//      params.konvertering.samtykke_kraeves = true. Saa saettes
+//      data-samtykke="kraeves" paa <html>, og INTET sendes, foer der
+//      foreligger et ja. Handlinger undervejs laegges i koe og sendes
+//      foerst ved samtykke — afvises der, kasseres de. Valget huskes i
+//      localStorage, og window.kggSamtykke er API'et for banneret i
+//      layouts/partials/samtykke.html.
+//
+// Maalepunkterne er data-konverter i markup'en. Se
+// dokumentation/konverteringsmaaling.md.
 (function () {
-  function kggKonverter(navn, detaljer) {
-    if (!navn) return;
-    var d = { side: window.location.pathname };
+  if (window.kggKonverter) return;   // spaerre 1: aldrig bundet to gange
+
+  var NOEGLE = 'kgg-samtykke';
+  var SESSION_NOEGLE = 'kgg-konvertering';
+  var TILLADTE_NOEGLER = ['side', 'kanal'];
+  var PRIMAER = 'formular-sendt';
+  var KOE_MAKS = 20;
+
+  // ── Samtykke ──────────────────────────────────────────────────────────
+  var kraeves = document.documentElement.getAttribute('data-samtykke') === 'kraeves';
+
+  function laes(lager, noegle) {
+    try { return window[lager] ? window[lager].getItem(noegle) : null; } catch (e) { return null; }
+  }
+  function skriv(lager, noegle, vaerdi) {
+    try { if (window[lager]) window[lager].setItem(noegle, vaerdi); } catch (e) { /* privat vindue */ }
+  }
+
+  // 'givet' | 'afvist' | 'ukendt'. Uden krav om samtykke er svaret altid ja.
+  function status() {
+    if (!kraeves) return 'givet';
+    var v = laes('localStorage', NOEGLE);
+    if (!v) return 'ukendt';
+    try {
+      var d = JSON.parse(v);
+      return d && (d.svar === 'givet' || d.svar === 'afvist') ? d.svar : 'ukendt';
+    } catch (e) { return 'ukendt'; }
+  }
+
+  var koe = [];
+
+  function saet(svar) {
+    if (svar !== 'givet' && svar !== 'afvist') return;
+    skriv('localStorage', NOEGLE, JSON.stringify({ svar: svar, tid: new Date().toISOString(), version: 1 }));
+    if (svar === 'givet') {
+      var ventende = koe.splice(0, koe.length);
+      udsend('kgg:samtykke-givet', {});
+      for (var i = 0; i < ventende.length; i++) aflever(ventende[i].navn, ventende[i].d);
+    } else {
+      koe.length = 0;                       // det ventende kasseres, ikke gemmes
+      udsend('kgg:samtykke-afvist', {});
+    }
+  }
+
+  window.kggSamtykke = {
+    kraeves: function () { return kraeves; },
+    status: status,
+    giv: function () { saet('givet'); },
+    afvis: function () { saet('afvist'); },
+    glem: function () { try { window.localStorage.removeItem(NOEGLE); } catch (e) {} },
+  };
+
+  // ── Rensning ──────────────────────────────────────────────────────────
+  var MAIL = /[^\s@]+@[^\s@]+\.[A-Za-z]{2,}/g;
+  var TELEFON = /(?:\+?\d[\s.\-()]?){8,}/g;
+
+  function rens(v) {
+    if (typeof v === 'number' || typeof v === 'boolean') return v;
+    if (typeof v !== 'string') return undefined;
+    return v.replace(MAIL, '[fjernet]').replace(TELEFON, '[fjernet]').slice(0, 120);
+  }
+
+  function pak(detaljer) {
+    var d = { side: String(window.location.pathname || '/').slice(0, 120) };
     if (detaljer) {
-      for (var n in detaljer) {
-        if (Object.prototype.hasOwnProperty.call(detaljer, n)) d[n] = detaljer[n];
+      for (var i = 0; i < TILLADTE_NOEGLER.length; i++) {
+        var n = TILLADTE_NOEGLER[i];
+        if (!Object.prototype.hasOwnProperty.call(detaljer, n)) continue;
+        var v = rens(detaljer[n]);
+        if (v !== undefined) d[n] = v;
       }
     }
+    return d;
+  }
 
-    // Plausible (hvis den er indlaest)
+  function udsend(navn, d) {
+    try { document.dispatchEvent(new CustomEvent(navn, { detail: d })); }
+    catch (e) {
+      try {
+        var h = document.createEvent('CustomEvent');
+        h.initCustomEvent(navn, false, false, d);
+        document.dispatchEvent(h);
+      } catch (e2) { /* ingen hendelser i denne browser */ }
+    }
+  }
+
+  // ── Afsendelse ────────────────────────────────────────────────────────
+  function aflever(navn, d) {
     if (typeof window.plausible === 'function') {
       try { window.plausible(navn, { props: d }); } catch (e) {}
     }
-
-    // GA4 / Tag Manager (hvis dataLayer findes)
     if (Object.prototype.toString.call(window.dataLayer) === '[object Array]') {
       try {
         var h = { event: navn };
@@ -169,24 +263,56 @@
         window.dataLayer.push(h);
       } catch (e) {}
     }
+    // Udsendes altid, ogsaa uden maaler, saa en fremtidig modtager kan lytte
+    // uden at denne fil skal aendres.
+    udsend('kgg:konvertering', d.navn ? d : (function () {
+      var m = { navn: navn };
+      for (var k2 in d) { if (Object.prototype.hasOwnProperty.call(d, k2)) m[k2] = d[k2]; }
+      return m;
+    })());
+  }
 
-    // Altid: en hendelse paa document, saa en fremtidig maaler kan lytte uden
-    // at denne fil skal aendres. Ingen modtager = ingen virkning.
-    try {
-      document.dispatchEvent(new CustomEvent('kgg:konvertering', { detail: d }));
-    } catch (e) {}
+  var taeltPaaSiden = {};               // spaerre 2: én gang pr. sidevisning
+
+  function alleredeTaltISession(navn) { // spaerre 3: én primaer pr. session
+    if (navn !== PRIMAER) return false;
+    return laes('sessionStorage', SESSION_NOEGLE) === PRIMAER;
+  }
+
+  function kggKonverter(navn, detaljer) {
+    if (!navn || typeof navn !== 'string') return false;
+    navn = navn.replace(/[^a-z0-9_-]/gi, '').slice(0, 40);
+    if (!navn) return false;
+    if (taeltPaaSiden[navn]) return false;
+    if (alleredeTaltISession(navn)) return false;
+
+    taeltPaaSiden[navn] = true;
+    if (navn === PRIMAER) skriv('sessionStorage', SESSION_NOEGLE, PRIMAER);
+
+    var d = pak(detaljer);
+    var svar = status();
+    if (svar === 'afvist') return false;
+    if (svar === 'ukendt') {
+      if (koe.length < KOE_MAKS) koe.push({ navn: navn, d: d });
+      return false;
+    }
+    aflever(navn, d);
+    return true;
   }
 
   window.kggKonverter = kggKonverter;
 
   // Klik paa kontaktpunkterne. Formularens knap er undtaget: den maales
   // foerst, naar indsendelsen er lykkedes — se ContactForm nedenfor.
-  document.querySelectorAll('[data-konverter]').forEach(function (el) {
-    if (el.hasAttribute('data-form-submit')) return;
-    el.addEventListener('click', function () {
-      kggKonverter(el.getAttribute('data-konverter'));
-    });
-  });
+  var punkter = document.querySelectorAll('[data-konverter]');
+  for (var i = 0; i < punkter.length; i++) {
+    (function (el) {
+      if (el.hasAttribute('data-form-submit')) return;
+      el.addEventListener('click', function () {
+        kggKonverter(el.getAttribute('data-konverter'));
+      });
+    })(punkter[i]);
+  }
 })();
 
 // ContactForm — AJAX submission for Netlify forms

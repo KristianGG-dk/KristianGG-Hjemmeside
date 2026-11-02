@@ -1,0 +1,24 @@
+{{- /*
+  Byggemaerket: hvilken udgave er faktisk i luften?
+
+  Laeses af publicering/scripts/vagthund.mjs og tests/produktion.mjs. Uden
+  det kan man ikke skelne "Netlify har bygget" fra "Netlify svarede 2xx paa
+  kaldet". Netlify saetter COMMIT_REF, BRANCH, CONTEXT og DEPLOY_ID selv paa
+  hvert byg; lokalt staar de tomme, og felterne bliver da null.
+
+  Intet hemmeligt. DEPLOY_ID er et offentligt id paa et deploy og indgaar i
+  den adresse, deploy previews allerede serveres paa.
+*/ -}}
+{{- $commit := getenv "COMMIT_REF" -}}
+{{- $gren := getenv "BRANCH" -}}
+{{- $kontekst := getenv "CONTEXT" -}}
+{{- $deploy := getenv "DEPLOY_ID" -}}
+{{- dict
+      "bygget" (now.UTC.Format "2006-01-02T15:04:05Z")
+      "commit" (cond (ne $commit "") $commit nil)
+      "gren" (cond (ne $gren "") $gren nil)
+      "kontekst" (cond (ne $kontekst "") $kontekst nil)
+      "deploy" (cond (ne $deploy "") $deploy nil)
+      "hugo" hugo.Version
+      "sider" (len site.RegularPages)
+  | jsonify (dict "indent" "  ") -}}

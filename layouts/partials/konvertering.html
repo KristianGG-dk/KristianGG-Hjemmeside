@@ -41,17 +41,77 @@
 {{- warnf "params.konvertering.aktiv er true, men id er tom. Ingen maaler indlaest." }}
 <!-- Konverteringsmaaling: aktiv, men id mangler. Ingen maaler indlaest. -->
 {{- else if eq $k.udbyder "plausible" }}
-{{/* Plausible: ingen cookies, ingen personhenfoerbare data. */}}
+{{- if $k.samtykke_kraeves }}
+{{/* Plausible saetter ingen cookies. Kraeves der alligevel samtykke, hentes
+     scriptet FOERST ved et ja — ikke bare afventes der et flag. Intet
+     forlader browseren inden da. */}}
+<script>
+  (function () {
+    function hent() {
+      if (document.getElementById('kgg-maaler')) return;
+      var s = document.createElement('script');
+      s.id = 'kgg-maaler';
+      s.defer = true;
+      s.setAttribute('data-domain', {{ $k.id | jsonify | safeJS }});
+      s.src = 'https://plausible.io/js/script.tagged-events.js';
+      document.head.appendChild(s);
+    }
+    window.plausible = window.plausible || function () { (window.plausible.q = window.plausible.q || []).push(arguments) };
+    document.addEventListener('kgg:samtykke-givet', hent);
+    if (window.kggSamtykke && window.kggSamtykke.status() === 'givet') hent();
+  })();
+</script>
+{{- else }}
 <script defer data-domain="{{ $k.id }}" src="https://plausible.io/js/script.tagged-events.js"></script>
 <script>window.plausible = window.plausible || function () { (window.plausible.q = window.plausible.q || []).push(arguments) };</script>
+{{- end }}
 {{- else if eq $k.udbyder "ga4" }}
-<script async src="https://www.googletagmanager.com/gtag/js?id={{ $k.id }}"></script>
+{{/* GA4 saetter cookies og kraever samtykke. Consent Mode v2 saettes til
+     denied FOER gtag.js hentes, og opdateres foerst ved et ja. Saettes
+     samtykke_kraeves ved et uheld til false, bliver advarslen herunder
+     staaende i byggeloggen — men samtykket er stadig default denied, saa
+     der maales intet, foer der er svaret. */}}
+{{- if not $k.samtykke_kraeves }}{{ warnf "params.konvertering.udbyder = ga4 uden samtykke_kraeves = true. GA4 saetter cookies og kraever samtykke." }}{{ end }}
 <script>
   window.dataLayer = window.dataLayer || [];
   function gtag(){ dataLayer.push(arguments); }
+  gtag('consent', 'default', {
+    ad_storage: 'denied', ad_user_data: 'denied', ad_personalization: 'denied',
+    analytics_storage: 'denied', functionality_storage: 'granted',
+    security_storage: 'granted', wait_for_update: 2000
+  });
   gtag('js', new Date());
-  gtag('config', {{ $k.id | jsonify | safeJS }});
+  gtag('config', {{ $k.id | jsonify | safeJS }}, { anonymize_ip: true });
+  document.addEventListener('kgg:samtykke-givet', function () {
+    gtag('consent', 'update', {
+      ad_storage: 'granted', ad_user_data: 'granted',
+      ad_personalization: 'granted', analytics_storage: 'granted'
+    });
+  });
+  document.addEventListener('kgg:samtykke-afvist', function () {
+    gtag('consent', 'update', {
+      ad_storage: 'denied', ad_user_data: 'denied',
+      ad_personalization: 'denied', analytics_storage: 'denied'
+    });
+  });
 </script>
+{{- with $k.ads_id }}
+{{/* Google Ads. Konverteringen sendes kun for den PRIMAERE handling — en
+     bekraeftet henvendelse — og kun gennem den samme hendelse, resten af
+     maalingen bruger. Dermed arver Ads automatisk baade samtykket, de to
+     dobbeltspaerrer og rensningen for personoplysninger: der kan ikke
+     opstaa en vej udenom. Mangler ads_label, sendes der intet. */}}
+<script>
+  gtag('config', {{ . | jsonify | safeJS }});
+  document.addEventListener('kgg:konvertering', function (h) {
+    if (!h.detail || h.detail.navn !== 'formular-sendt') return;
+    {{ if $k.ads_label }}gtag('event', 'conversion', { send_to: {{ printf "%s/%s" . $k.ads_label | jsonify | safeJS }} });{{ else }}
+    /* ads_label er tom — ingen konverteringshandling at sende til. */
+    {{ end }}
+  });
+</script>
+{{- end }}
+<script async src="https://www.googletagmanager.com/gtag/js?id={{ $k.id }}"></script>
 {{- else }}
 {{- warnf "params.konvertering.udbyder = %q kendes ikke. Ingen maaler indlaest." $k.udbyder }}
 <!-- Konverteringsmaaling: ukendt udbyder. Ingen maaler indlaest. -->

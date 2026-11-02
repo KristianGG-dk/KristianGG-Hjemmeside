@@ -393,6 +393,144 @@ async function main() {
         K_ADVAR('Actions', `${fil}: kunne ikke kontrolleres (${err.message}).`);
       }
     }
+
+    // ── VIRKER DEN PAALIDELIGE UDLOESER? ──────────────────────────────────
+    //
+    // netlify/functions/udloes-publicering.mjs starter publiceringen paa det
+    // godkendte tidspunkt gennem repository_dispatch. Uden
+    // GITHUB_DISPATCH_TOKEN i Netlify goer den ingenting — og den siger det
+    // kun i Netlifys egen log, som ingen laeser.
+    //
+    // Her ses det udefra: har der overhovedet VAERET en dispatch-koersel den
+    // seneste uge? Er alle koersler «schedule», er udloeseren ikke i drift,
+    // og opslagene gaar ud, naar GitHubs cron finder tid — maalt 3-10 timer
+    // efter det godkendte tidspunkt.
+    //
+    // Det er en ADVARSEL, ikke en FEJL: med doegnvinduet falder intet
+    // igennem, det kommer bare for sent. Fire skridt i
+    // dokumentation/paalidelig-udloeser.md lukker den.
+    try {
+      const uge = new Date(NU.getTime() - 7 * 86400000);
+      let dispatch = 0;
+      let ialt = 0;
+      for (const fil of ['publicer-instagram-planlagt.yml', 'publicer-linkedin-planlagt.yml']) {
+        const r = await fetch(
+          `https://api.github.com/repos/${repo}/actions/workflows/${fil}/runs?per_page=50`,
+          { headers: { Authorization: `Bearer ${token}`, Accept: 'application/vnd.github+json' } });
+        if (!r.ok) continue;
+        for (const k of (await r.json()).workflow_runs ?? []) {
+          if (new Date(k.created_at) < uge) continue;
+          ialt++;
+          if (k.event === 'repository_dispatch') dispatch++;
+        }
+      }
+      if (!ialt) {
+        K_ADVAR('Udloeser', 'ingen koersler den seneste uge — kunne ikke afgoere, om den paalidelige udloeser er i drift.');
+      } else if (dispatch === 0) {
+        K_ADVAR('Udloeser', `ingen af ${ialt} koersler den seneste uge kom fra Netlify-udloeseren — alle kom fra GitHubs cron. `
+          + 'GITHUB_DISPATCH_TOKEN mangler formentlig i Netlifys miljoevariabler. '
+          + 'Opslag gaar derfor ud, naar cron finder tid, ikke paa det godkendte tidspunkt. '
+          + 'Fire skridt: dokumentation/paalidelig-udloeser.md.');
+      } else {
+        K_INFO('Udloeser', `den paalidelige udloeser er i drift: ${dispatch} af ${ialt} koersler den seneste uge kom fra Netlify.`);
+      }
+    } catch (err) {
+      K_ADVAR('Udloeser', `kunne ikke kontrolleres (${err.message}).`);
+    }
+  }
+
+  // ── ER SIDEN OVERHOVEDET BYGGET? ────────────────────────────────────────
+  //
+  // Den anden blinde vinkel. genopbyg-planlagt.yml kalder Netlifys build
+  // hook og melder groent, saa snart Netlify svarer 2xx. Men 2xx betyder kun
+  // «kaldet er modtaget». Er produktionsbyg standset — fx fordi kontoens
+  // credits er brugt op, som 2. november 2026 — svarer hooken stadig 2xx,
+  // bygget sker aldrig, og workflowet er groent, mens siden staar stille.
+  //
+  // Det rammer ikke kun udseendet. Kanalen «website» publicerer ved at lade
+  // Hugo bygge et fremtidsdateret indlaeg. Bygger Netlify ikke, udkommer
+  // indlaegget ikke, uanset hvad registret siger.
+  //
+  // /byg.json skrives af layouts/index.byg.json ved hvert byg og baerer
+  // byggetidspunkt og commit. Her sammenlignes det med main.
+  if (udenNet) {
+    K_INFO('Netlify', 'byggekontrol sprunget over (--uden-net)');
+  } else {
+    const GRAENSE_TIMER = 30;        // genopbygningen koerer én gang i doegnet
+    const COMMIT_NAADE_TIMER = 3;    // et deploy maa gerne vaere et par timer undervejs
+    // Tre forsoeg. Et enkelt netvaerksblip fra en runner maa ikke vaekke
+    // nogen — men svarer sitet slet ikke tre gange i traek, ER det nede, og
+    // saa er det netop dét, en vagthund er til for.
+    let r = null;
+    let sidsteFejl = null;
+    for (let forsoeg = 1; forsoeg <= 3; forsoeg++) {
+      try {
+        r = await fetch('https://kristiangg.dk/byg.json', { headers: { 'Cache-Control': 'no-cache' } });
+        break;
+      } catch (err) {
+        sidsteFejl = err;
+        r = null;
+        if (forsoeg < 3) await new Promise((k) => setTimeout(k, forsoeg * 2000));
+      }
+    }
+    try {
+      if (!r) {
+        K_FEJL('Netlify', `kristiangg.dk svarede ikke paa tre forsoeg (${sidsteFejl?.message ?? 'ukendt fejl'}). `
+          + 'Sitet kan vaere nede. Se https://app.netlify.com/ og kontroller, at domaenet svarer.');
+      } else if (r.status === 404) {
+        K_INFO('Netlify', 'byggemaerket /byg.json er endnu ikke deployet. Kontrollen begynder at virke efter naeste byg.');
+      } else if (!r.ok) {
+        K_ADVAR('Netlify', `/byg.json svarede ${r.status}. Byggetidspunktet kunne ikke kontrolleres.`);
+      } else {
+        const b = await r.json();
+        const bygget = new Date(b.bygget);
+        if (Number.isNaN(bygget.getTime())) {
+          K_ADVAR('Netlify', `/byg.json har et ulaeseligt byggetidspunkt: ${String(b.bygget)}`);
+        } else {
+          const timer = (NU - bygget) / 3600000;
+          const linje = `sitet blev sidst bygget ${dk(bygget)} — for ${varighed(timer * 3600)} siden`;
+          if (timer > GRAENSE_TIMER) {
+            K_FEJL('Netlify', `${linje}. Graensen er ${GRAENSE_TIMER} timer. `
+              + 'Netlify bygger ikke laengere, selv om build hooken svarer. '
+              + 'Et fremtidsdateret indlaeg paa kanalen «website» vil ikke udkomme. '
+              + 'Se efter, om kontoens credits er brugt op: https://app.netlify.com/');
+          } else {
+            K_INFO('Netlify', linje);
+          }
+
+          // Er det den rigtige udgave, der er i luften?
+          const hoved = process.env.GITHUB_SHA;
+          if (hoved && b.commit && b.commit !== hoved) {
+            // Hvor gammelt er main-hovedet? Er det nyt, er et deploy bare
+            // undervejs, og det er ikke noget at raabe op om.
+            let hovedAlder = null;
+            if (token && repo) {
+              try {
+                const c = await fetch(`https://api.github.com/repos/${repo}/commits/${hoved}`,
+                  { headers: { Authorization: `Bearer ${token}`, Accept: 'application/vnd.github+json' } });
+                if (c.ok) {
+                  const d = await c.json();
+                  const tid = d?.commit?.committer?.date;
+                  if (tid) hovedAlder = (NU - new Date(tid)) / 3600000;
+                }
+              } catch (err) { /* uden alder meldes der ikke FEJL */ }
+            }
+            const kort = (x) => String(x).slice(0, 7);
+            if (hovedAlder !== null && hovedAlder > COMMIT_NAADE_TIMER) {
+              K_FEJL('Netlify', `produktionen koerer ${kort(b.commit)}, men main staar paa ${kort(hoved)}, `
+                + `som blev lagt for ${varighed(hovedAlder * 3600)} siden. Deployet er ikke sket. `
+                + 'Se efter, om produktionsbyg er sat paa pause: https://app.netlify.com/');
+            } else {
+              K_INFO('Netlify', `produktionen koerer ${kort(b.commit)}, main staar paa ${kort(hoved)} — et deploy er formentlig undervejs`);
+            }
+          } else if (b.commit && hoved) {
+            K_INFO('Netlify', `produktionen koerer den samme commit som main (${String(hoved).slice(0, 7)})`);
+          }
+        }
+      }
+    } catch (err) {
+      K_ADVAR('Netlify', `byggekontrollen kunne ikke gennemfoeres: ${err.message}`);
+    }
   }
 
   // ── LinkedIn-tokenets udloeb ────────────────────────────────────────────

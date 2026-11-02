@@ -1,5 +1,10 @@
 <!DOCTYPE html>
-<html lang="da">
+{{- /* data-samtykke fortaeller assets/js/main.js, om der skal foreligge et
+       ja, foer en konvertering maa sendes. Attributten staar paa <html>, saa
+       den er laest, foer noget som helst koerer. Se
+       dokumentation/konverteringsmaaling.md. */ -}}
+{{- $k := site.Params.konvertering -}}
+<html lang="da"{{ if and $k $k.samtykke_kraeves }} data-samtykke="kraeves"{{ end }}>
 <head>
   {{ partial "head.html" . }}
   {{ block "schema" . }}{{ end }}
@@ -11,5 +16,6 @@
     {{ block "main" . }}{{ end }}
   </main>
   {{ partial "footer.html" . }}
+  {{ partial "samtykke.html" . }}
 </body>
 </html>
