@@ -55,6 +55,46 @@ Ingenting. Netlifys gratisplan rummer 125.000 funktionskald om måneden;
 hvert kvarter er cirka 2.900. Repoet er offentligt, så GitHub Actions-minutter
 er gratis. Der kommer ingen løbende udgift.
 
+## Målt igen 2. november 2026 — og nu ser vagthunden det selv
+
+Udløseren er stadig ikke i drift. Det kan måles udefra:
+
+| Workflow | Cron siger | Kørte reelt 1.–2. november |
+| --- | --- | --- |
+| `publicer-instagram-planlagt` | hvert kvarter | 01:49, 09:40, 15:44, 21:13, 00:47, 06:53 — hul på 3–8 timer |
+| `publicer-linkedin-planlagt` | hvert kvarter | 21:17, 00:55, 07:17 |
+| `publicer-google-planlagt` | hvert kvarter | 06:40, 14:10, 19:04, 22:43, 02:14, 09:51 |
+
+**Alle kørsler har `event: schedule`. Ingen har `repository_dispatch`.** Det
+er beviset: Netlify-funktionen kalder ikke, og det gør den ikke, fordi
+`GITHUB_DISPATCH_TOKEN` ikke er lagt ind.
+
+Hidtil kunne man kun se det ved at læse Netlifys egen log, som ingen læser.
+Vagthunden ser nu efter selv: findes der ingen `repository_dispatch`-kørsel
+den seneste uge, siger den det med en advarsel og henviser hertil.
+
+Det er en **advarsel**, ikke en fejl. Med døgnvinduet falder ingen opslag
+igennem — de går bare ud, når GitHubs cron finder tid, målt 3–10 timer efter
+det godkendte tidspunkt. Et opslag godkendt til kl. 08.00 gik ud kl. 11.40.
+
+### Hvorfor der ikke findes en vej uden et token
+
+Spørgsmålet er undersøgt, og svaret er nej:
+
+- `repository_dispatch` og `workflow_dispatch` kræver begge et token. Der er
+  ingen uautentificeret vej til at starte et workflow.
+- Actions kan ikke starte sig selv igen. GitHub blokerer med vilje, at
+  hændelser udløst af det indbyggede `GITHUB_TOKEN` starter nye kørsler —
+  ellers kunne et workflow køre i ring.
+- Kanalerne kan ikke overtage opgaven. Facebook kan planlægge hos Meta og
+  gør det allerede. Instagram, LinkedIn og Google har ingen
+  planlægningsfunktion i deres API'er — nogen skal sende på klokkeslættet.
+- At lade Netlify publicere selv ville flytte alle adgangstokens fra GitHubs
+  miljøbeskyttelse til Netlify. Det ville være en forringelse, ikke en
+  løsning.
+
+Ét token i Netlify er altså den mindste mulige afhængighed, ikke en genvej.
+
 ## Det ene trin, du selv skal gøre
 
 Funktionen mangler kun et token. Fire skridt, cirka tre minutter.
