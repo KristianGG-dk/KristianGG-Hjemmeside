@@ -34,7 +34,10 @@ permissions:
 
 jobs:
   kontroller:
-    runs-on: ubuntu-latest
+    # Fast 24.04. ubuntu-latest er nu 26.04, som Playwright 1.56 ikke
+    # kender: "Playwright does not support chromium on ubuntu26.04-x64".
+    # Hele kontrollen faldt paa det, ogsaa de dele der ikke bruger browser.
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
 
@@ -42,8 +45,16 @@ jobs:
         with:
           node-version: '24'
 
+      # Browseren maa ikke kunne vaelte hele kontrollen. Lykkes den ikke,
+      # koerer tests/produktion.mjs videre uden browserdelen og siger det.
       - name: Installer Playwright med Chromium
+        id: browser
+        continue-on-error: true
         run: npm install --no-save playwright@1.56.1 && npx playwright install --with-deps chromium
+
+      - name: Browseren kunne ikke installeres
+        if: steps.browser.outcome == 'failure'
+        run: echo "::warning::Chromium kunne ikke installeres. Browserdelen springes over."
 
       - name: Kontroller produktionen
         env:
