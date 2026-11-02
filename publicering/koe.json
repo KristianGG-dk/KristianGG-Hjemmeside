@@ -377,7 +377,7 @@
     "element": 49,
     "kanal": "gbp",
     "tidspunkt": "2026-11-17T09:00:00+01:00",
-    "metode": "manuel",
+    "metode": "motor",
     "laasefil": "publicering/laase/element-49.json",
     "url": null
   },
@@ -437,7 +437,7 @@
     "element": 53,
     "kanal": "gbp",
     "tidspunkt": "2026-11-04T09:00:00+01:00",
-    "metode": "manuel",
+    "metode": "motor",
     "laasefil": "publicering/laase/element-53.json",
     "url": null
   },
@@ -445,7 +445,7 @@
     "element": 54,
     "kanal": "gbp",
     "tidspunkt": "2026-11-10T09:00:00+01:00",
-    "metode": "manuel",
+    "metode": "motor",
     "laasefil": "publicering/laase/element-54.json",
     "url": null
   }
