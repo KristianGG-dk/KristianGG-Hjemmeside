@@ -150,8 +150,26 @@ export async function koer({ token, nu = Math.floor(Date.now() / 1000), hent = f
   return { startet: [...kanaler].sort(), svar };
 }
 
+/**
+ * Renser tokenet, foer det bruges.
+ *
+ * En vaerdi indsat i en brugerflade baerer ofte usynligt skidt med: et
+ * efterstillet linjeskift fra et klip, et mellemrum, eller anfoerselstegn
+ * fordi det «saa ud som en streng». GitHub svarer 401 Bad credentials paa
+ * alle tre, og fejlen ligner et udloebet token.
+ *
+ * Det er ikke en teori: udloeseren svarede netop 401 med et token, der var
+ * lagt rigtigt ind. Rensningen koster intet og fjerner hele den
+ * fejlkategori. Et rigtigt token indeholder hverken mellemrum eller
+ * anfoerselstegn, saa der kan intet gaa tabt.
+ */
+export function rensToken(raa) {
+  if (typeof raa !== 'string') return '';
+  return raa.trim().replace(/^["']+|["']+$/g, '').trim();
+}
+
 export default async () => {
-  const r = await koer({ token: process.env.GITHUB_DISPATCH_TOKEN });
+  const r = await koer({ token: rensToken(process.env.GITHUB_DISPATCH_TOKEN) });
   return new Response(r.svar?.join('\n') ?? r.grund, { status: 200 });
 };
 

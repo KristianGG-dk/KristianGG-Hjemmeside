@@ -22,7 +22,7 @@
 // Ingen dispatch, ingen publicering, ingen aendring. Et rent opslag.
 // Livstegnet sendes af den planlagte funktion, ikke herfra — et offentligt
 // endepunkt, der kunne starte workflows, ville vaere en aaben doer.
-import { forfaldneKanaler, VINDUE_S, HAENDELSER, HJERTESLAG, erHjerteslagstid } from './udloes-publicering.mjs';
+import { forfaldneKanaler, VINDUE_S, HAENDELSER, HJERTESLAG, erHjerteslagstid, rensToken } from './udloes-publicering.mjs';
 
 const EJER = 'KristianGG-dk';
 const REPO = 'KristianGG-Hjemmeside';
@@ -30,17 +30,22 @@ const KOE = `https://raw.githubusercontent.com/${EJER}/${REPO}/main/publicering/
 
 export default async () => {
   const nu = Math.floor(Date.now() / 1000);
-  const token = process.env.GITHUB_DISPATCH_TOKEN;
+  const raat = process.env.GITHUB_DISPATCH_TOKEN;
+  const token = rensToken(raat);
 
   const svar = {
     tid: new Date().toISOString(),
     token_sat: Boolean(token),
     token_laengde: token ? token.length : 0,
+    // Baerer den gemte vaerdi usynligt skidt? Et efterstillet linjeskift,
+    // et mellemrum eller anfoerselstegn giver alle 401 Bad credentials og
+    // ligner et udloebet token. Her ses det i stedet.
+    token_raa_laengde: raat ? raat.length : 0,
+    token_renset: Boolean(raat) && raat !== token,
     token_form: token
       ? (/^github_pat_/.test(token) ? 'fine-grained (github_pat_)'
         : /^ghp_/.test(token) ? 'klassisk (ghp_)'
-        : /^["'].*["']$/.test(token) ? 'ADVARSEL: omsluttet af anfoerselstegn'
-        : 'ukendt form')
+        : 'ADVARSEL: ukendt form — hverken github_pat_ eller ghp_')
       : null,
     vindue_timer: VINDUE_S / 3600,
     hjerteslag_haendelse: HJERTESLAG,
@@ -85,10 +90,20 @@ export default async () => {
     svar.koe_fejl = err.message;
   }
 
+  if (svar.token_renset) {
+    svar.token_bemaerkning = `vaerdien bar ${svar.token_raa_laengde - svar.token_laengde} tegn `
+      + 'mellemrum, linjeskift eller anfoerselstegn. De er fjernet her, men ret den gerne i Netlify.';
+  }
+
   svar.dom = !svar.token_sat
     ? 'GITHUB_DISPATCH_TOKEN er IKKE sat i denne funktions miljoe. Er den lagt ind i Netlify, mangler der et nyt deploy: miljoevariabler bages ind ved deploy og naar ikke en allerede udrullet funktion.'
     : svar.token_genkendt === false
-      ? `Tokenet er sat, men GitHub svarede ${svar.github_svarede}. ${svar.token_bemaerkning ?? ''}`.trim()
+      ? `Tokenet er sat (${svar.token_laengde} tegn, ${svar.token_form}), men GitHub svarede `
+        + `${svar.github_svarede}. ${svar.token_bemaerkning ?? ''} `
+        + (svar.github_svarede === 401
+          ? 'Et 401 betyder, at GitHub ikke genkender legitimationen: den er udloebet, '
+            + 'tilbagekaldt, eller vaerdien er ufuldstaendig. Opret et nyt token og indsaet det paa ny.'
+          : '').trim()
       : svar.forfaldne_kanaler?.length
         ? `Noget er forfaldent (${svar.forfaldne_kanaler.join(', ')}) — naeste planlagte koersel starter det.`
         : 'Alt ser rigtigt ud. Intet er forfaldent lige nu, saa udloeseren sender kun livstegn.';

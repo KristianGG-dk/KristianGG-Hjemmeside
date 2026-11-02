@@ -8,7 +8,7 @@ import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import {
   forfaldneKanaler, koer, udloes, VINDUE_S, HAENDELSER, config,
-  HJERTESLAG, erHjerteslagstid,
+  HJERTESLAG, erHjerteslagstid, rensToken,
 } from '../../netlify/functions/udloes-publicering.mjs';
 import { MAKS_FORSINKELSE_S } from '../scripts/krav.mjs';
 
@@ -264,6 +264,41 @@ proev('statusendepunktet sender ingenting', () => {
   assert.ok(!/\/dispatches/.test(kilde),
     'statusendepunktet kan starte workflows — et offentligt endepunkt maa ikke kunne det');
   assert.ok(!/method:\s*['"]POST/.test(kilde), 'statusendepunktet sender en POST');
+});
+
+/* ── Tokenets form ───────────────────────────────────────────────────────
+   Udloeseren svarede 401 med et token, der var lagt rigtigt ind i Netlify.
+   401 betyder «Bad credentials», og den hyppigste usynlige aarsag er et
+   efterstillet linjeskift fra et klip, et mellemrum eller anfoerselstegn.
+   Et rigtigt token indeholder ingen af delene, saa rensningen kan intet
+   oedelaegge — og den fjerner hele fejlkategorien. */
+
+proev('rensToken fjerner mellemrum, linjeskift og anfoerselstegn', () => {
+  const aegte = 'github_pat_11ABCDEFG_abcdefghijklmnop';
+  for (const skidt of [
+    `${aegte}\n`, ` ${aegte} `, `"${aegte}"`, `'${aegte}'`,
+    `\n  "${aegte}"  \n`, `${aegte}\r\n`,
+  ]) {
+    assert.equal(rensToken(skidt), aegte, `rensede ikke ${JSON.stringify(skidt)}`);
+  }
+});
+
+proev('rensToken roerer ikke et rent token', () => {
+  const aegte = 'github_pat_11ABCDEFG_abcdefghijklmnop';
+  assert.equal(rensToken(aegte), aegte);
+  assert.equal(rensToken('ghp_abcdefghijklmnopqrstuvwxyz0123456789'), 'ghp_abcdefghijklmnopqrstuvwxyz0123456789');
+});
+
+proev('rensToken taaler tomt og manglende', () => {
+  for (const v of [undefined, null, '', '   ', '""', 0, {}]) {
+    assert.equal(rensToken(v), '', `${JSON.stringify(v)} gav ikke tom streng`);
+  }
+});
+
+proev('et token af bare skidt bliver til ingenting — og saa sendes der intet', () => {
+  // Vigtigt: rensningen maa ikke forvandle en tom vaerdi til noget, der
+  // ligner et token. koer() skal stadig stoppe med «intet token».
+  assert.equal(rensToken('  ""  '), '');
 });
 
 console.log(`\n${bestaaet} bestaaet, ${fejlet} fejlet`);

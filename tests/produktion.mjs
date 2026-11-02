@@ -151,11 +151,20 @@ if (sm.status !== 200) {
           + 'Er den lagt ind i Netlify, mangler der et nyt deploy — miljoevariabler bages ind ved deploy.');
       } else if (d.token_genkendt === false) {
         x(`tokenet er sat, men GitHub svarede ${d.github_svarede}. ${d.token_bemaerkning ?? ''}`);
+        // Hele diagnosen med, saa aarsagen kan laeses her og ikke skal slaas
+        // op i en browser. Tokenet selv er aldrig med — kun laengder og form.
+        for (const [n, v] of Object.entries(d)) {
+          if (/^token_/.test(n)) adv(`  ${n}: ${JSON.stringify(v)}`);
+        }
       } else {
         ok(`tokenet er sat (${d.token_form}, ${d.token_laengde} tegn) og genkendt af GitHub`);
       }
       if (d.token_form && /ADVARSEL/.test(d.token_form)) {
-        x(`tokenets form: ${d.token_form} — vaerdien er gemt med anfoerselstegn omkring`);
+        x(`tokenets form: ${d.token_form}`);
+      }
+      if (d.token_renset) {
+        adv(`vaerdien i Netlify bar ${d.token_raa_laengde - d.token_laengde} tegn mellemrum, `
+          + 'linjeskift eller anfoerselstegn. Udloeseren renser dem fra, men ret den gerne ved kilden.');
       }
       if (d.koe_laest === false) x(`udloeseren kan ikke laese koeen: ${d.koe_fejl}`);
     } catch (e) {
