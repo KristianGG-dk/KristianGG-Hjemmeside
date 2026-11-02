@@ -197,7 +197,7 @@
       {{- end }}
     </p>
     {{ partial "begivenhed-knap.html" (dict "side" .) }}
-    <p class="text-mos-lys/80 text-sm mt-6">Spørgsmål om indholdet? <a href="{{ $b.kontakt_url | safeURL }}" class="underline font-semibold">Skriv til mig</a>.</p>
+    <p class="text-mos-lys/80 text-sm mt-6">Spørgsmål om indholdet? <a href="{{ $b.kontakt_url | safeURL }}" data-konverter="kontakt-mail" class="underline font-semibold">Skriv til mig</a>.</p>
     {{- if $easyme }}{{ partial "easyme-connect.html" . }}{{ end }}
 
     {{- else }}

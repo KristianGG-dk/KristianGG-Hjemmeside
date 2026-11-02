@@ -17,6 +17,7 @@
       <div class="{{ if not $p.hero_billede }}max-w-3xl{{ end }}">
         <h1 class="text-[2rem] sm:text-4xl md:text-5xl font-semibold leading-tight">{{ $p.hero_title | default .Title }}</h1>
         {{- with $p.hero_subtitle }}<p class="prosa mt-5 text-lg">{{ . }}</p>{{- end }}
+        {{ partial "gratis-forsamtale.html" . }}
         {{ partial "kontakt-knapper.html" (dict "business" $b "klasse" "mt-8") }}
       </div>
       {{- with $p.hero_billede }}

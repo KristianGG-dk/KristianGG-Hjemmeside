@@ -38,6 +38,15 @@ jobs:
             echo "Build gav fejl eller advarsler"; exit 1
           fi
 
+      # Hjemmesidens egne krav, kontrolleret paa det byggede site: at den
+      # gratis forsamtale staar oeverst de rigtige steder, at
+      # kontaktformularen kan tage imod en henvendelse, at
+      # konverteringsmaalingen er forberedt men IKKE aktiveret, og at
+      # soegevaerdien er intakt (canonical, robots, sitemap, de 96
+      # viderestillinger). Ingen browser, intet netvaerk - laeser kun public/.
+      - name: Hjemmesidens krav
+        run: node tests/hjemmeside.mjs
+
       - name: Versionslås og publiceringsfelter
         run: node publicering/scripts/verificer.mjs
 

@@ -11,6 +11,7 @@
         <p class="etikette mb-4">{{ $p.hero_etikette }}</p>
         <h1 class="text-[2rem] sm:text-4xl md:text-5xl lg:text-6xl font-semibold leading-[1.05] tracking-tight">{{ $p.hero_titel }}</h1>
         <p class="prosa mt-6 text-lg">{{ $p.hero_tekst }}</p>
+        {{ partial "gratis-forsamtale.html" . }}
         {{ partial "kontakt-knapper.html" (dict "business" $b "klasse" "mt-8") }}
       </div>
       <div>

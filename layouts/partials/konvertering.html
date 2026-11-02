@@ -1,0 +1,58 @@
+{{- /*
+  Konverteringsmåling — FORBEREDT, IKKE AKTIVERET.
+
+  Så længe params.konvertering.aktiv er false i hugo.toml, udsender denne
+  partial KUN en HTML-kommentar. Der indlæses intet script, sendes intet
+  netværkskald, sættes ingen cookie og kræves intet samtykke. Hele
+  forberedelsen består af tre dele, som alle ligger klar:
+
+    1. Målepunkterne. Hvert element, der tæller som en konvertering, har
+       data-konverter="<navn>" i markup'en:
+         kontakt-sms, kontakt-mail, kontakt-telefon,
+         gratis-forsamtale-priser, formular-sendt
+       De står i layouts/partials/kontakt-knapper.html,
+       layouts/partials/contact-form.html og
+       layouts/partials/gratis-forsamtale.html.
+
+    2. Opsamlingen. assets/js/main.js lytter på de elementer og kalder
+       window.kggKonverter(navn, detaljer). Funktionen afleverer kun til en
+       måler, der FAKTISK findes (window.plausible eller window.dataLayer).
+       Findes ingen, gør den ingenting. Den virker altså allerede, men måler
+       ikke noget, før en måler indlæses her.
+
+    3. Afsenderen. Det er denne partial. Den aktiveres i hugo.toml:
+
+         [params.konvertering]
+           aktiv = true
+           udbyder = "plausible"     # eller "ga4"
+           id = "kristiangg.dk"      # domænet hos Plausible, eller G-XXXXXXX
+
+  Se dokumentation/konverteringsmaaling.md for hele fremgangsmåden,
+  herunder hvad der skal afklares om samtykke, før aktiv sættes til true.
+*/ -}}
+{{- $k := site.Params.konvertering -}}
+{{- if not $k }}
+<!-- Konverteringsmaaling: ikke opsat. Se dokumentation/konverteringsmaaling.md. -->
+{{- else if not $k.aktiv }}
+<!-- Konverteringsmaaling: FORBEREDT, IKKE AKTIVERET (params.konvertering.aktiv = false).
+     Maalepunkterne staar i markup'en, opsamlingen staar i main.js, og ingen
+     maaler indlaeses. Se dokumentation/konverteringsmaaling.md. -->
+{{- else if not $k.id }}
+{{- warnf "params.konvertering.aktiv er true, men id er tom. Ingen maaler indlaest." }}
+<!-- Konverteringsmaaling: aktiv, men id mangler. Ingen maaler indlaest. -->
+{{- else if eq $k.udbyder "plausible" }}
+{{/* Plausible: ingen cookies, ingen personhenfoerbare data. */}}
+<script defer data-domain="{{ $k.id }}" src="https://plausible.io/js/script.tagged-events.js"></script>
+<script>window.plausible = window.plausible || function () { (window.plausible.q = window.plausible.q || []).push(arguments) };</script>
+{{- else if eq $k.udbyder "ga4" }}
+<script async src="https://www.googletagmanager.com/gtag/js?id={{ $k.id }}"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){ dataLayer.push(arguments); }
+  gtag('js', new Date());
+  gtag('config', {{ $k.id | jsonify | safeJS }});
+</script>
+{{- else }}
+{{- warnf "params.konvertering.udbyder = %q kendes ikke. Ingen maaler indlaest." $k.udbyder }}
+<!-- Konverteringsmaaling: ukendt udbyder. Ingen maaler indlaest. -->
+{{- end }}

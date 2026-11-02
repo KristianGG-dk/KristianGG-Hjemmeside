@@ -88,7 +88,10 @@
           {{- end }}
           {{- end }}
           <div class="border-t border-lav/40 my-2"></div>
-          <a href="{{ $b.phone_sms | safeURL }}" class="mobile-link font-semibold text-hyben">Send en SMS</a>
+          {{/* Mobilmenuens SMS-knap er et kontaktpunkt paa hver side og
+               taelles derfor med. data-konverter er inert, saa laenge
+               params.konvertering.aktiv er false i hugo.toml. */}}
+          <a href="{{ $b.phone_sms | safeURL }}" data-konverter="kontakt-sms" class="mobile-link font-semibold text-hyben">Send en SMS</a>
           <a href="{{ $b.kontakt_url | safeURL }}" class="mobile-link font-semibold text-hyben">Skriv til mig</a>
           <p class="px-3 py-2 text-xs text-tekst-daempet">{{ $b.phone_display }}</p>
         </nav>

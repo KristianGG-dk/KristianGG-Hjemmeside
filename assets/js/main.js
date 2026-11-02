@@ -127,6 +127,68 @@
   }
 })();
 
+// Konverteringsmaaling — FORBEREDT, IKKE AKTIVERET.
+// ============================================================================
+// Opsamlingen herunder koerer altid, men afleverer kun til en maaler, der
+// FAKTISK findes paa siden. Saa laenge params.konvertering.aktiv er false i
+// hugo.toml, indlaeses ingen maaler (se layouts/partials/konvertering.html),
+// window.plausible og window.dataLayer findes ikke, og kggKonverter goer
+// derfor ingenting: intet netvaerkskald, ingen cookie, intet samtykkekrav.
+//
+// Det er med vilje bygget sadan. Naar maaleren en dag indlaeses, virker
+// maalepunkterne fra foerste besoeg uden at der skal roeres ved markup eller
+// ved denne fil.
+//
+// Maalepunkterne er data-konverter i markup'en:
+//   kontakt-sms, kontakt-mail, kontakt-telefon,
+//   gratis-forsamtale-priser, formular-sendt
+//
+// Der sendes ALDRIG indhold fra formularen med — kun navnet paa handlingen og
+// stien paa siden. En besked, en mailadresse eller et telefonnummer maa ikke
+// forlade siden ad denne vej.
+(function () {
+  function kggKonverter(navn, detaljer) {
+    if (!navn) return;
+    var d = { side: window.location.pathname };
+    if (detaljer) {
+      for (var n in detaljer) {
+        if (Object.prototype.hasOwnProperty.call(detaljer, n)) d[n] = detaljer[n];
+      }
+    }
+
+    // Plausible (hvis den er indlaest)
+    if (typeof window.plausible === 'function') {
+      try { window.plausible(navn, { props: d }); } catch (e) {}
+    }
+
+    // GA4 / Tag Manager (hvis dataLayer findes)
+    if (Object.prototype.toString.call(window.dataLayer) === '[object Array]') {
+      try {
+        var h = { event: navn };
+        for (var k in d) { if (Object.prototype.hasOwnProperty.call(d, k)) h[k] = d[k]; }
+        window.dataLayer.push(h);
+      } catch (e) {}
+    }
+
+    // Altid: en hendelse paa document, saa en fremtidig maaler kan lytte uden
+    // at denne fil skal aendres. Ingen modtager = ingen virkning.
+    try {
+      document.dispatchEvent(new CustomEvent('kgg:konvertering', { detail: d }));
+    } catch (e) {}
+  }
+
+  window.kggKonverter = kggKonverter;
+
+  // Klik paa kontaktpunkterne. Formularens knap er undtaget: den maales
+  // foerst, naar indsendelsen er lykkedes — se ContactForm nedenfor.
+  document.querySelectorAll('[data-konverter]').forEach(function (el) {
+    if (el.hasAttribute('data-form-submit')) return;
+    el.addEventListener('click', function () {
+      kggKonverter(el.getAttribute('data-konverter'));
+    });
+  });
+})();
+
 // ContactForm — AJAX submission for Netlify forms
 (function () {
   var form = document.querySelector('[data-netlify-ajax]');
@@ -172,6 +234,12 @@
           form.reset();
           showStatus('Tak for din besked! Jeg vender tilbage inden for 24 timer.', 'success');
           if (submitBtn) submitBtn.textContent = 'Sendt \u2713';
+          // Konverteringen taelles FOERST her: naar Netlify har kvitteret.
+          // Et klik paa knappen er ikke en henvendelse. Kun handlingens navn
+          // sendes med — intet indhold fra formularen.
+          if (typeof window.kggKonverter === 'function') {
+            window.kggKonverter('formular-sendt');
+          }
         } else {
           showStatus('Noget gik galt. Prøv igen eller ring til mig direkte.', 'error');
           if (submitBtn) { submitBtn.disabled = false; submitBtn.textContent = 'Send besked'; }

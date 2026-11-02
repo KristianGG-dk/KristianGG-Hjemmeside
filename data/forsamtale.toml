@@ -1,0 +1,34 @@
+# Den gratis forsamtale — ét sted for ordlyden.
+#
+# Teksten herunder vises øverst på forsiden, på ydelsessiderne under /til-dig/
+# og på kontaktsiden. Den SKAL stemme overens med kortet "Gratis forsamtale"
+# på /priser/. Ændres varighed, pris eller indhold dér, skal det ændres her
+# samtidig — tests/hjemmeside.mjs fejler, hvis de to kommer i utakt.
+#
+# Der står "Få en gratis forsamtale", ikke "Book": der er ingen kalender på
+# sitet, og /kontakt/ siger det udtrykkeligt. Ordlyden må ikke love en
+# booking, der ikke findes.
+
+overskrift = "Første samtale er gratis"
+varighed = "15–20 minutter"
+tekst = "Vi begynder altid med en kort telefonsamtale på 15–20 minutter. Du hører, hvordan jeg arbejder, og vi finder ud af, om jeg er den rigtige. Den koster ikke noget, og du binder dig til ingenting."
+link_tekst = "Se, hvad der ellers koster hvad"
+link_url = "/priser/"
+
+# Sektioner, hvor blokken vises af sig selv. Kun ydelsessiderne for privat
+# terapi: det er dér, den gratis forsamtale FAKTISK er indgangen.
+#
+# Bevidst udeladt:
+#   /priser/        — har allerede kortet "Gratis forsamtale · Start her"
+#                     og siger det i underrubrikken. To gange tæt på
+#                     hinanden læses som pres frem for hjælp.
+#   /kurser/        — skovbad og cash stuffing er hold med egen tilmelding.
+#                     En gratis forsamtale er ikke vejen ind der.
+#   /begivenheder/  — har sin egen tilmelding.
+#   erhvervssiderne — til-virksomheder, til-kommuner, til-organisationer
+#                     sælger aftaler, ikke en privat forsamtale.
+#   /blog/          — artikler, ikke ydelser.
+#
+# Enhver enkeltside kan afgøre det selv med gratis_forsamtale = true eller
+# false i front matter. Front matter vinder altid over listen her.
+sektioner = ["til-dig"]
