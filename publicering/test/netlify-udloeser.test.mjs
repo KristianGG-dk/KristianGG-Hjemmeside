@@ -75,9 +75,22 @@ proev('metode «pause» taeller ikke', () => {
 });
 
 proev('kanaler uden egen udloeser springes over', () => {
-  for (const kanal of ['facebook', 'gbp', 'website']) {
+  // Facebook planlaegges hos Meta med scheduled_publish_time og rammer sit
+  // tidspunkt af sig selv. Kanalen «website» udkommer ved Netlifys
+  // genopbygning. Ingen af dem skal startes herfra.
+  //
+  // «gbp» stod her indtil 2. november. Den hoerte ikke hjemme paa listen:
+  // Google HAR ingen planlaegning i sit API, saa nogen skal sende paa
+  // klokkeslettet. Manglen betoed, at element 53 den 4. november kl. 09.00
+  // ville gaa ud, naar GitHubs cron fandt tid.
+  for (const kanal of ['facebook', 'website']) {
     assert.deepEqual([...forfaldneKanaler([post({ kanal })], FORFALD)], [], kanal);
   }
+});
+
+proev('Google kan startes af udloeseren', () => {
+  assert.equal(HAENDELSER.gbp, 'publicer-google');
+  assert.deepEqual([...forfaldneKanaler([post({ kanal: 'gbp' })], FORFALD)], ['gbp']);
 });
 
 proev('to kanaler forfaldne paa én gang', () => {
@@ -115,11 +128,14 @@ await aproev('forfaldent LinkedIn-element starter kun LinkedIn', async () => {
   assert.deepEqual(r.startet, ['linkedin']);
 });
 
-await aproev('koeen kan ikke hentes: begge startes for en sikkerhed', async () => {
+await aproev('koeen kan ikke hentes: ALLE kanaler startes for en sikkerhed', async () => {
   const a = attrap([], { koeFejler: true });
   await koer({ token: 't', nu: FORFALD, hent: a.hent, log: () => {} });
-  assert.deepEqual(a.kaldt.sort(), ['publicer-instagram', 'publicer-linkedin'],
+  assert.deepEqual(a.kaldt.sort(), Object.values(HAENDELSER).sort(),
     'vi fejler i retning af at publicere, ikke af at tie');
+  // Motoren springer selv alt over, der ikke skal ud, saa en overfloedig
+  // start er harmloes — en manglende er ikke.
+  assert.ok(a.kaldt.includes('publicer-google'), 'Google ville blive glemt');
 });
 
 await aproev('GitHub afviser: det staar i svaret', async () => {
@@ -143,9 +159,14 @@ await aproev('udloes() sender den rigtige haendelse og de rigtige headere', asyn
 
 console.log('\nHaendelsesnavnene passer med workflowene');
 
-proev('begge haendelser lyttes der paa', () => {
+proev('hver kanal har et workflow, der lytter paa sin haendelse', () => {
+  // Filnavnet udledes af kanalen, saa en ny kanal i HAENDELSER uden et
+  // tilhoerende workflow fejler her i stedet for i stilhed.
+  const FIL = { instagram: 'instagram', linkedin: 'linkedin', gbp: 'google' };
   for (const [kanal, haendelse] of Object.entries(HAENDELSER)) {
-    const fil = `.github/workflows/publicer-${kanal === 'instagram' ? 'instagram' : 'linkedin'}-planlagt.yml`;
+    const navn = FIL[kanal];
+    assert.ok(navn, `kanalen «${kanal}» er i HAENDELSER, men testen kender ikke dens workflow`);
+    const fil = `.github/workflows/publicer-${navn}-planlagt.yml`;
     const y = readFileSync(fil, 'utf8');
     assert.match(y, /repository_dispatch:/, `${fil} lytter ikke paa repository_dispatch`);
     assert.ok(y.includes(`types: [${haendelse}]`), `${fil} lytter ikke paa «${haendelse}»`);
@@ -153,8 +174,12 @@ proev('begge haendelser lyttes der paa', () => {
 });
 
 proev('en dispatch-koersel publicerer for alvor', () => {
+  // Uden denne betingelse ville en dispatch-koersel vaere toerloeb: den ville
+  // se groen ud og publicere ingenting. Google manglede den indtil 2.
+  // november, hvor kanalen blev koblet paa udloeseren.
   for (const fil of ['.github/workflows/publicer-instagram-planlagt.yml',
-                     '.github/workflows/publicer-linkedin-planlagt.yml']) {
+                     '.github/workflows/publicer-linkedin-planlagt.yml',
+                     '.github/workflows/publicer-google-planlagt.yml']) {
     assert.match(readFileSync(fil, 'utf8'), /github\.event_name == 'repository_dispatch'/,
       `${fil}: en dispatch-koersel ville vaere toerloeb`);
   }

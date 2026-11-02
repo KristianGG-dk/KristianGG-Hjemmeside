@@ -41,6 +41,16 @@ export const VINDUE_S = 24 * 60 * 60;
 export const HAENDELSER = {
   instagram: 'publicer-instagram',
   linkedin: 'publicer-linkedin',
+  // Google kom til 2. november. Kanalen manglede, og det var ikke en
+  // teoretisk mangel: det foerste motorstyrede opslag efter at udloeseren
+  // kom i drift er element 53, gbp, 4. november kl. 09.00 — netop det,
+  // handlingsknappen lige er sat paa. Uden denne linje ville det gaa ud,
+  // naar GitHubs cron fandt tid.
+  //
+  // Facebook staar med vilje IKKE her: den planlaegges hos Meta med
+  // scheduled_publish_time og rammer sit tidspunkt af sig selv.
+  // Kanalen «website» heller ikke: den udkommer ved Netlifys genopbygning.
+  gbp: 'publicer-google',
 };
 
 /**
