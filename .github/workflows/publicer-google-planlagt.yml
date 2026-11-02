@@ -23,6 +23,17 @@ on:
   schedule:
     # Forskudt fra Instagram (0,30), saa de to ikke skubber til hinanden.
     - cron: '5,35 * * * *'
+  # Den paalidelige udloeser. Uden denne linje kunne Netlify-funktionen ikke
+  # starte Google-kanalen, og et godkendt Google-opslag gik derfor ud, naar
+  # GitHubs cron fandt tid — maalt 3-10 timer efter det godkendte tidspunkt.
+  #
+  # Det var ikke teoretisk: det foerste motorstyrede opslag efter at
+  # udloeseren kom i drift er element 53, gbp, 4. november kl. 09.00.
+  #
+  # Se netlify/functions/udloes-publicering.mjs og
+  # dokumentation/paalidelig-udloeser.md.
+  repository_dispatch:
+    types: [publicer-google]
   workflow_dispatch:
     inputs:
       publicer:
@@ -57,13 +68,13 @@ jobs:
           GBP_REFRESH_TOKEN: ${{ secrets.GBP_REFRESH_TOKEN }}
           GBP_TILLADT_LOKATION: ${{ secrets.GBP_TILLADT_LOKATION }}
           GBP_LOKATION: ${{ secrets.GBP_LOKATION }}
-          PUBLICER: ${{ github.event_name == 'schedule' || inputs.publicer }}
+          PUBLICER: ${{ github.event_name == 'schedule' || github.event_name == 'repository_dispatch' || inputs.publicer }}
         run: |
           ARGS=""; [ "$PUBLICER" = "true" ] && ARGS="--publicer"
           node publicering/scripts/publicer-google.mjs $ARGS
 
       - name: Gem resultatet til registrering
-        if: ${{ always() && (github.event_name == 'schedule' || inputs.publicer) }}
+        if: ${{ always() && (github.event_name == 'schedule' || github.event_name == 'repository_dispatch' || inputs.publicer) }}
         uses: actions/upload-artifact@v4
         with:
           name: resultat-google
@@ -72,7 +83,7 @@ jobs:
 
   registrer:
     needs: publicer
-    if: ${{ always() && (github.event_name == 'schedule' || inputs.publicer) }}
+    if: ${{ always() && (github.event_name == 'schedule' || github.event_name == 'repository_dispatch' || inputs.publicer) }}
     runs-on: ubuntu-latest
     permissions:
       contents: write    # eneste sted der skrives, og kun register.json

@@ -41,6 +41,16 @@ export const VINDUE_S = 24 * 60 * 60;
 export const HAENDELSER = {
   instagram: 'publicer-instagram',
   linkedin: 'publicer-linkedin',
+  // Google kom til 2. november. Kanalen manglede, og det var ikke en
+  // teoretisk mangel: det foerste motorstyrede opslag efter at udloeseren
+  // kom i drift er element 53, gbp, 4. november kl. 09.00 — netop det,
+  // handlingsknappen lige er sat paa. Uden denne linje ville det gaa ud,
+  // naar GitHubs cron fandt tid.
+  //
+  // Facebook staar med vilje IKKE her: den planlaegges hos Meta med
+  // scheduled_publish_time og rammer sit tidspunkt af sig selv.
+  // Kanalen «website» heller ikke: den udkommer ved Netlifys genopbygning.
+  gbp: 'publicer-google',
 };
 
 /**
@@ -150,8 +160,26 @@ export async function koer({ token, nu = Math.floor(Date.now() / 1000), hent = f
   return { startet: [...kanaler].sort(), svar };
 }
 
+/**
+ * Renser tokenet, foer det bruges.
+ *
+ * En vaerdi indsat i en brugerflade baerer ofte usynligt skidt med: et
+ * efterstillet linjeskift fra et klip, et mellemrum, eller anfoerselstegn
+ * fordi det «saa ud som en streng». GitHub svarer 401 Bad credentials paa
+ * alle tre, og fejlen ligner et udloebet token.
+ *
+ * Det er ikke en teori: udloeseren svarede netop 401 med et token, der var
+ * lagt rigtigt ind. Rensningen koster intet og fjerner hele den
+ * fejlkategori. Et rigtigt token indeholder hverken mellemrum eller
+ * anfoerselstegn, saa der kan intet gaa tabt.
+ */
+export function rensToken(raa) {
+  if (typeof raa !== 'string') return '';
+  return raa.trim().replace(/^["']+|["']+$/g, '').trim();
+}
+
 export default async () => {
-  const r = await koer({ token: process.env.GITHUB_DISPATCH_TOKEN });
+  const r = await koer({ token: rensToken(process.env.GITHUB_DISPATCH_TOKEN) });
   return new Response(r.svar?.join('\n') ?? r.grund, { status: 200 });
 };
 
