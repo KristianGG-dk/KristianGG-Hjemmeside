@@ -19,8 +19,9 @@ jobs:
   synkroniser:
     runs-on: ubuntu-latest
     permissions:
-      contents: write     # kun drift/opgaver.json
+      contents: write     # kun drift/
       actions: read       # for at se, OM de planlagte koersler stadig koerer
+      issues: write       # kun for at skrive kvitteringen paa et overdraget issue
     steps:
       - uses: actions/checkout@v4
         with:
@@ -42,9 +43,78 @@ jobs:
           GITHUB_SHA: ${{ github.sha }}
         run: node publicering/scripts/vagthund.mjs --json > /tmp/vagt.json
 
+      # Overdragelser udefra. Issues med etiketten til-codex, til-claude eller
+      # til-kristian bliver til opgaver. Issues UDEN etiket roeres ikke — det
+      # eksisterende #90 og alt andet staar uroert.
+      #
+      # har_kvittering afgoer, om issuet allerede har faaet sit svar. Uden
+      # det ville hvert issue fyldes med den samme kommentar to gange i
+      # doegnet.
+      - name: Hent overdragne issues
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          api() { curl -sS -H "Authorization: Bearer $GH_TOKEN" \
+                       -H "Accept: application/vnd.github+json" "$1"; }
+          R="https://api.github.com/repos/${{ github.repository }}"
+          api "$R/issues?state=all&per_page=100&labels=til-codex" > /tmp/i1.json
+          api "$R/issues?state=all&per_page=100&labels=til-claude" > /tmp/i2.json
+          api "$R/issues?state=all&per_page=100&labels=til-kristian" > /tmp/i3.json
+          python3 - <<'PY'
+          import json, os, urllib.request
+          ude, set_ = [], set()
+          for f in ('/tmp/i1.json', '/tmp/i2.json', '/tmp/i3.json'):
+              for i in json.load(open(f)):
+                  if i['number'] in set_ or 'pull_request' in i: continue
+                  set_.add(i['number']); ude.append(i)
+          tok = os.environ['GH_TOKEN']; repo = os.environ['GITHUB_REPOSITORY']
+          for i in ude:
+              r = urllib.request.Request(
+                  f"https://api.github.com/repos/{repo}/issues/{i['number']}/comments?per_page=100",
+                  headers={'Authorization': f'Bearer {tok}', 'Accept': 'application/vnd.github+json'})
+              try:
+                  k = json.load(urllib.request.urlopen(r))
+              except Exception:
+                  k = []
+              i['har_kvittering'] = any('kvittering: optaget i drift/opgaver.json' in (c.get('body') or '') for c in k)
+          json.dump(ude, open('/tmp/issues.json', 'w'))
+          print(f'{len(ude)} overdragne issue(s)')
+          PY
+
       - name: Synkroniser opgaveregisteret
         run: |
-          node publicering/scripts/synkroniser-drift.mjs --vagthund /tmp/vagt.json --skriv
+          node publicering/scripts/synkroniser-drift.mjs \
+            --vagthund /tmp/vagt.json \
+            --issues /tmp/issues.json \
+            --kvitteringer /tmp/kvitteringer.json \
+            --skriv
+
+      # Kvitteringen er beviset paa, at overdragelsen er MODTAGET. Uden den
+      # er en opgave ikke overdraget, kun omtalt.
+      - name: Skriv kvitteringerne
+        if: ${{ hashFiles('/tmp/kvitteringer.json') != '' }}
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          python3 - <<'PY'
+          import json, os, urllib.request
+          tok = os.environ['GH_TOKEN']; repo = os.environ['GITHUB_REPOSITORY']
+          for k in json.load(open('/tmp/kvitteringer.json')):
+              data = json.dumps({'body': k['krop']}).encode()
+              r = urllib.request.Request(
+                  f"https://api.github.com/repos/{repo}/issues/{k['nummer']}/comments",
+                  data=data, method='POST',
+                  headers={'Authorization': f'Bearer {tok}',
+                           'Accept': 'application/vnd.github+json',
+                           'Content-Type': 'application/json'})
+              urllib.request.urlopen(r)
+              print(f"kvittering skrevet paa #{k['nummer']}")
+          PY
+
+      # Claudes indgang. Den kan laeses uden adgang til repoet, fordi repoet
+      # er offentligt. Det er den eneste kanal, der med sikkerhed virker.
+      - name: Skriv Claudes indgang
+        run: node publicering/scripts/status.mjs --til-claude > drift/TIL-CLAUDE.md
 
       - name: Skriv det samlede overblik i joboversigten
         run: |
@@ -55,13 +125,14 @@ jobs:
       # committes der intet.
       - name: Gem aendringerne
         run: |
-          if git diff --quiet drift/opgaver.json; then
+          if git diff --quiet drift/; then
             echo "Registeret sagde allerede det samme som systemet. Intet committet."
             exit 0
           fi
           git config user.name "vagthund"
           git config user.email "kontakt@kristiangg.dk"
+          git add drift/
           bash publicering/scripts/commit-register.sh \
-            drift/opgaver.json \
+            drift/ \
             "drift: opgaveregisteret afstemt med driften" \
             "node publicering/scripts/synkroniser-drift.mjs --vagthund /tmp/vagt.json --skriv"

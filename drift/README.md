@@ -129,6 +129,57 @@ En opgave er **ikke** overdraget, fordi nogen har skrevet det. Den er
 overdraget, når den står i registeret med et id, en ansvarlig og en kilde —
 og kvitteringen er, at den ansvarliges næste arbejde refererer det id.
 
+## Claudes forbindelse — og dens grænse
+
+**Grænsen, sagt lige ud:** jeg kan ikke verificere Claudes adgang fra mit
+eget miljø. Jeg ved ikke, om Claude har GitHub-connectoren slået til. Derfor
+er forbindelsen bygget, så den virker i begge tilfælde — og så det kan
+*efterprøves*, hvilket af dem der gælder.
+
+### At læse: virker uden nogen adgang
+
+Repoet er offentligt. `drift/TIL-CLAUDE.md` skrives af synkroniseringen og
+kan hentes af enhver:
+
+```
+https://raw.githubusercontent.com/KristianGG-dk/KristianGG-Hjemmeside/main/drift/TIL-CLAUDE.md
+```
+
+Den indeholder præcis det, Claude skal bruge: de opgaver, Claude ejer, de
+beslutninger der allerede er truffet (så de ikke bliver spurgt om igen), hvad
+der arbejdes på andre steder, og hvordan man afleverer. Intet andet.
+
+### At aflevere: gennem issues, med kvittering
+
+Et issue med en af tre etiketter bliver til en opgave i det fælles register:
+
+| Etiket | Bruges til | Lander hos |
+| --- | --- | --- |
+| `til-codex` | en teknisk fejl eller mangel | Codex |
+| `til-claude` | en indholdsopgave | Claude |
+| `til-kristian` | en rigtig beslutning | Kristian |
+
+Issues **uden** en af dem røres ikke. Det eksisterende #90 og alt andet står
+urørt, indtil nogen bevidst sætter en etiket på.
+
+En overskrift **Næste handling** i issuets tekst bliver opgavens næste
+handling.
+
+**Kvitteringen er beviset.** Når issuet er optaget i registeret, skriver
+synkroniseringen en kommentar på det med opgavens id. Først dér er
+overdragelsen gennemført. Står der ingen kvittering, er opgaven ikke
+modtaget — uanset hvad nogen har skrevet. Kvitteringen skrives kun én gang;
+genkørsler fylder ikke issuet med gentagelser.
+
+Et **lukket issue lukker ikke opgaven.** Det sætter den til `loest`:
+nogen mener sig færdig. Opgaven lukkes først, når driften er verificeret.
+
+### Hvis Claude ikke kan oprette issues
+
+Så skal Kristian gøre det — ét klik, med etiketten på. Det er den eneste
+handling, der ikke kan automatiseres herfra, og den er dokumenteret som
+sådan frem for skjult.
+
 ## Kommandoerne
 
 ```bash

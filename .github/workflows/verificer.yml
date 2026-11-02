@@ -73,6 +73,11 @@ jobs:
       - name: Driftsstrukturen
         run: node publicering/test/drift.test.mjs
 
+      # De fem scenarier. En groen proeve af et enkelt modul beviser ingenting
+      # om, at Claude, Codex, motoren og vagthunden faktisk taler sammen.
+      - name: Samarbejdet mellem systemerne
+        run: node publicering/test/samarbejde.test.mjs
+
       # Synkroniseringen skal vaere idempotent OGSAA mod det rigtige register.
       # Koeres den to gange, maa anden koersel ikke aendre noget.
       - name: Synkroniseringen kan koeres igen

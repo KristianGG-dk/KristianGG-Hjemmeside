@@ -27,11 +27,12 @@
 
    Toerloeb som standard. --skriv gemmer.                                   */
 
-import { readFileSync, existsSync } from 'node:fs';
+import { readFileSync, writeFileSync, existsSync } from 'node:fs';
 import {
   laesOpgaver, laesBeslutninger, skrivOpgaver, opretEllerOpdater, luk,
   maaSpoergeKristian, placer, findesAllerede, AABNE,
 } from './drift.mjs';
+import { issuesTilOpgaver } from './overdragelse.mjs';
 
 /**
  * Vagthundens fund → en opgave med et FAST id.
@@ -87,9 +88,29 @@ export function iOrdenLukker(fund) {
 
 /* ── Selve synkroniseringen ──────────────────────────────────────────────── */
 
-export function synkroniser({ opgaver, beslutninger, vagthund, mergedePRer = [], produktionskontrol = null }) {
+export function synkroniser({
+  opgaver, beslutninger, vagthund,
+  mergedePRer = [], produktionskontrol = null,
+  issues = null, harKvittering = () => false,
+}) {
   const haendelser = [];
   const noter = (h) => haendelser.push(h);
+  let kvitteringer = [];
+
+  // 0. Overdragelser udefra. Et issue med en etiket bliver til en opgave,
+  //    og issuet faar en kvittering tilbage. Det er den eneste kanal, baade
+  //    Claude og Codex med sikkerhed kan naa. Issues UDEN etiket roeres ikke.
+  if (issues) {
+    const r = issuesTilOpgaver(issues, { harKvittering });
+    kvitteringer = r.kvitteringer;
+    for (const o of r.opgaver) {
+      const fandtes = findesAllerede(opgaver, o.id);
+      const res = opretEllerOpdater(opgaver, o, { af: 'overdragelse' });
+      if (res.handling !== 'uaendret') {
+        noter({ id: o.id, hvad: `${res.handling} fra issue` + (fandtes ? ' (fandtes i forvejen)' : '') });
+      }
+    }
+  }
 
   // 1. Fejl og advarsler bliver til opgaver — hos den rigtige ansvarlige.
   for (const [niveau, liste] of [['fejl', vagthund?.fejl ?? []], ['bekraeft', vagthund?.bekraeft_selv ?? []]]) {
@@ -142,7 +163,7 @@ export function synkroniser({ opgaver, beslutninger, vagthund, mergedePRer = [],
     }
   }
 
-  return haendelser;
+  return { haendelser, kvitteringer };
 }
 
 /* ── Kommandolinje ───────────────────────────────────────────────────────── */
@@ -161,11 +182,27 @@ if (process.argv[1] && import.meta.url === `file://${process.argv[1]}`) {
   }
 
   const mergede = (process.env.MERGEDE_PRER ?? '').split(',').map((x) => Number(x.trim())).filter(Boolean);
-  const h = synkroniser({ opgaver, beslutninger, vagthund, mergedePRer: mergede });
+
+  const ii = arg.indexOf('--issues');
+  const issuefil = ii !== -1 ? arg[ii + 1] : null;
+  const issues = issuefil && existsSync(issuefil) ? JSON.parse(readFileSync(issuefil, 'utf8')) : null;
+
+  const { haendelser: h, kvitteringer } = synkroniser({
+    opgaver, beslutninger, vagthund, issues, mergedePRer: mergede,
+    // Kvitteringen skrives kun, hvis issuet ikke allerede har faaet en. Den
+    // oplysning staar i det issue-dump, workflowet henter.
+    harKvittering: (i) => Boolean(i.har_kvittering),
+  });
 
   console.log(`\nSYNKRONISERING — ${h.length} aendring(er)\n${'='.repeat(60)}`);
   if (!h.length) console.log('  Intet at rette. Registeret siger allerede det samme som systemet.');
   for (const x of h) console.log(`  ${x.id.padEnd(34)} ${x.hvad}`);
+
+  const ki = arg.indexOf('--kvitteringer');
+  if (ki !== -1 && kvitteringer.length) {
+    writeFileSync(arg[ki + 1], JSON.stringify(kvitteringer, null, 2));
+    console.log(`\n${kvitteringer.length} kvittering(er) skal skrives — ${arg[ki + 1]}`);
+  }
 
   if (skriv) {
     const r = skrivOpgaver(opgaver);
