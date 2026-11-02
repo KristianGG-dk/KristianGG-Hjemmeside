@@ -174,6 +174,52 @@ export function vaelgVedBootstrap(kandidater) {
  * Kontroltilstand. Beviser roerfoeringen UDEN at kalde Google og UDEN at
  * bruge koden. En kode kan kun bruges én gang og lever faa minutter.
  */
+/**
+ * Hvor BOR hemmeligheden?
+ *
+ * Dette er den faelde, der koster en aften. Tre ting peger hver sin vej:
+ *
+ *   «Forny Google-adgang»      environment: linkedin-oauth
+ *   publicering og kontrol     environment: publicering
+ *   skrivHemmelighed()         repo-niveau (/actions/secrets/)
+ *
+ * En hemmelighed i ET environment kan KUN laeses af job i netop det
+ * environment. Lægger man GBP_CLIENT_ID i «publicering», hvor alle de andre
+ * publiceringshemmeligheder ligger, kan autorisationen ikke se den — og
+ * fejlen lyder «GBP_CLIENT_ID mangler», som om den slet ikke var oprettet.
+ *
+ * Derfor skal GBP-hemmelighederne ligge paa REPO-NIVEAU. Saa ser begge
+ * miljoeer dem, og det er ogsaa dér, bootstrap selv skriver dem.
+ *
+ * Og den værre variant: oprettes GBP_TILLADT_LOKATION med vaerdien AFVENTER
+ * inde i «publicering», SKYGGER den for den fastlaaste vaerdi, bootstrap
+ * skriver paa repo-niveau. Publiceringen ser da AFVENTER og siger «koer
+ * bootstrap», mens bootstrap ser den fastlaaste vaerdi og siger «allerede
+ * fastlaast». Et laast rum med noeglen paa begge sider af doeren.
+ *
+ * Denne kontrol sammenholder, hvad jobbet KAN laese, med hvad der findes paa
+ * repo-niveau, og siger hvad forskellen betyder.
+ */
+export function placeringsdom(navn, synlig, findesPaaRepo) {
+  if (synlig && findesPaaRepo) return { ok: true, besked: `${navn}: paa repo-niveau, synlig for baade autorisation og publicering` };
+  if (synlig && !findesPaaRepo) {
+    return { ok: false, besked:
+      `${navn}: synlig HER, men findes ikke paa repo-niveau. Den ligger altsaa i environment `
+      + `«linkedin-oauth». Publiceringsjobbene koerer i «publicering» og vil IKKE kunne se den. `
+      + `Flyt den til repo-niveau: Settings > Secrets and variables > Actions > fanen Secrets `
+      + `(ikke under Environments).` };
+  }
+  if (!synlig && findesPaaRepo) {
+    return { ok: false, besked:
+      `${navn}: findes paa repo-niveau, men dette job kan ikke laese den. Der ligger formentlig `
+      + `en TOM hemmelighed med samme navn i environment «linkedin-oauth», som skygger. Slet den dér.` };
+  }
+  return { ok: false, besked:
+    `${navn}: hverken synlig her eller paa repo-niveau. Enten er den aldrig oprettet, eller den `
+    + `ligger inde i et environment (fx «publicering»), hvor dette job ikke kan se den. `
+    + `Den skal ligge paa repo-niveau: Settings > Secrets and variables > Actions > fanen Secrets.` };
+}
+
 async function kontroller() {
   console.log('\nKONTROL. Google kaldes ikke. Koden bruges ikke. Intet gemmes.\n');
   let fejl = 0;
@@ -205,9 +251,23 @@ async function kontroller() {
       n.key_id ? ok('PAT\'en kan laese repoets krypteringsnoegle') : nej('krypteringsnoeglen kom uden key_id');
       const liste = await ghKald('/actions/secrets?per_page=100');
       const navne = (liste.secrets ?? []).map((x) => x.name);
-      for (const n2 of ['GBP_REFRESH_TOKEN', 'GBP_LOKATION']) {
-        console.log(`  ·     ${n2}: ${navne.includes(n2) ? 'findes allerede' : 'oprettes ved foerste autorisation'}`);
+
+      // ── HVOR BOR HEMMELIGHEDERNE? ──────────────────────────────────────
+      // Autorisationen koerer i environment «linkedin-oauth», publiceringen
+      // i «publicering», og bootstrap skriver paa repo-niveau. Kun
+      // repo-niveau ses af begge. Se placeringsdom().
+      console.log('\n── hvor hemmelighederne ligger ──');
+      for (const navn of ['GBP_CLIENT_ID', 'GBP_CLIENT_SECRET', 'GBP_TILLADT_LOKATION', 'GBP_AUTH_CODE']) {
+        const d = placeringsdom(navn, Boolean((env[navn] ?? '').trim()), navne.includes(navn));
+        d.ok ? ok(d.besked) : nej(d.besked);
       }
+      for (const n2 of ['GBP_REFRESH_TOKEN', 'GBP_LOKATION']) {
+        console.log(`  ·     ${n2}: ${navne.includes(n2) ? 'findes paa repo-niveau' : 'oprettes paa repo-niveau ved foerste autorisation'}`);
+      }
+      console.log('\n  Ligger en GBP-hemmelighed inde i environment «publicering», kan dette');
+      console.log('  job ikke se den, og bootstrap vil melde den som manglende. Og en');
+      console.log('  GBP_TILLADT_LOKATION dér vil SKYGGE for den, bootstrap skriver.');
+      console.log('  Se dokumentation/google-business-oauth.md.');
     } catch (e) {
       nej(`PAT'en duer ikke: ${skrub(e.message)}`);
     }

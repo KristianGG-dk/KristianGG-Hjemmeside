@@ -12,7 +12,27 @@ Kristians beslutning 1. november 2026. Den erstatter den tidligere grænse på
   tidspunkt. Grænsen er inklusiv: på sekundet er tilladt, et sekund senere er
   ikke.
 * Derefter stoppes automatisk publicering, og opslaget registreres som
-  `STOPPET FOR SENT` til manuel vurdering.
+  `STOPPET FOR SENT` til manuel vurdering. Vagthunden melder det som FEJL,
+  indtil du har taget stilling.
+
+### Sådan lukker du en sag
+
+Et stoppet opslag bliver meldt, hver gang vagthunden kører — to gange om
+dagen — indtil der står et valg i registret. Tre veje, og den sidste række
+for elementet afgør:
+
+| Du vil | Status i `publicering/register.json` |
+| --- | --- |
+| Publicere det i hånden alligevel | `PUBLICERET` med `post_id` |
+| Lade det falde | `OPGIVET` og en kort grund i `noter` |
+| Give det en ny dato | Ny godkendelse og ny låsefil — det er Claudes og din sag, ikke motorens |
+
+`OPGIVET` er en afsluttende status: vagthunden noterer den og tier.
+
+Element 33 og 34 er netop sådan et tilfælde. De forfaldt 15. og 16. oktober,
+mens planlægningen stadig var manuel, og de kan ikke publiceres nu. Motoren
+registrerede dem som stoppet, da den kørte 1. november, og de bliver meldt,
+indtil du lukker dem.
 
 Reglen står **ét sted**: `MAKS_FORSINKELSE_S` i
 `publicering/scripts/krav.mjs`. Google havde tidligere sin egen kopi på 24

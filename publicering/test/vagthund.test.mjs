@@ -263,16 +263,35 @@ for (const [navn, koe] of [
       : (fejlet++, console.log('  FEJL  begrundelsen er ikke praecis\n' + ud.split('\n').filter((l) => l.includes('element 900')).join('\n')));
 }
 
-{
-  // ANNULLERET HOS META er ikke PLANLAGT, saa kontrollen skal tie.
-  const { ud } = koerFlere({
+// De statusser, dokumentationen beder Kristian skrive, naar han har taget
+// stilling. Proeven her saa oprindeligt KUN efter, at «LIGGER HOS META»
+// udeblev — og den bestod, mens vagthunden i stedet meldte «ukendt status
+// ANNULLERET HOS META». At foelge vejledningen efterlod altsaa vagthunden
+// roed. Derfor kraeves nu exit 0: ingen fejl af nogen art.
+for (const status of ['ANNULLERET HOS META', 'OPGIVET']) {
+  const { ud, kode } = koerFlere({
     koe: [koepost({ tilbagekaldt: { dato: '2026-11-01' }, laasefil: null })],
     register: [...planlagtHosMeta,
-      { element: 900, kanal: 'facebook', status: 'ANNULLERET HOS META', post_id: '123_456', tidspunkt: '2026-10-03T00:00:00.000Z' }],
+      { element: 900, kanal: 'facebook', status, post_id: '123_456', tidspunkt: '2026-10-03T00:00:00.000Z' }],
   });
-  !ud.includes('LIGGER HOS META')
-    ? (bestaaet++, console.log('  OK    annulleret hos Meta: kontrollen tier'))
-    : (fejlet++, console.log('  FEJL  melder stadig fejl efter annullering'));
+  const godt = kode === 0 && !ud.includes('LIGGER HOS META') && !ud.includes('ukendt status');
+  godt ? (bestaaet++, console.log(`  OK    «${status}» lukker sagen helt — ingen fejl`))
+       : (fejlet++, console.log(`  FEJL  «${status}»: exit ${kode}\n        `
+            + ud.split('\n').filter((l) => l.includes('element 900')).map((l) => l.trim()).join('\n        ')));
+}
+
+{
+  // Og «STOPPET FOR SENT» skal fortsat vaere en fejl — ellers er der ingen,
+  // der opdager et opslag, der ikke gik ud.
+  const { ud, kode } = koerFlere({
+    koe: [koepost()],
+    register: [...planlagtHosMeta.slice(0, 1),
+      { element: 900, kanal: 'facebook', status: 'STOPPET FOR SENT', tidspunkt: '2026-10-03T00:00:00.000Z' }],
+  });
+  kode !== 0 && ud.includes('graensen for automatisk publicering er 24 timer')
+    ? (bestaaet++, console.log('  OK    stoppet som for sent: FEJL, og beskeden naevner den rigtige graense'))
+    : (fejlet++, console.log(`  FEJL  stoppet-beskeden er forkert (exit ${kode})\n        `
+        + ud.split('\n').filter((l) => l.includes('element 900')).map((l) => l.trim()).join('\n        ')));
 }
 
 console.log(`\n${bestaaet} bestaaet, ${fejlet} fejlet`);

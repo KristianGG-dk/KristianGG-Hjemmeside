@@ -216,10 +216,16 @@ proev('sidsteFrist() regner den korteste frist ud', () => {
 });
 
 proev('varighed() kan laeses af et menneske', () => {
-  assert.equal(varighed(86400), '24 timer');
+  assert.equal(varighed(86400), '24 timer', 'doegngraensen skal staa som 24 timer');
   assert.equal(varighed(3600), '1 time');
   assert.equal(varighed(60), '1 minut');
   assert.equal(varighed(3 * 3600 + 12 * 60), '3 timer og 12 minutter');
+  // Over to doegn: dage. «421 timer og 8 minutter» er korrekt, men ingen
+  // laeser det som sytten dage.
+  assert.equal(varighed(48 * 3600), '48 timer', 'graensen gaar ved to doegn');
+  assert.equal(varighed(49 * 3600), '2 dage og 1 time');
+  assert.equal(varighed(17 * 86400), '17 dage');
+  assert.equal(varighed(421 * 3600 + 8 * 60), '17 dage og 13 timer');
 });
 
 console.log('\nPause: koeen kan standse et element uden at roere godkendelsen');
