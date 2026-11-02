@@ -430,8 +430,17 @@ async function main() {
       } else if (!r.ok) {
         K_ADVAR('Udloeser', `GitHub svarede ${r.status}. Livstegnet kunne ikke kontrolleres.`);
       } else {
-        const k = (await r.json()).workflow_runs ?? [];
-        if (!k.length) {
+        // Kun livstegn FRA NETLIFY taeller. Et livstegn sendt i haanden under
+        // fejlsoegning ser ellers ud som en fungerende udloeser — og det
+        // skete 2. november, da GitHub-halvdelen af kaeden blev afproevet.
+        const alle = (await r.json()).workflow_runs ?? [];
+        const k = alle.filter((x) => /fra netlify/i.test(x.display_title ?? x.name ?? ''));
+        if (alle.length && !k.length) {
+          K_ADVAR('Udloeser', `der er ${alle.length} livstegn, men ingen FRA NETLIFY — `
+            + `det seneste er «${alle[0].display_title ?? alle[0].name}». `
+            + 'Kaeden Netlify → token → GitHub er altsaa ikke bevist. '
+            + 'Slaa aarsagen op paa https://kristiangg.dk/.netlify/functions/udloeser-status');
+        } else if (!k.length) {
           K_ADVAR('Udloeser', 'der er endnu aldrig kommet et livstegn. '
             + 'Enten er Netlify ikke deployet siden livstegnet blev tilfoejet, eller ogsaa naar udloeseren ikke GitHub. '
             + 'Slaa det op paa https://kristiangg.dk/.netlify/functions/udloeser-status');

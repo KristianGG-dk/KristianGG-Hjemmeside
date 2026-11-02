@@ -92,7 +92,7 @@ export function forfaldneKanaler(koe, nu) {
 }
 
 /** Starter ét workflow. 204 er GitHubs svar, naar det lykkes. */
-export async function udloes(token, haendelse, hent = fetch) {
+export async function udloes(token, haendelse, hent = fetch, fra = 'netlify') {
   const r = await hent(`https://api.github.com/repos/${EJER}/${REPO}/dispatches`, {
     method: 'POST',
     headers: {
@@ -101,7 +101,10 @@ export async function udloes(token, haendelse, hent = fetch) {
       'Content-Type': 'application/json',
       'X-GitHub-Api-Version': '2022-11-28',
     },
-    body: JSON.stringify({ event_type: haendelse }),
+    // «fra» foelger med, saa et livstegn kan kendes fra et, nogen har sendt
+    // i haanden. Uden det ville en manuel proeve se ud som en fungerende
+    // udloeser — og det skete under fejlsoegningen 2. november.
+    body: JSON.stringify({ event_type: haendelse, client_payload: { fra } }),
   });
   if (r.status === 204) return `${haendelse}: startet`;
 

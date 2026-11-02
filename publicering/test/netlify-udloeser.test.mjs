@@ -154,7 +154,10 @@ await aproev('udloes() sender den rigtige haendelse og de rigtige headere', asyn
   assert.equal(set.o.method, 'POST');
   assert.equal(set.o.headers.Authorization, 'Bearer hemmelig');
   assert.equal(set.o.headers.Accept, 'application/vnd.github+json');
-  assert.deepEqual(JSON.parse(set.o.body), { event_type: 'publicer-linkedin' });
+  // client_payload.fra kom til 2. november, saa et livstegn kan kendes fra
+  // et, nogen har sendt i haanden.
+  assert.deepEqual(JSON.parse(set.o.body),
+    { event_type: 'publicer-linkedin', client_payload: { fra: 'netlify' } });
 });
 
 console.log('\nHaendelsesnavnene passer med workflowene');
@@ -366,6 +369,39 @@ proev('der er kun ÉN planlagt funktion, saa to planlaeggere ikke kan udloese de
   const t = readFileSync('netlify.toml', 'utf8');
   const alle = [...t.matchAll(/\[functions\."([^"]+)"\]/g)].map((m) => m[1]);
   assert.deepEqual(alle, ['udloes-publicering']);
+});
+
+/* ── Et livstegn skal kunne kendes fra et, nogen har sendt i haanden ─────
+   Under fejlsoegningen 2. november sendte jeg selv en dispatch for at
+   afproeve GitHub-halvdelen af kaeden. Workflowet koerte og blev groent —
+   og vagthunden ville have meldt udloeseren «i drift» paa et livstegn, et
+   menneske havde sendt. Afsenderen foelger derfor med. */
+
+await aproev('udloes() sender afsenderen med', async () => {
+  let krop = null;
+  await udloes('t', HJERTESLAG, async (_u, v) => { krop = JSON.parse(v.body); return { status: 204, text: async () => '' }; });
+  assert.equal(krop.event_type, HJERTESLAG);
+  assert.equal(krop.client_payload.fra, 'netlify', 'afsenderen mangler');
+});
+
+await aproev('afsenderen kan saettes, saa en proeve kan kendes', async () => {
+  let krop = null;
+  await udloes('t', HJERTESLAG, async (_u, v) => { krop = JSON.parse(v.body); return { status: 204, text: async () => '' }; }, 'haanden');
+  assert.equal(krop.client_payload.fra, 'haanden');
+});
+
+proev('livstegnsworkflowet baerer afsenderen i sit navn', () => {
+  const y = readFileSync('.github/workflows/udloeser-hjerteslag.yml', 'utf8');
+  assert.match(y, /run-name:.*client_payload\.fra/,
+    'uden run-name kan et manuelt livstegn ikke kendes fra et fra Netlify');
+  assert.match(y, /\|\|\s*'haanden'/, 'et livstegn uden afsender skal markeres som sendt i haanden');
+});
+
+proev('vagthunden taeller kun livstegn FRA NETLIFY', () => {
+  const v = readFileSync('publicering/scripts/vagthund.mjs', 'utf8');
+  assert.match(v, /fra netlify/i, 'vagthunden filtrerer ikke paa afsender');
+  assert.match(v, /ingen FRA NETLIFY/,
+    'vagthunden siger ikke fra, naar der kun er manuelle livstegn');
 });
 
 console.log(`\n${bestaaet} bestaaet, ${fejlet} fejlet`);
