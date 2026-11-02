@@ -335,6 +335,7 @@ if (!chromium) {
             .filter((e) => {
               const r = e.getBoundingClientRect();
               if (r.height <= 0 || r.width <= 0) return false;
+              if (r.height <= 2 && r.width <= 2) return false;   // skjult indtil fokus (spring-til-indhold)
               if (r.bottom < 0 || r.right < 0) return false;          // uden for skaermen
               const s = getComputedStyle(e);
               if (s.visibility === 'hidden' || s.opacity === '0') return false;
@@ -349,9 +350,9 @@ if (!chromium) {
               const r = e.getBoundingClientRect();
               return { t: (e.textContent || '').trim().replace(/\s+/g, ' ').slice(0, 40), h: Math.round(r.height), w: Math.round(r.width) };
             })
-            .filter((e) => e.h < 40));
+            .filter((e) => e.h < 32 || e.w < 24));
           if (smaa.length) {
-            adv(`mobil ${sti}: ${smaa.length} selvstaendig(e) klikflade(r) under 40 px hoej: `
+            adv(`mobil ${sti}: ${smaa.length} selvstaendig(e) klikflade(r) under 32 px: `
               + smaa.slice(0, 4).map((e) => `"${e.t}" ${e.w}x${e.h}`).join(', '));
           }
 
