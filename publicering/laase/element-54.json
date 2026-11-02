@@ -8,14 +8,16 @@
   "hashtags": [],
   "dato": "2026-11-10T09:00:00+01:00",
   "godkendt_af": "Kristian G. G. Dansted",
-  "godkendt_dato": "2026-11-01",
-  "godkendelsespakke": "2026-uge-45-47.md",
+  "godkendt_dato": "2026-11-02",
+  "godkendelsespakke": "2026-rettelser-gbp-knapper.md",
   "meta_description": "gbp-opslag: Psykoterapi i Odense — sådan begynder et forløb",
   "slug": "element-54-gbp",
   "slut_url": "(gbp-opslag, ingen URL foer publicering)",
   "kategorier": [],
   "billede_url": "https://kristiangg.dk/images/natur/kristian-portraet-640.jpg",
-  "links": [],
+  "links": [
+    "https://kristiangg.dk/til-dig/psykoterapi/"
+  ],
   "tekst": "Der er ingen onlinebooking her. Et forløb begynder med en gratis forsamtale på et kvarter i telefonen.\n\nI den samtale siger du, hvad du står i, og du hører, hvordan jeg arbejder. Det er dér, vi sammen fastslår, om det jeg tilbyder, er det rigtige for dig. Først derefter aftaler vi eventuelt en tid. Du skal ikke have forberedt noget.\n\nEn session varer halvanden time og foregår i klinikken på Lumbyvej 11B i Odense, online, eller ude i landskabet på Fyn. Du vælger selv hvor.\n\nKristian G. G. Dansted, registreret psykoterapeut (FaDP) og naturterapeut. Priser står på hjemmesiden.",
   "tekst_sha256": "2da74b795c7ffaf1f506fadc6484e2fed9b790964b9bbe3459998fc2c557e7ca",
   "brodtekst_sha256": "2da74b795c7ffaf1f506fadc6484e2fed9b790964b9bbe3459998fc2c557e7ca",
@@ -23,5 +25,5 @@
     "version": "1.0.0",
     "resultat_sha256": "789d6b9fe60efa97"
   },
-  "versionslaas": "2e65cb491ef29b2e"
+  "versionslaas": "543990dac9046d10"
 }

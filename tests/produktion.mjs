@@ -134,6 +134,36 @@ if (sm.status !== 200) {
   }
 }
 
+/* ══ 2c. Den paalidelige udloeser ════════════════════════════════════════ */
+
+{
+  const u = await hent(BASE + '/.netlify/functions/udloeser-status');
+  if (u.status === 404) {
+    adv('/.netlify/functions/udloeser-status findes ikke endnu — kommer med naeste deploy');
+  } else if (u.status !== 200) {
+    x(`udloeser-status svarer ${u.status}`);
+  } else {
+    try {
+      const d = JSON.parse(await u.text());
+      ok(`udloeseren: ${d.dom}`);
+      if (!d.token_sat) {
+        x('GITHUB_DISPATCH_TOKEN er ikke sat i funktionens miljoe. '
+          + 'Er den lagt ind i Netlify, mangler der et nyt deploy — miljoevariabler bages ind ved deploy.');
+      } else if (d.token_genkendt === false) {
+        x(`tokenet er sat, men GitHub svarede ${d.github_svarede}. ${d.token_bemaerkning ?? ''}`);
+      } else {
+        ok(`tokenet er sat (${d.token_form}, ${d.token_laengde} tegn) og genkendt af GitHub`);
+      }
+      if (d.token_form && /ADVARSEL/.test(d.token_form)) {
+        x(`tokenets form: ${d.token_form} — vaerdien er gemt med anfoerselstegn omkring`);
+      }
+      if (d.koe_laest === false) x(`udloeseren kan ikke laese koeen: ${d.koe_fejl}`);
+    } catch (e) {
+      x(`udloeser-status kan ikke laeses som JSON: ${e.message}`);
+    }
+  }
+}
+
 /* ══ 3. Hver adresse i sitemappet ════════════════════════════════════════ */
 
 const sidensHtml = new Map();

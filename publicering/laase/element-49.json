@@ -8,14 +8,16 @@
   "hashtags": [],
   "dato": "2026-11-17T09:00:00+01:00",
   "godkendt_af": "Kristian G. G. Dansted",
-  "godkendt_dato": "2026-11-01",
-  "godkendelsespakke": "2026-uge-45-47.md",
+  "godkendt_dato": "2026-11-02",
+  "godkendelsespakke": "2026-rettelser-gbp-knapper.md",
   "meta_description": "gbp-opslag: Skovbad for grupper på Fyn",
   "slug": "element-49-gbp",
   "slut_url": "(gbp-opslag, ingen URL foer publicering)",
   "kategorier": [],
   "billede_url": "https://kristiangg.dk/images/natur/skovbad-gruppe-640.jpg",
-  "links": [],
+  "links": [
+    "https://kristiangg.dk/kurser/skovbad/"
+  ],
   "tekst": "Guidet skovbad kan bestilles til en samlet gruppe — en arbejdsplads, en vennegruppe eller en familie.\n\nForløbet varer op til 2,5 time og foregår i naturen på Fyn. Indholdet er langsom gang, sansning, nærvær og vejrtrækning, med rum til stilhed undervejs. Der stilles ingen krav til erfaring eller form.\n\nSkovbad er et ophold i skoven med sanserne, og det er ikke terapi.\n\nGruppestørrelse 4–12 personer. 329 kr. pr. person.\n\nGuide: Kristian G. G. Dansted, registreret psykoterapeut (FaDP), naturterapeut og mindfulness-instruktør. Klinik på Lumbyvej 11B, 5000 Odense.",
   "tekst_sha256": "35e4e14c8591b26839bd664ae21007b2d4701e0f0fbb4990389fc50ce10bfb6b",
   "brodtekst_sha256": "35e4e14c8591b26839bd664ae21007b2d4701e0f0fbb4990389fc50ce10bfb6b",
@@ -23,7 +25,7 @@
     "version": "1.0.0",
     "resultat_sha256": "3a23550a4c855f4b"
   },
-  "versionslaas": "e2ad2ceb25c7b143",
+  "versionslaas": "5ad86908654dc18a",
   "ejerverifikation": {
     "verificeret_af": "Kristian G. G. Dansted",
     "dato": "2026-11-01",

@@ -95,6 +95,83 @@ Spørgsmålet er undersøgt, og svaret er nej:
 
 Ét token i Netlify er altså den mindste mulige afhængighed, ikke en genvej.
 
+## Sådan ses det udefra, at udløseren lever
+
+Indtil 2. november 2026 kunne man ikke se forskel på disse to tilstande:
+
+- udløseren kører, men der var intet forfaldent
+- udløseren er død
+
+Begge ser ens ud: ingen `repository_dispatch` i kørselshistorikken. I
+november var der intet forfaldent i fjorten dage i træk, så beviset var
+værdiløst netop når man havde brug for det.
+
+### Livstegnet
+
+Udløseren sender nu `udloeser-hjerteslag` **én gang i timen**, når den
+alligevel ikke har andet at lave. `udloeser-hjerteslag.yml` tager imod og
+gør intet andet end at eksistere i historikken: ingen checkout, tomme
+`permissions`, ingen adgang til noget.
+
+En manglende kørsel er dermed et entydigt tegn på, at kæden
+Netlify → token → GitHub er brudt. Vagthunden advarer efter 4 timer og
+melder **FEJL** efter 12.
+
+To ting er værd at bemærke:
+
+- Livstegnet sendes **kun**, når intet er forfaldent. Er der noget at
+  publicere, vinder publiceringen, og historikken forbliver entydig.
+- Uden token sendes der **intet** — heller ikke livstegn. Det er med vilje:
+  et manglende livstegn er netop symptomet på et manglende token.
+
+### Statusendepunktet
+
+```
+curl https://kristiangg.dk/.netlify/functions/udloeser-status
+```
+
+Svarer med JSON og skiller de tre mulige årsager ad:
+
+| Svar | Betyder |
+| --- | --- |
+| `token_sat: false` | variablen er ikke nået ud til funktionen — der mangler et deploy |
+| `token_genkendt: false`, `github_svarede: 401` | tokenet er ugyldigt eller udløbet |
+| `token_genkendt: false`, `github_svarede: 404` | tokenet kan ikke se dette repo — forkert *Resource owner* eller *Repository access* |
+| `token_form: "ADVARSEL: omsluttet af anfoerselstegn"` | værdien er gemt med `"` omkring |
+| alt grønt, `forfaldne_kanaler: []` | intet er forfaldent — udløseren sender kun livstegn |
+
+**Den afslører intet.** Tokenet læses aldrig ud; der svares kun ja/nej og
+med længden i tegn. **Den sender intet** — ingen dispatch, ingen
+publicering. Et offentligt endepunkt, der kunne starte workflows, ville
+være en åben dør.
+
+## Kræver en ny miljøvariabel et nyt deploy?
+
+**Ja.** Netlify bager miljøvariablerne ind, når et deploy bygges. En
+funktion, der allerede er rullet ud, ser ikke en variabel, der er tilføjet
+bagefter — uanset at den står rigtigt i brugerfladen.
+
+Derfor: læg tokenet ind, og udløs så et deploy. Det sker af sig selv, når
+en PR merges, og kan ellers startes fra
+Actions → *Genopbyg site (planlagte indlaeg)* → Run workflow.
+
+Statusendepunktet afgør spørgsmålet empirisk: svarer det `token_sat: false`
+efter at tokenet er lagt ind, mangler der et deploy.
+
+## Hvilke rettigheder skal tokenet have?
+
+Dokumentationen er uklar på netop dette punkt, og `docs.github.com` kunne
+ikke hentes fra arbejdsmiljøet. Fællesskabets rapporter peger i to
+retninger: nogle siger **Contents: Read and write**, andre **Actions: Read
+and write**, og flere rapporterer, at den ene alene ikke var nok.
+
+Giv derfor tokenet **begge**. De er begrænset til dette ene repo, og ingen
+af dem giver adgang til hemmeligheder.
+
+Virker det ikke, siger udløseren nu selv hvorfor: på 403 og 404 skriver den
+præcis hvilke to rettigheder der skal sættes, og det står i Netlifys
+funktionslog og i statusendepunktets svar.
+
 ## Det ene trin, du selv skal gøre
 
 Funktionen mangler kun et token. Fire skridt, cirka tre minutter.

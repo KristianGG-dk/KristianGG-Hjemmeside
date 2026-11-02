@@ -1027,5 +1027,38 @@
     "registreret_af": "motor",
     "sidste_status_foer": "AFVENTER DATO",
     "noter": "Opgivet automatisk. Det godkendte tidspunkt 2026-10-18 07:30 UTC blev passeret for 15 dage og 7 timer siden, og publiceringsvinduet er 24 timer. Seneste status var «AFVENTER DATO», saa opslaget blev aldrig afsendt. Der er ingen laasefil, saa motoren kunne ikke selv sende det. Skal det alligevel ud, kraever det en ny godkendelse og et nyt tidspunkt."
+  },
+  {
+    "element": 53,
+    "kanal": "gbp",
+    "versionslaas": "3db77d570cff2eaf",
+    "status": "AFVENTER DATO",
+    "post_id": null,
+    "godkendt_tidspunkt": "2026-11-04T09:00:00+01:00",
+    "tidspunkt": "2026-11-02T17:02:51.835Z",
+    "registreret_af": "manuel",
+    "noter": "Handlingsknap tilfoejet. Kristian G. G. Dansted godkendte destinationen https://kristiangg.dk/til-dig/naturterapi/ den 2026-11-02. Kun feltet links er aendret; tekst, billede, dato, tidspunkt og cta er uroerte. Versionslaas 0bd3551effd7b6d9 afloest af 3db77d570cff2eaf. Pakke: 2026-rettelser-gbp-knapper.md."
+  },
+  {
+    "element": 54,
+    "kanal": "gbp",
+    "versionslaas": "543990dac9046d10",
+    "status": "AFVENTER DATO",
+    "post_id": null,
+    "godkendt_tidspunkt": "2026-11-10T09:00:00+01:00",
+    "tidspunkt": "2026-11-02T17:02:51.835Z",
+    "registreret_af": "manuel",
+    "noter": "Handlingsknap tilfoejet. Kristian G. G. Dansted godkendte destinationen https://kristiangg.dk/til-dig/psykoterapi/ den 2026-11-02. Kun feltet links er aendret; tekst, billede, dato, tidspunkt og cta er uroerte. Versionslaas 2e65cb491ef29b2e afloest af 543990dac9046d10. Pakke: 2026-rettelser-gbp-knapper.md."
+  },
+  {
+    "element": 49,
+    "kanal": "gbp",
+    "versionslaas": "5ad86908654dc18a",
+    "status": "AFVENTER DATO",
+    "post_id": null,
+    "godkendt_tidspunkt": "2026-11-17T09:00:00+01:00",
+    "tidspunkt": "2026-11-02T17:02:51.835Z",
+    "registreret_af": "manuel",
+    "noter": "Handlingsknap tilfoejet. Kristian G. G. Dansted godkendte destinationen https://kristiangg.dk/kurser/skovbad/ den 2026-11-02. Kun feltet links er aendret; tekst, billede, dato, tidspunkt og cta er uroerte. Versionslaas e2ad2ceb25c7b143 afloest af 5ad86908654dc18a. Pakke: 2026-rettelser-gbp-knapper.md."
   }
 ]

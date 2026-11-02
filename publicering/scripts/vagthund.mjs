@@ -401,41 +401,50 @@ async function main() {
     // GITHUB_DISPATCH_TOKEN i Netlify goer den ingenting — og den siger det
     // kun i Netlifys egen log, som ingen laeser.
     //
-    // Her ses det udefra: har der overhovedet VAERET en dispatch-koersel den
-    // seneste uge? Er alle koersler «schedule», er udloeseren ikke i drift,
-    // og opslagene gaar ud, naar GitHubs cron finder tid — maalt 3-10 timer
-    // efter det godkendte tidspunkt.
+    // Foer kunne det kun ses indirekte: var der ingen repository_dispatch i
+    // historikken, var udloeseren formentlig doed. Men det kunne lige saa vel
+    // betyde, at der intet havde vaeret forfaldent. De to kunne ikke skilles
+    // ad, og i november var der intet forfaldent i fjorten dage.
     //
-    // Det er en ADVARSEL, ikke en FEJL: med doegnvinduet falder intet
-    // igennem, det kommer bare for sent. Fire skridt i
-    // dokumentation/paalidelig-udloeser.md lukker den.
+    // Derfor livstegnet: udloeseren sender «udloeser-hjerteslag» én gang i
+    // timen, naar den alligevel ikke har andet at lave, og
+    // udloeser-hjerteslag.yml tager imod. En manglende koersel er nu et
+    // entydigt tegn paa, at kaeden Netlify → token → GitHub er brudt.
+    //
+    // Graenserne: livstegnet kommer hver time. 4 timer er rigeligt til
+    // Netlifys egen jitter, og 12 timer betyder, at et opslag i morgen tidlig
+    // vil gaa ud for sent.
     try {
-      const uge = new Date(NU.getTime() - 7 * 86400000);
-      let dispatch = 0;
-      let ialt = 0;
-      for (const fil of ['publicer-instagram-planlagt.yml', 'publicer-linkedin-planlagt.yml']) {
-        const r = await fetch(
-          `https://api.github.com/repos/${repo}/actions/workflows/${fil}/runs?per_page=50`,
-          { headers: { Authorization: `Bearer ${token}`, Accept: 'application/vnd.github+json' } });
-        if (!r.ok) continue;
-        for (const k of (await r.json()).workflow_runs ?? []) {
-          if (new Date(k.created_at) < uge) continue;
-          ialt++;
-          if (k.event === 'repository_dispatch') dispatch++;
+      const r = await fetch(
+        `https://api.github.com/repos/${repo}/actions/workflows/udloeser-hjerteslag.yml/runs?per_page=1`,
+        { headers: { Authorization: `Bearer ${token}`, Accept: 'application/vnd.github+json' } });
+      if (r.status === 404) {
+        K_INFO('Udloeser', 'livstegnsworkflowet findes endnu ikke paa main. Kontrollen begynder at virke, naar det er merget og Netlify har deployet.');
+      } else if (!r.ok) {
+        K_ADVAR('Udloeser', `GitHub svarede ${r.status}. Livstegnet kunne ikke kontrolleres.`);
+      } else {
+        const k = (await r.json()).workflow_runs ?? [];
+        if (!k.length) {
+          K_ADVAR('Udloeser', 'der er endnu aldrig kommet et livstegn. '
+            + 'Enten er Netlify ikke deployet siden livstegnet blev tilfoejet, eller ogsaa naar udloeseren ikke GitHub. '
+            + 'Slaa det op paa https://kristiangg.dk/.netlify/functions/udloeser-status');
+        } else {
+          const sidst = new Date(k[0].created_at);
+          const timer = (NU - sidst) / 3600000;
+          const linje = `sidste livstegn ${dk(sidst)} — for ${varighed(timer * 3600)} siden`;
+          if (timer > 12) {
+            K_FEJL('Udloeser', `${linje}. Livstegnet kommer hver time, saa kaeden Netlify → token → GitHub er brudt. `
+              + 'Godkendte opslag gaar nu kun ud, naar GitHubs cron finder tid — maalt 3-10 timer for sent. '
+              + 'Slaa aarsagen op paa https://kristiangg.dk/.netlify/functions/udloeser-status');
+          } else if (timer > 4) {
+            K_ADVAR('Udloeser', `${linje}. Livstegnet kommer normalt hver time.`);
+          } else {
+            K_INFO('Udloeser', linje);
+          }
         }
       }
-      if (!ialt) {
-        K_ADVAR('Udloeser', 'ingen koersler den seneste uge — kunne ikke afgoere, om den paalidelige udloeser er i drift.');
-      } else if (dispatch === 0) {
-        K_ADVAR('Udloeser', `ingen af ${ialt} koersler den seneste uge kom fra Netlify-udloeseren — alle kom fra GitHubs cron. `
-          + 'GITHUB_DISPATCH_TOKEN mangler formentlig i Netlifys miljoevariabler. '
-          + 'Opslag gaar derfor ud, naar cron finder tid, ikke paa det godkendte tidspunkt. '
-          + 'Fire skridt: dokumentation/paalidelig-udloeser.md.');
-      } else {
-        K_INFO('Udloeser', `den paalidelige udloeser er i drift: ${dispatch} af ${ialt} koersler den seneste uge kom fra Netlify.`);
-      }
     } catch (err) {
-      K_ADVAR('Udloeser', `kunne ikke kontrolleres (${err.message}).`);
+      K_ADVAR('Udloeser', `livstegnet kunne ikke kontrolleres (${err.message}).`);
     }
   }
 
