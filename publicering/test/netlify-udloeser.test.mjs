@@ -285,10 +285,21 @@ proev('statusendepunktet afsloerer aldrig tokenet', () => {
 });
 
 proev('statusendepunktet sender ingenting', () => {
-  const kilde = readFileSync('netlify/functions/udloeser-status.mjs', 'utf8');
-  assert.ok(!/\/dispatches/.test(kilde),
-    'statusendepunktet kan starte workflows — et offentligt endepunkt maa ikke kunne det');
-  assert.ok(!/method:\s*['"]POST/.test(kilde), 'statusendepunktet sender en POST');
+  // Invarianten er rigtig: et offentligt endepunkt maa ikke kunne starte
+  // workflows. Men den skal maales paa KODEN, ikke paa kommentarerne — den
+  // foerste udgave fejlede, fordi en kommentar forklarede, at POST
+  // /dispatches kraever skriveadgang.
+  const kode = readFileSync('netlify/functions/udloeser-status.mjs', 'utf8')
+    .replace(/\/\*[\s\S]*?\*\//g, '')      // blokkommentarer
+    .replace(/(^|[^:])\/\/.*$/gm, '$1');     // linjekommentarer, ikke https://
+  // Maales paa HVAD der hentes, ikke paa hvad der staar. Ordet
+  // «/dispatches» optraeder i en fejlbesked til brugeren, og det er
+  // harmloest. Et fetch TIL den adresse er det ikke.
+  const maal = [...kode.matchAll(/fetch\(\s*([^,)]+)/g)].map((m) => m[1]);
+  assert.ok(!maal.some((u) => /dispatch/i.test(u)),
+    `statusendepunktet henter: ${maal.join(' | ')} — et offentligt endepunkt maa ikke kunne starte workflows`);
+  const metoder = [...kode.matchAll(/method:\s*['"](\w+)['"]/g)].map((m) => m[1]);
+  assert.deepEqual(metoder, [], `statusendepunktet bruger metoderne: ${metoder.join(', ')}`);
 });
 
 /* ── Tokenets form ───────────────────────────────────────────────────────

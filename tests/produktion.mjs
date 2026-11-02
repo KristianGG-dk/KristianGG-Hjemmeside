@@ -167,6 +167,13 @@ if (sm.status !== 200) {
         for (const [n, v] of Object.entries(d)) {
           if (/^token_/.test(n)) adv(`  ${n}: ${JSON.stringify(v)}`);
         }
+      } else if (d.token_maa_starte_workflows === false) {
+        x('tokenet genkendes af GitHub, men har kun LAESEADGANG. POST /dispatches kraever '
+          + 'skriveadgang, saa hver udloesning afvises tavst. Giv det «Contents: Read and write» '
+          + `OG «Actions: Read and write». Rettigheder nu: ${JSON.stringify(d.token_rettigheder)}`);
+      } else if (d.token_maa_starte_workflows === true) {
+        ok(`tokenet er sat (${d.token_form}, ${d.token_laengde} tegn), genkendt af GitHub `
+          + 'og har skriveadgang — det MAA starte workflows');
       } else {
         ok(`tokenet er sat (${d.token_form}, ${d.token_laengde} tegn) og genkendt af GitHub`);
       }

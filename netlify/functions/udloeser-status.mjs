@@ -64,6 +64,28 @@ export default async () => {
       });
       svar.github_svarede = r.status;
       svar.token_genkendt = r.status === 200;
+
+      // AT TOKENET GENKENDES BEVISER IKKE, AT DET MAA NOGET.
+      //
+      // GET /repos lykkes med ren laeseadgang. POST /repos/.../dispatches
+      // kraever skriveadgang. Et token med kun laeseadgang giver derfor
+      // praecis det billede, vi stod med: groent opslag, og en tavs
+      // afvisning paa hver eneste dispatch — ingen livstegn, ingen
+      // forklaring.
+      //
+      // Svaret fra GET /repos baerer selv rettighederne. Det er et rent
+      // opslag og afgoer sagen uden at sende noget.
+      if (r.status === 200) {
+        const d = await r.json().catch(() => ({}));
+        const p = d.permissions ?? {};
+        svar.token_rettigheder = { laese: Boolean(p.pull), skrive: Boolean(p.push), admin: Boolean(p.admin) };
+        svar.token_maa_starte_workflows = Boolean(p.push || p.admin);
+        if (!svar.token_maa_starte_workflows) {
+          svar.token_bemaerkning = 'tokenet kan LAESE repoet, men ikke skrive. '
+            + 'POST /dispatches kraever skriveadgang, saa hver udloesning afvises tavst. '
+            + 'Giv tokenet «Contents: Read and write» OG «Actions: Read and write».';
+        }
+      }
       if (r.status === 401) svar.token_bemaerkning = 'ugyldigt eller udloebet token';
       if (r.status === 404) svar.token_bemaerkning = 'tokenet kan ikke se dette repo — forkert Resource owner eller Repository access';
     } catch (err) {
@@ -104,6 +126,11 @@ export default async () => {
           ? 'Et 401 betyder, at GitHub ikke genkender legitimationen: den er udloebet, '
             + 'tilbagekaldt, eller vaerdien er ufuldstaendig. Opret et nyt token og indsaet det paa ny.'
           : '').trim()
+      : svar.token_maa_starte_workflows === false
+        ? 'Tokenet genkendes af GitHub, men har kun LAESEADGANG. '
+          + 'POST /dispatches kraever skriveadgang, saa hver udloesning afvises tavst — '
+          + 'derfor udebliver livstegnet. Giv tokenet «Contents: Read and write» OG '
+          + '«Actions: Read and write» paa KristianGG-Hjemmeside, og udloes et nyt deploy.'
       : svar.forfaldne_kanaler?.length
         ? `Noget er forfaldent (${svar.forfaldne_kanaler.join(', ')}) — naeste planlagte koersel starter det.`
         : 'Alt ser rigtigt ud. Intet er forfaldent lige nu, saa udloeseren sender kun livstegn.';
