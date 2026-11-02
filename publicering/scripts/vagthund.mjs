@@ -60,6 +60,19 @@ const FEJLEDE = ['PUBLICERING FEJLET', 'PLANLAEGNING FEJLET'];
 const UVIST = 'PUBLICERING IGANG';
 const FOR_SENT = 'STOPPET FOR SENT';
 
+/**
+ * Statusser, der LUKKER en sag. Et menneske har taget stilling, og der er
+ * intet mere at raabe op om.
+ *
+ * De skal staa her, ellers melder vagthunden «ukendt status» om netop de
+ * raekker, dokumentationen beder Kristian skrive — og saa ville det at
+ * foelge vejledningen efterlade vagthunden roed. Det var praecis, hvad der
+ * skete: baade «ANNULLERET HOS META» (annuller-hos-meta.md) og «OPGIVET»
+ * (tidsvinduet.md) blev meldt som ukendte, og proeven i PR #103 var for svag
+ * til at fange det, fordi den kun saa efter, at ÉN besked udeblev.
+ */
+const AFSLUTTET = ['ANNULLERET HOS META', 'OPGIVET'];
+
 const dage = (ms) => Math.floor(ms / 86400000);
 const dk = (d) => d.toISOString().slice(0, 16).replace('T', ' ') + ' UTC';
 
@@ -130,14 +143,31 @@ async function main() {
     const passeret = NU > forfald;
     const dageSiden = dage(NU - forfald);
 
+    if (AFSLUTTET.includes(sidste.status)) {
+      INFO(e.element, `${e.kanal}: ${sidste.status.toLowerCase()}${sidste.noter ? ` — ${sidste.noter}` : ''}`);
+      continue;
+    }
     if (sidste.status === UVIST) {
       FEJL(e.element, `${e.kanal}: «${UVIST}» — kravet blev taget ${dk(new Date(sidste.tidspunkt))}, men koerslen meldte aldrig tilbage. `
         + 'Opslaget kan vaere gaaet ud. Se efter paa platformen, og skriv udfaldet i registret, FOER der proeves igen.');
       continue;
     }
     if (sidste.status === FOR_SENT) {
-      FEJL(e.element, `${e.kanal}: stoppet, fordi det forfaldt ${dk(forfald)} og var over en time gammelt. `
-        + 'Opslaget er IKKE gaaet ud. Publicér det i haanden, eller godkend et nyt tidspunkt.');
+      // Graensen staar ét sted, og beskeden skal sige den rigtige. Den sagde
+      // «over en time», efter graensen var blevet et doegn — en besked, der
+      // selv er forkert, er vaerre end ingen.
+      //
+      // Og alarmen skal kunne lukkes. Element 33 og 34 gik tabt i oktober og
+      // kan ikke publiceres nu; uden en vej til at kvittere ville vagthunden
+      // melde FEJL om dem to gange dagligt for altid, og saa holder man op
+      // med at laese den. Seneste status afgoer, saa en raekke med et valg
+      // lukker sagen.
+      const alder = Math.floor((NU - forfald) / 1000);
+      FEJL(e.element, `${e.kanal}: stoppet. Det forfaldt ${dk(forfald)} — for ${varighed(alder)} siden — `
+        + `og graensen for automatisk publicering er ${varighed(MAKS_FORSINKELSE_S)}. `
+        + 'Opslaget er IKKE gaaet ud. Publicér det i haanden, godkend et nyt tidspunkt, eller '
+        + 'luk sagen med en registerraekke: status «OPGIVET» og en kort grund. '
+        + 'Se dokumentation/tidsvinduet.md.');
       continue;
     }
     if (FEJLEDE.includes(sidste.status)) {

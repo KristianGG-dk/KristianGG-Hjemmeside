@@ -350,5 +350,40 @@ await godtages('findLokationer foelger sider paa tvaers af konti', async () => {
   if (l.map((x) => x.navn).join() !== `${NAVN},accounts/2/locations/7`) throw new Error(JSON.stringify(l));
 });
 
+// ── HVOR HEMMELIGHEDERNE LIGGER ───────────────────────────────────────────
+// Faelden: autorisationen koerer i environment «linkedin-oauth»,
+// publiceringen i «publicering», og bootstrap skriver paa repo-niveau. Kun
+// repo-niveau ses af begge. placeringsdom() skal sige praecis hvad
+// forskellen betyder, for «GBP_CLIENT_ID mangler» er misvisende, naar
+// hemmeligheden findes — blot i det forkerte rum.
+console.log('\nHvor hemmelighederne ligger');
+
+const { placeringsdom } = await import('../scripts/forny-google-token.mjs');
+
+sandt('repo-niveau og synlig: i orden',
+  placeringsdom('GBP_CLIENT_ID', true, true).ok === true);
+
+{
+  const d = placeringsdom('GBP_CLIENT_ID', true, false);
+  sandt('synlig men ikke paa repo: advarer om at publiceringen ikke ser den',
+    d.ok === false && /IKKE kunne se den/.test(d.besked) && /repo-niveau/.test(d.besked), d.besked);
+}
+
+{
+  const d = placeringsdom('GBP_CLIENT_ID', false, true);
+  sandt('paa repo men usynlig: peger paa en skyggende tom hemmelighed',
+    d.ok === false && /skygger/.test(d.besked), d.besked);
+}
+
+{
+  const d = placeringsdom('GBP_CLIENT_ID', false, false);
+  sandt('hverken-eller: naevner baade «aldrig oprettet» og «i et environment»',
+    d.ok === false && /aldrig oprettet/.test(d.besked) && /environment/.test(d.besked), d.besked);
+}
+
+sandt('alle fire domme naevner hemmelighedens navn',
+  [[true, true], [true, false], [false, true], [false, false]]
+    .every(([a, b]) => placeringsdom('GBP_TILLADT_LOKATION', a, b).besked.includes('GBP_TILLADT_LOKATION')));
+
 console.log(`\n  ${bestaaet} bestaaet, ${fejlet} fejlet\n`);
 process.exit(fejlet ? 1 : 0);

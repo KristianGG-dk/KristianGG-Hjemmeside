@@ -58,11 +58,21 @@ export const FOR_SENT = 'STOPPET FOR SENT';
  */
 export const MAKS_FORSINKELSE_S = 24 * 60 * 60;
 
-/** «3 timer og 12 minutter». Til beskeder, der skal kunne laeses. */
+/**
+ * «3 timer og 12 minutter». Til beskeder, der skal kunne laeses.
+ *
+ * Over to doegn skifter den til dage: «421 timer og 8 minutter» er korrekt,
+ * men ingen laeser det som sytten dage. En besked, man skal regne paa, er
+ * halvt spildt.
+ */
 export function varighed(sekunder) {
   const m = Math.round(Math.abs(sekunder) / 60);
   const t = Math.floor(m / 60), r = m % 60;
   if (t === 0) return `${m} minut${m === 1 ? '' : 'ter'}`;
+  if (t > 48) {
+    const d = Math.floor(t / 24), rt = t % 24;
+    return rt === 0 ? `${d} dage` : `${d} dage og ${rt} time${rt === 1 ? '' : 'r'}`;
+  }
   if (r === 0) return `${t} time${t === 1 ? '' : 'r'}`;
   return `${t} time${t === 1 ? '' : 'r'} og ${r} minut${r === 1 ? '' : 'ter'}`;
 }
