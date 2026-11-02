@@ -173,6 +173,32 @@ if (sm.status !== 200) {
   }
 }
 
+/* ══ 2d. ER DEN PLANLAGTE FUNKTION OVERHOVEDET REGISTRERET? ══════════════ */
+
+// Den afgoerende proeve. Netlify svarer 404 paa direkte HTTP-kald til en
+// PLANLAGT funktion — den kan kun kaldes af planlaeggeren. En ALMINDELIG
+// funktion svarer 200.
+//
+// Livstegnet udeblev i to hele timevinduer, selv om tokenet er verificeret,
+// funktionen er deployet og GitHub tager imod. Svarer denne 200, er
+// config.schedule ikke slaaet igennem, og funktionen er udrullet som et
+// almindeligt endepunkt, ingen nogensinde kalder. Det ville forklare alt.
+
+{
+  const p = await hent(BASE + '/.netlify/functions/udloes-publicering');
+  const k = p.status;
+  if (k === 404) {
+    ok('udloes-publicering svarer 404 paa direkte kald — registreret som PLANLAGT funktion');
+  } else if (k === 200) {
+    x('udloes-publicering svarer 200 paa direkte kald. Netlify har udrullet den som en '
+      + 'ALMINDELIG funktion, ikke en planlagt. config.schedule er ikke slaaet igennem, '
+      + 'og ingen planlaegger kalder den — derfor udeblev livstegnet.');
+  } else {
+    adv(`udloes-publicering svarer ${k} paa direkte kald (hverken 404 eller 200). `
+      + 'Kan ikke afgoere, om den er registreret som planlagt.');
+  }
+}
+
 /* ══ 3. Hver adresse i sitemappet ════════════════════════════════════════ */
 
 const sidensHtml = new Map();
