@@ -41,6 +41,33 @@ title = "Kristian GG"
   id = ""
   samtykke_kraeves = false
 
+# ── Byggemaerket ─────────────────────────────────────────────────────────────
+# /byg.json fortaeller, HVILKEN udgave der faktisk er i luften: commit og
+# byggetidspunkt. Uden den kan ingen se forskel paa "Netlify har bygget" og
+# "Netlify sagde ja til kaldet".
+#
+# Det er ikke teoretisk. genopbyg-planlagt.yml kalder Netlifys build hook og
+# melder groent, naar Netlify svarer 2xx. Er produktionsbyg sat paa pause —
+# fx fordi kontoens credits er brugt — svarer hooken stadig 2xx, bygget sker
+# bare aldrig. Workflowet er groent, og siden staar stille. Vagthunden laeser
+# nu maerket og opdager det.
+#
+# RSS og sitemap staar udtrykkeligt med i listen. Udelades de, holder Hugo op
+# med at skrive dem, og hele sitemappet forsvandt da ud af produktionen.
+[outputs]
+  home = ["HTML", "RSS", "sitemap", "BYG"]
+
+[outputFormats.BYG]
+  mediaType = "application/json"
+  baseName = "byg"
+  isPlainText = true
+  notAlternative = true
+
+# Hugo spaerrer som udgangspunkt for getenv. Kun de fire variabler, Netlify
+# selv saetter paa bygget, lukkes ind — ingen af dem er hemmelige.
+[security.funcs]
+  getenv = ['^HUGO_', '^COMMIT_REF$', '^BRANCH$', '^CONTEXT$', '^DEPLOY_ID$']
+
 [taxonomies]
   category = "categories"
   tag = "tags"

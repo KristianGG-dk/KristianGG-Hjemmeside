@@ -6,7 +6,17 @@
 */ -}}
 {{ printf "<?xml version=\"1.0\" encoding=\"utf-8\" standalone=\"yes\"?>" | safeHTML }}
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  {{- range .Data.Pages }}
+  {{- /* site.Pages, ikke .Data.Pages.
+
+         .Data.Pages betyder forskellige ting alt efter, hvordan outputs er
+         sat op. Da /byg.json blev lagt paa forsiden som et ekstra output,
+         holdt Hugo op med at give den SITEDAEKKENDE liste her og gav i
+         stedet forsidens egne undersider: sitemappet faldt fra 37 adresser
+         til 12, og forsiden selv forsvandt ud af det.
+
+         site.Pages er den samme liste uanset outputs. Filtrene nedenfor er
+         uaendrede. */ -}}
+  {{- range site.Pages }}
   {{- if and .Permalink (not .Params.noindex) (not (in (slice "taxonomy" "term") .Kind)) }}
   <url>
     <loc>{{ .Permalink }}</loc>

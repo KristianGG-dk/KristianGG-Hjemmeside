@@ -109,6 +109,31 @@ if (sm.status !== 200) {
   if (!/xml/i.test(ct)) adv(`sitemap serveres som "${ct}" — ventede xml`);
 }
 
+/* ══ 2b. Byggemaerket: hvilken udgave er i luften? ═══════════════════════ */
+
+{
+  const b = await hent(BASE + '/byg.json', { headers: { 'Cache-Control': 'no-cache' } });
+  if (b.status === 404) {
+    adv('/byg.json findes ikke endnu — maerket kommer med naeste deploy');
+  } else if (b.status !== 200) {
+    x(`/byg.json svarer ${b.status}`);
+  } else {
+    try {
+      const d = JSON.parse(await b.text());
+      const bygget = new Date(d.bygget);
+      const timer = (Date.now() - bygget.getTime()) / 3600000;
+      ok(`bygget ${d.bygget} (for ${timer.toFixed(1)} timer siden), commit ${String(d.commit || '(ukendt)').slice(0, 7)}, `
+        + `kontekst ${d.kontekst || '(ukendt)'}, ${d.sider} sider`);
+      if (timer > 30) {
+        x(`sitet blev sidst bygget for ${timer.toFixed(0)} timer siden. Genopbygningen koerer én gang i doegnet — `
+          + 'Netlify bygger ikke laengere, selv om build hooken svarer.');
+      }
+    } catch (e) {
+      x(`/byg.json kan ikke laeses som JSON: ${e.message}`);
+    }
+  }
+}
+
 /* ══ 3. Hver adresse i sitemappet ════════════════════════════════════════ */
 
 const sidensHtml = new Map();
