@@ -43,6 +43,32 @@ export const HAENDELSER = {
   linkedin: 'publicer-linkedin',
 };
 
+/**
+ * Hjerteslaget.
+ *
+ * Problemet det loeser: naar der intet er forfaldent, goer udloeseren
+ * ingenting — og det er umuligt at se forskel paa «intet var forfaldent» og
+ * «udloeseren er doed». Hele november maaned har der ikke vaeret ét
+ * repository_dispatch i koerselshistorikken, og det kunne betyde begge dele.
+ *
+ * Nu sender den et livstegn, naar den alligevel ikke har andet at lave.
+ * udloeser-hjerteslag.yml tager imod og goer intet andet end at eksistere i
+ * historikken. Dermed kan baade vagthunden og et menneske se udefra, at
+ * Netlify koerer, at tokenet virker, og at GitHub tager imod.
+ */
+export const HJERTESLAG = 'udloeser-hjerteslag';
+
+/**
+ * Hoejst ét hjerteslag i timen. Funktionen koerer hvert kvarter, og uden
+ * denne spaerre ville der komme 96 koersler i doegnet i stedet for 24.
+ *
+ * Afgoeres af uret, ikke af gemt tilstand: funktionen er statsloes, og et
+ * kvarters tidsplan rammer det foerste kvarter af hver time præcis én gang.
+ */
+export function erHjerteslagstid(nu) {
+  return new Date(nu * 1000).getUTCMinutes() < 15;
+}
+
 /** Hvilke kanaler har noget forfaldent inden for vinduet? */
 export function forfaldneKanaler(koe, nu) {
   const ud = new Set();
@@ -67,9 +93,22 @@ export async function udloes(token, haendelse, hent = fetch) {
     },
     body: JSON.stringify({ event_type: haendelse }),
   });
-  return r.status === 204
-    ? `${haendelse}: startet`
-    : `${haendelse}: GitHub svarede ${r.status} ${await r.text()}`;
+  if (r.status === 204) return `${haendelse}: startet`;
+
+  // GitHubs afvisning skal kunne handles paa. 403 og 404 betyder i praksis
+  // det samme her: tokenet naaede frem, men maa ikke dette. GitHub svarer
+  // 404 frem for 403 paa et token uden adgang, saa man ikke kan afsoege,
+  // hvilke repoer der findes.
+  const krop = await r.text();
+  const raad = (r.status === 403 || r.status === 404)
+    ? ' — tokenet mangler rettigheden til at starte workflows paa dette repo.'
+      + ' Et fine-grained token skal have BAADE «Contents: Read and write» og'
+      + ' «Actions: Read and write» paa KristianGG-Hjemmeside.'
+      + ' Se dokumentation/paalidelig-udloeser.md.'
+    : r.status === 401
+      ? ' — tokenet er ugyldigt eller udloebet. Opret et nyt og laeg det i Netlify.'
+      : '';
+  return `${haendelse}: GitHub svarede ${r.status} ${krop}${raad}`;
 }
 
 /**
@@ -96,8 +135,13 @@ export async function koer({ token, nu = Math.floor(Date.now() / 1000), hent = f
   }
 
   if (!kanaler.size) {
-    log('Intet forfaldent inden for vinduet. Intet startet.');
-    return { startet: [], grund: 'intet forfaldent' };
+    if (!erHjerteslagstid(nu)) {
+      log('Intet forfaldent inden for vinduet. Intet startet.');
+      return { startet: [], grund: 'intet forfaldent' };
+    }
+    const svar = await udloes(token, HJERTESLAG, hent);
+    log(`Intet forfaldent. Livstegn sendt: ${svar}`);
+    return { startet: [], hjerteslag: svar, grund: 'intet forfaldent, livstegn sendt' };
   }
 
   const svar = [];

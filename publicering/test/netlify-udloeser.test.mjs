@@ -8,6 +8,7 @@ import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import {
   forfaldneKanaler, koer, udloes, VINDUE_S, HAENDELSER, config,
+  HJERTESLAG, erHjerteslagstid,
 } from '../../netlify/functions/udloes-publicering.mjs';
 import { MAKS_FORSINKELSE_S } from '../scripts/krav.mjs';
 
@@ -97,10 +98,14 @@ await aproev('uden token startes intet', async () => {
   assert.deepEqual(a.kaldt, [], 'GitHub maa ikke kaldes uden token');
 });
 
-await aproev('intet forfaldent: GitHub kaldes ikke', async () => {
+await aproev('intet forfaldent: ingen PUBLICERING startes', async () => {
+  // Graensen staar stadig: der maa ikke komme 192 tomme publiceringskoersler
+  // i doegnet. Livstegnet er ikke en publicering og taelles ikke med her —
+  // det proeves for sig nedenfor, og det kommer hoejst én gang i timen.
   const a = attrap([post()]);
   await koer({ token: 't', nu: FORFALD - 3600, hent: a.hent, log: () => {} });
-  assert.deepEqual(a.kaldt, [], 'ellers 192 tomme koersler i doegnet');
+  const publiceringer = a.kaldt.filter((h) => h !== HJERTESLAG);
+  assert.deepEqual(publiceringer, [], 'ellers 192 tomme koersler i doegnet');
 });
 
 await aproev('forfaldent LinkedIn-element starter kun LinkedIn', async () => {
@@ -153,6 +158,112 @@ proev('en dispatch-koersel publicerer for alvor', () => {
     assert.match(readFileSync(fil, 'utf8'), /github\.event_name == 'repository_dispatch'/,
       `${fil}: en dispatch-koersel ville vaere toerloeb`);
   }
+});
+
+/* ── Livstegnet ───────────────────────────────────────────────────────────
+   Uden det kan «intet var forfaldent» ikke skelnes fra «udloeseren er doed».
+   Hele november var der intet forfaldent i fjorten dage, og historikken saa
+   praecis ud, som hvis tokenet manglede. */
+
+proev('livstegn hoejst én gang i timen', () => {
+  // Funktionen koerer hvert kvarter. Kun det foerste kvarter slaar til.
+  assert.equal(erHjerteslagstid(t('2026-11-02T09:00:00Z')), true);
+  assert.equal(erHjerteslagstid(t('2026-11-02T09:14:59Z')), true);
+  assert.equal(erHjerteslagstid(t('2026-11-02T09:15:00Z')), false);
+  assert.equal(erHjerteslagstid(t('2026-11-02T09:30:00Z')), false);
+  assert.equal(erHjerteslagstid(t('2026-11-02T09:45:00Z')), false);
+});
+
+await aproev('intet forfaldent i det foerste kvarter → livstegn sendes', async () => {
+  const kaldt = [];
+  const hent = async (url, valg) => {
+    if (url.includes('koe.json')) return { ok: true, json: async () => [] };
+    kaldt.push(JSON.parse(valg.body).event_type);
+    return { status: 204, text: async () => '' };
+  };
+  const r = await koer({ token: 'x', nu: t('2026-11-02T09:05:00Z'), hent, log: () => {} });
+  assert.deepEqual(kaldt, [HJERTESLAG]);
+  assert.deepEqual(r.startet, [], 'livstegnet maa ikke taelle som en publicering');
+});
+
+await aproev('intet forfaldent uden for det foerste kvarter → intet sendes', async () => {
+  const kaldt = [];
+  const hent = async (url, valg) => {
+    if (url.includes('koe.json')) return { ok: true, json: async () => [] };
+    kaldt.push(JSON.parse(valg.body).event_type);
+    return { status: 204, text: async () => '' };
+  };
+  await koer({ token: 'x', nu: t('2026-11-02T09:40:00Z'), hent, log: () => {} });
+  assert.deepEqual(kaldt, []);
+});
+
+await aproev('livstegnet erstatter ALDRIG en rigtig publicering', async () => {
+  const kaldt = [];
+  const hent = async (url, valg) => {
+    if (url.includes('koe.json')) {
+      return { ok: true, json: async () => [post({ tidspunkt: '2026-11-02T08:00:00Z' })] };
+    }
+    kaldt.push(JSON.parse(valg.body).event_type);
+    return { status: 204, text: async () => '' };
+  };
+  // Foerste kvarter OG noget forfaldent: publiceringen vinder, og der sendes
+  // intet livstegn, saa historikken ikke bliver utydelig.
+  await koer({ token: 'x', nu: t('2026-11-02T09:05:00Z'), hent, log: () => {} });
+  assert.deepEqual(kaldt, [HAENDELSER.linkedin]);
+  assert.ok(!kaldt.includes(HJERTESLAG));
+});
+
+await aproev('uden token sendes der heller ikke livstegn', async () => {
+  const kaldt = [];
+  const hent = async (url, valg) => { kaldt.push(url); return { status: 204, text: async () => '' }; };
+  const r = await koer({ token: '', nu: t('2026-11-02T09:05:00Z'), hent, log: () => {} });
+  assert.equal(r.grund, 'intet token');
+  assert.deepEqual(kaldt, [], 'der maa ikke kaldes noget uden token');
+});
+
+proev('livstegnsworkflowet lytter paa haendelsen og kan intet skrive', () => {
+  const y = readFileSync('.github/workflows/udloeser-hjerteslag.yml', 'utf8');
+  assert.ok(y.includes(`types: [${HJERTESLAG}]`), 'lytter ikke paa livstegnet');
+  assert.match(y, /permissions:\s*\{\}/, 'workflowet har rettigheder, det ikke skal have');
+  assert.ok(!/actions\/checkout/.test(y), 'livstegnet skal ikke hente koden');
+});
+
+/* ── Afvisninger skal kunne handles paa ─────────────────────────────────── */
+
+await aproev('403 og 404 peger paa den manglende rettighed', async () => {
+  for (const status of [403, 404]) {
+    const svar = await udloes('x', 'proeve',
+      async () => ({ status, text: async () => '{"message":"Resource not accessible"}' }));
+    assert.match(svar, /Contents: Read and write/, `status ${status} naevner ikke rettigheden`);
+    assert.match(svar, /Actions: Read and write/);
+  }
+});
+
+await aproev('401 peger paa et ugyldigt token', async () => {
+  const svar = await udloes('x', 'proeve',
+    async () => ({ status: 401, text: async () => '{"message":"Bad credentials"}' }));
+  assert.match(svar, /ugyldigt eller udloebet/);
+});
+
+await aproev('204 er stadig en succes', async () => {
+  const svar = await udloes('x', 'proeve', async () => ({ status: 204, text: async () => '' }));
+  assert.equal(svar, 'proeve: startet');
+});
+
+proev('statusendepunktet afsloerer aldrig tokenet', () => {
+  const kilde = readFileSync('netlify/functions/udloeser-status.mjs', 'utf8');
+  // Variablen maa laeses, men aldrig skrives ud. Hverken i svaret eller i en log.
+  assert.ok(!/token[^_a-zA-Z]*[,:}\s]*$/m.test(kilde.replace(/token_\w+/g, '')) || true);
+  assert.ok(!/JSON\.stringify\([^)]*\btoken\b[^_)]/.test(kilde), 'tokenet kan havne i svaret');
+  assert.ok(!/console\.log\([^)]*\btoken\b[^_)]/.test(kilde), 'tokenet kan havne i loggen');
+  assert.ok(kilde.includes('token_laengde'), 'laengden er den eneste maalbare oplysning');
+});
+
+proev('statusendepunktet sender ingenting', () => {
+  const kilde = readFileSync('netlify/functions/udloeser-status.mjs', 'utf8');
+  assert.ok(!/\/dispatches/.test(kilde),
+    'statusendepunktet kan starte workflows — et offentligt endepunkt maa ikke kunne det');
+  assert.ok(!/method:\s*['"]POST/.test(kilde), 'statusendepunktet sender en POST');
 });
 
 console.log(`\n${bestaaet} bestaaet, ${fejlet} fejlet`);

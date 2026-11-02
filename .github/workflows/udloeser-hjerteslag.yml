@@ -1,0 +1,31 @@
+# Livstegn fra den paalidelige udloeser.
+#
+# netlify/functions/udloes-publicering.mjs sender «udloeser-hjerteslag» én
+# gang i timen, naar der intet er forfaldent. Dette workflow tager imod og
+# goer intet andet end at eksistere i koerselshistorikken.
+#
+# Hvorfor det er noget vaerd: uden det kan man ikke se forskel paa «intet var
+# forfaldent» og «udloeseren er doed». Med det er en manglende koersel et
+# entydigt tegn paa, at kaeden Netlify → token → GitHub er brudt, og
+# vagthunden melder det.
+#
+# Det publicerer intet, laeser intet og kan ikke skrive noget: permissions er
+# tomme, og der er ingen checkout.
+name: Udloeserens livstegn
+
+on:
+  repository_dispatch:
+    types: [udloeser-hjerteslag]
+  workflow_dispatch:
+
+permissions: {}
+
+jobs:
+  livstegn:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Noter livstegnet
+        run: |
+          echo "Udloeseren lever. Netlify naaede GitHub $(date -u +%Y-%m-%dT%H:%M:%SZ)."
+          echo "Haendelse: ${{ github.event_name }}"
