@@ -16,6 +16,7 @@
       <div>
         <h1 class="text-[2rem] sm:text-4xl md:text-5xl font-semibold leading-tight">{{ $p.hero_title }}</h1>
         <p class="prosa mt-5 text-lg">{{ $p.hero_subtitle }}</p>
+        {{ partial "gratis-forsamtale.html" . }}
         {{ partial "kontakt-knapper.html" (dict "business" $b "klasse" "mt-8") }}
       </div>
       <div>{{ partial "medie.html" (dict "navn" $p.hero_billede "alt" $p.hero_alt

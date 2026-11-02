@@ -7,6 +7,9 @@
   <div class="container-width px-4 sm:px-6 py-12 sm:py-16">
     <h1 class="text-[2rem] sm:text-4xl md:text-5xl font-semibold">{{ $p.hero_title }}</h1>
     <p class="prosa mt-5 text-lg">{{ $p.hero_subtitle }}</p>
+    {{/* tving: kontaktsiden er der, hvor man staar med haanden paa doergrebet.
+         Den gratis forsamtale skal staa dér, uanset sektionslisten. */}}
+    {{ partial "gratis-forsamtale.html" (dict "Page" . "tving" true) }}
     {{ partial "kontakt-knapper.html" (dict "business" $b "klasse" "mt-8") }}
   </div>
 </section>

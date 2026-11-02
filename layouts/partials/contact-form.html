@@ -86,7 +86,10 @@
 
   <div data-form-status class="hidden p-4 rounded-lg text-sm" role="alert"></div>
 
-  <button type="submit" data-form-submit
+  {{/* data-konverter maales FOERST, naar indsendelsen er lykkedes — ikke ved
+       klikket. Se haandteringen i assets/js/main.js. Attributten er inert,
+       saa laenge params.konvertering.aktiv er false i hugo.toml. */}}
+  <button type="submit" data-form-submit data-konverter="formular-sendt"
     class="w-full btn-primary py-3.5 font-semibold transition-all">
     Send besked
   </button>

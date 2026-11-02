@@ -10,7 +10,8 @@
         <p class="text-mos text-sm font-semibold uppercase tracking-wide mb-2"><a href="/kurser/" class="hover:underline">Kurser</a></p>
         <h1 class="text-[2rem] sm:text-4xl md:text-5xl font-semibold text-skovbund leading-tight mb-2">{{ .Title }}</h1>
         <p class="text-xl text-mos font-semibold mb-8">{{ $p.tagline }}</p>
-        {{ partial "kontakt-knapper.html" (dict "business" $b) }}
+        {{ partial "gratis-forsamtale.html" . }}
+        {{ partial "kontakt-knapper.html" (dict "business" $b "klasse" "mt-8") }}
       </div>
       {{- with $p.hero_billede }}
       <div>{{ partial "billede.html" (dict "navn" . "alt" $p.hero_alt "forhold" (or $p.hero_forhold 0.8)

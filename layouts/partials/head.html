@@ -81,5 +81,10 @@
   }
 </script>
 
+{{/* Konverteringsmaaling. Udsender kun en HTML-kommentar, saa laenge
+     params.konvertering.aktiv er false i hugo.toml. Staar sidst, saa en
+     fremtidig maaler aldrig kan forsinke CSS, skrifter eller main.js. */}}
+{{ partial "konvertering.html" . }}
+
 {{/* LocalBusiness schema on every page */}}
 {{ partial "jsonld/localbusiness.html" . }}

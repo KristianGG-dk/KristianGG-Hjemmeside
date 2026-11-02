@@ -16,8 +16,8 @@
           {{ $b.address.postal_code }} {{ $b.address.city }}
         </address>
         <p class="text-sm mt-4">
-          <a href="{{ $b.phone_tel | safeURL }}" class="footer-link font-semibold">{{ $b.phone_display }}</a><br />
-          <a href="{{ $b.kontakt_url | safeURL }}" class="footer-link">{{ $b.email }}</a>
+          <a href="{{ $b.phone_tel | safeURL }}" data-konverter="kontakt-telefon" class="footer-link font-semibold">{{ $b.phone_display }}</a><br />
+          <a href="{{ $b.kontakt_url | safeURL }}" data-konverter="kontakt-mail" class="footer-link">{{ $b.email }}</a>
         </p>
         <p class="text-sm mt-3">{{ $b.opening_hours }}</p>
       </div>

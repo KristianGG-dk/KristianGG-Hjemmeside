@@ -17,6 +17,25 @@ title = "Kristian GG"
   # virker da som et almindeligt link.
   easyme_connect_id = "easyme-connect-tCqYM74QJ6VW6jnlQfVr"
 
+# ── Konverteringsmåling ──────────────────────────────────────────────────────
+# FORBEREDT, IKKE AKTIVERET. Med aktiv = false indlæses INGEN måler: intet
+# script, intet netværkskald, ingen cookie, intet samtykkekrav. Målepunkterne
+# (data-konverter) og opsamlingen i assets/js/main.js ligger klar og venter
+# kun på en modtager.
+#
+# Sådan aktiveres den — ét sted, to linjer:
+#   aktiv   = true
+#   udbyder = "plausible"   og   id = "kristiangg.dk"
+#   eller
+#   udbyder = "ga4"         og   id = "G-XXXXXXXXXX"
+#
+# Læs dokumentation/konverteringsmaaling.md først. Valget af udbyder afgør,
+# om der skal indhentes samtykke, og det skal være afklaret FØR aktivering.
+[params.konvertering]
+  aktiv = false
+  udbyder = ""
+  id = ""
+
 [taxonomies]
   category = "categories"
   tag = "tags"

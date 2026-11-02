@@ -14,7 +14,23 @@
    subject aldrig kan vaere tom, og at en mangelfuld henvendelse — kun en
    e-mail, intet andet — stadig kan sendes.                                  */
 
-import { chromium } from 'playwright';
+/* Playwright ligger forskellige steder i forskellige miljoeer, og ESM
+   finder ikke en global pakke via NODE_PATH. Derfor et opslag frem for en
+   fast import: findes Playwright ikke, springes testen over frem for at
+   fejle, saa en manglende udviklingsafhaengighed ikke ser ud som en fejl i
+   formularen. Den statiske kontrol i tests/hjemmeside.mjs kraever ingen
+   browser og koerer altid — ogsaa i CI. */
+import { createRequire } from 'module';
+const kraev = createRequire(import.meta.url);
+let chromium;
+for (const navn of ['playwright', '/opt/node-tools/node_modules/playwright', 'playwright-core', '@playwright/test']) {
+  try { ({ chromium } = kraev(navn)); break; } catch { /* proev den naeste */ }
+}
+if (!chromium) {
+  console.log('KONTAKTFORMULAR: Playwright findes ikke her — testen springes over.');
+  console.log('  Kor "npm install -D playwright && npx playwright install chromium" for at kore den.');
+  process.exit(0);
+}
 import http from 'http';
 import fs from 'fs';
 import path from 'path';
@@ -47,7 +63,33 @@ function server() {
 
 const srv = server();
 await new Promise((r) => srv.listen(PORT, r));
-const browser = await chromium.launch({ executablePath: '/opt/pw-browsers/chromium-1194/chrome-linux/chrome' });
+/* Browseren findes forskellige steder i forskellige miljoeer. Den
+   hardkodede sti /opt/pw-browsers/chromium-1194/... gaelder kun én bestemt
+   Playwright-version: faldt den vaek, fejlede testen som om formularen var
+   i stykker. Nu proeves Playwrights egen opslagsmekanisme foerst, derefter
+   PW_CHROMIUM fra miljoeet og til sidst de kendte stier. */
+async function aabnBrowser() {
+  const stier = [
+    undefined,
+    process.env.PW_CHROMIUM,
+    '/opt/pw-browsers/chromium/chrome-linux/chrome',
+    '/opt/pw-browsers/chromium-1194/chrome-linux/chrome',
+    '/usr/bin/chromium',
+    '/usr/bin/google-chrome',
+  ];
+  const fejl = [];
+  for (const sti of stier) {
+    if (sti !== undefined && !sti) continue;
+    try {
+      return await chromium.launch(sti ? { executablePath: sti } : {});
+    } catch (e) {
+      fejl.push(`${sti || 'Playwrights eget opslag'}: ${e.message.split('\n')[0]}`);
+    }
+  }
+  throw new Error('kunne ikke starte Chromium:\n  ' + fejl.join('\n  '));
+}
+
+const browser = await aabnBrowser();
 
 try {
   const sidefil = path.join(PUB, 'kontakt/index.html');
@@ -145,7 +187,97 @@ try {
     await side.close();
   }
 
-  // --- 4. Netlify skal kunne se formularen ---
+  // --- 4. Konverteringsmaalingen: forberedt, men ikke aktiveret ---
+  // Maalepunkterne skal virke i en rigtig browser, OG der maa ikke findes en
+  // maaler. Bliver params.konvertering.aktiv sat til true ved et uheld, eller
+  // snige en maaler sig ind ad en anden vej, fejler testen her.
+  {
+    const side = await browser.newPage();
+
+    // Ethvert kald ud af siden registreres. Der maa ingen vaere.
+    const udgaaende = [];
+    await side.route('**/*', (rute) => {
+      const u = rute.request().url();
+      if (!u.startsWith(`http://localhost:${PORT}`)) udgaaende.push(u);
+      rute.continue();
+    });
+
+    await side.goto(`http://localhost:${PORT}${SIDE}`, { waitUntil: 'load' });
+
+    const tilstand = await side.evaluate(() => ({
+      harFunktion: typeof window.kggKonverter === 'function',
+      harPlausible: typeof window.plausible !== 'undefined',
+      harDataLayer: typeof window.dataLayer !== 'undefined',
+      gtag: typeof window.gtag !== 'undefined',
+      maalepunkter: [...document.querySelectorAll('[data-konverter]')]
+        .map((e) => e.getAttribute('data-konverter')),
+    }));
+
+    if (!tilstand.harFunktion) {
+      fejl.push('window.kggKonverter findes ikke — maalingen er ikke forberedt');
+    }
+    for (const [navn, tilstede] of [['window.plausible', tilstand.harPlausible],
+                                    ['window.dataLayer', tilstand.harDataLayer],
+                                    ['window.gtag', tilstand.gtag]]) {
+      if (tilstede) {
+        fejl.push(`${navn} findes — konverteringsmaalingen er AKTIVERET. `
+                + 'Den skal vaere forberedt, ikke aktiv. Se params.konvertering i hugo.toml.');
+      }
+    }
+    for (const kraevet of ['kontakt-sms', 'kontakt-mail', 'formular-sendt']) {
+      if (!tilstand.maalepunkter.includes(kraevet)) {
+        fejl.push(`maalepunktet data-konverter="${kraevet}" mangler paa kontaktsiden`);
+      }
+    }
+
+    // Uden en maaler skal et kald vaere helt uden virkning — men hendelsen
+    // paa document skal stadig komme, saa en fremtidig maaler kan lytte.
+    const kald = await side.evaluate(() => {
+      const set = [];
+      document.addEventListener('kgg:konvertering', (e) => set.push(e.detail));
+      try { window.kggKonverter('proeve'); } catch (e) { return { fejl: e.message }; }
+      return { set };
+    });
+    if (kald.fejl) {
+      fejl.push(`kggKonverter kaster uden en maaler: ${kald.fejl}`);
+    } else if (!kald.set || kald.set.length !== 1) {
+      fejl.push('kggKonverter udsender ingen kgg:konvertering-hendelse');
+    } else {
+      noter.push('kggKonverter virker, udsender hendelsen og har ingen maaler at sende til');
+    }
+
+    // Konverteringen maa foerst taelles, NAAR indsendelsen er lykkedes.
+    const taeltFoer = await side.evaluate(() => {
+      window.__taelt = [];
+      document.addEventListener('kgg:konvertering', (e) => window.__taelt.push(e.detail));
+      return window.__taelt.length;
+    });
+    await side.fill('#email', 'test@example.dk');
+    await side.click('form[name="kontakt"] button[type="submit"]');
+    await side.waitForFunction(() => {
+      const b = document.querySelector('[data-form-submit]');
+      return b && /Sendt/.test(b.textContent);
+    }, { timeout: 5000 }).catch(() => null);
+    const taelt = await side.evaluate(() => (window.__taelt || []).length);
+    if (taeltFoer !== 0) {
+      fejl.push('der var allerede taelt en konvertering, foer formularen blev sendt');
+    } else if (taelt !== 1) {
+      fejl.push(`en lykket indsendelse taelte ${taelt} konverteringer — der skal taelles én`);
+    } else {
+      noter.push('en lykket indsendelse taelles én gang, og foerst naar den er lykket');
+    }
+
+    if (udgaaende.length) {
+      fejl.push('siden henter noget udefra: ' + [...new Set(udgaaende)].slice(0, 5).join(', ')
+              + ' — en maaler eller et tredjepartsscript er sluppet ind');
+    } else {
+      noter.push('ingen udgaaende kald fra kontaktsiden — ingen maaler, intet tredjepartsscript');
+    }
+
+    await side.close();
+  }
+
+  // --- 5. Netlify skal kunne se formularen ---
   const html = fs.readFileSync(sidefil, 'utf-8');
   for (const [udtryk, hvad] of [
     [/data-netlify=["']?true/i, 'data-netlify="true"'],
