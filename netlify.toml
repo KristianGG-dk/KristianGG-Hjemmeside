@@ -10,6 +10,22 @@
 [functions]
   directory = "netlify/functions"
 
+# Tidsplanen erklaeres BAADE her og i koden (config.schedule i
+# udloes-publicering.mjs). Det er ikke to planlaeggere — det er den samme
+# plan sagt to steder, og Netlify kalder funktionen én gang pr. tik.
+#
+# Hvorfor begge: udelukkende config.schedule i koden slog ikke igennem.
+# Funktionen blev udrullet og svarer paa HTTP, tokenet er accepteret af
+# GitHub, og alligevel udeblev livstegnet i to hele timevinduer
+# (18:00-18:14 og 19:00-19:14 UTC den 2. november). Den deklarative form er
+# den, Netlify laeser ved build, og den kan efterproeves i repoet frem for at
+# skulle udledes af en funktions indmad.
+#
+# Stemmer de to ikke overens, er det en fejl. publicering/test/
+# netlify-udloeser.test.mjs holder dem sammen.
+[functions."udloes-publicering"]
+  schedule = "*/15 * * * *"
+
 [build.environment]
   HUGO_VERSION = "0.147.0"
   NODE_VERSION = "24"

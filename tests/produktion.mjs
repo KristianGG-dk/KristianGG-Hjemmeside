@@ -38,17 +38,28 @@ const ok = (m) => noter.push(m);
 
 const UA = 'kristiangg-produktionskontrol (+https://github.com/KristianGG-dk/KristianGG-Hjemmeside)';
 
+// Hver anmodning har en frist. Uden den kan en enkelt adresse, der aldrig
+// svarer, haenge hele kontrollen — og det skete: proeven mod den planlagte
+// funktion stod i over ti minutter, fordi en planlagt Netlify-funktion ikke
+// besvarer HTTP overhovedet.
+const FRIST_MS = 20000;
+
 async function hent(url, valg = {}) {
   for (let forsoeg = 1; forsoeg <= 3; forsoeg++) {
     try {
       const sv = await fetch(url, {
         redirect: 'manual',
+        signal: AbortSignal.timeout(FRIST_MS),
         headers: { 'User-Agent': UA, ...(valg.headers || {}) },
         ...valg,
       });
       return sv;
     } catch (e) {
-      if (forsoeg === 3) return { fejl: e.message, status: 0, headers: new Headers() };
+      const udloeb = e.name === 'TimeoutError' || /abort|timeout/i.test(e.message);
+      if (forsoeg === 3) {
+        return { fejl: udloeb ? `svarede ikke inden ${FRIST_MS / 1000} s` : e.message,
+                 status: 0, headers: new Headers() };
+      }
       await new Promise((r) => setTimeout(r, forsoeg * 1500));
     }
   }
@@ -193,6 +204,9 @@ if (sm.status !== 200) {
     x('udloes-publicering svarer 200 paa direkte kald. Netlify har udrullet den som en '
       + 'ALMINDELIG funktion, ikke en planlagt. config.schedule er ikke slaaet igennem, '
       + 'og ingen planlaegger kalder den — derfor udeblev livstegnet.');
+  } else if (k === 0) {
+    ok('udloes-publicering besvarer slet ikke HTTP — det goer en PLANLAGT funktion heller ikke. '
+      + `(${p.fejl})`);
   } else {
     adv(`udloes-publicering svarer ${k} paa direkte kald (hverken 404 eller 200). `
       + 'Kan ikke afgoere, om den er registreret som planlagt.');

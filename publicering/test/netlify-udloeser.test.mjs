@@ -330,5 +330,32 @@ proev('et token af bare skidt bliver til ingenting — og saa sendes der intet',
   assert.equal(rensToken('  ""  '), '');
 });
 
+/* ── Tidsplanen staar to steder og skal stemme ───────────────────────────
+   Kun config.schedule i koden slog ikke igennem: funktionen blev udrullet
+   og svarede paa HTTP, tokenet var accepteret, og livstegnet udeblev
+   alligevel i to hele timevinduer. Tidsplanen erklaeres derfor ogsaa
+   deklarativt i netlify.toml, som Netlify laeser ved build. Det er den
+   samme plan sagt to steder — ikke to planlaeggere. */
+
+proev('netlify.toml erklaerer den planlagte funktion', () => {
+  const t = readFileSync('netlify.toml', 'utf8');
+  assert.match(t, /\[functions\."udloes-publicering"\]/,
+    'netlify.toml erklaerer ikke funktionen som planlagt');
+});
+
+proev('de to tidsplaner er den samme', () => {
+  const t = readFileSync('netlify.toml', 'utf8');
+  const m = /\[functions\."udloes-publicering"\][\s\S]*?schedule\s*=\s*"([^"]+)"/.exec(t);
+  assert.ok(m, 'netlify.toml har ingen schedule paa funktionen');
+  assert.equal(m[1], config.schedule,
+    `netlify.toml siger "${m[1]}", koden siger "${config.schedule}" — to forskellige planer`);
+});
+
+proev('der er kun ÉN planlagt funktion, saa to planlaeggere ikke kan udloese det samme', () => {
+  const t = readFileSync('netlify.toml', 'utf8');
+  const alle = [...t.matchAll(/\[functions\."([^"]+)"\]/g)].map((m) => m[1]);
+  assert.deepEqual(alle, ['udloes-publicering']);
+});
+
 console.log(`\n${bestaaet} bestaaet, ${fejlet} fejlet`);
 process.exit(fejlet ? 1 : 0);
