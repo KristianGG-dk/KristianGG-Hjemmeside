@@ -95,6 +95,22 @@
     });
   });
 </script>
+{{- with $k.ads_id }}
+{{/* Google Ads. Konverteringen sendes kun for den PRIMAERE handling — en
+     bekraeftet henvendelse — og kun gennem den samme hendelse, resten af
+     maalingen bruger. Dermed arver Ads automatisk baade samtykket, de to
+     dobbeltspaerrer og rensningen for personoplysninger: der kan ikke
+     opstaa en vej udenom. Mangler ads_label, sendes der intet. */}}
+<script>
+  gtag('config', {{ . | jsonify | safeJS }});
+  document.addEventListener('kgg:konvertering', function (h) {
+    if (!h.detail || h.detail.navn !== 'formular-sendt') return;
+    {{ if $k.ads_label }}gtag('event', 'conversion', { send_to: {{ printf "%s/%s" . $k.ads_label | jsonify | safeJS }} });{{ else }}
+    /* ads_label er tom — ingen konverteringshandling at sende til. */
+    {{ end }}
+  });
+</script>
+{{- end }}
 <script async src="https://www.googletagmanager.com/gtag/js?id={{ $k.id }}"></script>
 {{- else }}
 {{- warnf "params.konvertering.udbyder = %q kendes ikke. Ingen maaler indlaest." $k.udbyder }}

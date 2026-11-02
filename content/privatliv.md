@@ -20,7 +20,7 @@ Behandling af personoplysninger i forbindelse med terapi, forløb og andre ydels
 
 ## 2. Når du besøger hjemmesiden
 
-Hjemmesidens offentlige sider sætter ingen cookies og bruger ingen værktøjer til statistik, annoncering eller sporing. Skrifttyperne hentes fra kristiangg.dk og ikke fra en tredjepart.
+{{< maaling afsnit="besoeg" >}}
 
 Hjemmesiden drives af Netlify. For at kunne levere siderne til din browser behandler Netlify teknisk nødvendige oplysninger som din IP-adresse.
 
@@ -40,7 +40,7 @@ Jeg bruger de databehandlere, der står i [betingelserne](/betingelser/): Google
 
 Google, Netlify og GitHub er amerikanske virksomheder, og oplysninger kan derfor blive behandlet uden for EU/EØS.
 
-Jeg sælger ikke personoplysninger og bruger dem ikke til annoncering.
+{{< maaling afsnit="annoncering" >}}
 
 ## 5. Hvor længe
 

@@ -324,6 +324,31 @@ if (K) {
   }
 }
 
+// Privatlivspolitikken skal sige det samme som konfigurationen. Taendes
+// maalingen, uden at teksten foelger med, staar der en usandhed paa
+// /privatliv/ — og det er netop den slags, Datatilsynet ser paa.
+// layouts/shortcodes/maaling.html binder de to sammen; her kontrolleres det.
+{
+  const pv = hent('/privatliv/');
+  if (!pv) {
+    x('/privatliv/ findes ikke i bygget');
+  } else {
+    const siger_ingen = /ingen værktøjer til statistik/.test(pv);
+    const siger_maaler = /Hjemmesiden bruger (Plausible|Google Analytics)/.test(pv);
+    if (K && K.aktiv === false && !siger_ingen) {
+      x('/privatliv/ siger ikke laengere, at siden ikke bruger vaerktoejer til statistik, '
+        + 'selv om maalingen er slukket');
+    } else if (K && K.aktiv === false && siger_maaler) {
+      x('/privatliv/ omtaler en maaler, selv om maalingen er slukket');
+    } else if (K && K.aktiv === true && siger_ingen) {
+      x('/privatliv/ paastaar, at siden ikke maaler noget, men maalingen er TAENDT. '
+        + 'Teksten styres af layouts/shortcodes/maaling.html.');
+    } else {
+      ok('/privatliv/ siger det samme som params.konvertering i hugo.toml');
+    }
+  }
+}
+
 // Samtykkebanneret og data-samtykke maa ikke findes, saa laenge maalingen er
 // slukket. Dukker de op, er noget blevet aktiveret.
 const medBanner = ALLE.filter((s) => /kgg-samtykke/.test(hent(s.url)));

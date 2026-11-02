@@ -59,6 +59,14 @@ jobs:
       - name: Kontroller produktionen
         env:
           BASE: ${{ inputs.base || 'https://kristiangg.dk' }}
-          INDSEND_PROEVE: ${{ inputs.indsend_proeve == 'ja' && 'ja' || 'nej' }}
+          # Ved et manuelt kald styres det af inputtet. Ved et push paa en
+          # arbejdsgren findes workflow_dispatch endnu ikke (GitHub viser kun
+          # dispatch for workflows, der ligger paa standardgrenen), og den
+          # rigtige indsendelse slaas derfor til med [proeveindsendelse] i
+          # commit-beskeden. Begge veje kraever en bevidst handling.
+          INDSEND_PROEVE: >-
+            ${{ (inputs.indsend_proeve == 'ja'
+                 || contains(github.event.head_commit.message, '[proeveindsendelse]'))
+                && 'ja' || 'nej' }}
           PROEVE_MAERKE: proeve-${{ github.run_id }}
         run: node tests/produktion.mjs
