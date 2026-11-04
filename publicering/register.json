@@ -1060,5 +1060,15 @@
     "tidspunkt": "2026-11-02T17:02:51.835Z",
     "registreret_af": "manuel",
     "noter": "Handlingsknap tilfoejet. Kristian G. G. Dansted godkendte destinationen https://kristiangg.dk/kurser/skovbad/ den 2026-11-02. Kun feltet links er aendret; tekst, billede, dato, tidspunkt og cta er uroerte. Versionslaas e2ad2ceb25c7b143 afloest af 5ad86908654dc18a. Pakke: 2026-rettelser-gbp-knapper.md."
+  },
+  {
+    "element": 53,
+    "kanal": "gbp",
+    "versionslaas": "3db77d570cff2eaf",
+    "status": "PUBLICERET",
+    "post_id": "6948409793387865351",
+    "tidspunkt": "2026-11-04T10:41:32.887Z",
+    "google_state": "PROCESSING",
+    "url": "https://local.google.com/place?id=17837578415382320188&use=posts&lpsid=CAIQACoeChxtc3BfaDpmT0E0dlhHQnIwdVVOcExHaHVCZTJB"
   }
 ]
