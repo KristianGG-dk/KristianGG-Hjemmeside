@@ -1091,5 +1091,16 @@
     "registreret_af": "motor",
     "status": "PUBLICERET",
     "post_id": "urn:li:share:7524027762299375616"
+  },
+  {
+    "element": 42,
+    "kanal": "instagram",
+    "versionslaas": "e0c3238a8ea0a850",
+    "status": "PUBLICERING IGANG",
+    "post_id": null,
+    "godkendt_tidspunkt": "2026-11-05T19:00:00+01:00",
+    "tidspunkt": "2026-11-05T21:14:55.603Z",
+    "registreret_af": "motor",
+    "noter": "Kravet er taget. Melder koerslen ikke tilbage, skal udfaldet afklares i haanden."
   }
 ]
