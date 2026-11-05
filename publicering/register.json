@@ -1070,5 +1070,16 @@
     "tidspunkt": "2026-11-04T10:41:32.887Z",
     "google_state": "PROCESSING",
     "url": "https://local.google.com/place?id=17837578415382320188&use=posts&lpsid=CAIQACoeChxtc3BfaDpmT0E0dlhHQnIwdVVOcExHaHVCZTJB"
+  },
+  {
+    "element": 41,
+    "kanal": "linkedin",
+    "versionslaas": "17c80fc3e8372382",
+    "status": "PUBLICERING IGANG",
+    "post_id": null,
+    "godkendt_tidspunkt": "2026-11-05T08:00:00+01:00",
+    "tidspunkt": "2026-11-05T08:39:51.901Z",
+    "registreret_af": "motor",
+    "noter": "Kravet er taget. Melder koerslen ikke tilbage, skal udfaldet afklares i haanden."
   }
 ]
