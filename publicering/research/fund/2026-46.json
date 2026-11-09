@@ -1,0 +1,478 @@
+{
+  "uge": "2026-46",
+  "koert": "2026-11-09T16:37:26.412Z",
+  "vindue_dage": 10,
+  "kildestatus": [
+    {
+      "id": "retsinformation",
+      "navn": "Retsinformation",
+      "prioritet": 1,
+      "status": "77 adresser aendret i vinduet",
+      "poster": 15,
+      "nye": 0,
+      "irrelevante": 15,
+      "gengangere": 0
+    },
+    {
+      "id": "folketinget",
+      "navn": "Folketinget Open Data",
+      "prioritet": 1,
+      "status": "60 sager hentet, 6 tilbage efter titelfilter",
+      "poster": 6,
+      "nye": 0,
+      "irrelevante": 6,
+      "gengangere": 0
+    },
+    {
+      "id": "sundhedsdata",
+      "navn": "Sundhedsdatastyrelsen",
+      "prioritet": 1,
+      "status": "0 adresser aendret i vinduet",
+      "poster": 0,
+      "nye": 0,
+      "irrelevante": 0,
+      "gengangere": 0
+    },
+    {
+      "id": "laegemiddelstyrelsen",
+      "navn": "Laegemiddelstyrelsen",
+      "prioritet": 1,
+      "status": "ok",
+      "poster": 20,
+      "nye": 0,
+      "irrelevante": 20,
+      "gengangere": 0
+    },
+    {
+      "id": "vive",
+      "navn": "VIVE",
+      "prioritet": 1,
+      "status": "98 adresser aendret i vinduet",
+      "poster": 15,
+      "nye": 0,
+      "irrelevante": 15,
+      "gengangere": 0
+    },
+    {
+      "id": "ugeskriftet",
+      "navn": "Ugeskrift for Laeger",
+      "prioritet": 2,
+      "status": "ok",
+      "poster": 25,
+      "nye": 0,
+      "irrelevante": 25,
+      "gengangere": 0
+    },
+    {
+      "id": "psykiatrifonden",
+      "navn": "Psykiatrifonden",
+      "prioritet": 2,
+      "status": "16 adresser aendret i vinduet",
+      "poster": 15,
+      "nye": 5,
+      "irrelevante": 10,
+      "gengangere": 0
+    },
+    {
+      "id": "videnskab",
+      "navn": "Videnskab.dk",
+      "prioritet": 3,
+      "status": "ok",
+      "poster": 40,
+      "nye": 0,
+      "irrelevante": 40,
+      "gengangere": 0
+    },
+    {
+      "id": "dr-indland",
+      "navn": "DR Indland",
+      "prioritet": 3,
+      "status": "ok",
+      "poster": 20,
+      "nye": 0,
+      "irrelevante": 20,
+      "gengangere": 0
+    },
+    {
+      "id": "altinget",
+      "navn": "Altinget",
+      "prioritet": 3,
+      "status": "18 adresser aendret i vinduet",
+      "poster": 15,
+      "nye": 0,
+      "irrelevante": 15,
+      "gengangere": 0
+    },
+    {
+      "id": "europepmc",
+      "navn": "Europe PMC",
+      "prioritet": 4,
+      "status": "ok",
+      "poster": 25,
+      "nye": 9,
+      "irrelevante": 16,
+      "gengangere": 0
+    },
+    {
+      "id": "crossref",
+      "navn": "Crossref",
+      "prioritet": 4,
+      "status": "ok",
+      "poster": 25,
+      "nye": 0,
+      "irrelevante": 25,
+      "gengangere": 0
+    },
+    {
+      "id": "medrxiv",
+      "navn": "medRxiv",
+      "prioritet": 4,
+      "status": "ok",
+      "poster": 30,
+      "nye": 0,
+      "irrelevante": 30,
+      "gengangere": 0
+    }
+  ],
+  "antal": 14,
+  "fund": [
+    {
+      "id": "87005e40399802b1",
+      "titelhash": "5a263838ccb9f262",
+      "kilde": "psykiatrifonden",
+      "kildenavn": "Psykiatrifonden",
+      "prioritet": 2,
+      "evidens": "fagmedie",
+      "titel": "Tema: Stress | Psykiatrifonden",
+      "url": "https://psykiatrifonden.dk/viden/temaer/tema-stress",
+      "dato": "2026-11-09",
+      "resume": "Kortvarig stress er en tilstand, der gør det muligt at reagere og handle hensigtsmæssigt i ekstreme situationer. Længerevarende stress er en trussel mod helbredet og kan føre til psykisk sygdom.",
+      "emneord": [
+        "stress",
+        "psykisk"
+      ],
+      "specifikke": [],
+      "generiske": [
+        "stress",
+        "psykisk"
+      ],
+      "relevansgrund": "2 generiske: stress, psykisk",
+      "fagfaellebedoemt": null,
+      "fundet": "2026-11-09T16:37:26.412Z"
+    },
+    {
+      "id": "0614e68be6c5f5b8",
+      "titelhash": "77476480d1069529",
+      "kilde": "psykiatrifonden",
+      "kildenavn": "Psykiatrifonden",
+      "prioritet": 2,
+      "evidens": "fagmedie",
+      "titel": "Temaer | Psykiatrifonden",
+      "url": "https://psykiatrifonden.dk/viden/temaer",
+      "dato": "2026-11-09",
+      "resume": "Her kan du læse en række temaer om psykisk sygdom. Du kan fx læse om anvendelsen af tvang i psykiatrien, om børn og unge, der er pårørende, eller om, hvordan vi psykisk påvirkes af både livskriser og traumatiske kriser.",
+      "emneord": [
+        "psykisk",
+        "pårørende"
+      ],
+      "specifikke": [],
+      "generiske": [
+        "psykisk",
+        "pårørende"
+      ],
+      "relevansgrund": "2 generiske: psykisk, pårørende",
+      "fagfaellebedoemt": null,
+      "fundet": "2026-11-09T16:37:26.412Z"
+    },
+    {
+      "id": "afce694885905039",
+      "titelhash": "195a70776c05b0d4",
+      "kilde": "psykiatrifonden",
+      "kildenavn": "Psykiatrifonden",
+      "prioritet": 2,
+      "evidens": "fagmedie",
+      "titel": "Tema: At blive ældre med psykisk sygdom | Psykiatrifonden",
+      "url": "https://psykiatrifonden.dk/viden/temaer/tema-aeldre-med-psykisk-sygdom",
+      "dato": "2026-11-04",
+      "resume": "Med alderen følger både overgange og nye sygdomme. I dette tema kan du læse om livet med psykisk sygdom, ensomhed, og hvordan ældre bliver forskelsbehandlet.",
+      "emneord": [
+        "psykisk",
+        "ensomhed"
+      ],
+      "specifikke": [],
+      "generiske": [
+        "psykisk",
+        "ensomhed"
+      ],
+      "relevansgrund": "2 generiske: psykisk, ensomhed",
+      "fagfaellebedoemt": null,
+      "fundet": "2026-11-09T16:37:26.412Z"
+    },
+    {
+      "id": "2f937dc8848ea7e4",
+      "titelhash": "ddc3d001c0e0e294",
+      "kilde": "psykiatrifonden",
+      "kildenavn": "Psykiatrifonden",
+      "prioritet": 2,
+      "evidens": "fagmedie",
+      "titel": "Børn og unge | Psykiatrifonden",
+      "url": "https://psykiatrifonden.dk/viden/fakta-forskning/tal-fakta-om-psykisk-sygdom-danmark-2023/boern-unge",
+      "dato": "2026-11-04",
+      "resume": "Der har i en årrække været fokus på børn og unges mentale sundhed, foranlediget af en markant stigning i diagnosticeringen af børn og unges psykiske lidelser, men også af stigende selvrapporteret lav mental sundhed blandt børn og unge.",
+      "emneord": [
+        "psykisk",
+        "mental sundhed"
+      ],
+      "specifikke": [],
+      "generiske": [
+        "psykisk",
+        "mental sundhed"
+      ],
+      "relevansgrund": "2 generiske: psykisk, mental sundhed",
+      "fagfaellebedoemt": null,
+      "fundet": "2026-11-09T16:37:26.412Z"
+    },
+    {
+      "id": "c819d322183dd37c",
+      "titelhash": "2e87e4d5275592ee",
+      "kilde": "psykiatrifonden",
+      "kildenavn": "Psykiatrifonden",
+      "prioritet": 2,
+      "evidens": "fagmedie",
+      "titel": "Tema: Tabu og fordomme | Psykiatrifonden",
+      "url": "https://psykiatrifonden.dk/viden/temaer/tema-tabu-fordomme",
+      "dato": "2026-11-04",
+      "resume": "Tabu og fordomme påvirker de mennesker, som rammes af psykisk sygdom. Det er en stor, ekstra belastning, når man mødes med tabu og ikke kan tale åbent om sin sygdom.",
+      "emneord": [
+        "psykisk",
+        "belastning"
+      ],
+      "specifikke": [],
+      "generiske": [
+        "psykisk",
+        "belastning"
+      ],
+      "relevansgrund": "2 generiske: psykisk, belastning",
+      "fagfaellebedoemt": null,
+      "fundet": "2026-11-09T16:37:26.412Z"
+    },
+    {
+      "id": "6ca5d4b730b29c31",
+      "titelhash": "0329b1287679db44",
+      "kilde": "europepmc",
+      "kildenavn": "Europe PMC",
+      "prioritet": 4,
+      "evidens": "primaer",
+      "titel": "Effects of a Virtual Nature-Based Intervention on Nursing Students' Academic Stress and Performance.",
+      "url": "https://doi.org/10.1097/01.nep.0000000000001629",
+      "dato": "2026-11-02",
+      "resume": "Nurs Educ Perspect",
+      "emneord": [
+        "nature-based intervention",
+        "stress"
+      ],
+      "specifikke": [
+        "nature-based intervention"
+      ],
+      "generiske": [
+        "stress"
+      ],
+      "relevansgrund": "specifikt: nature-based intervention",
+      "fagfaellebedoemt": true,
+      "fundet": "2026-11-09T16:37:26.412Z"
+    },
+    {
+      "id": "f90389e8d716432c",
+      "titelhash": "6c4d5dae1a415719",
+      "kilde": "europepmc",
+      "kildenavn": "Europe PMC",
+      "prioritet": 4,
+      "evidens": "primaer",
+      "titel": "Effects of Short-Term Breathwork on Respiration and Cognitive Performance in a Discrimination Task.",
+      "url": "https://doi.org/10.1111/ejn.70737",
+      "dato": "2026-11-01",
+      "resume": "Eur J Neurosci",
+      "emneord": [
+        "breathwork"
+      ],
+      "specifikke": [
+        "breathwork"
+      ],
+      "generiske": [],
+      "relevansgrund": "specifikt: breathwork",
+      "fagfaellebedoemt": true,
+      "fundet": "2026-11-09T16:37:26.412Z"
+    },
+    {
+      "id": "5830b086b8aad73f",
+      "titelhash": "2deef9083a1e6c9f",
+      "kilde": "europepmc",
+      "kildenavn": "Europe PMC",
+      "prioritet": 4,
+      "evidens": "primaer",
+      "titel": "Vagal Activity Is Associated With Intuitive Decision-Making in Men Under Stress-Free Conditions but Not Following a Stressor.",
+      "url": "https://doi.org/10.1111/psyp.70437",
+      "dato": "2026-11-01",
+      "resume": "Psychophysiology",
+      "emneord": [
+        "vagal",
+        "stress"
+      ],
+      "specifikke": [
+        "vagal"
+      ],
+      "generiske": [
+        "stress"
+      ],
+      "relevansgrund": "specifikt: vagal",
+      "fagfaellebedoemt": true,
+      "fundet": "2026-11-09T16:37:26.412Z"
+    },
+    {
+      "id": "c192a38ff62581a2",
+      "titelhash": "bdd83eab1336dce0",
+      "kilde": "europepmc",
+      "kildenavn": "Europe PMC",
+      "prioritet": 4,
+      "evidens": "primaer",
+      "titel": "Intensive Interventions for Burnout, Stress and Occupational Well-Being: A Critical Review and a Delivery-Format Framework.",
+      "url": "https://doi.org/10.3390/jcm15207887",
+      "dato": "2026-10-13",
+      "resume": "J Clin Med",
+      "emneord": [
+        "burnout",
+        "stress",
+        "well-being"
+      ],
+      "specifikke": [
+        "burnout"
+      ],
+      "generiske": [
+        "stress",
+        "well-being"
+      ],
+      "relevansgrund": "specifikt: burnout",
+      "fagfaellebedoemt": true,
+      "fundet": "2026-11-09T16:37:26.412Z"
+    },
+    {
+      "id": "921a4f0e6a3a0e96",
+      "titelhash": "d4ec455c8f45f14a",
+      "kilde": "europepmc",
+      "kildenavn": "Europe PMC",
+      "prioritet": 4,
+      "evidens": "primaer",
+      "titel": "How the Acute Psychosocial Stress Response Ends: A Post-Stressor Transition Model of Glucocorticoid Feedback, Vagal Re-Engagement, and Frontolimbic Context Updating.",
+      "url": "https://doi.org/10.3390/ijms27209047",
+      "dato": "2026-10-12",
+      "resume": "Int J Mol Sci",
+      "emneord": [
+        "vagal",
+        "stress"
+      ],
+      "specifikke": [
+        "vagal"
+      ],
+      "generiske": [
+        "stress"
+      ],
+      "relevansgrund": "specifikt: vagal",
+      "fagfaellebedoemt": true,
+      "fundet": "2026-11-09T16:37:26.412Z"
+    },
+    {
+      "id": "3042b06b115df987",
+      "titelhash": "89d1896f1989e59d",
+      "kilde": "europepmc",
+      "kildenavn": "Europe PMC",
+      "prioritet": 4,
+      "evidens": "primaer",
+      "titel": "Acute Effects of Two Slow-Paced Breathing Protocols With and Without Inspiratory Breath-Holding on Heart Rate Variability: A Randomized Controlled Trial.",
+      "url": "https://doi.org/10.3390/medsci14060643",
+      "dato": "2026-10-06",
+      "resume": "Med Sci (Basel)",
+      "emneord": [
+        "heart rate variability",
+        "slow-paced breathing",
+        "breathing protocol"
+      ],
+      "specifikke": [
+        "heart rate variability",
+        "slow-paced breathing",
+        "breathing protocol"
+      ],
+      "generiske": [],
+      "relevansgrund": "specifikt: heart rate variability, slow-paced breathing, breathing protocol",
+      "fagfaellebedoemt": true,
+      "fundet": "2026-11-09T16:37:26.412Z"
+    },
+    {
+      "id": "a02eb4b8ee633c2e",
+      "titelhash": "b94306da8a3325d3",
+      "kilde": "europepmc",
+      "kildenavn": "Europe PMC",
+      "prioritet": 4,
+      "evidens": "primaer",
+      "titel": "Mindfulness and forest bath for arterial hypertension in older women: quasi-experimental pilot",
+      "url": "https://europepmc.org/article/PMC/PMC13699251",
+      "dato": "2026-10-01",
+      "resume": "Eur J Public Health",
+      "emneord": [
+        "forest bath",
+        "mindfulness"
+      ],
+      "specifikke": [
+        "forest bath",
+        "mindfulness"
+      ],
+      "generiske": [],
+      "relevansgrund": "specifikt: forest bath, mindfulness",
+      "fagfaellebedoemt": true,
+      "fundet": "2026-11-09T16:37:26.412Z"
+    },
+    {
+      "id": "dad0707d113260e4",
+      "titelhash": "1679519b00d6b45f",
+      "kilde": "europepmc",
+      "kildenavn": "Europe PMC",
+      "prioritet": 4,
+      "evidens": "primaer",
+      "titel": "Methodological strengths and weaknesses of nature based intervention: a systematic review.",
+      "url": "https://doi.org/10.1007/s10339-026-01369-x",
+      "dato": "2026-07-22",
+      "resume": "Cogn Process",
+      "emneord": [
+        "nature-based intervention"
+      ],
+      "specifikke": [
+        "nature-based intervention"
+      ],
+      "generiske": [],
+      "relevansgrund": "specifikt: nature-based intervention",
+      "fagfaellebedoemt": true,
+      "fundet": "2026-11-09T16:37:26.412Z"
+    },
+    {
+      "id": "b69dae6ce4b52d62",
+      "titelhash": "533c94e54fdac75b",
+      "kilde": "europepmc",
+      "kildenavn": "Europe PMC",
+      "prioritet": 4,
+      "evidens": "primaer",
+      "titel": "Effects of Slow Breathing Exercises on Heart Rate, Blood Pressure, and Quality of Life in Patients Undergoing Primary Percutaneous Coronary Intervention: Randomized Controlled Trial.",
+      "url": "https://doi.org/10.1007/s10484-026-09767-9",
+      "dato": "2026-02-02",
+      "resume": "Appl Psychophysiol Biofeedback",
+      "emneord": [
+        "slow breathing"
+      ],
+      "specifikke": [
+        "slow breathing"
+      ],
+      "generiske": [],
+      "relevansgrund": "specifikt: slow breathing",
+      "fagfaellebedoemt": true,
+      "fundet": "2026-11-09T16:37:26.412Z"
+    }
+  ]
+}
