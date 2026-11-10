@@ -1152,5 +1152,15 @@
     "registreret_af": "motor",
     "status": "PUBLICERET",
     "post_id": "urn:li:share:7525825504776634369"
+  },
+  {
+    "element": 54,
+    "kanal": "gbp",
+    "versionslaas": "543990dac9046d10",
+    "status": "PUBLICERET",
+    "post_id": "2735616449687757772",
+    "tidspunkt": "2026-11-10T09:30:33.875Z",
+    "google_state": "PROCESSING",
+    "url": "https://local.google.com/place?id=17837578415382320188&use=posts&lpsid=CAIQACoeChxtc3BfaDphQl9CSDdjQTM4UkwybWZZZjhlZDlR"
   }
 ]
