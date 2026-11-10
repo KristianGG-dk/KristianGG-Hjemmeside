@@ -1142,5 +1142,15 @@
     "tidspunkt": "2026-11-10T07:43:29.809Z",
     "registreret_af": "motor",
     "noter": "Kravet er taget. Melder koerslen ikke tilbage, skal udfaldet afklares i haanden."
+  },
+  {
+    "element": 45,
+    "kanal": "linkedin",
+    "versionslaas": "f56ec0cdec125da4",
+    "godkendt_tidspunkt": "2026-11-10T08:00:00+01:00",
+    "tidspunkt": "2026-11-10T07:43:42.012Z",
+    "registreret_af": "motor",
+    "status": "PUBLICERET",
+    "post_id": "urn:li:share:7525825504776634369"
   }
 ]
