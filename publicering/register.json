@@ -1131,5 +1131,16 @@
     "post_id": "18075605108770848",
     "container_id": "18026170055936780",
     "tidspunkt": "2026-11-09T19:59:24.295Z"
+  },
+  {
+    "element": 45,
+    "kanal": "linkedin",
+    "versionslaas": "f56ec0cdec125da4",
+    "status": "PUBLICERING IGANG",
+    "post_id": null,
+    "godkendt_tidspunkt": "2026-11-10T08:00:00+01:00",
+    "tidspunkt": "2026-11-10T07:43:29.809Z",
+    "registreret_af": "motor",
+    "noter": "Kravet er taget. Melder koerslen ikke tilbage, skal udfaldet afklares i haanden."
   }
 ]
