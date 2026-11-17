@@ -1182,5 +1182,15 @@
     "post_id": "18137395540658749",
     "container_id": "18026767832936780",
     "tidspunkt": "2026-11-13T22:55:12.989Z"
+  },
+  {
+    "element": 49,
+    "kanal": "gbp",
+    "versionslaas": "5ad86908654dc18a",
+    "status": "PUBLICERET",
+    "post_id": "7211437070948119127",
+    "tidspunkt": "2026-11-17T11:00:10.541Z",
+    "google_state": "PROCESSING",
+    "url": "https://local.google.com/place?id=17837578415382320188&use=posts&lpsid=CAIQACoeChxtc3BfaDpVSFI0aEVVczlFMFZVTHhSUTg2eFVn"
   }
 ]
